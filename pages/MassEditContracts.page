@@ -1,0 +1,61 @@
+<apex:page controller="MassEditContractsController" showHeader="false" id="page" sidebar="false" standardStylesheets="true">
+    <apex:form id="form">
+        <apex:pageMessages />
+        <div id="massEdit" role="dialog" aria-live="assertive" aria-describedby="massEditTitle" 
+             class="overlayDialog cssDialog inlineEditDialog" style="visibility: visible; display: block; width: 520px; margin-top: -53.25px; margin-left: -260px;">
+            {!$Label.MassEditContracts_CL1}
+            {!$Label.MassEditContracts_CL2}    
+            <div class="middle">
+                <div class="innerContent" id="massEditContent">
+                    <div id="massEditInner">
+                        <div class="fieldTableDiv">
+                            <table class="fieldTable" border="0">
+                                <tbody>
+                                    <tr class="fieldRow">
+                                        <td class="labelCol">Main Contact</td>
+                                        <td class="dataCol">
+                                            <apex:inputField value="{!contract.Main_Contact__c}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="fieldRow">    
+                                        <td class="labelCol">Invoice Contact</td>
+                                        <td class="dataCol">
+                                            <apex:inputField value="{!contract.Invoice_Contact__c}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="fieldTable">
+                            <tbody>
+                                <tr class="selectionRow">
+                                    <td class="labelCol">Apply changes to</td>
+                                    <td class="dataCol">
+                                        <apex:selectRadio value="{!updateScope}" layout="pageDirection">
+                                            <apex:selectOption itemValue="selected" itemlabel="All selected contract records"/>
+                                            <apex:selectOption itemValue="all" itemlabel="All {!allRecordsSize} contract records"/>
+                                        </apex:selectRadio>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="inlineEditButtons">
+                            <apex:actionStatus id="actionStatus">
+                                <apex:facet name="start"> 
+                                    <img src="/img/loading.gif"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            <apex:commandButton action="{!saveContracts}" value="Save" onComplete="closeAndRefresh();" status="actionStatus" reRender="pageBlock"/>
+                            <apex:commandButton action="{!doCancel}" value="Cancel" onComplete="closeAndRefresh();" status="actionStatus" reRender="pageBlock"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+    <script>
+        function closeAndRefresh(){
+            window.top.location = '/{!$CurrentPage.parameters.id}';
+        }
+    </script>
+</apex:page>

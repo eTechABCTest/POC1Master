@@ -1,0 +1,93 @@
+<apex:page standardController="ConsolidatedInvoice__c"
+    extensions="ffps_advisory.PrintInvoiceController" 
+    renderAs="pdf" showHeader="false" sidebar="false"
+    standardStylesheets="false">
+       
+    <head>
+    <style type="text/css" media="print">
+        @page 
+        { 
+            margin-top: 1.0in;
+            margin-bottom: 1.5in;
+    
+            @top-left { content: element(header_left); }
+    
+            @top-center { content: element(header_center); }
+    
+            @top-right {content: element(header_right); }
+    
+            @bottom-left { content: element(footer_left); }
+    
+            @bottom-center { content: element(footer_center); }
+    
+            @bottom-right { content: element(footer_right); }
+        }
+
+        .header_left 
+        {
+            text-align: left;
+            position: running(header_left);
+        }
+
+        .header_center
+        {
+            text-align: center;
+            position: running(header_center);
+        }
+        
+        .header_right 
+        {
+            text-align: right;
+            position: running(header_right);
+        }
+        
+        .footer_left 
+        {
+            text-align: left;
+            position: running(footer_left);
+        }
+        
+        .footer_center 
+        {
+            text-align: center;
+            position: running(footer_center);
+        }
+        
+        .footer_right 
+        {
+            text-align: right;
+            position: running(footer_right);
+        }
+        
+        .pageNumber:before 
+        {
+            content: counter(page); 
+        }
+        
+        .pageCount:before 
+        {
+            content: counter(pages);  
+        }
+
+        .detailTable
+        {
+            vertical-align:middle;
+            border-bottom:1px dotted;
+        }
+        
+        .invoiceDetailValue
+        {
+            padding-left:5px;
+            text-align:left;
+        }
+        
+        .remittance
+        {
+            padding:5px;
+            vertical-align:top;
+            font-size:9pt;
+        }
+    </style>
+</head>
+<c:ConsolidatedInvoiceComponent invoiceId="{!m_relatedTo}" htmlpreview="false"/>  
+</apex:page>

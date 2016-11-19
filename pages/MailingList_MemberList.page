@@ -1,0 +1,9 @@
+<apex:page standardController="Campaign" extensions="MailingCampaignController" contentType="application/octet-stream#{!mailingCampaign.Purchase_Order_Number__c}.csv"
+           showHeader="false" sidebar="false" standardStylesheets="false" cache="false">
+    <apex:outputText value="{!csvHeader}" escape="false"/>
+    <apex:repeat value="{!campaignMemberMap}" var="key" >
+        <apex:repeat value="{!campaignMemberMap[key]}" var="m">
+="{!m.Mail_Piece_Id__c}","{!m.CampaignId}","{!m.Contact.Id}","{!m.Contact.Name}","{!m.Contact.Salutation}","{!m.Contact.FirstName}","{!m.Contact.LastName}","{!m.Contact.Suffix__c}","{!m.Contact.Title}","{!m.Contact.Account.Id}","{!m.Contact.Account.Name}","{!m.Contact.Primary_Address_Line_1__c}","{!m.Contact.Primary_Address_Line_2__c}","{!m.Contact.Primary_Address_Line_3__c}","{!m.Contact.Primary_City__c}","{!m.Contact.Primary_State_Province__c}","{!m.Contact.Primary_Postal_Code__c}","{!m.Contact.Primary_Country__c}","{!m.Contact.Phone}","{!m.Contact.Fax}","{!m.Contact.Email}","{!m.Contact.Contact_Restriction_Status__c}","{!m.Contact.Account.Account_Restriction_Status__c}"
+        </apex:repeat>
+    </apex:repeat>
+</apex:page>

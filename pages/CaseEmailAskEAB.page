@@ -1,0 +1,526 @@
+<!-- 
+    Description     :   VF page will have the same functionality, as we are already having for "CaseEmail" VF page. 
+                        Having difference in fields placement and branding. 
+    
+    Created By      :   Abhinav Sharma
+    
+    Created Date    :   11/27/2015
+    
+    Revision Logs   :   v1.0 - Created - Abhinav Sharma - 11/27/2015 - CR-20150914-9243
+                        v1.1 - Modified By - Abhinav Sharma - 2/1/2015 - CR-20160201-9573
+						v1.2 - Modified By - Abhinav Sharma - CR-20150925-9267 - 02/26/2016
+-->
+<apex:page controller="CaseEmailController" id="page" showHeader="true" sidebar="true" tabStyle="Task">
+    
+    <!-- include jquery -->
+    <c:IncludeJQuery />
+    
+    <!-- setup dialog -->
+    <script>
+    
+        j$(function() {
+        var availableTags = [ {!AvailableEmails} ];
+        function split( val ) {
+            return val.split( /;\s*/ );
+        }
+    
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+
+        j$( "[id*=emailCC]" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === j$.ui.keyCode.TAB &&
+                        j$( this ).data( "autocomplete" ).menu.active ) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                    // delegate back to autocomplete, but extract the last term
+                    response( j$.ui.autocomplete.filter(
+                        availableTags, extractLast( request.term ) ) );
+                },
+                focus: function() {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "; " );
+                    return false;
+                }
+            });
+            
+            j$( "[id*=emailTO]" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === j$.ui.keyCode.TAB &&
+                        j$( this ).data( "autocomplete" ).menu.active ) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                    // delegate back to autocomplete, but extract the last term
+                    response( j$.ui.autocomplete.filter(
+                        availableTags, extractLast( request.term ) ) );
+                },
+                focus: function() {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "; " );
+                    return false;
+                }
+            });
+        });
+    
+        j$(function() {
+            j$('#preview').dialog({
+                width: 600,
+                modal: false,
+                autoOpen: false,
+                resizable: false,
+                zIndex: 1000
+            }).parent().appendTo('#page\\:mainForm');
+            
+            j$('#attachment').dialog({
+                width: 500,
+                modal: false,
+                autoOpen: false,
+                resizable: false,
+                zIndex: 1000
+            }).parent().appendTo('#page\\:mainForm');
+            
+            // set the default text in the search box
+            j$('[id*=contentSearchInput]').val('Search Content...');
+        });
+        
+        var previewString;
+        function openPreview() {
+            var subject = j$('[id*=subjectText]').val();
+            
+            // rich text:
+            var body = j$('[id*=bodyText_frame]').contents().find('body').html();
+            //var body = j$('[id*=bodyText]').val();
+            previewString = '/apex/AskEABTemplate?Type=AskEAB&id={!CaseId}&subject=' + escape(subject) + '&emailBody=' + escape(body);
+            window.open(previewString);
+        }
+        
+        function XferValues() {
+            j$('#subject').html(j$('#page\\:mainForm\\:mainBlock\\:blockSection\\:subjectItem\\:subjectText').val());
+            j$('#body').html(j$('#page\\:mainForm\\:mainBlock\\:blockSection\\:bodyItem\\:bodyText').val());
+        }
+        
+        // note, we must use jquery as opposed to re-render because Apex:InputFile elements don't support re-render
+        function ToggleInputVisibility(val) {
+            if (val == 'My Computer') {
+                j$('[id*=inputFile]').css('display', 'inline');
+                j$('[id*=attachFileButton]').css('display', 'inline');
+                j$('[id*=contentPanel]').css('display', 'none');
+            }
+            else {
+                j$('[id*=inputFile]').css('display', 'none');
+                j$('[id*=attachFileButton]').css('display', 'none');
+                j$('[id*=contentPanel]').css('display', 'inline');
+            }
+        }
+        
+        function clickclear(thisfield, defaulttext) {
+            if (thisfield.value == defaulttext) {
+                 thisfield.value = "";
+                 thisfield.style.color = '#000000';
+            }
+        }
+    
+        function clickrecall(thisfield, defaulttext) {
+             if (thisfield.value == "") {
+                thisfield.value = defaulttext;
+                thisfield.style.color = '#B9B9B9';
+            }
+        }
+        
+        var isBlocked;
+        
+        function blockAttachmentElement(ElementLocator,Message)
+        {
+            if(Message == null) Message = 'Working...';
+                
+            j$(ElementLocator).block
+            ({ 
+                message: '<img src="/img/loading.gif"/>&nbsp;&nbsp;<font size=\"3\">' + Message + '</font>',
+            }); 
+        }
+    </script>
+    
+    <style>
+        .rounded-corners {
+          -moz-border-radius: 10px; /* Firefox */
+          -webkit-border-radius: 10px; /* Safari, Chrome */
+          border-radius: 10px; /* CSS3 */
+        }
+        
+        .acctMgr a {
+            color:#0077cc;
+        }
+    </style>
+    
+    <apex:form id="mainForm" >
+        <apex:sectionHeader title="Task" subtitle="Email Experts" />
+        
+        <apex:actionRegion id="region1">
+        
+            <script>
+                var typingTimeout;
+            
+                function search(val) {
+                    // if null or blank value, return without searching
+                    if (val == null || val == 'Search Content...') return;
+                    
+                    if (j$('.blockUI').size() == 0)
+                        blockElement('.tableDiv', 'Working...');
+                        
+                    if (typingTimeout != undefined) 
+                        clearTimeout(typingTimeout);
+                    typingTimeout = setTimeout( function()
+                        {   
+                            // if the user has stopped typing for 500ms, perform the search for them
+                            searchString(val);
+                        }
+                    , 500);
+                    
+                }
+            </script>
+            
+            <apex:actionFunction name="updateSelected" rerender="contentPanel" >
+                <apex:param name="SelectedId" assignTo="{!SelectedId}" value="" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction name="rerenderTest" rerender="tableWrapper" onComplete="return false;" />
+            
+            <apex:actionFunction name="searchString" action="{!Search}" rerender="tableWrapper" onComplete="rerenderTest();" >
+                <apex:param name="SearchString" assignTo="{!SearchString}" value="" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction name="removeAttachment" action="{!RemoveAttachment}" rerender="region1" >
+                <apex:param name="AttachmentToRemove" assignTo="{!AttachmentToRemove}" value="" />
+            </apex:actionFunction>
+    
+            <apex:pageBlock id="mainBlock" mode="edit" >
+        
+                <apex:pageBlockButtons >
+                    <apex:commandButton value=" Send " id="send" action="{!SendEmail}" onClick="blockElement('body', 'Sending...');" rendered="{!!EmailSentSuccessfully}" />
+                    <apex:commandButton value=" Preview " id="preview" onClick="openPreview();return false;" rendered="{!!EmailSentSuccessfully && IsAskEAB}" />
+                    <apex:commandButton value=" Attach File " id="attachFile" rendered="{!!EmailSentSuccessfully}" onClick="j$('#attachment').dialog('open');return false;" />
+                    <apex:commandButton value=" Cancel " id="cancel" Action="{!Cancel}" />
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection id="blockSection" columns="1" rendered="{!!EmailSentSuccessfully}" >
+                    <apex:pageBlockSectionItem >
+                        To
+                        <apex:inputTextarea value="{!EmailTo}" id="emailTO" rows="2" cols="65" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        CC:
+                        <apex:inputTextarea value="{!EmailCC}" id="emailCC" rows="2" cols="65" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        BCC:
+                        <apex:inputTextarea value="{!EmailBCC}" rows="2" cols="65" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem id="subjectItem" >
+                        Subject
+                        <apex:outputText id="subjectText" value="{!EmailSubject}" style="white-space:nowrap;overflow:hidden;" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem id="bodyItem" >
+                        <span style="white-space:nowrap;">Body</span>
+                        
+                        <apex:outputPanel >
+                            <STYLE type="text/css">
+                            TH {
+                                font-size: 11px;
+                                font-face: arial;
+                                background: #CCCCCC;
+                                border-width: 0;
+                                text-align: center
+                            }
+                                
+                            TD {
+                                font-size: 11px;
+                                font-face: verdana
+                            }
+                                
+                            TABLE {
+                                border: solid #CCCCCC;
+                                border-width: 0;
+                                border-collapse: collapse;
+                            }
+                                
+                            TR {
+                                border: solid #CCCCCC;
+                                border-width: 0;
+                            }
+                            
+                            </STYLE>
+                            
+                            <apex:outputPanel rendered="{!NOT(IsExpertCenter)}" id="AcctMgrPanel" styleClass="acctMgr">
+                                
+                                <table width="680" border="0" align="left" cellpadding="0" cellspacing="0">
+                                    <tbody >
+                                        <tr>
+                                            <td >
+                                                <apex:image url="{!$Label.ASK_EAB_LETTERHEAD_IMAGE_PUBLIC_URL}" width="400" height="65" alt="EAB" html-border="0" id="xyz" />
+                                            </td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td>
+                                                <!-- Row 1-->
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Case #:</strong> {!aCase.CaseNumber} 
+                                                                <br/>
+                                                            </td>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Date/Time Opened: </strong>
+                                                                {!aCase.CreatedDate}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                            
+                                                <!-- Row 2-->
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Contact Owner:</strong> 
+                                                                {!aCase.Owner.Name} 
+                                                                <br/>
+                                                            </td>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Contact Title:</strong>
+                                                                {!aCase.Contact_Title__c}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                                <!-- Row 3-->
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Contact Name:</strong> 
+                                                                {!aCase.Contact.Name} 
+                                                                <br/>
+                                                            </td>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Contact Email:</strong>
+                                                                {!aCase.Contact.Email}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                                <!-- Row 4-->
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Institution Name:</strong> 
+                                                                {!aCase.Account.Name} 
+                                                                <br/>
+                                                                <strong>RI Contract Value:</strong> 
+                                                                {!aCase.RI_Contract_Value__c} <br/>
+                                                                <strong>Executive Advisor:</strong>
+                                                                {!aCase.Executive_Advisor__c} <br/>
+                                                                <strong>Contact Programs:</strong>
+                                                                {!MembershipsCommaDelim}<br/>
+                                                                <strong>Case Origin:</strong>
+                                                                {!aCase.Origin} <br/>
+                                                                <strong>Deadline:&nbsp;</strong> 
+                                                                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                                                    <apex:param value="{!aCase.Deadline__c}"/>
+                                                                </apex:outputText><br/>
+                                                                <strong>Subject:</strong>
+                                                                {!aCase.Subject}
+                                                            </td>
+                                                            <td width="50%" valign="top">
+                                                                <strong>Contact City/State:</strong>
+                                                                {!aCase.Contact_City_State__c}<br/>
+                                                                <strong>Total Contract Value: </strong>
+                                                                {!aCase.Contract_Value__c}<br/>
+                                                                <strong>Relationship Manager:</strong>
+                                                                {!aCase.Relationship_Manager__r.Name}<br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <strong>Deadline Reason:</strong>
+                                                                {!aCase.Deadline_Reason__c}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br/>
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="100%" valign="top">
+                                                                <strong>Description: </strong>
+                                                                {!aCase.Description}
+                                                            </td>    
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br/>
+                                                <br/>
+                                                <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="100%" valign="top">
+                                                                <strong>Why is this information needed? </strong>
+                                                                {!aCase.Why_is_info_needed__c} 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="100%" valign="top">
+                                                                <strong>How will this information be used? </strong>
+                                                                {!aCase.How_will_info_be_used__c}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="100%" valign="top">
+                                                                <strong>Member Type </strong>
+                                                                {!aCase.Member_Type__c} 
+                                                            </td>
+                                                        </tr>
+                                                        <!--Commented By - Abhinav Sharma - CR-20150925-9267 - 02/26/2016-->
+                                						<!--Start from here-->
+                                                        <!--<tr>
+                                                            <td width="100%" valign="top">
+                                                                <strong>New Member </strong>
+                                                                {!aCase.New_Member__c}
+                                                            </td>
+                                                        </tr>-->
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <!--Added By - Abhinav Sharma - 2/1/2015 - CR-20160201-9573-->
+                                        <!--Start From here-->
+                                        <tr>
+                                        	<td>
+                                            	<table width="100%" border="0" cellpadding="15" cellspacing="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="100%" valign="top" style="color:#bf0000;">
+                                                                <p><strong>Notes from Research Associate:</strong></p>
+                                                                <p><apex:inputTextarea richText="true" id="bodyText" value="{!EmailBody}" style="color:#bf0000;" rows="15" cols="93" /></p>
+                                                            </td>
+                                                        </tr> 
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <!--Upto Here-->
+                                    </tbody>
+                                </table>
+                            </apex:outputPanel>    
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:actionRegion id="region2">
+                        <apex:outputPanel id="attachmentPanel">
+                            <apex:pageblockTable rendered="{!EmailAttachments.size > 0}" value="{!EmailAttachments}" var="attachment" 
+                                id="attachmentTable" style="width:80%;margin-left:auto;margin-right:auto;" >
+                                <apex:column width="50px">
+                                    <a href="" style="cursor:pointer;text-decoration:underline;" onClick="j$(this).parent().parent().remove();removeAttachment('{!attachment.Name}');return false;">Remove</a>
+                                </apex:column>
+                                <apex:column value="{!attachment.Name}" />
+                            </apex:pageblockTable>
+                        </apex:outputPanel>
+                    </apex:actionRegion>
+                    
+                </apex:pageBlockSection>    
+            </apex:pageBlock>
+        </apex:actionRegion>
+        
+        <!-- FILE ATTACHMENT DIALOG -->
+        <div id="attachment" title="Add File Attachment" style="display:none" >
+            <apex:pageblock mode="edit" >
+                <apex:pageblocksection columns="1" id="attachmentSection">
+                    <apex:actionRegion id="actionRegionFileType">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputText value="File Location" style="white-space:nowrap;" />
+                            <apex:selectList value="{!AttachmentType}" id="fileTypePicklist" multiselect="false" onChange="ToggleInputVisibility(this.value);" size="1">
+                                <apex:selectOptions value="{!Types}"/>
+                            </apex:selectList>
+                        </apex:pageBlockSectionItem>
+                    </apex:actionRegion>
+                    
+                    <!-- INPUT FILE -->
+                    <apex:inputFile value="{!EmailAttachment.body}" filename="{!NameFile}" id="inputFile" />
+                    
+                    <!-- CONTENT SELECTION -->
+                    <apex:actionRegion id="region3">
+                        <script>
+                            // this is used to perform the initial search so the user doesn't display no results when they first open it up
+                            search('');
+                        </script>
+                        <apex:actionFunction name="saveSelected" action="{!SaveDoc}" rerender="tableWrapper, attachmentPanel" onComplete="j$('#attachment').dialog('close');"  >
+                            <apex:param name="SelectedId" assignTo="{!SelectedId}" value="" />
+                        </apex:actionFunction>
+                        <apex:outputPanel id="contentPanel" layout="block" style="display:none; height:200px; overflow:hidden;">
+                            <apex:selectList value="{!SelectedWorkspace}" id="contentWorkspaceSelector" multiselect="false" size="1" style="width:190px;" >
+                                <apex:selectOptions value="{!Workspaces}" />
+                                <apex:actionSupport event="onchange" onsubmit="blockElement('.tableDiv', 'Working...');" rerender="contentWorkspaceSelector" onComplete="search('');" />
+                            </apex:selectList>
+                            <apex:inputText id="contentSearchInput" styleClass="rounded-corners" onkeyup="search(this.value);" onClick="clickclear(this, 'Search Content...')" onBlur="clickrecall(this,'Search Content...')" style="color:#B9B9B9; background:url('{!$Resource.SearchIcon}'); background-repeat:no-repeat; background-position:left; padding-left:15px; background-color: white;" /><br/>
+                            <apex:outputPanel id="tableWrapper" styleClass="tableDiv" layout="block" style="max-height:280px; height:280px; overflow:auto;">
+                                <div id="pagingLinks" style="text-align:center;" >
+                                    <apex:outputText value=" ◄ Previous " rendered="{!!HasPrevious}" style="color:#777" />
+                                    <apex:commandLink value=" ◄ Previous " action="{!Previous}" rerender="tableWrapper" onClick="blockElement('.tableDiv', 'Working...');" rendered="{!HasPrevious}" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <apex:outputText value=" Next ► " rendered="{!!HasNext}" style="color:#777" />
+                                    <apex:commandLink value=" Next ► " action="{!Next}" rerender="tableWrapper" onClick="blockElement('.tableDiv', 'Working...');" rendered="{!HasNext}" />
+                                </div>
+                                <apex:pageblockTable value="{!ContentDocuments}" var="item" id="contentDocTable" style="width:100%;" >
+                                    <apex:column headerValue="Name">
+                                        <a href="" style="cursor:pointer;text-decoration:underline;" onClick="saveSelected('{!item.LatestPublishedVersionId}'); return false;">{!item.Title}</a>
+                                    </apex:column>
+                                    <apex:column headerValue="File Type" >
+                                        {!item.LatestPublishedVersion.FileType}
+                                    </apex:column>
+                                </apex:pageblockTable>
+                                <apex:outputText value="[No Results]" rendered="{!ContentDocuments.size == 0}" />
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                    </apex:actionRegion>
+                    <apex:commandbutton value=" Attach " action="{!SaveDoc}" id="attachFileButton" />
+                </apex:pageblocksection>
+            </apex:pageblock>  
+        </div>
+        
+    </apex:form>
+</apex:page>

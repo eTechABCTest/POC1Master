@@ -1,0 +1,331 @@
+<apex:page tabstyle="Idea" cache="false" controller="IdeaListController" action="{!Load}" showheader="false" sidebar="false" standardstylesheets="false" doctype="HTML">
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Be Mindful</title>
+
+        <link rel="shortcut icon" href="{!$Resource.favicon}" />
+        <apex:stylesheet value="{!URLFOR($Resource.InnovAction, '/css/styles.css')}" />
+
+        <!-- PrettyPhoto -->
+        <apex:stylesheet value="{!URLFOR($Resource.InnovAction, '/css/prettyPhoto.css')}" />
+
+        <!-- Font Awesome -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+
+        <!-- Bootstrap core CSS -->
+        <apex:stylesheet value="{!URLFOR($Resource.InnovAction, '/css/bootstrap.min.css')}" />
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{!HomePageUrl}"><i class="fa fa-home"></i></a>
+                </div>
+                <ul class="nav navbar-right navbar-text">
+                    <li>Welcome, {!CurrentUser.Name}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="ajax_loader" class="loader"><i class="fa fa-spinner fa-spin"></i></div>
+
+        <div class="container">
+            <div class="banner">
+                <img class="img-responsive" src="{!URLFOR($Resource.InnovAction, '/images/ImpactFund_Logo.png')}" alt="Be Minderful" />
+            </div>
+            <div class="row border-top">
+                <div class="col-md-3 sidebar">
+                    <a href="{!HomePageUrl}?show=toprated5"><h5>View All Ideas</h5></a>
+                    <apex:outputpanel layout="block" rendered="{!HasVoted}">
+                          <p>&nbsp;</p>
+                       <h5>My Vote:</h5>
+                       <ul class="nav nav-sidebar">
+                           <li class="{!IF(Filter=='voted','active','')}">
+                             <a href="{!HomePageUrl}?show=voted" rendered="{!(MyVote!=null)}">{!MyVote.Title}</a>
+                           </li>
+                       </ul>
+                    </apex:outputpanel>
+                          <apex:outputpanel layout="block" rendered="{!(!HasVoted)}">
+                          <p>&nbsp;</p>
+                       <h5>My Vote:</h5>
+                       <ul class="nav nav-sidebar">
+                           <li class="{!IF(Filter=='voted','active','')}">
+                                      Expand an idea and click 'like' to vote for it
+                           </li>
+                       </ul>
+                    </apex:outputpanel>
+                </div>
+                <div class="col-md-9 main border-left">
+                    <apex:outputpanel layout="block" rendered="{!(Filter=='')}">
+                              <h5>Cast your vote for the first investment of the Advisory Board Impact Fund!</h5>
+                       <ul>
+                          <li>The Advisory Board Impact fund is a $1 million investment in our communities that will be made possible by the savings achieved through
+                          Be Mindful.</li>
+                          <li>Your efforts are what will ultimately make Be Mindful successful, so we
+                          think your ideas should be front and center in determining how the Impact Fund can be leveraged most effectively.</li>
+                          <li>We asked the entire firm to submit their best ideas for how the savings achieved from the Be Mindful campaign can fuel positive social impact in
+                          our communities. From those submissions, a panel of judges selected
+                          five ideas that we are opening up to a firm-wide vote.</li>
+                          <li><strong>Between now and December 31, vote for the proposal that you want to see enacted.</strong> The winning idea will receive up to $10,000 as the first investment of the Impact Fund.</li>
+                        </ul>
+                        <div class="row border-top">
+                            <div class="col-md-12">
+                                <h4><i class="fa fa-thumbs-up"></i> {!TopIdeasTitle}</h4>
+
+                                <div id="TopRated5Ideas" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <apex:repeat value="{!TopRated5}" var="key">
+                                            <li data-target="#TopRated5Ideas" data-slide-to="{!key}" class="{!IF(key==0,'active','')}"></li>
+                                        </apex:repeat>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        <apex:repeat value="{!TopRated5}" var="key">
+                                            <div class="item {!IF(key==0,'active','')}">
+                                                <a class="idea" href="{!HomePageUrl}?show=id&id={!TopRated5[key].Id}">
+                                                    <h3>{!TopRated5[key].Title__c}</h3>
+                                                    <p>{!TopRated5[key].High_Level_Description__c}</p>
+                                                </a>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-top">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Impact Fund Overview</h3>
+                                        <span class="pull-right clickable"><i class="fa fa-minus-circle"></i></span>
+                                    </div>
+                                    <div class="panel-body" style="display:block;">
+                                        <p>
+                                           The Advisory Board Impact Fund will make an unprecedented, $1 million investment in the communities where our employees live and work around the world. Driven by the savings achieved from the Be Mindful campaign, the Advisory Board Impact Fund is an innovative program designed to amplify the collective impact we’re already making as a firm. This type of investment will change the face of our Community Impact and create exponentially better outcomes for those we serve.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Campaign Objectives</h3>
+                                        <span class="pull-right clickable"><i class="fa fa-minus-circle"></i></span>
+                                    </div>
+                                    <div class="panel-body" style="display:block;">
+                                       <p>
+                                          As with all Community Impact initiatives, we place great value in the experiences and insights of our colleagues to drive our collective resources toward highly deserving and effective organizations, projects and ideas. Gathering feedback from these same colleagues to determine the direction of the Impact Fund’s first investment is a natural next step in scaling our impact as a firm. Your vote will help us ensure that the Impact Fund’s first-ever investment is in line with what are colleagues care about.
+                                       </p>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Timeline and Deadlines</h3>
+                                        <span class="pull-right clickable"><i class="fa fa-minus-circle"></i></span>
+                                    </div>
+                                    <div class="panel-body" style="display:block;">
+                                       <p>
+                                          Please submit your vote no later than Thursday, December 31. The winning idea will be announced shortly after voting has concluded.
+                                       </p>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Voting Criteria</h3>
+                                        <span class="pull-right clickable"><i class="fa fa-minus-circle"></i></span>
+                                    </div>
+                                    <div class="panel-body" style="display:block;">
+                                        <p>
+                                           You may vote once for your favorite idea.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputpanel>
+                    <apex:outputpanel id="myPanel" layout="block" rendered="{!(Filter!='')}">
+                        <apex:repeat value="{!IdeaWrappers}" var="idea">
+                            <a name="{!idea.WrappedItem.Id}" />
+                            <div id="ideasummary{!idea.WrappedItem.Id}" class="row red-top-border">
+                                <div class="col-md-4">
+                                    <p>
+                                        <i class="fa fa-comments light-gray"></i>&nbsp;
+                                        <apex:outputtext styleclass="showTooltip" html-data-toggle="tooltip" html-data-placement="right"
+                                                         title="{!IF(idea.HasMyComment, 'I commented this idea already.', 'Total # of comments')}" value="Comments: {0,number,###}">
+                                            <apex:param value="{!idea.TotalComments}" />
+                                        </apex:outputtext><br />
+                                        <i class="fa fa-thumbs-up light-gray"></i>&nbsp;
+                                        <apex:outputtext styleclass="showTooltip" html-data-toggle="tooltip" html-data-placement="right"
+                                                         title="{!IF(idea.HasMyVote, 'I liked this idea already.', 'Total # of likes')}" value="Likes: {0,number,###}">
+                                            <apex:param value="{!idea.TotalScore}" />
+                                        </apex:outputtext>
+                                    </p>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3 class="no-top-margin"><apex:outputtext escape="false" value="{!idea.Title}" /></h3>
+                                    <p><apex:outputtext escape="false" value="{!idea.HighLevelDescription}" /></p>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 data-id="{!idea.WrappedItem.Id}" class="expander clickable panel-title"><span class="panel-collapsed"><i class="fa fa-plus-circle"></i> Expand</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ideafull{!idea.WrappedItem.Id}" class="row red-top-border" style="display:none">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </apex:repeat>
+                        <apex:outputpanel styleclass="row" rendered="{!totalPages > 1}">
+                            <apex:form styleclass="form-inline pull-right">
+                                <apex:commandbutton styleclass="btn btn-xs" action="{!Beginning}" title="Beginning" value="<<" disabled="{!disablePrevious}" rerender="myPanel" />
+                                <apex:commandbutton styleclass="btn btn-xs" action="{!Previous}" title="Previous" value="<" disabled="{!disablePrevious}" rerender="myPanel" />
+                                Page {!pageNumber} of {!totalPages}&nbsp;
+                                <apex:commandbutton styleclass="btn btn-xs" action="{!Next}" title="Next" value=">" disabled="{!disableNext}" rerender="myPanel" />
+                                <apex:commandbutton styleclass="btn btn-xs" action="{!End}" title="End" value=">>" disabled="{!disableNext}" rerender="myPanel" />
+                            </apex:form>
+                        </apex:outputpanel>
+        <script type="text/javascript">
+            $(function () {
+                $('.showTooltip').tooltip();
+                $("h3.expander").click(function () {
+                    var id = $(this).data("id");
+                    $('div#ideasummary' + id).toggle();
+
+                    var target = $('div#ideafull' + id);
+                    target.toggle();
+                    if ($("i.fa-spinner", target)) {
+                        target.load("{!ViewUrl}?id=" + id + " #content", function () {
+                            $('.showTooltip', target).tooltip();
+
+                            $("h3.collapser", target).click(function () {
+                                var id = $(this).data("id");
+                                $('div#ideasummary' + id).toggle();
+                                $('div#ideafull' + id).toggle();
+                            });
+
+                            $(".postComment", target).click(function () {
+                                var form = $(this).parent().parent();
+                                var ideaId = $(this).data('ideaid');
+                                var userId = $(this).data('userid');
+                                var comment = $('textarea', form).val();
+                                postComment(ideaId, userId, comment);
+                                return false;
+                            });
+                        });
+                    }
+                });
+            });
+            </script>
+                    </apex:outputpanel>
+                </div>
+            </div>
+        </div>
+        <!-- Begin Footer -->
+        <div id="footer">
+            <div class="container">
+                <a href="http://www.advisory.com/" target="_blank"><img class="pull-right" src="{!URLFOR($Resource.InnovAction, '/images/abc-logo-white.gif')}" alt="The Advisory Board Company" /></a>
+                <p style="color:white;">Have questions or need help? Please contact Rachel Tappis at <a href='mailto:tappisr@advisory.com'>tappisr@advisory.com</a>.</p>
+                <p class="text-muted" style="margin-top:0">&copy; 2015 The Advisory Board Company. All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <apex:includescript value="{!URLFOR($Resource.jqueryui1104, '/js/jquery-1.10.2.js')}" />
+        <apex:includescript value="{!URLFOR($Resource.InnovAction, '/js/bootstrap.min.js')}" />
+        <apex:includescript value="{!URLFOR($Resource.InnovAction, '/js/jquery.prettyPhoto.js')}" />
+        <script type="text/javascript">
+            $(function () {
+                $("a[rel='prettyPhoto']").prettyPhoto();
+            });
+
+            function vote(id, userId) {
+                if(!confirm("Press Ok to confirm your Vote.\n\nRemember, you can only vote for one submission."))
+                  return false;
+
+                $('#ajax_loader').show();
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.IdeaListController.Vote}',
+                    id,
+                    userId,
+                    function (result, event) {
+                        $('#ajax_loader').hide();
+                        if (event.status) {
+                            if (result == '') {
+                                alert('Thank you for supporting this idea.');
+                                          window.location = "myIdeas?show=voted";
+                            } else {
+                                alert(result);
+                            }
+                        } else {
+                            alert('Error has happened: ' + event.message);
+                        }
+                    }
+                );
+                return false;
+            }
+
+            function postComment(id, userId, comment) {
+                $('#ajax_loader').show();
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.IdeaListController.PostComment}',
+                    id,
+                    userId,
+                    comment,
+                    function (result, event) {
+                        $('#ajax_loader').hide();
+                        if (event.status) {
+                            if (result == '') {
+                                alert('Thank you for your comment.');
+                                var target = $('div#ideafull' + id);
+                                target.load("{!ViewUrl}?id=" + id + " #content", function () {
+                                    $('.btn', target).tooltip();
+                                    $('.label', target).tooltip();
+
+                                    $("h3.collapser", target).click(function () {
+                                        var id = $(this).data("id");
+                                        $('div#ideasummary' + id).toggle();
+                                        $('div#ideafull' + id).toggle();
+                                    });
+
+                                    $(".postComment", target).click(function () {
+                                        var form = $(this).parent().parent();
+                                        var ideaId = $(this).data('ideaid');
+                                        var userId = $(this).data('userid');
+                                        var comment = $('textarea', form).val();
+                                        postComment(ideaId, userId, comment);
+                                        return false;
+                                    });
+                                });
+                            } else {
+                                alert(result);
+                            }
+                        } else {
+                            alert('Error has happened: ' + event.message);
+                        }
+                    }
+                );
+                return false;
+            }
+        </script>
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];
+a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-54046523-1', { 'userId': '{!CurrentUser.Email}' });";
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>
+</apex:page>

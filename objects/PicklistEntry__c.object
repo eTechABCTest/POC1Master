@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Contains the actual picklist values that will be available for selection.  The Sort Order field is used to set the order when the Alpha Sort option on the Picklist is FALSE.  The Active field can be used to hide a picklist value and keep it in the list if needed for historical reasons.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Note – added/requested by whom</inlineHelpText>
+        <label>Description</label>
+        <length>120</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IsActive__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Set as FALSE to hide the item everywhere this is used</inlineHelpText>
+        <label>IsActive</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Label__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Picklist item display value</inlineHelpText>
+        <label>Label</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Picklist__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Picklist to which this selection item belongs</inlineHelpText>
+        <label>Picklist</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sort_Order__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Items are sorted in ascending order with 1 as the top item.  Used when Alpha Sort is False</inlineHelpText>
+        <label>Sort Order</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>PicklistEntry</label>
+    <visibility>Public</visibility>
+</CustomObject>

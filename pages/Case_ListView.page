@@ -1,0 +1,161 @@
+<apex:page controller="CaseListViewController" applyBodyTag="false" applyHtmlTag="false" 
+           showHeader="false" id="page" action="{!redirectToTimeout}" standardStylesheets="false" >
+    <html lang="en" >
+        <!-- CRIMSON CSS/JS COMPONENT -->
+        <c:CSS_JS_PTCommunity />
+        <style>
+            /* remove the left table border */
+        	table.bordered td:first-child { border-left: none !important; }
+        </style>
+        <body style="">
+            <!-- CRIMSON HEADER COMPONENT -->
+            <c:Header_PTCommunity />
+            <apex:form id="mainForm" >
+				<!-- ACTION FUNCTIONS START -->
+				<apex:actionFunction name="refresh" action="{!Refresh}" rerender="mainForm" />
+				<apex:actionFunction name="tileSelected" action="{!Refresh}" rerender="mainForm" onComplete="unblockTable();" >
+					<apex:param name="selectedTileName" value="" assignTo="{!selectedTileName}" />
+				</apex:actionFunction>
+				<apex:actionFunction name="goToPage" action="{!goToPage}" rerender="caseTable,pagingPanel" onComplete="unblockTable();" >
+					<apex:param name="pageNoString" value="" assignTo="{!pageNoString}" />
+				</apex:actionFunction>
+				<apex:actionFunction name="next" action="{!setCon.Next}" rerender="caseTable,pagingPanel" onComplete="unblockTable();" />
+				<apex:actionFunction name="previous" action="{!setCon.Previous}" rerender="caseTable,pagingPanel" onComplete="unblockTable();" />
+				<apex:actionFunction name="search" action="{!search}" />
+                <!-- ACTION FUNCTIONS END -->
+				<!-- Include page messages -->
+                <apex:pageMessages escape="false" />
+				<div class="grid-header">
+					<div class="container">
+						<div class="row">
+							<div class="col12">
+								<div class="row">
+									<div class="col9">
+										<div class="bread-crumbs">
+											Cases Home
+										</div>
+										<div class="current-location">
+											<span class="label">Cases</span>
+										</div>
+									</div>
+									<div class="col3">
+										<div class="search">
+											<i class="iconic magnifying-glass"></i>
+											<apex:inputText id="searchInput" value="{!searchString}" onkeypress="return noenter(event);"
+                                                            style="padding: 0px 0px 0px 30px;" html-placeholder="search" />
+										</div>
+									</div>
+								</div>
+							</div><!-- End of .container .row .col2 -->
+						</div><!-- End of .container .row -->
+					</div><!-- End of .grid-header .container -->
+				</div><!-- End of .grid-header -->
+				<div class="filter-wraps">
+					<div class="container">
+						<div class="row">
+							<div class="col12">
+								
+								<div class="row ">
+									<div class="col3 select-wrapper">
+										<label for="currently-viewing-selection">You're currently viewing</label>
+                                        <div class="selectr-wrapper">
+                                            <apex:selectList styleClass="selectr" value="{!fieldSetAPIName}" onChange="blockTable(); refresh();" size="1" multiselect="false" >
+                                                <apex:selectOptions value="{!viewPicklist}" />
+                                            </apex:selectList>
+                                        </div>
+									</div>
+									<div class="col9 create-new-case-wrapper">
+                                        <apex:commandButton styleClass="btn primary create-new-case-button" action="{!newCase}" value="Create New Case"/>
+									</div>
+								</div>
+								<apex:outputPanel layout="block" styleClass="row main-filters" id="tilePanel" rendered="{!NOT( CONTAINS( fieldSetAPIName, 'closed' ) )}" >
+									<div id="all-button" class="filter {!IF(selectedTileName == 'ALL', 'current', '')}" onClick="{!IF(selectedTileName == 'ALL', 'return false;', '')} blockTable(); tileSelected('ALL');">
+										All
+										<span>{!numCases_All}</span>
+									</div>
+									
+									<div id="" class="filter {!IF(selectedTileName == 'NEW', 'current', '')}" data-filter-value="New" onClick="{!IF(selectedTileName == 'NEW', 'return false;', '')} blockTable(); tileSelected('NEW');">
+										New
+										<span>{!numCases_New}</span>
+									</div>
+									
+									<div id="" class="filter {!IF(selectedTileName == 'IN PROGRESS', 'current', '')}" onClick="{!IF(selectedTileName == 'IN PROGRESS', 'return false;', '')} blockTable(); tileSelected('IN PROGRESS');" data-filter-value="In Progress">
+										In Progress
+										<span>{!numCases_In_Progress}</span>
+									</div>
+									
+									<div id="" class="filter {!IF(selectedTileName == 'Response Needed', 'current', '')}" onClick="{!IF(selectedTileName == 'Response Needed', 'return false;', '')} blockTable(); tileSelected('Response Needed');" data-filter-value="Response Needed">
+										Response Needed
+										<span>{!numCases_Member_Response_Needed}</span>
+									</div>
+									
+									<div id="" class="filter {!IF(selectedTileName == 'SOLUTION PROVIDED', 'current', '')}" onClick="{!IF(selectedTileName == 'SOLUTION PROVIDED', 'return false;', '')} blockTable(); tileSelected('SOLUTION PROVIDED');" data-filter-value="Solution Provided">
+										Solution Provided
+										<span>{!numCases_Solution_Provided}</span>
+									</div>
+								</apex:outputPanel>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<section id="body" style="min-height: 396.6183967590332px;">
+					<div class="container">
+						<section id="layout_messages"></section>
+                        <!--CaseList.size:{!CaseList.size}
+                        whereclause:{!whereClause}-->
+						<div id="caseGridContainer" class="cases-grid">
+							<div class="cs-grid-wrapper">
+								<div class="cs-grid-body">
+									<!-- DATA TABLE -->
+									<apex:dataTable value="{!CaseList}" var="c" id="caseTable" styleClass="bordered" rendered="{!CaseList.size > 0}">
+										<!--[fieldSetAPIName]-->
+										<apex:repeat value="{!$ObjectType.Case.FieldSets[fieldSetAPIName]}" var="f">
+											<apex:column >
+                                                <!--  styleClass="{!IF(f.fieldPath == 'Priority', LOWER( c[f] ), '')}" -->
+												<apex:facet name="header">
+													<!-- styleClass="caseTblHdr {!IF(sortExpression==f.fieldPath, 'selectedHdr','')}"  -->
+													<apex:commandLink action="{!Refresh}" style="white-space:nowrap" rerender="caseTable,pagingPanel" onClick="blockTable();"  html-data-cs-sortcolumn="{!c[f]}"
+													value="{!f.Label}" styleClass="{!IF(sortExpression==f.fieldPath || (sortExpression=='Priority_Number__c' && f.fieldPath=='Priority'),'current','')}"
+                                                    onComplete="unblockTable(); return false;">
+                                                        <i class="caret4 {!IF(sortExpression==f.fieldPath || (sortExpression=='Priority_Number__c' && f.fieldPath=='Priority'),IF(sortDirection='ASC','south','north'),'')}"></i>
+                                                        <!-- custom sort for the priority field using the custom formula priority number -->
+														<apex:param value="{!IF(f.fieldPath == 'Priority', 'Priority_Number__c', f.fieldPath)}" name="column" assignTo="{!sortExpression}" />
+													</apex:commandLink>
+												</apex:facet>
+												<apex:outputField value="{!c[f]}" rendered="{!f.fieldPath != 'CaseNumber' && f.fieldPath != 'Project_Source_MS__c'}" />
+												<apex:outputText value="{!c.Project_Source_MS__r.Name}" rendered="{!f.fieldPath == 'Project_Source_MS__c'}" />
+												<apex:outputlink value="{!URLFOR($Page.Case_View_Redirect, c.Id, [id=c.Id])}" style="cursor:pointer;" rendered="{!f.fieldPath == 'CaseNumber'}" >
+													<apex:outputText value="{!c[f]}" />
+												</apex:outputlink>
+											</apex:column>
+										</apex:repeat> 
+									</apex:dataTable>
+								</div>
+							</div>
+							<!-- PAGINATION LINKS -->
+							<apex:outputPanel rendered="{!CaseList.size > 0}" id="pagingPanel" layout="block" styleClass="cs-pagr-wrapper" >
+								<ul class="cs-pagr-controls">
+									<li class="cs-pagr-input">
+										<input type="number" min="1" name="cs-pagr-input1" value="{!setCon.pageNumber}" onChange="blockTable(); goToPage(this.value);"/> of <span>{!totalPages}</span>
+									</li>
+									<li class="cs-pagr-prev cs-pagr-nav">
+										<a href="#" class="icon" style="{!IF(setCon.HasPrevious, '', 'display:none;')}" onClick="blockTable(); previous(); return false;">‹</a>
+										<a href="#" class="icon cs-pagr-disabled" style="{!IF(setCon.HasPrevious, 'display:none;', '')}">‹</a>
+									</li>
+									<li class="cs-pagr-next cs-pagr-nav">
+										<a href="#" class="icon" style="{!IF(setCon.HasNext, '', 'display:none;')}" onClick="blockTable(); next(); return false;">›</a>
+										<a href="#" class="icon cs-pagr-disabled" style="{!IF(setCon.HasNext, 'display:none;', '')}">›</a>
+									</li>
+								</ul>
+								<div class="cs-pagr-records">{!ListStartNo} - {!ListEndNo} of {!noOfRecords}{!IF(noOfRecords == 1000, '+', '')}</div>
+							</apex:outputPanel>
+						</div>
+					</div>
+				</section>
+            </apex:form>
+            <!-- CRIMSON FOOTER COMPONENT -->
+            <c:Footer_PTCommunity />
+        </body>
+    </html>
+</apex:page>

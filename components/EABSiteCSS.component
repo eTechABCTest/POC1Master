@@ -1,0 +1,4 @@
+<apex:component >
+    <apex:stylesheet value="{!URLFOR($Resource.EAB_CSS, '/eab.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.EAB_CSS, '/global.css')}" />
+</apex:component>

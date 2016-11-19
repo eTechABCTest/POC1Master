@@ -1,0 +1,144 @@
+<!--
+	* 	Purpose			:	Detail page for Meeting object
+	* 
+	* 	Created By		:	Bhavi Sharma
+	* 
+	* 	Created Date	:	02/03/2015
+	* 
+	*	Revision Logs	:	V_1.0 - Created 
+	*
+-->
+<apex:page standardController="Advisory_Event__c" extensions="MeetingDetailController" id="page">
+	
+	<!-- Detail View -->
+	<apex:detail subject="{!Advisory_Event__c.Id}" relatedList="true" title="true" inlineEdit="true" id="detail" />
+    
+    <!-- Rules -->
+    <div class="first bRelatedList" id="{!Advisory_Event__c.Id}_{!$Label.Rule_Related_List_Id}_2">
+        <a name="{!Advisory_Event__c.Id}_00NL0000003QXD7_target"></a>
+        <div class="listRelatedObject customnotabBlock">
+            <div class="bPageBlock brandSecondaryBrd secondaryPalette">
+                <div class="pbHeader">
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="pbTitle">
+                                    <img src="/s.gif" alt="" width="1" height="1" class="minWidth"
+                                        title="" />
+                                        <img src="/s.gif" alt="Meeting" class="relatedListIcon"
+                                            title="Meeting" />
+                                            <h3 id="{!Advisory_Event__c.Id}_00NL0000003QXD7_title">Event Rules</h3>
+                                </td>
+                                <td class="pbButton">
+                                    
+                                    <!-- New Program -->
+                                    <apex:outputPanel rendered="{!displayNewProgramButton}">
+                                        <input value="New Program" class="btn"
+                                            onclick="navigateToUrl('/apex/RedirectWithVariables?redirect=object--Rule__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Program!!returnURL--/{!Advisory_Event__c.Id}!!afterSaveURL--{!Advisory_Event__c.Id}');"
+                                            title="New Large" type="button" />
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(displayNewProgramButton)}">
+                                        <input value="New Program" class="btn"
+                                            onclick="alert('{!$Label.MeetingRulesDefinedByParent}');return false;"
+                                            title="New Program" type="button" style="color:graytext"/>
+                                    </apex:outputPanel>
+                                    
+                                    <!-- New Title -->
+                                    <apex:outputPanel rendered="{!displayNewTitleButton}">
+                                        <input value="New Title" class="btn" 
+                                               onclick="navigateToUrl('/apex/RedirectWithVariables?redirect=object--Rule__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Title!!returnURL--/{!Advisory_Event__c.Id}!!afterSaveURL--{!Advisory_Event__c.Id}');"
+                                            title="New Title" type="button" />
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(displayNewTitleButton)}">
+                                        <input value="New Title" class="btn" 
+                                            onclick="alert('{!$Label.MeetingRulesDefinedByParent}');return false;"
+                                            title="New Title" type="button" style="color:graytext" />
+                                    </apex:outputPanel>
+                                    
+                                    <!-- New Threshold -->
+                                    <apex:outputPanel rendered="{!displayNewThresholdButton}">
+                                        <input value="New Threshold" class="btn" 
+                                            onclick="navigateToUrl('/apex/RedirectWithVariables?redirect=object--Rule__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Threshold!!returnURL--/{!Advisory_Event__c.Id}!!afterSaveURL--{!Advisory_Event__c.Id}');"
+                                            title="New Threshold" type="button" />
+                                	</apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(displayNewThresholdButton)}">
+                                        <input value="New Threshold" class="btn" 
+                                            onclick="alert('{!$Label.MeetingRulesDefinedByParent}');return false;"
+                                            title="New Threshold" type="button" style="color:graytext"/>
+                                	</apex:outputPanel>
+                                </td>
+                                
+                                <td class="pbHelp">
+                                    <span class="help" title="Event Rules Help (New Window)">
+                                        <a
+                                            href="javascript:openPopupFocusEscapePounds(%27https://help.salesforce.com/apex/htdoor?loc=help&target=co_relatedlist.htm&section=CustomObjects&language=en_US&release=192.16.10&instance=CS8&showSplash=true%27, %27Help%27, 1024, 768, %27width=1024,height=768,resizable=yes,toolbar=yes,status=yes,scrollbars=yes,menubar=yes,directories=no,location=yes,dependant=no%27, false, false);"
+                                            class="linkCol">
+                                            <span class="linkSpan">Event Rules Help</span>
+                                            <img src="/s.gif" alt="Event Rules Help (New Window)" class="helpIcon"
+                                                title="Event Rules Help (New Window)" />
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pbBody" id="{!Advisory_Event__c.Id}_00NL0000003QXD7_body">
+                    <apex:outputPanel rendered="{!NOT(rulesList.Size > 0)}">
+                    	<table class="list" border="0" cellspacing="0" cellpadding="0">
+		                	<tbody>
+		                		<tr class="headerRow"><th scope="col" class="noRowsHeader">No records to display</th></tr>
+							</tbody>
+						</table>
+		            </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!rulesList.Size > 0}">
+	                    <table class="list" border="0" cellspacing="0" cellpadding="0">
+	                        <tbody>
+	                            <tr class="headerRow">
+	                                <apex:repeat value="{!$ObjectType.Event_Rule__c.FieldSets.RulesRelatedList}" var="item">
+										<th scope="col" class=" zen-deemphasize">{!item.label}</th>
+	                                </apex:repeat>
+	                            </tr>
+	    
+	                            <!-- ListRow -->
+	                            <apex:repeat value="{!rulesList}" var="rule">
+	                                <tr class="dataRow even" onblur="if (window.hiOff){hiOff(this);}"
+	                                    onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}"
+	                                    onmouseover="if (window.hiOn){hiOn(this);}">
+	                                    <apex:repeat value="{!$ObjectType.Event_Rule__c.FieldSets.RulesRelatedList}" var="item">
+                                            <td class="{!IF(item == 'Action__c', 'actionColumn', 'dataCell')} {!IF(item == 'Action__c', 'linkContainer', '')}" ><apex:outputField value="{!rule[item]}"/></td>
+	                                    </apex:repeat>
+	                                </tr>
+	                            </apex:repeat>
+	                        </tbody>
+	                    </table>
+                    </apex:outputPanel>
+                </div>
+                <div class="pbFooter secondaryPalette">
+                    <div class="bg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	window.onload = updateRules();
+    	
+    	//Update Rules
+    	function updateRules() {
+    		
+    		//Get Rules div
+    		document.getElementById('page_detail_{!LEFT(Advisory_Event__c.Id, 15)}_{!$Label.Rule_Related_List_Id}').innerHTML = document.getElementById('{!Advisory_Event__c.Id}_{!$Label.Rule_Related_List_Id}_2').innerHTML;
+    		document.getElementById('{!Advisory_Event__c.Id}_{!$Label.Rule_Related_List_Id}_2').style.display = 'none';
+    	}
+    </script>
+    
+    <style>
+        /* css renders the custom action links (ie: edit master | delete master) the same way as normal edit | del links */
+        .linkContainer a {
+        color: #015ba7;
+        text-decoration: none;
+        font-weight: normal;
+        }
+    </style>
+</apex:page>

@@ -1,0 +1,903 @@
+<!--
+        Purpose         :   Component to hold all the styling. javascript for CreatePersonalGoalFromStdGoal VF page.
+     
+        Created By      :   Subhash Garhwal
+     
+        Created Date    :   09/02/2015
+        
+        Revision Logs   :   V_1.0 - Created
+                            V_1.1 - Modified By - Rajeev Jain - 04/08/2016 - ISSP Deployment E - CR-20160309-9688
+                            V_1.2 - Modified By - Rajeev Jain - 04/15/2016 - ISSP Deployment E - CR-20160304-9675
+                            V_1.3 - Modified By - Rajeev Jain - 05/17/2016 - ISSP Deployment E - CR-20160512-9852
+    -->
+<apex:component >
+        
+    <head>
+        <meta charset="utf-8" />
+        <title>Create Personal Goal</title>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+        <style>
+            .dataTable tr td , .dataTable tr th{
+                padding : 5px;
+            }
+            .dataTable tr th {
+                background-color: #cccccc;
+            }
+            .dataTable tr:nth-child(even) {
+                background: #FFFFFF
+            }
+            .dataTable tr:nth-child(odd) {
+                background: #F0F0F0
+            }
+            .dataTable tr {
+                line-height: 25px;
+            }
+            #datePicker{z-index:1003;}
+            .MailSectionTable td{vertical-align:top;}
+            .customDialog {
+                position: absolute;height: auto;min-width:200px;min-height:100px;width: auto;top: 30%;left: 471px;display: block;z-index:2;background:#FFFFAA !important;
+            }
+            #overlay{z-index:1;}
+            .headerMy {
+                border: 1px solid #aaaaaa;color: #222222;font-weight: bold;
+                background: #cccccc url("https://code.jquery.com/ui/1.11.4/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+            }
+            #CreatePGWrapper{overflow:auto;}
+            .column {float: left;margin-right: 10px;}
+            .col-left{width:25%;}
+            .col-left .col-block{/*padding:10px 5px 10px 10px;*/}
+            .col-right{width:70%}
+            .col-1,.col-2,.col-3{width:32%}
+            .loadingBox{position:relative;width:300px;height:100px;}
+            .loadingBox .loadingInnerWrapper{position:absolute;top:50%;left:30%}
+            #resultSectionData {margin-top: 20px; clear: none; float: left; overflow-x: auto; width: 100%;}
+            #resultSectionData .list td div.dataRow{padding:5px 10px;height:15px;}
+            #resultSectionData .list{border-collapse:collapse;}
+            #resultSectionData .list td{padding:0 !important;}
+            #resultSectionData .list th{padding-left:10px;min-width:160px;}
+            #resultSectionData .list td div.evenData{background-color:#FFFFFF;}
+            #resultSectionData .list td div.oddData{background-color:#F0F0F0;}
+            #resultSectionData table {
+                 
+                 display: table;
+                 overflow-x: auto;
+                 white-space: nowrap;
+            }
+            /*#resultSectionData .dynamicCol{min-width:32;}*/
+            #resultSectionData .staticCol{min-width:175px !important;}
+            #resultSectionData .tenuredstaticCol{min-width:100px !important;}
+            #sGDconds {border-collapse: collapse;border:1px solid #e0e3e5;}
+            #sGDconds th{background: #f2f3f3;border:1px solid #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 2px 4px 5px;}
+            #sGDconds td{border:1px solid #e0e3e5;}
+            #sGDMP {border-collapse: collapse;border:1px solid #e0e3e5;}
+            #sGDMP th{background: #f2f3f3;border:1px solid #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 2px 4px 5px;}
+            #sGDMP td{border:1px solid #e0e3e5;}
+             
+            .callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;}      
+            .ui-tooltip, .arrow:after {
+                background: #FFFFAA;border: 2px solid #000000;
+            }
+            .ui-tooltip {
+                padding: 10px 20px;color: #000000;border-radius: 20px;font: 14px "Helvetica Neue", Sans-Serif;box-shadow: 0 0 7px black;
+            }
+            .arrow {
+                width: 70px;height: 16px;overflow: hidden;position: absolute;left: 50%;margin-left: -35px;bottom: -16px;
+            }
+            .arrow.top {
+                top: -16px;bottom: auto;
+            }
+            .arrow.left {left: 20%;}
+            .arrow:after {
+                content: "";position: absolute;left: 20px;top: -20px;width: 25px;height: 25px;box-shadow: 6px 5px 9px -9px black;-webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);transform: rotate(45deg);}
+            .arrow.top:after {bottom: -20px;top: auto;}
+            .contentFloterLeft {float:left;}
+            .contentFloterRight {float:right;}
+            .tableMargin {margin-top: 10px; margin-left: 10px; margin-right: 10px;}
+            #staffRelationshipPopup .secondaryPalette{background:transparent !important;}
+            #staffRelationshipPopup table.list{background:transparent !important;}    
+            .tooltip{white-space:nowrap;max-width:58px;text-overflow:ellipsis;overflow:hidden;} 
+            .nameLink{white-space:nowrap;max-width:110px;text-overflow:ellipsis;overflow:hidden;}  
+            .requiredField{position:relative;}
+            .requiredField .timeLineIcon-red {background: #D0212F;display: inline-block;width: 2px;position: absolute;top: 0;bottom: 0;left: -4px;}
+            .errorMSG{font-size:14px; color:#D0212F;}
+            .contentFloterLeft {float:left;}
+            .contentFloterRight {float:right;}
+            .entryHeaderLabel{font-size:10px;font-weight:bold;}
+            #newEditStaffRelationshipPopup .dialogWrapper{padding:20px;}
+            .payeeWrapper{max-height:200px;overflow:auto;}
+            .selectedPayeeWrapper{max-height:200px;overflow:auto;}
+            .headerText{white-space:nowrap;max-width:60%;text-overflow:ellipsis;overflow:hidden;}
+            #pGMPcustomDialog .dialogWrapper, #pGMPpopup .dialogWrapper{padding:10px;}
+            .amountElipsis{white-space: nowrap;max-width: 65px;text-overflow: ellipsis;overflow: hidden;}
+            .fixblock{width:200px; float:left; margin-top:20px;}
+            .fixcolum{    border-collapse: collapse;    display: table;    white-space: nowrap;     width: 100%;}
+            table.fixcolum tr.headerRow th { background: #f2f3f3; border-width: 1px 0 1px 1px; border-color: #e0e3e5; color: #000;  font-size: .9em; font-weight: bold;  padding: 7px 2px 6px 5px;}
+            .fixcolum td {      padding-bottom: 0px; border: 1px solid #ededed; color: #000; padding: 0px; min-height: 26px; display: block; border-top: none;}
+            .fixcolum td div.dataRow { padding: 5px 10px; height: 15px;}
+            table.fixcolum tr th, tablefixcolum tr td { border: 1px solid #ededed;  color: #000;}
+            .nameCol{position: absolute;    width: 5em;    left: 0;    top: auto;  }
+            td.nameCol, th.nameCol {    min-width: 177px;    padding-left: 0px !important;    padding-bottom: 8px !important;      border: 1px solid #e0e3e5 !important;       margin-left: 20px;}
+        </style>
+               
+        <script>
+            
+            //V_1.1 - Modified By - Rajeev Jain - 04/08/2016 - ISSP Deployment E - CR-20160309-9688
+            //Declare Global Java Script Constant to effect width of column globaly
+            var PG_COLUMN_WIDTH = '500px';
+            var TENURED_ON_CHANGE_TRUE_PERCENT_VALUE = 100;
+            var TENURED_ON_CHANGE_FALSE_PERCENT_VALUE = 65;
+            var TENURED_ON_DISABLED_FALSE_PERCENT_VALUE = 0;
+            
+            //V_1.3 - Modified By - Rajeev Jain - 05/17/2016
+            function SetLabelColor(elem,type){
+                console.log('Check Type :: ' + type);
+                if(type == 'tenured'){
+                    $(elem).parent().find('.tenureLabel').css('color', 'red');
+                    $(elem).parent().find('input[type="hidden"]').val('red');
+                }else if(type == 'Adj%'){
+                    $(elem).parent().find('.adJLabel').css('color', 'red');
+                    $(elem).parent().find('input[type="hidden"]').val('red');
+                }else if(type == 'Adj#'){
+                    $(elem).parent().find('.adJvalLabel').css('color', 'red');
+                    $(elem).parent().find('input[type="hidden"]').val('red');
+                }else if(type == 'value'){
+                    
+                    $(elem).parent().parent().find('.pgGoalValueLabel').css('color', 'red');
+                    $(elem).parent().find('input[type="hidden"]').val('red');
+                }   
+            }
+            $(function() {
+                $("#accordion").accordion({
+                    heightStyle: "content"
+                });
+                   
+                $(document ).tooltip({
+                    items:"[data-geo]",
+                        position: {
+                            my: "center bottom-20",
+                            at: "center top",
+                               
+                            using: function( position, feedback ) {
+                                $( this ).css( position );
+                                $( "<div>" )
+                                .addClass( "arrow" )
+                                .addClass( feedback.vertical )
+                                .addClass( feedback.horizontal )
+                                .appendTo( this );
+                            }
+                        },
+                        content: function() {
+                            
+                            var element = $( this );
+                            if ( element.is( "[data-geo]" ) ) {
+                                var text = element.find('.toolTipText').html();
+                                return text;
+                            }
+                        }
+                });
+                   
+                $('.tooltip').on('hover',function(){
+                    $('.ui-tooltip').css('left',$(this).offset().left);
+                });
+                $('.disableInputEnter').find('input[type="text"]').on('keypress',function(evt){
+                    var evt = (evt) ? evt : ((event) ? event : null); 
+                    var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+                    if ((evt.keyCode == 13) && (node.type=="text"))  {return false;}  
+                });
+                   
+                $(document).keyup(function(e) {
+                    if (e.keyCode == 27) { // escape key maps to keycode `27`
+                        if($('#newEditStaffRelationshipPopup .customDialog').is(':visible')){
+                            
+                            var $visibleDialog = $('#newEditStaffRelationshipPopup .customDialog:visible');
+                            cancelAll();
+                            
+                            $visibleDialog.hide();
+                            $('#overlay1').hide();
+                        }
+                    }
+                });
+                defaultScript();
+            });
+               
+            //Function to enable the limit to list
+            function enableLimitTo(elem) {
+                
+                //Check for value
+                if(elem.value != null && elem.value != '') {
+                    $("#pge\\:frm\\:pB\\:limitTo").prop("disabled", false);
+                    reloadinIt();   
+                
+                }else
+                    $("#pge\\:frm\\:pB\\:limitTo").prop("disabled", true);
+            } 
+               
+            //Select all checkbox    
+            function selectAllCheckboxes(obj,receivedInputClasses){
+                var inputCheckBox = document.getElementsByClassName(receivedInputClasses);                  
+                for(var i=0; i<inputCheckBox.length; i++){          
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+               
+            //Function to display condition field according to selected record type
+            function selectedLimitTo(elem) {
+                
+                //Set div properties
+                document.getElementById('pge:frm:pB:businessTitle').style.display = 'none';
+                document.getElementById('pge:frm:pB:valueType').style.display = 'none';
+                document.getElementById('pge:frm:pB:stdGoal').style.display = 'none';
+                document.getElementById('pge:frm:pB:rateTemp').style.display = 'none';
+                document.getElementById('pge:frm:pB:businessTitle_lkwgt').style.display = 'none';
+                document.getElementById('pge:frm:pB:valueType_lkwgt').style.display = 'none';
+                document.getElementById('pge:frm:pB:stdGoal_lkwgt').style.display = 'none';
+                document.getElementById('pge:frm:pB:rateTemp_lkwgt').style.display = 'none';
+                document.getElementById('pge:frm:pB:individualPayee').style.display = 'none';
+                document.getElementById('pge:frm:pB:individualPayee_lkwgt').style.display = 'none';
+                //Check for selectd type
+                //Check for selectd type
+                if(elem.options[elem.selectedIndex].value == '4') {
+                    
+                    document.getElementById('pge:frm:pB:businessTitle').style.display = 'inline';
+                    document.getElementById('pge:frm:pB:businessTitle_lkwgt').style.display = 'inline';
+                
+                } else if(elem.options[elem.selectedIndex].value == '5') {
+                    
+                    document.getElementById('pge:frm:pB:valueType').style.display = 'inline';
+                    document.getElementById('pge:frm:pB:valueType_lkwgt').style.display = 'inline';
+                
+                }else if(elem.options[elem.selectedIndex].value == '6') {
+                    
+                    document.getElementById('pge:frm:pB:stdGoal').style.display = 'inline';
+                    document.getElementById('pge:frm:pB:stdGoal_lkwgt').style.display = 'inline';
+                
+                }else if(elem.options[elem.selectedIndex].value == '7') {
+                    
+                    document.getElementById('pge:frm:pB:rateTemp').style.display = 'inline';
+                    document.getElementById('pge:frm:pB:rateTemp_lkwgt').style.display = 'inline';
+                }else if(elem.options[elem.selectedIndex].value == '8') {
+                    
+                    document.getElementById('pge:frm:pB:individualPayee').style.display = 'inline';
+                    document.getElementById('pge:frm:pB:individualPayee_lkwgt').style.display = 'inline';
+                }
+                    
+                //Call action function
+                loadAvailPayees();
+            }
+            
+            //V_1.1 - Modified By - Rajeev Jain - 04/08/2016 - ISSP Deployment E - CR-20160309-9688   
+            //Function to show and hide all calculation buttons
+            function showHideAllCalBtn(elem,containerId){
+                
+                var $CheckCol = $(containerId).find('.checkBoxCol');
+                var $editCol =  $(containerId).find('.dynamicCol');
+                
+                var $newPgBlocks = $editCol.find('.editBlock[pgType = "newPg"]');
+                var $existingPgBlocks = $editCol.find('.editBlock[pgType = "existingPg"]');
+                
+                if(elem.checked){
+                    $(elem).parent().find('.calGlobBtn').show();  
+                    $CheckCol.find('input[type = "checkbox"]:visible').prop('checked',true);
+                    $CheckCol.find('input[type = "button"].calBtn').show();
+                    $editCol.find('.editBlock').show();
+                    $editCol.find('.nonEditBlock').hide();
+                    $editCol.css('min-width',PG_COLUMN_WIDTH);
+                    $('div.EditData').height(45);
+                    $('div.EditData .editRowMarginAligner').css({'margin-top':'15px'});
+                   
+                    //Set value according to given in Goal Manamgnet SDD
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ; 
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_CHANGE_TRUE_PERCENT_VALUE);     
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });               
+                }else{
+                    $(elem).parent().find('.calGlobBtn').hide();
+                    $CheckCol.find('input[type = "checkbox"]:visible').prop('checked',false);
+                    $CheckCol.find('input[type = "button"]').hide();
+                    $editCol.find('.editBlock').hide();
+                    $editCol.find('.nonEditBlock').show();
+                    $editCol.css('min-width','');
+                    $('div.EditData').height('');
+                    $('div.EditData .editRowMarginAligner').css({'margin-top':''});
+                    $editCol.find('input[type = "checkbox"]:visible').prop('checked',false);
+                    
+                    //Set value according to given in Goal Manamgnet SDD
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;    
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_DISABLED_FALSE_PERCENT_VALUE);      
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });         
+                }
+            }
+            
+            //V_1.1 - Modified By - Rajeev Jain - 04/08/2016 - ISSP Deployment E - CR-20160309-9688   
+            //Function to show and hide calculation button on selected row
+            function showHideCalBtn(rowIndex,dataCounter,elem,containerId){
+                var $indexedRow = $(containerId).find('.list tbody').find('tr').eq(rowIndex);
+                var $editCol = $indexedRow.find('.dynamicCol');
+                var $divAffect = $indexedRow.find('div[dataCounter = '+ dataCounter +']');
+                
+                //If editBlock Contains existing PG Class
+                var $newPgBlocks = $divAffect.find('.editBlock[pgType = "newPg"]');
+                var $existingPgBlocks = $divAffect.find('.editBlock[pgType = "existingPg"]');
+                
+                if(elem.checked){
+                    $(elem).parent().find('.calBtn').show();
+                    $divAffect.find('.editBlock').show();
+                    $divAffect.find('.nonEditBlock').hide();
+                    //$editCol.css('min-width',PG_COLUMN_WIDTH);
+                    $(elem).parent().height(45);
+                    $(elem).parent().find('.editRowMarginAligner').css({'margin-top':'15px'});
+                    $divAffect.height(45); 
+                    $divAffect.find('.editRowMarginAligner').css({'margin-top':'15px'});
+                    
+                    //Set value according to given in Goal Manamgnet SDD
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ; 
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_CHANGE_TRUE_PERCENT_VALUE);     
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });
+                    
+                }else{
+                    $(elem).parent().find('.calBtn').hide();
+                    $divAffect.find('.editBlock').hide();
+                    $divAffect.find('.nonEditBlock').show();
+                    //$editCol.css('min-width','');
+                    $(elem).parent().height('');
+                    $divAffect.height('');
+                    $(elem).parent().find('.editRowMarginAligner').css({'margin-top':''});
+                    $divAffect.find('.editRowMarginAligner').css({'margin-top':''});
+                    $divAffect.find('.visibleCheckBox:visible').prop('checked',false);
+                    
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;    
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_DISABLED_FALSE_PERCENT_VALUE);      
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });
+                }    
+                resetDyanmicColWidthForInnerCheck();
+            }
+            
+            //This will hold the Array of Array
+            var eligibilityForCalButton = new Array();
+            
+            //V_1.1 - Modified By - Rajeev Jain - 04/08/2016 - ISSP Deployment E - CR-20160309-9688
+            //Function to show and hide calculation button on selected row, On Individula checkbox selection in each dataBlock
+            function showHideCalIBtnIndividual(rowIndex,colIndex,dataCounter,elem,containerId, calButton){
+              
+                var $affectedRow = $(containerId).find('.list tbody').find('tr').eq(rowIndex);    
+                var $affectedDivs = $affectedRow.find('div[dataCounter = '+ dataCounter +']');  
+                var $mainCheckBox = $affectedRow.find('div.mainCheckBoxParent[dataCounter = '+ dataCounter +']');
+                //var colIndex = parseInt($(this).attr('colindex'));
+                var colClass = '.dynamicCol' + colIndex;
+                var $colAffects = $(containerId).find('.list').find(colClass);  
+                var $mainCheckDivAffect = $affectedRow.find('div.mainCheckBoxParent[dataCounter = '+ dataCounter +']'); 
+                var $divAffect = $(elem).parent();
+                
+                //If editBlock Contains existing PG Class
+                var $newPgBlocks = $divAffect.find('.editBlock[pgType = "newPg"]');
+                var $existingPgBlocks = $divAffect.find('.editBlock[pgType = "existingPg"]');
+                
+                if(elem.checked){
+                    $divAffect.find('.editBlock').show();
+                    $divAffect.find('.nonEditBlock').hide();
+                    $affectedDivs.height(45);   
+                    $colAffects.css('min-width',PG_COLUMN_WIDTH);
+                    
+                    //Check for button
+                    if(calButton == true){
+                        $mainCheckBox.find('.calBtn').show();
+                    }
+                    
+                    //Set value according to given in Goal Manamgnet SDD
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ; 
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_CHANGE_TRUE_PERCENT_VALUE);     
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });        
+                }else{
+                    $divAffect.find('.editBlock').hide();
+                    $divAffect.find('.nonEditBlock').show();
+                    
+                    $newPgBlocks.each(function(i){
+                        
+                        $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;    
+                        $(this).find('.tenuredBox input[type = "text"]').val(TENURED_ON_DISABLED_FALSE_PERCENT_VALUE);      
+                    });
+                    $existingPgBlocks.each(function(i){
+                        if($(this).attr('pgtenuredvalue') == 'false'){
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',false) ;
+                        }else{
+                            $(this).find('.tenuredBox input[type = "checkbox"]').prop('checked',true) ;
+                        }   
+                        $(this).find('.tenuredBox input[type = "text"]').val($(this).attr('pgtenuredpercentage'));
+                    });
+                    
+                     //Check if anycheckbox selected in dataRow then no need to reset height, otherwise its needs to be reset its height
+                    var isAnyCheckBoxSelectedInDataRow = false;
+                    
+                    //Check if anycheckbox selected in Dynamic col of the table, then no need to reset widht of that col, otherwise we need to reset its width
+                    var idAnyCheckBoxSelectedInDynamicCol = false;
+                    $affectedDivs.each(function(i){
+                        if($(this).find('.visibleCheckBox:visible')[0] != undefined && $(this).find('.visibleCheckBox:visible')[0].checked && isAnyCheckBoxSelectedInDataRow == false)
+                            isAnyCheckBoxSelectedInDataRow = true;
+                    });
+                    $colAffects.each(function(i){
+                        
+                        if($(this).hasClass('dynamicDataCol')){
+                        
+                            $(this).find('.visibleCheckBox:visible').each(function(i){
+                                
+                                if(this.checked && idAnyCheckBoxSelectedInDynamicCol == false){
+                                    idAnyCheckBoxSelectedInDynamicCol = true;
+                                }   
+                            });
+                            
+                        }
+                           
+                    });
+                    
+                    if(isAnyCheckBoxSelectedInDataRow == false){
+                        $affectedDivs.height('');
+                        $affectedDivs.find('.editRowMarginAligner').css({'margin-top':''});
+                        
+                        var $firstCheckBox = $mainCheckDivAffect.find('input[type = "checkbox"]')[0];
+                        if($firstCheckBox != undefined){
+                            $firstCheckBox.checked = false;
+                            $mainCheckDivAffect.find('.calBtn').hide();
+                        }
+                        
+                        //If any checkbox is not selected in data box then make it false
+                        eligibilityForCalButton[rowIndex] = false;
+                    }else{
+                        eligibilityForCalButton[rowIndex] = true;
+                    }
+                    if(idAnyCheckBoxSelectedInDynamicCol == false){
+                        $colAffects.css('min-width','');
+                    }
+                }
+            }
+               
+            function resetDyanmicColWidthForInnerCheck(){
+                
+                //If any of the checkbox selected in column
+                var isAnyBoxSelected = false;
+                var isAnyVisibleBoxSelected = false;
+                $('.checkBoxCol input[type="checkbox"]').each(function(){
+                    if($(this)[0].checked && isAnyBoxSelected == false){
+                        isAnyBoxSelected = true;    
+                    }
+                });
+                
+                if(isAnyBoxSelected){
+                    $('.dynamicCol').css('min-width',PG_COLUMN_WIDTH); 
+                }else{
+                    $('.dynamicCol').css('min-width','');
+                }
+                
+                //On Complete of Data Calculation some column must be expanded.
+                $('.visibleCheckBox:visible').each(function(i){
+                    if($(this)[0].checked){
+                        var rowIndex = parseInt($(this).attr('rowCounter'));
+                        var $affectedRow = $('#resultSectionData').find('.list tbody').find('tr').eq(rowIndex);
+                        var $affectedDivs = $affectedRow.find('div[dataCounter = '+ $(this).attr('datacounter') +']');
+                        var $mainCheckBox = $affectedRow.find('div.mainCheckBoxParent[dataCounter = '+ $(this).attr('datacounter') +']');
+                        if($(this).attr('isCalBtn') == 'true'){
+                            $mainCheckBox.find('.calBtn').show();
+                        }
+                        $affectedDivs.height(45);
+                        $affectedDivs.find('.editRowMarginAligner').css({'margin-top':'15px'});
+                        var colIndex = parseInt($(this).attr('colindex'));
+                        var colClass = '.dynamicCol' + colIndex;
+                        var $colAffects = $('#resultSectionData').find('.list').find(colClass);
+                        $colAffects.css('min-width',PG_COLUMN_WIDTH);
+                    }
+                });
+            }
+               
+            //Reset Width
+            function resetDynamicColWidth(){
+                var isHeaderCheckBoxSelected  = $('.checkBoxHeader').find('input[type="checkbox"]')[0].checked;
+                if(isHeaderCheckBoxSelected){
+                    $('.dynamicCol').css('min-width',PG_COLUMN_WIDTH);    
+                }else{
+                    $('.dynamicCol').css('min-width','');
+                }
+                
+                resetDyanmicColWidthForInnerCheck();
+            }
+               
+            //Add max width
+            function setMaxWidth() {
+                var screenWidth = screen.width - 100;
+                var $nameCol = $(".nameCol");
+                if($nameCol.hasClass('name')){
+                    //var maxwidth =screenWidth-$(".fixblock").width()-20;
+                    var maxwidth =screenWidth-$(".nameCol").width()-20;
+                    var maxleft =$(".nameCol").width()-6;
+                    $('.fullblock').css({'max-width':screenWidth});
+                    $('#resultSectionData').css({'max-width':maxwidth});
+                    $('#resultSectionData').css({'margin-left':maxleft});
+                    //$('.fixcolum td').height($("#resultSectionData .list td").height());
+                }else{
+                    $('#resultSectionData').css({'max-width':screenWidth});
+                }
+            }
+           
+            //Function to add comment
+            function editDescription(elem,rowIndex,colIndex,itemIndex,contId,stdWrapperId, PacingId){
+                $('#commentsDialog').show();
+                decidePopupDimensions($("#commentsDialog"),$("#commentsDialog").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                $('#overlay').show();
+                
+                $('#commentsDialog .dialogWrapper').find('.inputTextArea').val( $(elem).attr('desc'));
+                var $saveBt = $('#commentsDialog .dialogWrapper').find('input[value="Save"]');
+                $saveBt.attr('contId',contId);
+                $saveBt.attr('stdWrapperId',stdWrapperId);
+                $saveBt.attr('pacingId',PacingId);
+                $saveBt.attr('rowIndex',rowIndex);
+                $saveBt.attr('colIndex',colIndex);
+                $saveBt.attr('itemIndex',itemIndex);
+            }
+               
+            //Function to add comment
+            function saveDesc(elem){
+                var textBox = $('#commentsDialog .dialogWrapper').find('.inputTextArea');
+                saveDescription($(elem).attr('rowIndex'),$(elem).attr('colIndex'),$(elem).attr('itemIndex'),$(elem).attr('contId'),$(elem).attr('stdWrapperId'),$(elem).attr('pacingId'),textBox.val());    
+            }
+               
+            function flipFlopInputs(elem){
+                $(elem).parent().find('.flipFlopInputs').toggle();
+            }
+               
+            //Function to display the Payee Staff Relationship Popup
+            function loadPayeeSRelationshipPopup(payeeId) {
+                
+                showSRDialogbox();
+                showLoading();
+                loadpayeeStaffRelationships(payeeId);
+            }
+               
+            //Function to display the Personal goal Staff Relationship Popup
+            function loadPGSRelationshipPopup(rCounter,cIndex,dCounter) {
+                
+                showSRDialogbox();
+                showLoading();
+                loadPGStaffRelationships(rCounter,cIndex,dCounter);
+            }
+               
+            //Function to display the Conditions for Std goal detail
+            function loadConditions(sGDId) {
+                
+                showConditionsDialogbox();
+                showLoading();
+                loadCondtions(sGDId);
+            }
+               
+            //Function to open payee Staff Relationship popup
+            function showSRDialogbox() {
+                
+                $("#staffRelationshipPopup").show();
+                decidePopupDimensions($("#staffRelationshipPopup"),screen.width-400,'',$(document).scrollTop(), $(document).scrollLeft());
+                $("#overlay").show();
+            }
+            
+            function decidePopupDimensions($obj,w,h,top,leftPadding){
+                var left = (screen.width/2) - (w/2) + leftPadding;
+                
+                //Check for Relationship Popup
+                if($obj.attr('id') == 'staffRelationshipPopup') {
+                    if(w == undefined || isNaN(w) || w == '' || w > 900)
+                        w = 900;
+                    $obj.css({"left":left, "top":top,"width":w});
+                    if(h != undefined && !isNaN(h) && h != '')
+                        $obj.find('.dialogWrapper').css({"height":h,"overflow-y":"auto"});
+                } else
+                    $obj.css({"left":left, "top":top});
+                
+            }
+               
+            //Function to open Conditions popup
+            function showConditionsDialogbox() {
+                $("#conditionsPopup").show();
+                decidePopupDimensions($("#conditionsPopup"),$("#conditionsPopup").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                $("#overlay").show();
+            }
+            
+            //Loading Popup
+            function showLoading(){
+                $('.dialogWrapper').hide();
+                $('.loadingBox').show();
+                $('.loadingText').text('Loading....');
+            }
+               
+            //Hide loading function
+            function hideLoading(){
+                    
+                $('.loadingBox').hide();
+                $('.dialogWrapper').show();
+                
+                //Get Height of Screen Dynamiucally
+                
+                
+                //Get Visible Popup
+                var $visibleDialogWrapper = $('.customDialog:visible');
+                if($visibleDialogWrapper.attr('id') == 'staffRelationshipPopup'){
+                    var dialogHeight = $visibleDialogWrapper.outerHeight();
+                    if(dialogHeight >= screen.height){
+                        $visibleDialogWrapper.css({'overflow' : 'auto', 'height':screen.height - $('.bPageHeader').outerHeight() - 200});           
+                    }
+                }
+            }
+            
+            function defaultScript(){
+                $('input[value = "New"]').on('click',function(){
+                     $('#newEditStaffRelationshipPopup .dialogWrapper').show();
+                     $('#newEditStaffRelationshipPopup .loadingBox').hide();
+                 });
+                 $('input[value = "Save"]').on('click',function(){
+                    
+                    var isValidationPassed = validateRequiredData(this);
+                    if(isValidationPassed){
+                        
+                        if($('#newEditStaffRelationshipPopup').is(':visible')){
+                            
+                            $('#newEditStaffRelationshipPopup .dialogWrapper').hide();
+                            $('#newEditStaffRelationshipPopup .loadingBox').show();
+                            $('#newEditStaffRelationshipPopup .loadingText').text('Saving....');
+                        }else if($('#pGMPcustomDialog').is(':visible')){
+                            
+                            $('#pGMPcustomDialog .dialogWrapper').hide();
+                            $('#pGMPcustomDialog .loadingBox').show();
+                            $('#pGMPcustomDialog .loadingText').text('Saving....');
+                        }
+                    }
+                });
+            }
+            
+            //Function to reset height of staff relationship popup
+            function closeStaffRelationshipPopup() {
+                
+                $('#staffRelationshipPopup').hide();
+                $('#overlay').hide();
+                $('#staffRelationshipPopup').css({'overflow':'','height':''});
+            }
+            
+            function openStaffPopupRelationship(){
+                $("#newEditStaffRelationshipPopup").show();
+                decidePopupDimensions($("#newEditStaffRelationshipPopup"),$("#newEditStaffRelationshipPopup").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                $("#overlay1").show();    
+            }
+            
+            function closeAnyTypePopup(popupId){
+                $(popupId).hide();
+                $("#overlay1").hide();                  
+            }
+               
+            function showLoading1(){
+        
+                $('#newEditStaffRelationshipPopup .dialogWrapper').hide();
+                $('#newEditStaffRelationshipPopup .loadingBox').show();
+                $('#newEditStaffRelationshipPopup .loadingText').text('Loading....');
+            }
+            function editStaffRelationshipMed(rowIndex){
+                openStaffPopupRelationship();
+                showLoading1();
+                
+                editStaffRelationship(rowIndex);
+            }
+            function hideLoading1(){
+                    
+                $('#newEditStaffRelationshipPopup .loadingBox').hide();
+                $('#newEditStaffRelationshipPopup .dialogWrapper').show();
+            }
+            function saveStaffRelationShipMed(elem){
+                if(validateRequiredData(elem) == true){
+                    
+                    saveStaffRelationShip();    
+                }
+            }
+            //Function to cancel
+            function cancelbtn() {
+                
+                //Remove all the error MSGs
+                $('#newEditStaffRelationshipPopup .dialogWrapper:visible').find('.errorMSG').text('');
+                $('#newEditStaffRelationshipPopup .dialogWrapper:visible').find('.eitherError').text('');
+                
+                if($('#newEditStaffRelationshipPopup').is(':visible')){
+                              
+                    var $visibleDialog = $('#newEditStaffRelationshipPopup:visible');
+                   
+                    cancelAll();
+                    
+                    $visibleDialog.hide();
+                    $('#overlay1').hide();
+                    
+                }
+            }
+            function checkToggleFiledState(elem,toggleClass){
+                var ifAllToggleFilled = true;
+                $(toggleClass).each(function(){
+                    if($(this).find('input[type = "text"]').val() == '')
+                        ifAllToggleFilled = false;      
+                });
+                if(ifAllToggleFilled){
+                    populateDirectionList();    
+                }
+            }
+            function validateRequiredData(elem){
+
+                    //Handle Implicitly for visible data
+                    var $visibleWrapper;
+                    var $visibleDialogWrapper = $('.dialogWrapper:visible');
+                    if($visibleDialogWrapper != null || $visibleDialogWrapper != undefined){
+                        $visibleWrapper = $visibleDialogWrapper;
+                        if($visibleDialogWrapper.find('.dialog1Inner').is(':visible')){
+                            $visibleWrapper = $visibleDialogWrapper.find('.dialog1Inner:visible');  
+                        }
+                    }
+                    var isAllRequiredFieldHasFilled = true;
+                    
+                    //Check all required field if they filled with Required data
+                    $visibleWrapper.find('.requiredField').each(function(i){
+                        
+                        if($(this).find('input[type="text"]').val() == ''){
+                        
+                            $(this).find('.timeLineIcon-red').show();
+                            $(this).find('input').css('border', '1px solid #D0212F');
+                            isAllRequiredFieldHasFilled = false;
+                        }else if($(this).find('select').val() == ''){
+                            $(this).find('.timeLineIcon-red').show();
+                            $(this).find('select').addClass('requiredSelect');
+                            isAllRequiredFieldHasFilled = false;
+                        }else{
+                            $(this).find('input').css('border', '');
+                            $(this).find('select').removeClass('requiredSelect');
+                        }
+                    });
+                    
+                    if(isAllRequiredFieldHasFilled == false)
+                        $visibleWrapper.find('.errorMSG').text('Please fill all the required fields.');
+                    else
+                        $visibleWrapper.find('.errorMSG').text('');
+                    
+                    //Check for Either Required field in which either one of the field should be filled or should be both blank
+                    var eitherFilledCounter = 0;
+                    var eitherElem1 = $visibleWrapper.find('.eitherRequiredField').eq(0).find('input[type="text"]');
+                    var eitherElem2 = $visibleWrapper.find('.eitherRequiredField').eq(1).find('input[type="text"]');
+                    var eitherLabel1 = $visibleWrapper.find('.eitherRequiredLable').eq(0);
+                    var eitherLabel2 = $visibleWrapper.find('.eitherRequiredLable').eq(1);
+                    
+                    if(eitherElem1.val() == '' && eitherElem2.val() == ''){
+                        
+                        $visibleWrapper.find('.eitherError').text('You must supply EITHER '+ eitherLabel1.text() + ' OR ' + eitherLabel2.text());
+                        isAllRequiredFieldHasFilled = false;
+                    }else if(eitherElem1.val() != undefined && eitherElem2.val() != undefined && eitherElem1.val() != '' && eitherElem2.val() != ''){
+                        
+                        $visibleWrapper.find('.eitherError').text('You must supply EITHER '+ eitherLabel1.text() + ' OR ' + eitherLabel2.text());
+                        isAllRequiredFieldHasFilled = false;
+                    }else{
+                        $visibleWrapper.find('.eitherError').text('');
+                        
+                    }
+                    if(isAllRequiredFieldHasFilled == false)
+                        return false;
+                    return true;
+                }
+                 
+                //Function to display the GTDMP for Std goal detail
+                function loadGTDMPs(sGDId) {
+                    
+                    showGTDMPDialogbox();
+                    showLoading();
+                    loadGTDMPeriods(sGDId);
+                }
+                
+                //Function to open GTDMP popup
+                function showGTDMPDialogbox() {
+                    $("#gTDMPPopup").show();
+                    decidePopupDimensions($("#gTDMPPopup"),$("#gTDMPPopup").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                    $("#overlay").show();
+                }
+                
+                //Added - Subhash Garhwal - 11/28/2015 - CR-20151120-9407
+                function showPGMPPopup(rowNum, colIndex, itemIndex){
+                    showPGMPDialogbox();
+                    showLoading();
+                    loadPGMPs(rowNum, colIndex,itemIndex);
+                }
+                
+                function showPGMPDialogbox() {
+                  $("#pGMPpopup").show();
+                  decidePopupDimensions($("#pGMPpopup"),$("#pGMPpopup").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                  $("#overlay").show();
+                }
+                
+                function addPGMPs(elem){
+                    if(validateRequiredData(elem) == true){
+                        addPGMP();    
+                    }
+                }
+                
+                function openPGMPDialogbox() {
+                    $("#pGMPcustomDialog").show();
+                    decidePopupDimensions($("#pGMPcustomDialog"),$("#pGMPcustomDialog").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+                    $("#dialogWrapper").show();
+                    $('.mDInner').show();
+                    $("#pGMPpopup").hide();
+                    $("#overlay").show();
+                }
+                
+                function refreshGTDMPs(){
+                    
+                    //Remove all the error MSGs
+                    $('#pGMPcustomDialog .dialogWrapper:visible').find('.errorMSG').text('');
+                    $('#pGMPcustomDialog .dialogWrapper:visible').find('.eitherError').text(''); 
+                    $('#pGMPcustomDialog').find('.requiredField input').css('border', '');
+                    $('#pGMPcustomDialog').hide();
+                    $('.mDInner').hide();
+                    $("#pGMPpopup").show();
+                    hideLoading();
+                }
+                //V2.0 - ISSP Deployment E - CR - 9688 - 04/08/2016 - Setting and Reseting the value of Tenure Percentage box based on the what user clicked on
+                function tenureValueFlipFlop(elem){
+                    
+                    var $mainParent = $(elem).parent().parent();
+                    $(elem).parent().find('input[type="hidden"]').val('red');
+                    $(elem).parent().find('.tenureLabelFlag').css('color', 'red');
+                    $mainParent.find('.tenuredPercentBox input[type="hidden"]').val('red');
+                    $mainParent.find('.tenureLabel').css('color', 'red');
+                    if(elem.checked){
+                        $mainParent.find('.tenurePercentageBox').val(TENURED_ON_CHANGE_TRUE_PERCENT_VALUE); 
+                    }else{
+                        $mainParent.find('.tenurePercentageBox').val(TENURED_ON_CHANGE_FALSE_PERCENT_VALUE);    
+                    }
+                }
+            </script>
+        </head>
+    </apex:component>

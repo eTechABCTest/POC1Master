@@ -1,0 +1,77 @@
+<!-- 
+    Description     :   This page is for Edit button on Staff Assignment detail page. 
+    
+    Created By      :   Subhash Garhwal
+    
+    Created Date    :   07/01/2015
+    
+    Revision Logs   :   V_1.0 - Created - CR-20150618-9014 
+    
+ -->
+<apex:page standardController="Team_Membership__c" extensions="EditClarificationController" id="pge">
+    
+    <script>
+        function checkSelectedSection() {
+            redirectUser();
+        }
+    </script>
+    
+    <!-- New Opprotunity -->
+    <apex:sectionHeader title="Staff Assignment Edit" subtitle="{!Team_Membership__c.Name}"/>
+    
+    <!-- BlockUI -->
+    <c:BlockUI />
+    
+    <!-- Form -->
+    <apex:form id="frm">
+        
+        <!-- Background Processing Message -->
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+        
+        <apex:actionFunction name="redirectUser" action="{!redirectUser}" rerender="frm" status="waitMsg"/>
+        
+        <!-- Page Messages -->
+        <apex:pageMessages id="msg"/>
+        
+        <!-- Page Block -->
+        <apex:pageBlock id="pB" mode="edit">
+            
+            <apex:pageblockSection columns="1" title="Edit Clarification">
+                
+                <!-- Radio button -->
+                <apex:selectRadio value="{!sldOption}" layout="pageDirection" onclick="checkSelectedSection();">
+                    <apex:selectOptions value="{!options}"/>
+                </apex:selectRadio>
+            </apex:pageblockSection>
+            
+            <apex:outputPanel layout="block" rendered="{!sldOption = 'New'}" style="margin-left:55px;">
+                <apex:outputText value="{!$Label.EditClarification_Create}" escape="false" />
+
+                <BR/>
+                <apex:inputCheckbox value="{!cloneRPPs}"/>  <apex:outputLabel value="{!$Label.EditClarification_Copy}"/>
+
+                <apex:commandButton action="{!doNew}" value="Proceed" status="waitMsg"  style="float:right;margin-right:55px;"/>
+                
+            </apex:outputPanel>
+            
+            <apex:commandButton action="{!redirectUser}" value="Proceed" status="waitMsg" rendered="{!sldOption = 'Cancel'}" style="float:right;margin-right:55px;"/><BR/>
+            
+            <!-- Buttons -->
+            <apex:pageblockButtons rendered="{!isEdit}" location="bottom">
+                <apex:commandButton value="Save" action="{!doSave}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageblockButtons>
+            
+            <apex:outputPanel rendered="{!isEdit}">
+                <!-- Pageblock section -->
+                <apex:pageBlockSection collapsible="false" columns="2" title="Staff Assignment Edit">
+                    
+                    <apex:inputField value="{!Team_Membership__c.Staff_member__c}"/>
+                    <apex:inputField value="{!Team_Membership__c.Start_date__c}" required="true"/>
+                    <apex:inputField value="{!Team_Membership__c.Role__c}" required="true"/>
+                    <apex:inputField value="{!Team_Membership__c.End_date__c}"/>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

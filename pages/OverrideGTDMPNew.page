@@ -1,0 +1,12 @@
+<!-- 
+ *  Purpose         :   Override New button and autopopulate Goal Template Detail Measurement Period Name.
+ * 
+ *  Created By      :   Subhash Garhwal
+ * 
+ *  Created Date    :   11/25/2015
+ * 
+ *  Revision Logs   :   V_1.0 - Created - CR-20151120-9407
+ * 
+ -->
+<apex:page standardController="Goal_Template_Detail_Measurement_Period__c" extensions="WillAutoPopulateExtension" action="{!redirect}" >
+</apex:page>

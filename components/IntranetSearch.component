@@ -1,0 +1,200 @@
+<!--V.1.1 - Modified By - Rajeev Jain - 06/29/2015 - CR-20150618-9016 - Board Room Mobile -->
+<apex:component layout="none" controller="IntranetSearchController">
+    
+    <div class="popup no_padding search">
+        <div id="popup_content">
+            <h3 class="search-query">search results for <span class="query">"{!SearchTerm}"</span><span class="count">({!TotalCount})</span>
+                <a class="x close" href="{!$Label.Intranet_Home}">x</a>
+            </h3>
+            
+            <div class="row">
+                <div class="col-sm-3 col-md-3 tablet-mobile-hide">
+                    
+                    <div class="search-container search-panel">
+                        
+                        <h2 class="section-title">Filter Your Search</h2>
+                        <apex:outputPanel rendered="{!TotalCount > 0 && len(SearchTerm) >= 3}" id="result-topics">
+                            <ul class="search-topics">
+                                <apex:repeat value="{!SearchResultSummary}" var="item">
+                                    <li>                                                        
+                                        <apex:form rendered="{!item.Count > 0}">
+                                            <apex:commandLink styleClass="{!IF(SearchMoreType == item.name, 'active', '')}" action="{!SearchMoreContentType}" value="{!item.name} ({!item.Count})"  rerender="resultbox, result-topics" status="load-more-spinner">
+                                                <apex:param name="SearchMoreTypeUser" assignTo="{!SearchMoreType}" value="{!item.name}" /> 
+                                                <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                            </apex:commandLink>
+                                        </apex:form>
+                                    </li>
+                                </apex:repeat>
+                                <li> 
+                                    <apex:form rendered="{!SearchMoreType != null}">
+                                        <apex:commandLink action="{!BackToSearchSummary}" value="Show All Items ({!TotalCount})" rerender="resultbox, result-topics" status="load-more-spinner">
+                                            <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                        </apex:commandLink>
+                                    </apex:form>
+                                </li>
+                            </ul>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                
+                <div class="col-sm-12 col-md-9">
+                    <div class="search-container search-results">
+                        
+                        <form class="search-form form-horizontal" method="get" action="/apex/IntranetSearch" id="mainSearchForm">
+                            <div class="form-group">
+                                <div class="col-xs-8">
+                                    <input class="search-input" name="q" type="text" placeholder="search" value="{!SearchTerm}" />
+                                	<div class="search-icon mainSearchIcon" onClick="$('#mainSearchForm').submit();"><i class="fa fa-search"></i></div>
+                                </div>
+                                <div  class="col-xs-4 searchButtonWrapper">
+                                    <input type="submit" value="Search" class="search-button" />
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <apex:outputPanel id="resultbox" rendered="{!TotalCount > 0 && len(SearchTerm) >= 3}" layout="block" styleClass="resultSection">
+                            
+                            <apex:outputPanel rendered="{!UserSearchResult.Size > 0}">
+                                <h4>{!UserGroupName}</h4>
+                                
+                                <div class="row">
+                                    <apex:repeat value="{!UserSearchResult}" var="item">
+                                        
+                                        <div class="col-sm-4">
+                                            <div class="user-card">
+                                                <div class="thumb"><a href="{!item.ChatterViewLink}" target="_blank"><img src="{!item.ChatterPicture}" /></a></div>
+                                                <div class="name"><a href="{!item.ChatterViewLink}" target="_blank">{!item.FirstName} {!item.LastName}</a></div>
+                                                <div class="department">{!item.Department}</div>
+                                                <div class="office-space">{!item.OfficeName}<apex:outputText rendered="{!item.SpaceNumber != null && item.OfficeName != null}" value=" - "/>{!item.SpaceNumber}</div>
+                                            </div>
+                                        </div>
+                                    </apex:repeat>
+                                </div>
+                                
+                                <apex:outputPanel layout="none" rendered="{!UserSearchResult.Size == 6}">
+                                    <apex:form >
+                                        <apex:commandLink styleClass="search-load-more" action="{!SearchMoreContentType}" value="Show More Results" status="load-more-spinner" rerender="resultbox, result-topics">
+                                            <apex:param assignTo="{!SearchMoreType}" value="{!UserGroupName}" />
+                                            <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                        </apex:commandLink>
+                                    </apex:form>
+                                </apex:outputPanel>
+                                
+                            </apex:outputPanel>
+                            
+                            <apex:repeat value="{!ContentSearchResult}" var="section">
+                                <h4>{!section.Name}</h4>
+                                
+                                <apex:dataTable value="{!section.Contents}" var="table" rowClasses="even,odd" 
+                                                styleClass="{!IF(section.Name == 'Member Events',' Member-Events',
+                                                            IF(section.Name == 'Office Events',' Office-Events',
+                                                            IF(section.Name == 'Member Impact', 'Member-Impact',section.Name)))}">  
+                                    <apex:repeat value="{!table.Properties}" var="item">
+                                        <apex:column styleClass="{!IF(item.FieldLabel == 'Content Author/Speaker', 'content-author', LOWER(SUBSTITUTE(item.FieldLabel, " ", "-")))}">
+                                            <!-- th header -->
+                                            <apex:outputPanel layout="none" rendered="{!table.RowNumber == null}">{!item.fieldValue}</apex:outputPanel>
+                                            
+                                            <!-- item title -->
+                                            <apex:outputPanel rendered="{!item.FieldLabel == 'Title' && table.RowNumber != null}" layout="none">
+                                                <apex:outputText rendered="{!table.Permalink != null  && table.Permalink != ''}"><a href="{!table.Permalink}" target="_blank">{!item.fieldValue}</a></apex:outputText>
+                                                <apex:outputText rendered="{!table.Permalink == null || table.Permalink == ''}">{!item.fieldValue}</apex:outputText>
+                                            </apex:outputPanel>
+                                            
+                                            <!-- social -->
+                                            <apex:outputPanel rendered="{!item.FieldLabel == 'Social' && table.RowNumber != null}" layout="none">
+                                                <apex:variable value="{!FIND(',', item.fieldValue)}" var="comma" />
+                                                <c:IntranetChatterLinks ItemId="{!LEFT(table.ID, 15)}" LikeCount="{!LEFT(item.fieldValue, comma - 1)}" ChatterCount="{!RIGHT(item.fieldValue, LEN(item.FieldValue) - comma)}" IsSearch="true"/>
+                                            </apex:outputPanel>
+                                            
+                                            <!-- everything else -->
+                                            <apex:outputPanel layout="none" rendered="{!table.RowNumber != null && item.FieldLabel != 'Social' && item.FieldLabel != 'Title'}">{!item.fieldValue}</apex:outputPanel>                                              
+                                        </apex:column>
+                                    </apex:repeat>    
+                                    
+                                    <apex:column rendered="{!table.topParentContainer == null && section.Name == 'Page Section'}" styleClass="itemTitle">Item Title</apex:column>
+                                    <apex:column rendered="{!table.topParentContainer != null && section.Name == 'Page Section'}" styleClass="itemTitle">
+                                        <a href="/apex/Boardroom_Internal_Home_Page?TopContainerId={!table.topParentContainer.Id}#{!table.ScheduleReferenceNumber}">
+                                            {!table.ItemTitle}
+                                        </a>
+                                    </apex:column>
+                                    
+                                    <apex:column rendered="{!table.topParentContainer == null && section.Name == 'Page Section'}" styleClass="pageCol">Page</apex:column>
+                                    <apex:column rendered="{!table.topParentContainer != null && section.Name == 'Page Section'}" styleClass="pageCol">
+                                        {!table.topParentContainer.Display_Name__c}
+                                    </apex:column>
+                                    
+                                    <apex:column styleClass="topics" rendered="{!table.Topics == null}">Topics</apex:column>
+                                    
+                                    <apex:column styleClass="topics" rendered="{!table.Topics!= null}">
+                                        {!IF(len(table.Topics) > 75, LEFT(table.Topics, 75) + '...', table.Topics)}                                                
+                                    </apex:column>                      
+                                </apex:dataTable>
+                                <apex:form rendered="{!section.Contents.size == 6}">
+                                    <apex:commandLink styleClass="search-load-more" action="{!SearchMoreContentType}" value="Show More Results" status="load-more-spinner" rerender="resultbox, result-topics">
+                                        <apex:param name="SearchMoreType{!section.Name}" assignTo="{!SearchMoreType}" value="{!section.Name}" />
+                                        <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                    </apex:commandLink>
+                                </apex:form>
+                                
+                            </apex:repeat>
+                            
+                            <apex:outputPanel rendered="{!PortalSearchResult.Size > 0}">
+                                <h4>{!PortalGroupName}</h4>
+                                
+                                <apex:dataTable value="{!PortalSearchResult}" var="item" rowClasses="odd,even" styleClass="portal-search-table">
+                                    
+                                    <apex:column styleClass="portal-site" headerClass="portal-site">
+                                        <apex:facet name="header">Site</apex:facet>
+                                        {!item.Site}
+                                    </apex:column>
+                                    
+                                    <apex:column styleClass="portal-title" headerClass="portal-title">
+                                        <apex:facet name="header">Title</apex:facet>
+                                        <a href="{!item.Permalink}" target="_blank">{!item.PostTitle}</a>
+                                    </apex:column>
+                                    
+                                    <apex:column styleClass="portal-excerpt" headerClass="portal-excerpt">
+                                        <apex:facet name="header">Excerpt</apex:facet>
+                                        {!item.PostContent}
+                                    </apex:column>
+                                    
+                                </apex:dataTable>
+                                
+                                <apex:outputPanel layout="none" rendered="{!PortalSearchResult.Size == 5}">
+                                    <apex:form >
+                                        <apex:commandLink styleClass="search-load-more" action="{!SearchMoreContentType}" value="Show More Results" status="load-more-spinner" rerender="resultbox, result-topics">
+                                            <apex:param assignTo="{!SearchMoreType}" value="{!PortalGroupName}" />
+                                            <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                        </apex:commandLink>
+                                    </apex:form>
+                                </apex:outputPanel>
+                                
+                            </apex:outputPanel>
+                            
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!TotalCount == 0 || len(SearchTerm) < 3}" layout="none"> 
+                            <div class="row no-items">
+                                <apex:outputText rendered="{!len(SearchTerm) < 3}">Your search query must be 3 or more characters.  Please adjust and try again.</apex:outputText>
+                                <apex:outputText rendered="{!TotalCount == 0 && len(SearchTerm) > 3}">Your search returned no results. Please adjust your query and try again.</apex:outputText>
+                            </div>
+                        </apex:outputPanel>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+    <style>
+        .mainSearchIcon {
+        right: 10px !important;
+        width: 29px;
+        cursor: pointer;
+        }
+    </style>
+    
+</apex:component>

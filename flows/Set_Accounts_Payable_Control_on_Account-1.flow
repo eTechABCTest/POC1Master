@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Set_Accounts_Payable_Controle</name>
+        <label>Set Accounts Payable Controle</label>
+        <locationX>410</locationX>
+        <locationY>27</locationY>
+        <assignmentItems>
+            <assignToReference>Account.c2g__CODAAccountsPayableControl__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GLA_ID</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Account</targetReference>
+        </connector>
+    </assignments>
+    <description>This flow sets the Accounts Payable Control field (c2g__CODAAccountsPayableControl__c) to the GLA &quot;2100 - ACCOUNTS PAYABLE&quot;</description>
+    <interviewLabel>Set Accounts Payable Control on Account {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Set Accounts Payable Control on Account</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>52</locationX>
+        <locationY>24</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Accounts_Payable_GLA</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>AccountId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>Account</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>c2g__CODAAccountsPayableControl__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Accounts_Payable_GLA</name>
+        <label>Get Accounts Payable GLA</label>
+        <locationX>229</locationX>
+        <locationY>25</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Accounts_Payable_Controle</targetReference>
+        </connector>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>2100 - ACCOUNTS PAYABLE</stringValue>
+            </value>
+        </filters>
+        <object>c2g__codaGeneralLedgerAccount__c</object>
+        <outputAssignments>
+            <assignToReference>GLA_ID</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Account</name>
+        <label>Update Account</label>
+        <locationX>593</locationX>
+        <locationY>28</locationY>
+        <inputReference>Account</inputReference>
+    </recordUpdates>
+    <startElementReference>Get_Account</startElementReference>
+    <variables>
+        <description>The account whose Accounts Payable Control field will be set</description>
+        <name>Account</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <description>The Id of the account that is being saved</description>
+        <name>AccountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The Id of the General Ledger Account &quot;2100 - ACCOUNTS PAYABLE&quot;</description>
+        <name>GLA_ID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,479 @@
+<!-- Modified By - Rajeev Jain - 12/22/2015 - CR-20150826-9191 -->
+<apex:page controller="ReferenceRequestController" id="page" docType="html-5.0" >
+    
+    <apex:form id="form">
+        
+        <apex:stylesheet value="{!URLFOR($Resource.ReferenceTrackingCSS)}" />
+        <c:IncludeJQuery id="jqry" />
+        <apex:includeScript value="{!URLFOR($Resource.AngularJS, '/angular.1.0.5.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.BootstrapZip, '/bootstrap/js/bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.ShipItAssets, 'js/shipIt-custom.js')}"/>
+        
+        <!-- HIDDEN INPUT -->
+        <apex:outputPanel layout="block" id="hiddenInputPanel" style="position:absolute; left:-9999px;">
+            <apex:inputHidden value="{!referenceModuleInput1}" id="referenceModuleInput1"/>
+            <apex:inputHidden value="{!referenceModuleInput2}" id="referenceModuleInput2"/>
+            <apex:inputHidden value="{!referenceModuleInput3}" id="referenceModuleInput3"/>
+            <apex:inputHidden value="{!referenceModuleInput4}" id="referenceModuleInput4"/>
+            <apex:inputHidden value="{!referenceModuleInput5}" id="referenceModuleInput5"/>
+            <apex:inputHidden value="{!attributeModule1}" id="attributeModule1"/>
+            <apex:inputHidden value="{!attributeModule2}" id="attributeModule2"/>
+            <apex:inputHidden value="{!attributeModule3}" id="attributeModule3"/>
+            <apex:inputHidden value="{!attributeModule4}" id="attributeModule4"/>
+            <apex:inputHidden value="{!attributeModule5}" id="attributeModule5"/>
+            <apex:inputHidden value="{!attributes}" id="attributeData"/>
+        </apex:outputPanel>
+        <!-- / HIDDEN INPUT -->
+        
+        <!-- ACTION FUNCTIONS -->
+        
+        <!-- Populate Selected Contact info to the Institution field -->
+        <apex:actionFunction action="{!identifyContact}" name="identifyContact" reRender="pbSection"
+                             status="waitMsg" >
+            <apex:param name="lookupFld" assignTo="{!lookupField}" value="" />
+            <apex:param name="conLookupId" assignTo="{!contactLookupId}" value="" />
+            <apex:param name="conLookupName" assignTo="{!contactName}" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="rerenderModules" rerender="referenceModuleSelect" oncomplete="loadModulePicklists();" />
+        <!-- Action Status -->
+        <apex:actionStatus onstart="blockMe();" onstop="unblockMe();setupDatePicker();" id="waitMsg"/>
+        
+        <!-- / ACTION FUNCTIONS -->
+        
+        <apex:sectionHeader title="Reference Request Edit" subtitle="{!IF(wrapper.Id != null, wrapper.Name, 'New Reference Request')}" rendered="{!NOT( isSaved )}" />
+        <apex:pageBlock id="pb" mode="edit" title="Reference Request Edit" rendered="{!NOT( isSaved )}">
+            <apex:pageBlockButtons id="buttonSection" >
+                <apex:commandButton value=" Save " action="{!save}" rerender="form" status="waitMsg" />
+                <apex:commandButton value=" Cancel " action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="pbSection" title="Reference Request Source">
+                <apex:pageBlockSectionItem id="pbsi" >
+                    <apex:outputLabel value="Requesting Contact" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput" >
+                        <div class="requiredBlock"></div>
+                        <apex:inputText value="{!wrapper.requestingContact}" id="ContactData" />
+                        <a href="#" onclick="lookupIdentity='Contact';javascript: openCustomLookup('/_ui/common/data/LookupPage?lkfm=page%3AmyForm&lknm=page%3AmyForm%3AContact&lktp=003',670,'1','&lksrch='+document.getElementById('page:form:pb:pbSection:pbsi:ContactData').value);" >
+                            <img src="/s.gif" alt="Requesting Contact Lookup (New Window)" class="lookupIcon" onblur="this.className = 'lookupIcon';" 
+                                 onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" 
+                                 onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="Requesting Contact Lookup (New Window)"/>
+                        </a>
+                        <!-- Hidden param to hold Contact Properties -->
+                        <apex:inputHidden value="{!wrapper.requestingContactId}" id="ContactId" />
+                        <input type="hidden" name="page:form:Contact_lkid" id="page:form:Contact_lkid" value=""/>
+                        <input type="hidden" name="page:form:Contact_lkold" id="page:form:Contact_lkold" value=""/>
+                        <input type="hidden" name="page:form:Contact_lktp" id="page:form:Contact_lktp" value="003"/>
+                        <input type="hidden" name="page:form:Contact_lspf" id="page:form:Contact_lspf" value="0"/>
+                        <input type="hidden" name="page:form:Contact_lspfsub" id="page:form:Contact_lspfsub" value="0"/>
+                        <input type="hidden" name="page:form:Contact_mod" id="page:form:Contact_mod" value="0"/>
+                        <!-- / Hidden param to hold Contact Properties -->
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source" />
+                        <apex:outputText value="{!wrapper.source}" escape="false" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Requesting Institution" />
+                    <apex:outputText value="{!wrapper.requestingInstitution}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact Title" />
+                    <apex:outputText value="{!wrapper.requestingContactTitle}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Institution Type" />
+                    <apex:outputText value="{!wrapper.institutionType}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem id="pbsi1" >
+                    <apex:outputLabel value="Additional Contact 1" />
+                    <apex:outputPanel layout="block" >
+                        <apex:inputText value="{!wrapper.additionalContact1}" id="Contact1Data" />
+                        <a href="#" onclick="lookupIdentity='Contact1';javascript: openCustomLookup('/_ui/common/data/LookupPage?lkfm=page%3Aform&lknm=page%3Aform%3AContact1&lktp=003',670,'1','&lksrch='+document.getElementById('page:form:pb:pbSection:pbsi1:Contact1Data').value);" >
+                            <img src="/s.gif" alt="Additional Contact 1 Lookup (New Window)" class="lookupIcon" onblur="this.className = 'lookupIcon';" 
+                                 onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" 
+                                 onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="Additional Contact 1 Lookup (New Window)"/>
+                        </a>
+                        <apex:inputHidden value="{!wrapper.additionalContact1Id}" id="Contact1Id" />
+                        <input type="hidden" name="page:form:Contact1_lkid" id="page:form:Contact1_lkid" value=""/>
+                        <input type="hidden" name="page:form:Contact1_lkold" id="page:form:Contact1_lkold" value=""/>
+                        <input type="hidden" name="page:form:Contact1_lktp" id="page:form:Contact1_lktp" value="003"/>
+                        <input type="hidden" name="page:form:Contact1_lspf" id="page:form:Contact1_lspf" value="0"/>
+                        <input type="hidden" name="page:form:Contact1_lspfsub" id="page:form:Contact1_lspfsub" value="0"/>
+                        <input type="hidden" name="page:form:Contact1_mod" id="page:form:Contact1_mod" value="0"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem id="pbsi2" >
+                    <apex:outputLabel value="Additional Contact 2" />
+                    <apex:outputPanel layout="block" >
+                        <apex:inputText value="{!wrapper.additionalContact2}" id="Contact2Data" />
+                        <a href="#" onclick="lookupIdentity='Contact2';javascript: openCustomLookup('/_ui/common/data/LookupPage?lkfm=page%3Aform&lknm=page%3Aform%3AContact2&lktp=003',670,'1','&lksrch='+document.getElementById('page:form:pb:pbSection:pbsi2:Contact2Data').value);" >
+                            <img src="/s.gif" alt="Additional Contact 2 Lookup (New Window)" class="lookupIcon" onblur="this.className = 'lookupIcon';" 
+                                 onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" 
+                                 onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="Additional Contact 2 Lookup (New Window)"/>
+                        </a>
+                        <apex:inputHidden value="{!wrapper.additionalContact2Id}" id="Contact2Id" />
+                        <input type="hidden" name="page:form:Contact2_lkid" id="page:form:Contact2_lkid" value=""/>
+                        <input type="hidden" name="page:form:Contact2_lkold" id="page:form:Contact2_lkold" value=""/>
+                        <input type="hidden" name="page:form:Contact2_lktp" id="page:form:Contact2_lktp" value="003"/>
+                        <input type="hidden" name="page:form:Contact2_lspf" id="page:form:Contact2_lspf" value="0"/>
+                        <input type="hidden" name="page:form:Contact2_lspfsub" id="page:form:Contact2_lspfsub" value="0"/>
+                        <input type="hidden" name="page:form:Contact2_mod" id="page:form:Contact2_mod" value="0"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="reqCriteria" title="Reference Request Criteria">
+                <!-- RECORD TYPE SELECTION -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Request Type" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput" >
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!wrapper.recordTypeId}" multiselect="false" size="1" onchange="toggleDisabled(this.value); rerenderModules()">
+                            <apex:selectOptions value="{!recordTypeOptions}" />
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <!-- / RECORD TYPE SELECTION -->
+                <apex:pageBlockSectionitem />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Module(s)" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput" style="min-height: 18px;" >
+                        <div class="requiredBlock"></div>
+                        <apex:outputLink styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary flexButton" id="referenceModuleOutput"
+                                         onclick="if (j$(this).is('[disabled]')) { event.preventDefault(); return false; } createDialogs('referenceModuleSelect', 'Reference Module Selection', 550, 300); return false;"
+                                         value="{!wrapper.referenceModules}" >
+                            <span class="ui-button-text flexLabel" style="width:160px;">
+                                {!if (wrapper.referenceModules == null || wrapper.referenceModules == '', '--None--', wrapper.referenceModules)}
+                            </span>
+                        </apex:outputLink>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Number of References Needed" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput" >
+                        <div class="requiredBlock"></div>
+                        <apex:inputText value="{!wrapper.numReferencesNeeded}" id="numRefNeededInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Date Needed By" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput" >
+                        <div class="requiredBlock"></div>
+                        <apex:inputText value="{!wrapper.dateNeededBy}" id="dateNeededInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Type Needed" />
+                    <apex:selectList value="{!wrapper.referenceTypeNeeded}" multiselect="false" size="1" id="refTypeNeededInput" >
+                        <apex:selectOptions value="{!wrapper.referenceTypeNeededOptions}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" showHeader="false" id="reqAttributes">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Attributes" />
+                    <apex:outputPanel layout="block" >
+                        <apex:outputLink styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary flexButton" id="attributeOutput"
+                                         onclick="if (j$(this).is('[disabled]')) { event.preventDefault(); return false; } createDialogs('attributeSelect', 'Reference Module Selection', 800, 300); return false;"
+                                         value="{!wrapper.attributes}" >
+                            <span class="ui-button-text flexLabel" style="max-width:500px;">
+                                {!if (wrapper.attributes == null || wrapper.attributes == '', '--None--', wrapper.attributes)}
+                            </span>
+                        </apex:outputLink>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Background Info/Anticipated Questions" />
+                    <apex:inputTextArea value="{!wrapper.anticipatedQuestionsBackgroundInfo}" id="backgroundInfoInput" style="width:100%; height: 150px;" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="pbSection2" >
+                <!--  Added By Rajeev Jain - 12/22/2015 CR-20150826-9191 -->
+                <!--  Marketer Field -->
+                <apex:pageBlockSectionItem id="pbsItem" >
+                    <apex:outputLabel value="Marketer" />
+                    <apex:outputPanel layout="block">
+                        <apex:inputText value="{!wrapper.marketer}" id="marketerName" />
+                        <a href="#" onclick="lookupIdentity='Marketer';javascript: openCustomLookup('/_ui/common/data/LookupPage?lkfm=page%3Aform&lknm=page%3Aform%3AmarketerId&lktp=003',670,'1','&lookupFrom=RequesterScreen&lookupFor=Marketer&lksrch='+document.getElementById('page:form:pb:pbSection2:pbsItem:marketerName').value);" >
+                            <img src="/s.gif" alt="Requesting Contact Lookup (New Window)" class="lookupIcon" onblur="this.className = 'lookupIcon';" 
+                                 onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" 
+                                 onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="Requesting Contact Lookup (New Window)"/>
+                        </a>
+                        <!-- Hidden param to hold Contact Properties -->
+                        <apex:inputHidden value="{!wrapper.marketerId}" id="marketerId" />
+                        <input type="hidden" name="page:form:marketerId_lkid" id="page:form:marketerId_lkid" value=""/>
+                        <input type="hidden" name="page:form:marketerId_lkold" id="page:form:marketerId_lkold" value=""/>
+                        <input type="hidden" name="page:form:marketerId_lktp" id="page:form:marketerId_lktp" value="003"/>
+                        <input type="hidden" name="page:form:marketerId_lspf" id="page:form:marketerId_lspf" value="0"/>
+                        <input type="hidden" name="page:form:marketerId_lspfsub" id="page:form:marketerId_lspfsub" value="0"/>
+                        <input type="hidden" name="page:form:marketerId_mod" id="page:form:marketerId_mod" value="0"/>
+                        <!-- / Hidden param to hold Contact Properties -->
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <!--  Marketer Field Ends Here-->
+                <!--  Added By Rajeev Jain - 12/22/2015 CR-20150826-9191 - Upto here-->
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Submitted By" />
+                    <apex:outputText value="{!$User.FirstName + ' ' + $User.LastName}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <!-- REFERENCE MODULE(S) POPUP -->
+        <apex:pageBlock title="Select Reference Module(s)" html-style="display:none;" html-for="referenceModuleSelect" id="referenceModuleSelect"><!--  style="display:none;" -->
+            <!-- REFERENCE MODULES -->
+            <apex:outputPanel id="moduleContainer" rendered="{! NOT( ISBLANK( wrapper.recordTypeId ) ) }">
+                <c:ReferenceModulePicklist appName="refModApp1" ctrlName="refModCtrl1" hiddenInputId="referenceModuleInput1" loadAngular="false" showRequired="true" recordTypeName="{!recordTypeName}" autoInit="false" />
+                <c:ReferenceModulePicklist appName="refModApp2" ctrlName="refModCtrl2" hiddenInputId="referenceModuleInput2" loadAngular="false" recordTypeName="{!recordTypeName}" autoInit="false" />
+                <c:ReferenceModulePicklist appName="refModApp3" ctrlName="refModCtrl3" hiddenInputId="referenceModuleInput3" loadAngular="false" recordTypeName="{!recordTypeName}" autoInit="false" />
+                <c:ReferenceModulePicklist appName="refModApp4" ctrlName="refModCtrl4" hiddenInputId="referenceModuleInput4" loadAngular="false" recordTypeName="{!recordTypeName}" autoInit="false" />
+                <c:ReferenceModulePicklist appName="refModApp5" ctrlName="refModCtrl5" hiddenInputId="referenceModuleInput5" loadAngular="false" recordTypeName="{!recordTypeName}" autoInit="false" />
+            </apex:outputPanel>
+            <!-- / REFERENCE MODULES -->
+            <apex:outputPanel style="text-align:center;" layout="block">
+                <apex:commandButton value=" Ok " style="margin: 5px;" action="{!updateModules}" status="waitMsg" onclick="closeDialog('referenceModuleSelect');" rerender="hiddenInputPanel,referenceModuleOutput,attributeSelectList" />
+                <apex:commandButton value=" Cancel " style="margin: 5px;" onClick="closeDialog('referenceModuleSelect'); return false;" />
+            </apex:outputPanel>
+        </apex:pageBlock>
+        <!-- / REFERENCE MODULE(S) POPUP -->
+        
+        <!-- ATTRIBUTES POPUP -->
+        <apex:pageBlock html-for="attributeSelect" html-style="display:none;" id="attributeSelectList" title="Select Reference Attribute(s)">
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attribute 1" />
+                    <apex:outputPanel >
+                        <apex:selectList value="{!attributePicklist1}" multiselect="false" size="1" id="attributePicklist1" onchange="refresh_ctrl_A();" >
+                            <apex:selectOptions value="{!wrapper.attributeOptions}" />
+                        </apex:selectList>
+                        <c:ReferenceAttributeComponent id="rac1" dataId="attributeData" referenceModuleId="attributePicklist1" appName="app_A" ctrlName="ctrl_A"
+                                                       hiddenInputId="attributeModule1" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attribute 2" />
+                    <apex:outputPanel >
+                        <apex:selectList value="{!attributePicklist2}" multiselect="false" size="1" id="attributePicklist2" onchange="refresh_ctrl_B();" >
+                            <apex:selectOptions value="{!wrapper.attributeOptions}" />
+                        </apex:selectList>
+                        <c:ReferenceAttributeComponent id="rac2" dataId="attributeData" referenceModuleId="attributePicklist2" appName="app_B" ctrlName="ctrl_B"
+                                                       hiddenInputId="attributeModule2" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attribute 3" />
+                    <apex:outputPanel >
+                        <apex:selectList value="{!attributePicklist3}" multiselect="false" size="1" id="attributePicklist3" onchange="refresh_ctrl_C();" >
+                            <apex:selectOptions value="{!wrapper.attributeOptions}" />
+                        </apex:selectList>
+                        <c:ReferenceAttributeComponent id="rac3" dataId="attributeData" referenceModuleId="attributePicklist3" appName="app_C" ctrlName="ctrl_C"
+                                                       hiddenInputId="attributeModule3" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attribute 4" />
+                    <apex:outputPanel >
+                        <apex:selectList value="{!attributePicklist4}" multiselect="false" size="1" id="attributePicklist4" onchange="refresh_ctrl_D();" >
+                            <apex:selectOptions value="{!wrapper.attributeOptions}" />
+                        </apex:selectList>
+                        <c:ReferenceAttributeComponent id="rac4" dataId="attributeData" referenceModuleId="attributePicklist4" appName="app_D" ctrlName="ctrl_D"
+                                                       hiddenInputId="attributeModule4" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attribute 5" />
+                    <apex:outputPanel >
+                        <apex:selectList value="{!attributePicklist5}" multiselect="false" size="1" id="attributePicklist5" onchange="refresh_ctrl_E();" >
+                            <apex:selectOptions value="{!wrapper.attributeOptions}" />
+                        </apex:selectList>
+                        <c:ReferenceAttributeComponent id="rac5" dataId="attributeData" referenceModuleId="attributePicklist5" appName="app_E" ctrlName="ctrl_E"
+                                                       hiddenInputId="attributeModule5" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:outputPanel style="text-align:center;" layout="block">
+                <apex:commandButton value=" Ok " style="margin: 5px;" action="{!updateAttributes}" status="waitMsg" onclick="closeDialog('attributeSelect');" rerender="hiddenInputPanel,attributeOutput" />
+                <apex:commandButton value=" Cancel " style="margin: 5px;" onClick="closeDialog('attributeSelect'); return false;" />
+            </apex:outputPanel>
+        </apex:pageBlock>
+        <!-- / ATTRIBUTES POPUP -->
+    </apex:form>
+    
+    <script>
+    
+    var lookupIdentity = '';
+    
+    function closeDialog(elementId) {
+        j$( "[for='" + elementId + "']" ).dialog().dialog("close");
+    }
+    
+    function createDialogs(elementId, t, w, h) {
+        j$( "[for='" + elementId + "']" ).dialog({
+            width: w,
+            height: h,
+            modal: false,
+            autoOpen: true,
+            resizable: true,
+            title: t
+        }).parent().appendTo('#page\\:form');
+    }
+    
+    /**
+         * @description: populates the contact info from the custom contact lookup page
+         *               Modified By Rajeev Jain - 12/22/2015 CR-20150826-9191
+         **/
+    function customlookupPick(elem,a,b,c,d,e,f){
+        console.log('@@lookupIdentity:' + lookupIdentity);
+        console.log('@@e:' + e);
+        elem.close();
+        if(lookupIdentity != 'Marketer'){
+            var contactField = j$('[id*=' + lookupIdentity + 'Data]');
+            document.getElementById('page:form:' + lookupIdentity + '_lkid').value = d;
+            j$('[id*=' + lookupIdentity + 'Id]').val(d);
+            document.getElementById('page:form:' + lookupIdentity + '_lkold').value = e;
+            contactField.val(e);
+            //fieldName, contactId, contactName
+            identifyContact(lookupIdentity, d, e);
+            lookupIdentity = '';
+        }else if(lookupIdentity == 'Marketer'){
+            
+            document.getElementById('page:form:pb:pbSection2:pbsItem:marketerName').value = e;
+            document.getElementById('page:form:marketerId_lkid').value = d;
+            document.getElementById('page:form:pb:pbSection2:pbsItem:marketerId').value = d; 
+            j$('[id*=marketerName]').val(e);
+            j$('[id*=marketerId]').val(d);  
+            document.getElementById('page:form:marketerId_lkold').value = e;
+            lookupIdentity = '';
+        }
+    }
+    
+    /**
+     * @description: disable inputs in the Ref Req Criteria section if Ref Req Type is blank.  Otherwise, enable them.
+    **/
+    function toggleDisabled(val) {
+        if (val == null || val == "") {
+            disableFields();
+        }
+        else {
+            enableFields();
+        }
+    }
+    
+    /**
+     * @description: disable inputs in the Ref Req Criteria section
+    **/
+    function disableFields() {
+        j$('[id*=dateNeededInput]').attr('disabled', 'true');
+        j$('[id*=numRefNeededInput]').attr('disabled', 'true');
+        j$('[id*=refTypeNeededInput]').attr('disabled', 'true');
+        j$('[id*=referenceModuleOutput]').attr('disabled', 'true');
+        j$('[id*=attributeOutput]').attr('disabled', 'true');
+        j$('[id*=backgroundInfoInput]').attr('disabled', 'true');
+        j$('[id*=marketerName]').attr('disabled', 'true');
+        
+        j$('[id*=referenceModuleOutput]').addClass('ui-state-disabled');
+        j$('[id*=attributeOutput]').addClass('ui-state-disabled');
+    }
+    
+    /**
+     * @description: enable inputs in the Ref Req Criteria section
+    **/
+    function enableFields() {
+        j$('[id*=dateNeededInput]').removeAttr('disabled');
+        j$('[id*=numRefNeededInput]').removeAttr('disabled');
+        j$('[id*=refTypeNeededInput]').removeAttr('disabled');
+        j$('[id*=referenceModuleOutput]').removeAttr('disabled');
+        j$('[id*=attributeOutput]').removeAttr('disabled');
+        j$('[id*=backgroundInfoInput]').removeAttr('disabled');
+        j$('[id*=marketerName]').removeAttr('disabled');
+        
+        j$('[id*=referenceModuleOutput]').removeClass('ui-state-disabled');
+        j$('[id*=attributeOutput]').removeClass('ui-state-disabled');
+    }
+    
+    /**
+         * @description: create the datepicker
+         **/
+    j$(function() {
+        setupDatePicker();
+        //disable reference request criteria fields until the user selects a reference request type
+        toggleDisabled(null);
+    });
+    
+    function setupDatePicker() {
+        j$( "[id*=dateNeededInput]" ).datepicker();
+    }
+    
+    function blockMe() {
+        blockElement('#page\\:form\\:pb', 'working...');
+    }
+    
+    function unblockMe() {
+        unblockElement('#page\\:form\\:pb');
+    }
+    
+    /*** LOAD REFERENCE MODULE PICKLISTS ***/
+    function loadModulePicklists() {
+        angular.bootstrap(document.getElementsByClassName('refModCtrl1'), ['refModApp1']);
+        angular.bootstrap(document.getElementsByClassName('refModCtrl2'), ['refModApp2']);
+        angular.bootstrap(document.getElementsByClassName('refModCtrl3'), ['refModApp3']);
+        angular.bootstrap(document.getElementsByClassName('refModCtrl4'), ['refModApp4']);
+        angular.bootstrap(document.getElementsByClassName('refModCtrl5'), ['refModApp5']);
+    }
+    </script>
+    
+    
+    <style>
+        .ui-dialog-content .pbTitle {
+        width: 100% !important;
+        }
+        
+        .ui-dialog-content label {
+        white-space: nowrap;
+        }
+        
+        .homeTab .brdPalette {
+        border-top-color:#7f383a;
+        }
+                
+        .homeTab .listViewport .subNav .linkBar, .homeTab .mComponent 
+        .cHeader, .homeTab .genericTable, .homeTab .bSubBlock, .homeTab .bPageBlock {
+    	border-top: 3px solid #7f383a;
+		}
+        
+        .homeTab .tertiaryPalette, .individualPalette .homeBlock .tertiaryPalette, 
+        .layoutEdit .individualPalette .homeBlock .tertiaryPalette {
+   		 background-color: #ecdadb;
+        }
+        
+        .homeTab .pageTitleIcon, .individualPalette .homeBlock .pageTitleIcon {
+    	background-image: url(/img/icon/custom51_100/thermometer32.png);
+    	background-position: 0 0;
+    	width: 32px;
+    	height: 32px;
+		}
+        
+        .pageTitleIcon {
+    	display: inline;
+    	float: left;
+    	width: 32px;
+    	margin-right: 5px;
+        }
+        
+        .flexButton {
+        text-align:left;
+        min-width: 160px;
+        padding-left: 5px;
+        padding-right: 5px;
+        }
+        
+        .flexLabel {
+        overflow: hidden;
+        white-space: nowrap; 
+        text-overflow: ellipsis;
+        }
+    </style>
+</apex:page>

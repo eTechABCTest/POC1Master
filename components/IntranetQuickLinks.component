@@ -1,0 +1,26 @@
+<apex:component layout="none">
+    <apex:attribute name="ItemContent" type="IntranetContainer" description="Container record" />
+    
+    <div class="block links {!if(ItemContent.isPreview, 'preview-mode', '')}">
+        <h2 class="header"><apex:outputText value="{!ItemContent.DisplayName}" /></h2>
+        <ul class="quick_links list_elements action">
+            <apex:repeat value="{!ItemContent.RelatedContent}" var="links" id="all_links">
+                <li>
+                    <apex:outputLink value="{!(links.LinkLocation)}" target="{!links.LinkAction}"
+                                     html-data-click-type="Open Page"
+                                     html-data-display-name="{!links.DisplayName}"
+                                     html-data-container-id="{!links.IntranetContainerId}"
+                                     html-data-item-id="{!links.IntranetItemId}"
+                                     html-data-schedule-id="{!links.IntranetScheduleId}">
+                        <apex:outputText value="{!links.ItemTitle}" />
+                    </apex:outputLink>
+                </li>
+            </apex:repeat>
+        </ul>
+        <apex:outputPanel layout="none" rendered="{!ItemContent.ShowExpandLink}"> 
+            <div class="view_more right action_link">
+                <a href="">View Site Map <i class="fa fa-search"></i></a>
+            </div>
+        </apex:outputPanel>
+    </div>
+</apex:component>

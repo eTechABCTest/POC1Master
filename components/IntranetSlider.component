@@ -1,0 +1,69 @@
+<!--Modified By - Abhinav Sharma - 04/28/2015 - CR-20150219-8692 - Boardroom Speed Issue-->
+<apex:component layout="none">
+    
+	<apex:attribute name="ItemContent" type="IntranetContainer" description="Container record" />
+    
+    <apex:outputPanel rendered="{!ItemContent.RelatedContent.size > 0}" >
+        <div class="block slider no_padding {!if(ItemContent.isPreview, 'preview-mode', '')}">
+            <ul class="news_slider slider_top white">
+                <apex:repeat value="{!ItemContent.RelatedContent}" var="item">
+                    <li>
+                        <div class="slider_image_wrapper">
+                            <div class="slider_main_image" style="background-color:#{!item.BackgroundColor};">
+                                <apex:outputPanel layout="none" rendered="{!item.ContentMainImageId != null}">
+                                    <img src="/servlet/servlet.FileDownload?file={!item.ContentMainImageId}" />
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <apex:outputPanel layout="none" rendered="{!item.TextboxVisible}">
+                            <div class="slider_content content_padding" style="background-color:#{!item.TextboxBackColor};">
+                                <h2 class="header"><apex:outputText value="{!item.CategoryReferenceName}" /></h2>
+                                <h3><apex:outputText value="{!item.ItemTitle}"></apex:outputText></h3>
+                                <h4><apex:outputText value="{!item.ItemSubTitle}"></apex:outputText></h4>
+                                <div class="block_footer content_padding">
+                                    <c:IntranetChatterLinks itemId="{!item.IntranetItemId}" containerId="{!ItemContent.ContainerId}" scheduleId="{!item.IntranetScheduleId}" itemData="{!item}" view="news"/>
+                                    <div class="divider"></div>
+                                </div>
+                                <div class="view-more right">
+                                    <a data-type="content" href="/apex/IntranetContentViewer?view=news&ScheduleId={!item.IntranetScheduleId}">Learn More <i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </li>
+                </apex:repeat>
+            </ul>
+            <div class="slider_bottom">
+                <div class="viewer">
+                    <ul class="news_slider_pager slides">
+                        <apex:variable var="count" value="{!0}"/>
+                        <apex:repeat value="{!ItemContent.RelatedContent}" var="item">
+                            <li class="pager-{!count}">
+                                <div class="slide_preview {!if(count == 0, 'active', '')}" data-slide-index="{!count}">
+                                    <div class="thumb">
+                                        <apex:outputPanel layout="none" rendered="{!item.ContentThumbnailImageId != null}">
+                                            <img src="/servlet/servlet.FileDownload?file={!item.ContentThumbnailImageId}" />
+                                        </apex:outputPanel>
+                                    </div>
+                                    <div class="topic"><apex:outputText value="{!item.CategoryReferenceName}" /></div>
+                                    <p class="description"><apex:outputText value="{!item.ItemTitle}" /></p>
+                                    <div class="slide-active"></div>
+                                </div>
+                            </li>
+                            <apex:variable var="count" value="{!count + 1}"/>
+                        </apex:repeat>
+                    </ul>
+                    
+                    <div class="arrow left"></div>
+                    <div class="arrow right"></div>
+                    
+                </div>
+                <div class="divider"></div>
+            </div>
+            <apex:outputPanel layout="none" rendered="{!ItemContent.ShowExpandLink && ItemContent.RelatedContent.size > 0}"> 
+                <div class="view-more right action-link">
+                    <a href="/apex/IntranetContentViewer?view=news&ScheduleId={!ItemContent.RelatedContent[0].IntranetScheduleId}">View More <i class="glyphicon glyphicon-plus"></i></a>
+                </div>
+            </apex:outputPanel>
+        </div>
+    </apex:outputPanel>
+</apex:component>

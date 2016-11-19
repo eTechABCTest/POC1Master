@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Contains default settings for each credit card profile</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Age_Limit_Warning_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzzzzAge Limit Warning Days</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Balance_Limit_Warning_Level__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Warning email sent to Card Owner if percent of available credit is below warning level</inlineHelpText>
+        <label>zzzBalance Limit Warning Level</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Cycle_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Card Reset Cycle Type</inlineHelpText>
+        <label>zzzCycle Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>T - Never Reset</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>M - Monthly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>W - Weekly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzDescription</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>International_Purchasing_Allowed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Comdata API - Internantional Purchasing Allowed
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Non-US or CN</inlineHelpText>
+        <label>zzzInternational Purchasing Allowed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Internet_Purchasing_Allowed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Comdata API - Internet Purchasing Allowed
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzInternet Purchasing Allowed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Max_Cycle_Amount__c</fullName>
+        <description>Comdata API - Maximum Cycle Amount
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total Spending Limit</inlineHelpText>
+        <label>zzzCredit Limit Amount</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Max_Per_Day__c</fullName>
+        <description>Comdata API - Maximum Amount Per Day
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Spending Limit Per Day</inlineHelpText>
+        <label>zzzMax Amount Per Day</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Max_Per_Transaction__c</fullName>
+        <description>Comdata API - Maximum Amount Per Transaction
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Spending Limit Per Transaction</inlineHelpText>
+        <label>zzzMax Amount Per Transaction</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Max_Transaction_Age__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzMax Transaction Age</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Transactions_Per_Cycle__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzMax Transactions Per Cycle</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Transactions_Per_Day__c</fullName>
+        <description>Comdata API - Maximum Number of Transactions Per Day
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Limit on Number of Transactions Per Day</inlineHelpText>
+        <label>zzzMax Transactions Per Day</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>One_Time_Use_Card__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Card Balance is not replenished after use</inlineHelpText>
+        <label>zzzOne Time Use Card</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Open_Close_Flag__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Card Profile Limits setting</inlineHelpText>
+        <label>zzzOpen/Close Flag</label>
+        <picklist>
+            <picklistValues>
+                <fullName>O - Open</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>C - Close</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Available_Flag__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzProduct Available Flag</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Y</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>N</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(LEFT(TEXT(Cycle_Type__c),1) == &apos;T&apos;, &apos;10000&apos;, &apos;&apos;)</formula>
+        <label>zzzProduct Code</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Profile_Group_Number__c</fullName>
+        <description>Comdata API - Profile Value Number
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Matches Profile Number sent to Comdata</inlineHelpText>
+        <label>zzzProfile Group Number</label>
+        <length>3</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Profile_Name__c</fullName>
+        <description>Comdata API - Description - Size limited by API
+
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Descriptive name</inlineHelpText>
+        <label>zzzProfile Name</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transaction_Age_Limit__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of days for a non-cleared posted transaction</inlineHelpText>
+        <label>zzzTransaction Age Limit</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>zzzCredit Card Profile</label>
+    <nameField>
+        <label>Profile Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>zzzCredit Card Profiles</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>ABC_Applicant</fullName>
+        <active>false</active>
+        <description>Profile for a Portfolio of cards for ABC Applicants</description>
+        <label>ABC Applicant</label>
+        <picklistValues>
+            <picklist>Cycle_Type__c</picklist>
+            <values>
+                <fullName>M - Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>T - Never Reset</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>W - Weekly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Open_Close_Flag__c</picklist>
+            <values>
+                <fullName>C - Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O - Open</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Available_Flag__c</picklist>
+            <values>
+                <fullName>N</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Y</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>ABC_Employee</fullName>
+        <active>true</active>
+        <description>Profile for a standard employee Portfolio</description>
+        <label>ABC Employee</label>
+        <picklistValues>
+            <picklist>Cycle_Type__c</picklist>
+            <values>
+                <fullName>M - Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>T - Never Reset</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>W - Weekly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Open_Close_Flag__c</picklist>
+            <values>
+                <fullName>C - Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O - Open</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Available_Flag__c</picklist>
+            <values>
+                <fullName>N</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Y</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>ABC_Purchase_Request_Payment</fullName>
+        <active>false</active>
+        <description>Profile for a Portfolio of cards used for Purchase Request Payments</description>
+        <label>ABC Purchase Request Payment</label>
+        <picklistValues>
+            <picklist>Cycle_Type__c</picklist>
+            <values>
+                <fullName>M - Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>T - Never Reset</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>W - Weekly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Open_Close_Flag__c</picklist>
+            <values>
+                <fullName>C - Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O - Open</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Available_Flag__c</picklist>
+            <values>
+                <fullName>N</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Y</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Profile_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Profile_Group_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Max_Cycle_Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>International_Purchasing_Allowed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Internet_Purchasing_Allowed__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Profile_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Profile_Group_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Max_Cycle_Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>International_Purchasing_Allowed__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Internet_Purchasing_Allowed__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Profile_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Profile_Group_Number__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Max_Cycle_Amount__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Profile_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Profile_Group_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Max_Cycle_Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>International_Purchasing_Allowed__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Internet_Purchasing_Allowed__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

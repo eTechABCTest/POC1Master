@@ -1,0 +1,26 @@
+<apex:component layout="none">
+    <apex:attribute name="ContainerActions" type="IntranetContainer" description="Hold Links of Action for Internal Pages"/>
+    
+    <!-- Action Menu -->
+    <apex:outputPanel rendered="{!ContainerActions.RelatedContent.size > 0}">
+        <div class="action-container" id="actionMenu">
+            <div class="block">
+                <h2 class="header"><apex:outputText value="{!ContainerActions.DisplayName}" /></h2>
+                <ul>
+                    <apex:repeat value="{!ContainerActions.RelatedContent}" var="links" id="all_links">
+                       <li>
+                           <apex:outputLink value="{!links.LinkLocation}" target="{!links.LinkAction}"
+                                     html-data-click-type="Open Page"
+                                     html-data-display-name="{!links.DisplayName}"
+                                     html-data-container-id="{!links.IntranetContainerId}"
+                                     html-data-item-id="{!links.IntranetItemId}"
+                                     html-data-schedule-id="{!links.IntranetScheduleId}">
+                            <apex:outputText value="{!links.ItemTitle}" />
+                           </apex:outputLink>
+                       </li>
+                    </apex:repeat>
+                </ul>
+            </div>
+        </div>
+    </apex:outputPanel>
+</apex:component>

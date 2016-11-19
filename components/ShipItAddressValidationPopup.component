@@ -1,0 +1,196 @@
+<!--
+    /** 
+      * Description     :   This component is used to display address comparision between user address and fed ex address sugestion    
+      *
+      * Created By      :   Rajeev Jain(Simplyforce)
+      *
+      * Created Date    :   03/27/2015
+      *
+      * Version         :   V1.0 Created
+      *
+      **/  
+--> 
+<apex:component >
+    
+    <!-- Components Attributes --> 
+    <!--<apex:attribute name="shipment" type="Shipment__c" description="Shipment Object Instance"/>-->
+	
+    <apex:attribute name="shipmentWrapper" type="ShipmentWrapper" description="Shipment Wrapper Object Instance"/>
+    
+    <apex:attribute name="isInvalidContactId" type="Boolean" description="Flag to show or hide invalid contact Id Message from Custom label"/>
+    
+    <!--<apex:attribute name="compShipment" type="Shipment__c" description="Shipment Object Instance to compare address data with existing address"/>-->
+    
+    <apex:attribute name="compShipmentWrapper" type="ShipmentWrapper" description="Shipment Object Wrapper instance to compare addresse with exsitning one"/>
+    
+    <apex:attribute name="validationStatus" type="String" description="It decides to display popup or not"/>
+    
+    <apex:attribute name="isAddressFieldsRequired" type="Boolean" description="Flag to decide when address field is required"/>
+    
+    <apex:attribute name="isAddressUpdateAccepted" type="String" description="If True, User has accepted fedEx Address Correction else denied by him or if set to blank then not any action initiated"/>
+    
+    <apex:attribute name="isInvalidSuitNumber" type="Boolean" description="States that Suit Number is valid or not"/>
+    
+    <apex:attribute name="addressRevalidationCounter" type="Integer" description="States that how many time address has revalidated in case of Warning or failure"/>
+    
+    <!-- Validation Messagge -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12" style="text-align:center;padding:10px 0;color:{!IF(validationStatus == 'Warning','#CE1100;','#0000FF;')}">
+            <apex:outputPanel rendered="{!IF(validationStatus == 'Warning',true,false)}">
+                
+                <apex:outputPanel rendered="{!isInvalidSuitNumber}">{!$Label.ShipIt_AddressWarningInvalidSuit}</apex:outputPanel>
+                <apex:outputPanel rendered="{!NOT(isInvalidSuitNumber)}">{!$Label.ShipIt_AddressWarning}</apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!IF(validationStatus == 'Passed',true,false)}">{!$Label.ShipIt_AddressPassedMinor} </apex:outputPanel>
+            <apex:outputPanel rendered="{!IF(validationStatus == 'Resolved',true,false)}">{!$Label.ShipIt_AddressResolved}</apex:outputPanel>
+        </div>
+    </div> 
+    <!-- Validation Messagge Ends-->
+    
+    <!-- Address Comparision and Suggestion-->
+    <div class="row form-horizontal addressFieldBox">
+        <!-- Left Box Contains Actual Adddress Entered Byy User -->
+        <div class="col-md-6 col-sm-6 col-xs-6 addressFieldLeftBox">
+            <div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 addressHeadingLabel" style="">
+                        Address As Entered
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel reviewDetailLightLabel">Address Line 1</label>
+                            <div class="col-sm-8">
+                                <label class="">{!shipmentWrapper.RecipientAddressLine1}</label>
+                            </div>
+                        </div> 
+                        <apex:outputPanel styleClass="form-group" layout="block">
+                            <label class="col-sm-4 control-label reviewDetailsLabel reviewDetailLightLabel">Address Line 2</label>
+                            <div class="col-sm-8">
+                                <label class="">{!shipmentWrapper.RecipientAddressLine2}</label>
+                            </div>
+                        </apex:outputPanel>  
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel reviewDetailLightLabel">City</label>
+                            <div class="col-sm-8">
+                                <label class="">{!shipmentWrapper.RecipientCity}</label>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel reviewDetailLightLabel">State</label>
+                            <div class="col-sm-8">
+                                <label class="">{!shipmentWrapper.RecipientStateOrProvince}</label>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel reviewDetailLightLabel">Zip Code</label>
+                            <div class="col-sm-8">
+                                <label class="">{!shipmentWrapper.RecipientPostalCode}</label>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Box Contains Suggested Address By FedEx or User Can his own address -->
+        <div class="col-md-6 col-sm-6 col-xs-6 addressFieldRightBox">
+            <div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 addressHeadingLabel" style="">
+                        <apex:outputPanel rendered="{!IF(validationStatus == 'Warning',true,false)}">Updated Address</apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(validationStatus != 'Warning',true,false)}">Suggested Update</apex:outputPanel>
+                    </div>
+                </div>	
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel {!IF(shipmentWrapper.RecipientAddressLine1 != compShipmentWrapper.RecipientAddressLine1,IF(validationStatus == 'Warning',' addressRedLabel',' addressBlueLabel'),' reviewDetailLightLabel')}">
+                                Address Line 1
+                            </label>
+                            
+                            <!-- If Status is Resolved only addressline1 and line 2 field should be editable and for warning all field should be editable-->
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus != 'Warning' && validationStatus != 'Resolved',true,false)}">
+                                <label class="">{!compShipmentWrapper.RecipientAddressLine1}</label>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-sm-8 requiredData" layout="block" rendered="{!IF(validationStatus == 'Warning' || validationStatus == 'Resolved',true,false)}">
+                                <span class="timeLineIcon-red" style="display:none;"></span>
+                                <apex:inputText value="{!compShipmentWrapper.RecipientAddressLine1}" styleClass="suggestedInput suggestedInput1"
+                                                html-data-required="true" onchange="setChangeFlagForAddressValidationPopup();"/>
+                            </apex:outputPanel>
+                        </div> 
+                        <apex:outputPanel styleClass="form-group" layout="block">
+                            <label class="col-sm-4 control-label reviewDetailsLabel {!IF(shipmentWrapper.RecipientAddressLine2 != compShipmentWrapper.RecipientAddressLine2,IF(validationStatus == 'Warning',' addressRedLabel',' addressBlueLabel'),' reviewDetailLightLabel')}">Address Line 2</label>
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus != 'Warning' && validationStatus != 'Resolved',true,false)}">
+                                <label class="">{!compShipmentWrapper.RecipientAddressLine2}</label>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus == 'Warning' || validationStatus == 'Resolved',true,false)}">
+                                <span class="timeLineIcon-red" style="display:none;"></span>
+                                <apex:inputText value="{!compShipmentWrapper.RecipientAddressLine2}" styleClass="suggestedInput suggestedInput2"
+                                                onchange="setChangeFlagForAddressValidationPopup();"/>
+                            </apex:outputPanel>
+                        </apex:outputPanel>  
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel {!IF(shipmentWrapper.RecipientCity != compShipmentWrapper.RecipientCity,IF(validationStatus == 'Warning',' addressRedLabel',' addressBlueLabel'),' reviewDetailLightLabel')}">City</label>
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus != 'Warning',true,false)}">
+                                <label class="">{!compShipmentWrapper.RecipientCity}</label>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-sm-8 requiredData" layout="block" rendered="{!IF(validationStatus == 'Warning',true,false)}">
+                                <span class="timeLineIcon-red" style="display:none;"></span>
+                                <apex:inputText value="{!compShipmentWrapper.RecipientCity}" styleClass="suggestedInput suggestedInput3"
+                                                onchange="setChangeFlagForAddressValidationPopup();"/>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel {!IF(shipmentWrapper.RecipientStateOrProvince != compShipmentWrapper.RecipientStateOrProvince,IF(validationStatus == 'Warning',' addressRedLabel',' addressBlueLabel'),' reviewDetailLightLabel')}">State</label>
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus != 'Warning',true,false)}">
+                                <label class="">{!compShipmentWrapper.RecipientStateOrProvince}</label>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-sm-8 requiredData" layout="block" rendered="{!IF(validationStatus == 'Warning',true,false)}">
+                                <span class="timeLineIcon-red" style="display:none;"></span>
+                                <apex:inputText value="{!compShipmentWrapper.RecipientStateOrProvince}" styleClass="suggestedInput suggestedInput4"
+                                                onchange="setChangeFlagForAddressValidationPopup();"/>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label reviewDetailsLabel {!IF(shipmentWrapper.RecipientPostalCode != compShipmentWrapper.RecipientPostalCode,IF(validationStatus == 'Warning',' addressRedLabel',' addressBlueLabel'),' reviewDetailLightLabel')}">Zip Code</label>
+                            <apex:outputPanel styleClass="col-sm-8" layout="block" rendered="{!IF(validationStatus != 'Warning',true,false)}">
+                                <label class="">{!compShipmentWrapper.RecipientPostalCode}</label>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-sm-8 requiredData" layout="block" rendered="{!IF(validationStatus == 'Warning',true,false)}">
+                                <span class="timeLineIcon-red" style="display:none;"></span>
+                                <apex:inputText value="{!compShipmentWrapper.RecipientPostalCode}" styleClass="suggestedInput suggestedInput5"
+                                                onchange="setChangeFlagForAddressValidationPopup();"/>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Address Comparision and Suggestion Ends-->
+    <div class="row validationMessageBottom">
+        <div class="col-md-10 col-sm-10 col-xs-10 addValidationMsg" style="">
+            <apex:outputPanel rendered="{!IF(validationStatus != 'Warning',true,false)}">Would you like to accept the highlighted address updates?</apex:outputPanel>
+            <apex:outputPanel rendered="{!IF(validationStatus == 'Warning',true,false)}">Validation failures are highlighted. Please update fields as needed and validate again.</apex:outputPanel>
+            <!--<div id="userPromptMsg" style="display:none;color:#CE1100;">
+            	You must edit something before clicking Validate Address again. 
+            </div>-->
+        </div>
+    </div> 
+    <div class="row validationFurtherAction">
+        <apex:outputPanel styleClass="col-md-10 col-sm-10 col-xs-10" style="margin:auto;float:center;"
+                          layout="block" rendered="{!IF(validationStatus != 'Warning',true,false)}">
+            <input class="navBtn  nextNavigation navigation" type="button" value="{!$Label.ShipIt_KeepExistingAddress}"
+                   style="float:left;background-color:#C4C6C8;color:inherit;" onclick="$('#AddressDialog').dialog('close');keepExistingAddress();"/>
+            <input class="navBtn  nextNavigation navigation" type="button" value="{!$Label.ShipIt_AcceptAddressUpdate}"
+                   style="float:right;background-color:#C4C6C8;color:inherit;" onclick="$('#AddressDialog').dialog('close');updateAccessedAddress();"/>
+        </apex:outputPanel>
+        <apex:outputPanel styleClass="col-md-10 col-sm-10 col-xs-10" style="margin:auto;float:center;"
+                          layout="block" rendered="{!IF(validationStatus == 'Warning',true,false)}">
+            <input class="navBtn  nextNavigation navigation" type="button" value="{!$Label.ShipIt_KeepExistingAddress}" style="float:left;" onclick="$('#AddressDialog').dialog('close');keepExistingAddress();"/>
+            <input class="navBtn  nextNavigation navigation" type="button" value="{!$Label.ShipIt_ValidateAddress}" style="float:right;" onclick="checkRequiredAndReValidateAddress(this,{!addressRevalidationCounter});"/>
+        </apex:outputPanel>
+    </div>
+</apex:component>

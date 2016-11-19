@@ -1,0 +1,75 @@
+<apex:page controller="GoogleAnalyticsController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" >
+    <html>
+        <head>
+            <c:IncludeJQuery />
+        </head>
+        <body>
+            <apex:form id="mainForm">
+                <apex:actionFunction name="getAnalyticsData" action="{!getAnalyticsData}" reRender="panel" >
+                    <apex:param name="fullURL" assignTo="{!URL}" value="" />
+                </apex:actionFunction>
+                <apex:outputPanel id="panel">
+                    <apex:outputPanel id="innerPanel" rendered="{!enableTracking}">
+                        <script>
+                        /***					***/
+                        /***  Google Analytics	***/
+                        /***					***/
+                        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                                                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                        
+                        ga("create", "{!$Label.Google_Analytics_Tracking_Code}", "auto");
+                        
+                        
+                        //set custom dimensions to track in GA
+                        ga("set", "{!$Label.GA_Username_Dimension}", "{!usr.Username}");
+                        ga("set", "{!$Label.GA_Object_API_Name_Dimension}", "{!objAPIName}");
+                        ga("set", "{!$Label.GA_Object_Label_Dimension}", "{!objName}");
+                        ga("set", "{!$Label.GA_Activity_Type_Dimension}", "{!activityType}");
+                        ga("set", "{!$Label.GA_Record_Id_Dimension}", "{!recordId}");
+                        ga("set", "{!$Label.GA_Record_Type_Name_Dimension}", "{!recordTypeName}");
+                        ga("set", "{!$Label.GA_Profile_Name_Dimension}", "{!usr.Profile.Name}");
+                        ga("set", "{!$Label.GA_Department_Dimension}", "{!usr.Department}");
+                        ga("set", "{!$Label.GA_License_Type_Dimension}", "{!licenseType}");
+                        
+                        //if the activityType parameter is passed to the page, this should be set as the activityType dimension
+                        if ("{!$CurrentPage.parameters.activityType}" != "") ga("set", "{!$Label.GA_Activity_Type_Dimension}", "{!$CurrentPage.parameters.activityType}");
+                        
+                        //if a dashboard is being viewed, set the title as the dashboard title.
+                        if ("{!dashboardTitle}" != "") ga("set", "title", "{!dashboardTitle}");
+                        
+                        //send pageview to GA
+                        ga("send", "pageview", fPath);
+                        
+                        </script>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <script>
+                
+                var fLoc = document.referrer; //ie: https://c.cs8.visual.force.com/apex/Account_US_Provider_Strategic?id=001L000000M2LKnIAN
+                var fPath = document.referrer.split('.com/')[1]; //ie: /a4ZL00000000FNg
+                
+                function getURL() {
+                    fLoc += "";
+                    fPath += "";
+                    var u;
+                    
+                    if (fLoc.indexOf("/apex/") != -1) {
+                        u = "/apex/" + fLoc.split("/apex/")[1];
+                    }
+                    else {
+                        u = fPath;
+                    }
+                    return u;
+                }
+                
+                j$(function() {
+                    getAnalyticsData(getURL()); 
+                });
+                </script>
+            </apex:form>
+        </body>
+    </html>
+</apex:page>

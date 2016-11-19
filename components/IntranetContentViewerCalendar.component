@@ -1,0 +1,235 @@
+<!--V_1.1 - Modified By - Rajeev Jain - 06/29/2015 - CR-20150618-9016 - Board Room Mobile -->
+<apex:component layout="none" controller="IntranetContentViewerController">
+    <apex:variable var="view" value="{!$CurrentPage.parameters.view}" />
+    <div class="popup" id="calenderPopup">
+        <a class="x close" href="{!$Label.Intranet_Home}">x</a>
+        <div class="top-event-links">
+            <apex:repeat value="{!Container.subContainers}" var="subcontainer">
+                <apex:repeat value="{!subcontainer.RelatedContent}" var="item">
+                    <a href="{!URLFOR(item.LinkLocation)}" target="{!item.LinkAction}">{!item.ItemTitle} <i class="fa fa-calendar"></i></a>
+                </apex:repeat>
+            </apex:repeat>
+        </div>
+        <div id="popup_content" class="row">
+            <h2 class="header"><apex:outputText value="{!OfficeName} " rendered="{!OfficeName != null}" />{!Container.DisplayName}</h2> 
+            
+            <div id="calendar-container">
+                
+                <!-- Tablet And Desktop View Starts from here -->
+                <div class="calendar-header">
+                    <apex:outputPanel id="panelMonth" styleClass="panelMonth">
+                        <div class="month">Month: <span>{!month}</span></div>
+                    </apex:outputPanel>
+                     <apex:outputPanel id="panelMonth-mobile" styleClass="panelMonth-mobile">
+                        <div class="month">Month: <span>{!dayCalendarData.currentMonth}</span></div>
+                    </apex:outputPanel>
+                    <div class="navigation">
+                        <apex:form id="navigation">
+                            <span class="load-icon">
+                                <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                            </span>
+                            <apex:commandLink action="{!LoadPreviousWeekData}" status="load-more-spinner" rerender="panelCalendar,panelMonth"><i class="fa fa-chevron-left"></i></apex:commandLink>
+                            <apex:commandLink action="{!LoadNextWeekData}" status="load-more-spinner" rerender="panelCalendar,panelMonth"><i class="fa fa-chevron-right"></i></apex:commandLink>
+                        </apex:form>
+                    </div>                
+                </div> 
+                
+                <apex:outputPanel id="panelCalendar" styleClass="panelCalendar">
+                    <div id="calendar-grid" class="row center-row" >
+                        
+                        <apex:repeat value="{!wrapperList}" var="calData">
+                            <div class="col-md-5ths col center">
+                                
+                                <div class="day-of-week {!IF(calData.fullDayString == TodayDate, 'active', '')}">
+                                    <h2 class="day">{!calData.weekDayNumber}</h2>
+                                    <h3 class="weekday">{!calData.weekDayString}</h3>
+                                </div>
+                                
+                                <apex:outputPanel rendered="{!NoWeeklyData == false}" >
+                                    <div class="event-wrapper">
+                                        <apex:repeat value="{!calData.intranetContentList}" var="item">
+                                            <div class="event">
+                                                
+                                                <apex:outputPanel layout="none" rendered="{!item.LinkLocation != null}">
+                                                    <a href="{!URLFOR(item.LinkLocation)}" target="{!item.LinkAction}">
+                                                        <h4 class="event-title">{!item.ItemTitle}</h4>
+                                                    </a>
+                                                </apex:outputPanel>
+                                                
+                                                <apex:outputPanel layout="none" rendered="{!item.LinkLocation == null}">
+                                                    <h4 class="event-title">{!item.ItemTitle}</h4>
+                                                </apex:outputPanel>
+                                                
+                                                <h5 class="event-meta">
+                                                    <apex:outputText rendered="{!view == 'member events'}" value="{!item.LocationCity}" />
+                                                    <apex:outputPanel rendered="{!view == 'training events'}">
+                                                        <c:DateTimeFormat value="{!item.EventStartDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        <apex:outputText rendered="{!item.EventStartDateTime != null && item.EventEndDateTime != null}" value=" - " />
+                                                        <c:DateTimeFormat value="{!item.EventEndDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        EST<br/>
+                                                        <apex:outputText rendered="{!item.RoomName != null}" value="{!item.RoomName}" /><br/>
+
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!view == 'office events'}">
+                                                        <c:DateTimeFormat value="{!item.EventStartDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        <apex:outputText rendered="{!item.EventStartDateTime != null && item.EventEndDateTime != null}" value=" - " />
+                                                        <c:DateTimeFormat value="{!item.EventEndDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        EST<br/>
+                                                        {!item.RoomName}&nbsp;{!item.RoomNumber}
+                                                        <apex:outputText rendered="{!item.Floor != null}" value=" ({!item.Floor})" />
+                                                    </apex:outputPanel>
+                                                </h5>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </apex:repeat>
+                        
+                    </div>
+                    <apex:outputPanel rendered="{!NoWeeklyData == true}">
+                        <div class="row no-items">There are no events scheduled for this week.</div>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <!-- Tablet and Desktop View Ends Here -->
+                
+                <!--V_1.1 - Modified By - Rajeev Jain - 06/29/2015 - CR-20150618-9016 - Board Room Mobile -->
+                <!-- Display only in mobiel version and display daily view instead of the Week view -->
+                <apex:outputPanel id="panelCalendar-mobile" style="position:relative;"
+                                  styleClass="row panelCalendar-mobile navigation-mobile" layout="block">
+                    <apex:form id="navigation-mobile">
+                        
+                        <input type="hidden" value="{!currentSelectedIndex}" id="currentIndex"/>
+                        <apex:actionFunction action="{!navigateToPreviousDay}" name="loadPreviousWeek"
+                                             reRender="panelCalendar-mobile,panelMonth-mobile">
+                            <apex:param name="xyz1" assignTo="{!currentSelectedIndex}" value=""/>
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!navigateToNextDay}" name="loadNextWeek"
+                                             reRender="panelCalendar-mobile,panelMonth-mobile">
+                            <apex:param name="xyz2" assignTo="{!currentSelectedIndex}" value=""/>
+                        </apex:actionFunction>
+                        
+                        <apex:variable value="{!0}" var="index"/>
+                        <apex:repeat value="{!wrapperList}" var="calData">
+                            <div class="col-md-5ths col center dayView-{!index}" itemIndex="{!index}"
+                                 style="display:{!IF(currentSelectedIndex == index,'block;','none;')}">
+                                
+                                <div class="day-of-week {!IF(calData.fullDayString == TodayDate, 'active', '')}">
+                                    <h2 class="day">{!calData.weekDayNumber}</h2>
+                                    <h3 class="weekday">{!calData.weekDayString}</h3>
+                                </div>
+                                
+                                <apex:outputPanel rendered="{!NoWeeklyData == false}" >
+                                    <div class="event-wrapper" style="text-align:center;">
+                                        <apex:repeat value="{!calData.intranetContentList}" var="item">
+                                            <div class="event">
+                                                
+                                                <apex:outputPanel layout="none" rendered="{!item.LinkLocation != null}">
+                                                    <a href="{!URLFOR(item.LinkLocation)}" target="{!item.LinkAction}">
+                                                        <h4 class="event-title">{!item.ItemTitle}</h4>
+                                                    </a>
+                                                </apex:outputPanel>
+                                                
+                                                <apex:outputPanel layout="none" rendered="{!item.LinkLocation == null}">
+                                                    <h4 class="event-title">{!item.ItemTitle}</h4>
+                                                </apex:outputPanel>
+                                                
+                                                <h5 class="event-meta">
+                                                    <apex:outputText rendered="{!view == 'member events'}" value="{!item.LocationCity}" />
+                                                    <apex:outputPanel rendered="{!view == 'training events'}">
+                                                        <c:DateTimeFormat value="{!item.EventStartDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        <apex:outputText rendered="{!item.EventStartDateTime != null && item.EventEndDateTime != null}" value=" - " />
+                                                        <c:DateTimeFormat value="{!item.EventEndDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        EST<br/>
+                                                        <apex:outputText rendered="{!item.RoomName != null}" value="{!item.RoomName}" /><br/>
+
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!view == 'office events'}">
+                                                        <c:DateTimeFormat value="{!item.EventStartDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        <apex:outputText rendered="{!item.EventStartDateTime != null && item.EventEndDateTime != null}" value=" - " />
+                                                        <c:DateTimeFormat value="{!item.EventEndDateTime}" formatString="h:mm a" timezone="America/New_York" />
+                                                        EST<br/>
+                                                        {!item.RoomName}&nbsp;{!item.RoomNumber}
+                                                        <apex:outputText rendered="{!item.Floor != null}" value=" ({!item.Floor})" />
+                                                    </apex:outputPanel>
+                                                </h5>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:variable value="{!index+1}" var="index"/>
+                        </apex:repeat>
+                        
+                        <!-- Display if not a single week display --->
+                        <apex:outputPanel rendered="{!NoWeeklyData == true}">
+                            <div class="no-items">There are no events scheduled for this week.</div>
+                        </apex:outputPanel>
+                        
+                        <!-- navigation of Day View -->
+                        <a href="javascript:void(0);" style="position:absolute;left:10px;" 
+                           class="navBt" prevIndex="" currentSelectedIndex=""
+                           onClick="goPrevious(event,this);">
+                            <i class="fa fa-chevron-left"></i>
+                        </a>
+                        <a href="javascript:void(0);" style="position:absolute;right:10px;" 
+                           class="navBt" nextIndex="" currentSelectedIndex=""
+                           onClick="goNext(event,this);">
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                        
+                        <!-- Ajax Spinner -->
+                        <div style="text-align:center;font-size:40px;display:none" id="load-more-spinner-mobile">
+                                <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                       
+                    </apex:form>
+                </apex:outputPanel> 
+                <!-- Mobile View Ends Here -->
+            </div>
+        </div>
+    </div>
+    <!--V_1.1 - Modified By - Rajeev Jain - 06/29/2015 - CR-20150618-9016 - Board Room Mobile -->
+    <!-- Day View Navigation on Mobile devices -->
+    <script>
+    	function goPrevious(e,elem){
+            e.preventDefault();
+            var currentSelectedIndex = parseInt(document.getElementById('currentIndex').value);
+            if(currentSelectedIndex >= 1){
+                currentSelectedIndex = currentSelectedIndex-1;
+                document.getElementById('currentIndex').value = currentSelectedIndex;
+                var $calDay = $('div.dayView-' + currentSelectedIndex);
+                $('.panelCalendar-mobile').find($calDay).siblings().hide();
+                $('.panelCalendar-mobile').find($calDay).css('display','block');
+                
+            }else{
+                //document.getElementById('currentIndex').value = 0;
+                $('#load-more-spinner-mobile').show();
+                loadPreviousWeek(0);
+                //return true;
+            }
+            $('.panelCalendar-mobile').find('.navBt').show();
+            //return false;
+        }
+        function goNext(e,elem){
+        	e.preventDefault();	
+            var currentSelectedIndex = parseInt(document.getElementById('currentIndex').value);
+            if(currentSelectedIndex < 4){
+                
+                currentSelectedIndex = currentSelectedIndex+1;
+                document.getElementById('currentIndex').value = currentSelectedIndex;
+                var $calDay = $('div.dayView-' + currentSelectedIndex);
+                $('.panelCalendar-mobile').find($calDay).siblings().hide();
+                $('.panelCalendar-mobile').find($calDay).css('display','block');
+                
+            }else{ 
+                //document.getElementById('currentIndex').value = 5; 
+                $('#load-more-spinner-mobile').show();
+                loadNextWeek(4);
+                //return true;
+            }
+            $('.panelCalendar-mobile').find('.navBt').show(); 
+            //return false;
+        }
+    </script>
+</apex:component>

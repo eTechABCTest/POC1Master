@@ -1,0 +1,26 @@
+<!-- 
+    Purpose:    This Page is to display all the blackout records.(CR-20111219-287)
+                
+    Create By:  Simplyforce Technology
+    
+    Created Date:   12/23/2011
+    
+    Current Version:    v1.0
+    
+    Revision Log:       
+ -->
+<apex:page standardController="Case" extensions="CaseController">
+
+    <!-- Section Header -->
+    <apex:sectionHeader subtitle="Blackout Records" />
+    
+    <!-- Table -->
+    <apex:pageBlock title="Blackout Records">
+        <apex:pageBlockTable value="{!listCaseBlackoutDays}" var="item">
+            <apex:column value="{!item.Type__c}" />
+            <apex:column value="{!item.Blackout_Begin_Date__c}" />
+            <apex:column value="{!item.Blackout_End_Date__c}" />
+            <apex:column value="{!item.User__c}" />
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

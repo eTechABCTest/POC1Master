@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Use_Case_Compact</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Use_Case_Compact</fullName>
+        <fields>Group__c</fields>
+        <fields>Status__c</fields>
+        <fields>Version_Number__c</fields>
+        <fields>IS_System_Parent__c</fields>
+        <label>Use Case Compact</label>
+    </compactLayouts>
+    <compactLayouts>
+        <fullName>Use_Case_Version_History_Compact</fullName>
+        <fields>Group__c</fields>
+        <fields>Status__c</fields>
+        <fields>Latest_Version__c</fields>
+        <fields>Version_Number__c</fields>
+        <fields>IS_System_Parent__c</fields>
+        <label>Use Case Version History Compact</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Describes a set of steps to complete an action.  Use Cases are linked to IS Functions and describe how the function is used.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Agent_s__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Name the role of a person who would perform the Triggering Events and/or User Steps.  This can also be the name of a process that initiates the use case.</inlineHelpText>
+        <label>Agent(s)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Brief summary of the process performed by this use case.</inlineHelpText>
+        <label>Description</label>
+        <length>16384</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Desired_Outcome__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List the end state of affected items once the User Steps and any resulting workflow are complete.</inlineHelpText>
+        <label>Desired Outcome</label>
+        <length>16384</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>20</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Group__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Use a common name to group related Use Cases</inlineHelpText>
+        <label>Group</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_Business_Process__c</fullName>
+        <externalId>false</externalId>
+        <formula>IS_System_Junction__r.IS_Business_Process__r.Name</formula>
+        <label>IS Business Process</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_System_Junction_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>IS_System_Junction__r.System_Junction_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>IS System Junction Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_System_Junction__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>IS System Junction</label>
+        <referenceTo>IS_System_Process__c</referenceTo>
+        <relationshipLabel>IS Use Cases</relationshipLabel>
+        <relationshipName>IS_Use_Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>IS_System_Parent_Instance__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(IS_System_Junction__r.IS_System_Application__r.Primary_System__c)),
+IS_System_Junction__r.IS_System_Application__r.Primary_System_Instance__c,
+TEXT(IS_System_Junction__r.IS_System_Application__r.Type__c))</formula>
+        <label>IS System Parent Instance</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_System_Parent__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(IS_System_Junction__r.IS_System_Application__r.Primary_System__c)),
+IS_System_Junction__r.IS_System_Application__r.Primary_System__r.Name,
+IS_System__c)</formula>
+        <label>IS System Parent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>IS_System_Junction__r.IS_System_Application__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>IS System</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Junction_Function__c</fullName>
+        <externalId>false</externalId>
+        <formula>IS_System_Junction__r.Function__c</formula>
+        <inlineHelpText>The part of the process performed by this interaction.  Or a functional grouping of Use Cases.</inlineHelpText>
+        <label>Junction Function</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Latest_Version__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Used to associate the new version of a use case with the old one</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When a Use Case is updated, link to the new version here.</inlineHelpText>
+        <label>Latest Version</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Use_Case__c.RecordType.Name</field>
+                <operation>equals</operation>
+                <value>Use Case</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Use_Case__c</referenceTo>
+        <relationshipLabel>Use Case Version History</relationshipLabel>
+        <relationshipName>IS_Use_Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to sort Use Cases in a custom order</inlineHelpText>
+        <label>zzzOrder</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pre_Conditions__c</fullName>
+        <description>Describe the field values, record state, etc that must also exist for the Triggering Event(s) to activate the Use Case.</description>
+        <externalId>false</externalId>
+        <label>Pre-Conditions</label>
+        <length>16384</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>20</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Related_IS_Business_Process__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Related IS Business Process</label>
+        <referenceTo>IS_Business_Process__c</referenceTo>
+        <relationshipLabel>IS Use Cases</relationshipLabel>
+        <relationshipName>IS_Use_Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Related_IS_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Related IS System</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_System__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Application</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_System__c</referenceTo>
+        <relationshipLabel>IS Use Cases</relationshipLabel>
+        <relationshipName>IS_Use_Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Active = In use today
+Inactive = Superseded or No longer used
+Design = In design
+Development = In development
+Beta = In QA / UAT</inlineHelpText>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Beta</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Design</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Technical_Steps__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Automated or coded steps performed by the system</inlineHelpText>
+        <label>Technical Steps</label>
+        <length>16384</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>20</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Title__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>A descriptive name which states the action performed</inlineHelpText>
+        <label>Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Triggering_Event_s__c</fullName>
+        <externalId>false</externalId>
+        <label>Triggering Event(s)</label>
+        <length>8192</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>20</visibleLines>
+    </fields>
+    <fields>
+        <fullName>UC_Sort__c</fullName>
+        <description>Used for sorting related lists and list views</description>
+        <externalId>false</externalId>
+        <formula>CASE(TEXT(Status__c),
+  &apos;Beta&apos;,&apos;1&apos;,
+  &apos;Development&apos;,&apos;3&apos;,
+  &apos;Design&apos;,&apos;5&apos;,
+  &apos;Active&apos;,&apos;7&apos;,
+  &apos;Inactive&apos;,&apos;9&apos;,
+  &apos;0&apos;)
+&amp; &apos;-&apos; 
+&amp; TEXT(Use_Case_Number__c)
+&amp; &apos;-&apos;
+&amp; &apos;v&apos; &amp; Version_Number__c
+&amp; &apos;-&apos;
+&amp; Use_Case_Reference__c</formula>
+        <inlineHelpText>Sort by Status, Group, and Use Case Reference</inlineHelpText>
+        <label>UC Sort</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unit_Test_Method__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the Apex class and method containing a unit test that runs this use case scenario.</inlineHelpText>
+        <label>Unit Test Method</label>
+        <length>120</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Update_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>An archived version is created for Major and Minor edits.</inlineHelpText>
+        <label>Update Type</label>
+        <picklist>
+            <controllingField>Status__c</controllingField>
+            <picklistValues>
+                <fullName>Major</fullName>
+                <default>false</default>
+                <controllingFieldValues>Active</controllingFieldValues>
+                <controllingFieldValues>Beta</controllingFieldValues>
+                <controllingFieldValues>Development</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Minor</fullName>
+                <default>false</default>
+                <controllingFieldValues>Active</controllingFieldValues>
+                <controllingFieldValues>Beta</controllingFieldValues>
+                <controllingFieldValues>Development</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Revision</fullName>
+                <default>false</default>
+                <controllingFieldValues>Active</controllingFieldValues>
+                <controllingFieldValues>Beta</controllingFieldValues>
+                <controllingFieldValues>Development</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Use_Case_Number__c</fullName>
+        <defaultValue>000.000</defaultValue>
+        <description>Combined with parent Process Number to generate Use Case Reference</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Unique Use Case reference for the related Process</inlineHelpText>
+        <label>Use Case Number</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Use_Case_Reference_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Use Case Reference Text</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Use_Case_Reference_Unique__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Used to verify that a duplicate number for the same IS System Junction is not created</description>
+        <externalId>false</externalId>
+        <label>Use Case Reference Unique</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Use_Case_Reference_Version__c</fullName>
+        <externalId>false</externalId>
+        <label>Use Case Reference Version</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Use_Case_Reference__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;UC-&quot; &amp; RIGHT(IS_System_Junction__r.System_Junction_Number__c ,LEN(IS_System_Junction__r.System_Junction_Number__c)-3) &amp; &quot;-&quot; &amp; TEXT(Use_Case_Number__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Combination of System Number, Process Number, and Use Case Number</inlineHelpText>
+        <label>Use Case Reference</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Steps__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Steps taken by the end user to carry out the Use Case</inlineHelpText>
+        <label>User Steps</label>
+        <length>16384</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>20</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Version_Number__c</fullName>
+        <defaultValue>&quot;0.00.00&quot;</defaultValue>
+        <description>Updated via code based on Update Type.  Ex format 1.01.001</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Whole number units indicate major updates, such as replacement.  Decimal numbers indicate minor record edits</inlineHelpText>
+        <label>Version Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Versioned_Status__c</fullName>
+        <description>Used in workflow and validation formulas</description>
+        <externalId>false</externalId>
+        <formula>OR (
+  ISPICKVAL( Status__c , &quot;Active&quot;),
+  ISPICKVAL( Status__c , &quot;Beta&quot;),
+  ISPICKVAL( Status__c , &quot;Development&quot;)
+)</formula>
+        <label>Versioned Status</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>zzzRecord_Number__c</fullName>
+        <displayFormat>{00000000}</displayFormat>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in record name generation</inlineHelpText>
+        <label>zzzRecord Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>zzzType__c</fullName>
+        <externalId>false</externalId>
+        <formula>RecordType.Name</formula>
+        <label>zzzType</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>zzzUse_Case_Reference_Version__c</fullName>
+        <externalId>false</externalId>
+        <formula>Use_Case_Reference__c &amp; &quot;--&quot; &amp; Version_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Useful for sorting in a list by Use Case and Version Number</inlineHelpText>
+        <label>zzzUse Case Reference Version</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>IS Use Case</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Title__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <columns>Latest_Version__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Active</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_System_Junction__c</columns>
+        <columns>IS_System__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <columns>Latest_Version__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>All Active</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Use_Case_Record_Type</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Title__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>IS_System_Junction__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <columns>Latest_Version__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>All Use Case Record Type</label>
+    </listViews>
+    <listViews>
+        <fullName>Use_Cases_Active</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Active</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>Use Cases - Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Use_Cases_Design</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Design</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>Use Cases - Design</label>
+    </listViews>
+    <listViews>
+        <fullName>Use_Cases_IS_System</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>Use Cases - &lt;IS System&gt;</label>
+    </listViews>
+    <listViews>
+        <fullName>Use_Cases_Reference_Tracking</fullName>
+        <columns>NAME</columns>
+        <columns>Group__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <columns>Related_IS_Business_Process__c</columns>
+        <columns>IS_System_Junction__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <label>Use Cases - Reference Tracking</label>
+    </listViews>
+    <listViews>
+        <fullName>Use_Cases_SteelBrick_CPQ</fullName>
+        <columns>NAME</columns>
+        <columns>Title__c</columns>
+        <columns>Use_Case_Reference__c</columns>
+        <columns>Group__c</columns>
+        <columns>Status__c</columns>
+        <columns>Version_Number__c</columns>
+        <columns>IS_Business_Process__c</columns>
+        <columns>IS_System__c</columns>
+        <columns>IS_System_Parent__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>IS_Use_Case__c.Use_Case</value>
+        </filters>
+        <filters>
+            <field>IS_System__c</field>
+            <operation>equals</operation>
+            <value>SteelBrick CPQ,Opportunities</value>
+        </filters>
+        <label>Use Cases - SteelBrick CPQ</label>
+    </listViews>
+    <nameField>
+        <displayFormat>UC-{00000}</displayFormat>
+        <label>IS Use Case Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>IS Use Cases</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Use_Case</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>Use_Case_Compact</compactLayoutAssignment>
+        <description>A series of steps to complete a process</description>
+        <label>Use Case</label>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beta</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Design</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Update_Type__c</picklist>
+            <values>
+                <fullName>Major</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Revision</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Version_History</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>Use_Case_Version_History_Compact</compactLayoutAssignment>
+        <description>Used for history of past versions of a Use Case</description>
+        <label>Version History</label>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beta</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Design</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Update_Type__c</picklist>
+            <values>
+                <fullName>Major</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Revision</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Group__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Version_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>IS_System_Parent__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Related_IS_Business_Process__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Group__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Version_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>IS_System_Parent__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Related_IS_Business_Process__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Group__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Version_Number__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>IS_System_Parent__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Related_IS_Business_Process__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Group__c</searchFilterFields>
+        <searchFilterFields>IS_System_Parent__c</searchFilterFields>
+        <searchFilterFields>Related_IS_Business_Process__c</searchFilterFields>
+        <searchFilterFields>Status__c</searchFilterFields>
+        <searchResultsAdditionalFields>Group__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Version_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>IS_System_Parent__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Related_IS_Business_Process__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Read</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Use_Case_Revision_Validation</fullName>
+        <active>true</active>
+        <description>If Versioned Status = TRUE and Update Type is &apos;Revision&apos;,  then only allow changes to the Agent, Description, Order, Short Title, and Title fields.  Other updates require a Minor or Major update type or a different Status</description>
+        <errorConditionFormula>AND( 
+  Versioned_Status__c,
+  ISPICKVAL( Update_Type__c , &quot;Revision&quot;),
+  OR(
+    ISCHANGED(Desired_Outcome__c),
+    ISCHANGED(Related_IS_Business_Process__c),
+    ISCHANGED(Pre_Conditions__c),
+    ISCHANGED(Status__c),
+    ISCHANGED(Technical_Steps__c),
+    ISCHANGED(Triggering_Event_s__c),
+    ISCHANGED(zzzType__c),
+    ISCHANGED(User_Steps__c)
+  )
+)</errorConditionFormula>
+        <errorMessage>When &apos;Versioned Status&apos; = true and Update Type is &apos;Revision&apos;, only the Agent, Description, Order, Short Title, Update Type, and Title fields can be updated.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Deployment_Strategy_Wiki</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Deployment Strategy Wiki</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>{!URLFOR($Label.Deployment_Strategy_Wiki)}</url>
+    </webLinks>
+</CustomObject>

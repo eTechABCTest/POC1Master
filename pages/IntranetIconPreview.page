@@ -1,0 +1,14 @@
+<apex:page standardController="Intranet_Item__c" tabStyle="Intranet_Item__c">
+    <apex:stylesheet value="{!URLFOR($Resource.IntranetAssets, '/IntranetAssets/css/styles.css')}" />
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+
+<style>
+    i { display:block!important; }
+    body, #main_wrapper { background:white!important; }
+    </style>
+    <apex:panelGrid columns="1" width="100%">
+        <center>
+    		<i style="font-size:35px; display:block;" class="{!Intranet_Item__c.icon_style__c}"></i>
+        </center>
+    </apex:panelGrid>
+</apex:page>

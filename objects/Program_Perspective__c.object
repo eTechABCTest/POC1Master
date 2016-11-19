@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object holds the unique association of a Program Collection and a Perspective. 
+When establishing a relationship between a Program or Program Collection and any other Program Collection, that relationship must be typified by a Perspective. Rather than require users to identify both the Perspective and Program Collectionwith each association, the association is instead drawn between the child record (Program or Program Collection) and the Collection Perspective, which encapsulates the unique collection for a particular consumption purpose.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Drives availability for selection in Program Relationship only</inlineHelpText>
+        <label>Active</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Business_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Business Owner</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.Employee_User_Record__c</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <filterItems>
+                <field>Contact.Employee_User_Record__r.IsActive</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Collection Perspectives</relationshipLabel>
+        <relationshipName>Program_Perspectives</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CP_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+Active__c, 
+Program_Group__r.Name +&quot;-&quot;+ Perspective__r.Name, 
+Program_Group__r.Name + &quot;-&quot; + Perspective__r.Name + &quot; (Inactive)&quot; 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CP Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>CP{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>250</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Effective_End__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective End</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Effective_Start__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <externalId>false</externalId>
+        <label>Effective Start</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>In_use_Plans_Direct__c</fullName>
+        <externalId>false</externalId>
+        <label>In use – Plans - Direct</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>In_use_Plans_Indirect__c</fullName>
+        <externalId>false</externalId>
+        <label>In use – Plans – Indirect</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>In_use_Staff_Direct__c</fullName>
+        <externalId>false</externalId>
+        <label>In use – Staff – Direct</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>In_use_Staff_Indirect__c</fullName>
+        <externalId>false</externalId>
+        <label>In use – Staff - Indirect</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perspective__c</fullName>
+        <externalId>false</externalId>
+        <label>Perspective</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Perspective__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Perspective__c</referenceTo>
+        <relationshipLabel>Collection Perspectives</relationshipLabel>
+        <relationshipName>Program_Perspectives</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Program_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Program Collection</label>
+        <referenceTo>Program_Group__c</referenceTo>
+        <relationshipLabel>Collection Perspectives</relationshipLabel>
+        <relationshipName>Program_Perspectives</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Unique_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Group__c + &apos;-&apos; + Perspective__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unique Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Collection Perspective</label>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Collection Perspectives</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+    </recordTypes>
+    <searchLayouts>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <listViewButtons>New</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>VR_Appropriate_Effective_Dates</fullName>
+        <active>true</active>
+        <description>Effective End Date Should be greater then Effective Start Date</description>
+        <errorConditionFormula>Effective_Start__c &gt; Effective_End__c</errorConditionFormula>
+        <errorDisplayField>Effective_Start__c</errorDisplayField>
+        <errorMessage>The Effective Start date cannot be later than the Effective End date.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/34.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/34.0/apex.js&quot;)}
+
+//Query string to fetch Contact where current user stamped as Employee User
+var myquery = &apos;SELECT Id FROM Contact WHERE Employee_User_Record__c = \&apos;&apos;+ &quot;{!$User.Id}&quot; + &apos;\&apos; LIMIT 1&apos;;
+
+//Get query result
+var result = sforce.connection.query(myquery);
+var records = result.getArray(&apos;records&apos;);
+var currentPathName = window.location.pathname;
+var redirectPageURL;
+
+//Check for length
+if(records.length &gt;0) {
+	
+	if(&quot;{!Program_Group__c.Id}&quot; != &apos;&apos;)
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!Program_Group__c--{!Program_Group__c.Id}!!Business_Owner__c--&quot;+records[0].Id+&quot;!!returnURL--/&quot;+currentPathName ;
+	else if(&quot;{!Perspective__c.Id}&quot; != &apos;&apos;)
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!Perspective__c--{!Perspective__c.Id}!!Business_Owner__c--&quot;+records[0].Id+&quot;!!returnURL--/&quot;+currentPathName ;
+	else
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!Business_Owner__c--&quot;+records[0].Id+&quot;!!returnURL--/&quot;+currentPathName ;
+} else {
+	
+	if(&quot;{!Program_Group__c.Id}&quot; != &apos;&apos;)
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!Program_Group__c--{!Program_Group__c.Id}!!returnURL--/&quot;+currentPathName ;
+	else if(&quot;{!Perspective__c.Id}&quot; != &apos;&apos;)
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!Perspective__c--{!Perspective__c.Id}!!returnURL--/&quot;+currentPathName ;
+	else
+		redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Program_Perspective__c!!Name--Auto-populates!!returnURL--/&quot;+currentPathName ;
+}
+
+window.parent.location.href = redirectPageURL;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>View_In_Hierarchy</fullName>
+        <availability>online</availability>
+        <description>Opens a pre-defined URL in a new window. The URL is stored as the Name of a record in the Program Management Defaults custom setting, and is queried with the following values:
+•	Category = “Hierarchy report”
+•	and then parameterizing the obtained URL, with the current CP ID and a “Collection” descriptor</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View In Hierarchy</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+
+var result= sforce.connection.query(&quot;Select Value__c, Category__c From Program_Management_Default__c Where Category__c = &apos;Hierarchy report&apos;&quot;); 
+
+var records = result.getArray(&apos;records&apos;); 
+if(records.length &gt; 0) { 
+var collectionURL = result.getArray(&quot;records&quot;)[0].get(&quot;Value__c&quot;); 
+window.open(collectionURL + &apos;?var={!CASESAFEID(Program_Perspective__c.Id)}&amp;type=collection-perspective&apos;,&apos;_blank&apos;); 
+}</url>
+    </webLinks>
+</CustomObject>

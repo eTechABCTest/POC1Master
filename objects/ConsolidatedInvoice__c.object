@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>ConsolidatedInvoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( Account__r.c2g__CODABillingMethod__c )</formula>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Manager__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.c2g__CODACreditManager__r.FirstName &amp; &quot; &quot; &amp;  Account__r.c2g__CODACreditManager__r.LastName</formula>
+        <label>Credit Manager</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DueDate__c</fullName>
+        <externalId>false</externalId>
+        <label>Due Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EmailStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Emailed</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Emailed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Pay_Date__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Expected Pay Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Finance_Contact_Asst_Email__c</fullName>
+        <description>Created for CR-20150416-8890.</description>
+        <externalId>false</externalId>
+        <formula>InvoiceContactLookup__r.Asst_Email__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Invoice Contact Asst Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Finance_Contact__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/&quot;&amp; Account__r.c2g__CODAFinanceContact__c,  Account__r.c2g__CODAFinanceContact__r.FirstName + &apos; &apos; + Account__r.c2g__CODAFinanceContact__r.LastName)</formula>
+        <label>Finance Contact</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Follow_Up_Status_Notes__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Follow Up Status Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Follow_Up_Status__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Follow Up Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Hold</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Grade__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Grade</label>
+        <picklist>
+            <picklistValues>
+                <fullName>A</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>B</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>C</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>D</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>F</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Grading_Notes__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Grading Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Help_Needed__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <label>Help Needed</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>InvoiceBillingSchedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Invoice Billing Schedule</label>
+        <referenceTo>Invoice_Billing_Schedule__c</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>ConsolidatedInvoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>InvoiceContactEmail__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Contact Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>InvoiceContactLookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Invoice Contact Lookup</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>Consolidated_Invoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>InvoiceContact__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Contact</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>InvoiceCurrencyTotal__c</fullName>
+        <externalId>false</externalId>
+        <formula>NetCurrencyTotal__c + TaxCurrencyTotal__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Invoice Currency Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>InvoiceCurrency__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Invoice Currency</label>
+        <referenceTo>c2g__codaAccountingCurrency__c</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>ConsolidatedInvoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>InvoiceDate__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>InvoiceTotal__c</fullName>
+        <externalId>false</externalId>
+        <formula>NetTotal__c + TaxTotal__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Invoice Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Invoice_Age__c</fullName>
+        <description>Created in CR-3453
+
+This field will be blank if the field Total Outstanding Amount is blank</description>
+        <externalId>false</externalId>
+        <formula>IF(
+Total_Outstanding_Amount__c = 0,
+NULL,
+TODAY () -  InvoiceDate__c
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Invoice Age</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Invoice_Contact_First_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+	CONTAINS(InvoiceContact__c, &quot; &quot;), 
+	LEFT(InvoiceContact__c, FIND(&quot; &quot;,  InvoiceContact__c, 1) ), 
+	InvoiceContact__c
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Invoice Contact First Name</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Follow_Up_Date__c</fullName>
+        <description>Created for CR-20150416-8890.</description>
+        <externalId>false</externalId>
+        <label>Last Follow-Up Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_Follow_Up_Note__c</fullName>
+        <description>Created for CR-20150416-8890.</description>
+        <externalId>false</externalId>
+        <label>Last Follow Up Note</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NetCurrencyTotal__c</fullName>
+        <externalId>false</externalId>
+        <label>Currency Net Total</label>
+        <summarizedField>ConsolidatedInvoiceLineItem__c.CurrencyValue__c</summarizedField>
+        <summaryForeignKey>ConsolidatedInvoiceLineItem__c.ConsolidatedInvoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>NetTotal__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Total</label>
+        <summarizedField>ConsolidatedInvoiceLineItem__c.NetValue__c</summarizedField>
+        <summaryForeignKey>ConsolidatedInvoiceLineItem__c.ConsolidatedInvoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>OwnerCompany__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Company</label>
+        <referenceTo>c2g__codaCompany__c</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>ConsolidatedInvoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Period__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Period</label>
+        <referenceTo>c2g__codaPeriod__c</referenceTo>
+        <relationshipLabel>Consolidated Invoices</relationshipLabel>
+        <relationshipName>ConsolidatedInvoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PrintStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>Print Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Printed</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Printed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Special_Follow_Up_Notes__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <formula>Account__r.Special_Follow_Up_Notes__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Special Follow Up Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Special_Invoicing_Notes__c</fullName>
+        <description>Created for CR-20150130-8622.</description>
+        <externalId>false</externalId>
+        <formula>Account__r.Special_Invoicing_Notes__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Special Invoicing Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TaxCurrencyTotal__c</fullName>
+        <externalId>false</externalId>
+        <label>Currency Tax Total</label>
+        <summarizedField>ConsolidatedInvoiceLineItem__c.CurrencyTaxValue__c</summarizedField>
+        <summaryForeignKey>ConsolidatedInvoiceLineItem__c.ConsolidatedInvoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>TaxTotal__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Total</label>
+        <summarizedField>ConsolidatedInvoiceLineItem__c.TaxValue__c</summarizedField>
+        <summaryForeignKey>ConsolidatedInvoiceLineItem__c.ConsolidatedInvoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>TextBoxHeader__c</fullName>
+        <externalId>false</externalId>
+        <label>Text Box Header</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TextBoxText__c</fullName>
+        <externalId>false</externalId>
+        <label>Text Box Text</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Total_Outstanding_Amount__c</fullName>
+        <description>Created as part of CR-3453
+
+This rolls up the total outstanding amount of all Consolidated Invoice Line Items associated with this Consolidated Invoice. The trigger &quot;TransactionTrigger&quot; runs when a Sales Invoice is updated or marked as paid which ensures this field calculates correctly.</description>
+        <externalId>false</externalId>
+        <label>Total Outstanding Amount</label>
+        <summarizedField>ConsolidatedInvoiceLineItem__c.Outstanding_Value_Number__c</summarizedField>
+        <summaryForeignKey>ConsolidatedInvoiceLineItem__c.ConsolidatedInvoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Consolidated Invoice</label>
+    <listViews>
+        <fullName>Burnette_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Michael Leonard</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Leonard - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Chilkov_MRS_CC_Oustanding_Invoices</fullName>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>notEqual</operation>
+            <value>Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Maxwell Chilkov</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Chilkov MRS - CC Oustanding Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Chilkov_MRS_Oustanding_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Maxwell Chilkov</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Chilkov MRS - Oustanding Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Ciafone_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Lanaya Van Driesen</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Lanaya Van Driesen</label>
+    </listViews>
+    <listViews>
+        <fullName>Clark_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Stephen Clark</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Clark - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Collections_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>notEqual</operation>
+            <value>Kevin Sherman,Maxwell Chilkov,Jack Xu,Lindsay Manzoni</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Collections - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Lambert_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Shannon Lambert</value>
+        </filters>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Lambert - Not Printed or Not Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Munuswamy_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Florencia Goldie</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Goldie - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Maxwell Chilkov</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Chilkov MRS - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed1</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>greaterOrEqual</operation>
+            <value>CINV100571</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>lessOrEqual</operation>
+            <value>CINV100573</value>
+        </filters>
+        <label>Range Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Samantha Chick</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Chick - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed_or_Emailed2</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>equals</operation>
+            <value>Kevin Sherman,Jack Xu,Danny Trsic,Kim Tran</value>
+        </filters>
+        <label>Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed_or_Emailed_CLN</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notEqual</operation>
+            <value>Kevin Sherman,Danny Trsic,Jack Xu,Shelly Daniels,Sara Jo Moss,Joe Carlen</value>
+        </filters>
+        <label>Not Printed or Emailed - CLN</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Printed_or_Emailed_SW</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notEqual</operation>
+            <value>Kevin Sherman,Danny Trsic,Jack Xu,Shelly Daniels,Jeremy Geneaux</value>
+        </filters>
+        <label>Not Printed or Emailed - SW</label>
+    </listViews>
+    <listViews>
+        <fullName>Range_Invoices1</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Account__c</field>
+            <operation>contains</operation>
+            <value>Henry Ford</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Henry Ford 03/31 invoices o/s</label>
+    </listViews>
+    <listViews>
+        <fullName>Tran_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Joseph Noone</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Noone - Not Printed or Emailed</label>
+    </listViews>
+    <listViews>
+        <fullName>X39500</fullName>
+        <columns>Account__c</columns>
+        <columns>NAME</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>Invoice_Age__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Account__c</field>
+            <operation>contains</operation>
+            <value>Atlantic Health</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Outstanding Invoice Search - KS</label>
+        <sharedTo>
+            <group>Finance</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Xu_MRS_Not_Printed_or_Emailed</fullName>
+        <columns>NAME</columns>
+        <columns>InvoiceBillingSchedule__c</columns>
+        <columns>Account__c</columns>
+        <columns>InvoiceDate__c</columns>
+        <columns>InvoiceTotal__c</columns>
+        <columns>Total_Outstanding_Amount__c</columns>
+        <columns>DueDate__c</columns>
+        <columns>PrintStatus__c</columns>
+        <columns>EmailStatus__c</columns>
+        <columns>InvoiceContact__c</columns>
+        <columns>InvoiceContactEmail__c</columns>
+        <columns>Credit_Manager__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PrintStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Printed</value>
+        </filters>
+        <filters>
+            <field>EmailStatus__c</field>
+            <operation>equals</operation>
+            <value>Not Emailed</value>
+        </filters>
+        <filters>
+            <field>Credit_Manager__c</field>
+            <operation>equals</operation>
+            <value>Jack Xu</value>
+        </filters>
+        <filters>
+            <field>Total_Outstanding_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Xu MRS - Not Printed or Emailed</label>
+    </listViews>
+    <nameField>
+        <displayFormat>CINV{00000}</displayFormat>
+        <label>Consolidated Invoice Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Consolidated Invoices</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Account__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>InvoiceTotal__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>InvoiceDate__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>DueDate__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PrintStatus__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>EmailStatus__c</customTabListAdditionalFields>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <listViewButtons>Bulk_Email</listViewButtons>
+        <listViewButtons>Bulk_Print</listViewButtons>
+        <searchFilterFields>Account__c</searchFilterFields>
+        <searchFilterFields>DueDate__c</searchFilterFields>
+        <searchFilterFields>PrintStatus__c</searchFilterFields>
+        <searchResultsAdditionalFields>InvoiceBillingSchedule__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>DueDate__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>InvoiceTotal__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>InvoiceCurrency__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>NetTotal__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PrintStatus__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Credit_Manager__c</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>Bulk_Email</searchResultsCustomButtons>
+        <searchResultsCustomButtons>Bulk_Print</searchResultsCustomButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Bulk_Email</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Bulk Email</masterLabel>
+        <openType>sidebar</openType>
+        <page>consolidatedinvoicebulkemail</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Bulk_Print</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Bulk Print</masterLabel>
+        <openType>sidebar</openType>
+        <page>confirmbulkprintci</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Preview</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Preview</masterLabel>
+        <openType>newWindow</openType>
+        <page>consolidatedinvoicepreview</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>View_PDF</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>View PDF</masterLabel>
+        <openType>newWindow</openType>
+        <page>consolidatedinvoicepreviewpdf</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>email</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Email</masterLabel>
+        <openType>sidebar</openType>
+        <page>emailconsolidatedinvoice</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>print</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Print</masterLabel>
+        <openType>newWindow</openType>
+        <page>printconsolidatedinvoice</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+</CustomObject>

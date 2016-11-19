@@ -1,0 +1,2257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Release_Compact</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Release_Compact</fullName>
+        <fields>Status__c</fields>
+        <fields>Story_Points__c</fields>
+        <fields>No_of_Change_Requests__c</fields>
+        <fields>No_of_Modifications__c</fields>
+        <fields>Total_IS_CRM_Estimated_Hrs__c</fields>
+        <label>Release Compact</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Actual_Release_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Actual date of Release to Production</inlineHelpText>
+        <label>Actual Release Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Alternate_Sandbox__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Alternate Sandbox</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Environment__c.RecordType.Name</field>
+                <operation>equals</operation>
+                <value>Salesforce Sandbox</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <infoMessage>Selection must be an Active record of type Sandbox Instance</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Environment__c</referenceTo>
+        <relationshipLabel>SFDC Releases (Alternate Sandbox)</relationshipLabel>
+        <relationshipName>SFDC_Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Change_permission_to_SOX_field_data__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does anything in the release add, change, delete and/or view any security permissions to data in any SOX related fields.</inlineHelpText>
+        <label>Change permission to SOX field data</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Change_permission_to_SOX_field_structure__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does anything in the release add, change and/or delete security permissions to modify the data structure in any SOX related fields.</inlineHelpText>
+        <label>Change permission to SOX field structure</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Changes_to_SOX_Field_Struction__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does anything in the release structurally add to, delete or modify any of the SOX designated fields?</inlineHelpText>
+        <label>Changes to SOX field structure?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Changes_to_SOX_field_Data__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does anything in the release change, add or delete any data in SOX designated fields as a one-time incident?</inlineHelpText>
+        <label>Changes to SOX field data - one time?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Changes_to_SOX_field_data_recurring__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does anything in the release change, add or delete any data in SOX designated fields, either manually or automatically (programmatically) on a recurring basis?</inlineHelpText>
+        <label>Changes to SOX field data - recurring?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Coding_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Coding: Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Coding_Estimated_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Coding: Estimated Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Config_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Config: Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Config_Estimated_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Config: Estimated Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Test_Environments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Legacy sandbox field - read only</inlineHelpText>
+        <label>z1_Current Test Environments</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sandbox-Dev1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sandbox-Dev2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sandbox-Test</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sandbox-Project Specific</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Design_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Design: Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Design_Estimated_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Design: Estimated Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Dev_Sandbox__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Dev Sandbox</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Environment__c.RecordType.Name</field>
+                <operation>equals</operation>
+                <value>Salesforce Sandbox</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Environment_Type__c</field>
+                <operation>equals</operation>
+                <value>Development</value>
+            </filterItems>
+            <infoMessage>Selection must be an Active Development sandbox of type Sandbox Instance</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Environment__c</referenceTo>
+        <relationshipLabel>SFDC Releases (Dev Sandbox)</relationshipLabel>
+        <relationshipName>SFDC_Releases1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Environment_Manager__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Environment Manager</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>SFDC_Releases1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>External_LP_Id__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>External LP Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>IS_QA_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>IS QA: Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IS_QA_Estimated_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>IS QA: Estimated Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LP_Project__c</fullName>
+        <description>Link to the project in LP.</description>
+        <externalId>false</externalId>
+        <formula>IF ( NOT( ISBLANK( External_LP_Id__c ) ), 
+HYPERLINK( $Setup.Liquid_Planner_Settings__c.API_URL__c + &quot;/space/&quot; + $Label.Workspace_Id + &quot;/projects/show/&quot; + External_LP_Id__c, &quot;View in Liquid Planner&quot;), 
+null 
+)</formula>
+        <label>LP Project</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_of_Change_Requests__c</fullName>
+        <externalId>false</externalId>
+        <label>No. of Change Requests</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_of_Manual_Setup_Mods__c</fullName>
+        <externalId>false</externalId>
+        <label>No. of Manual Setup Mods</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_of_Modifications__c</fullName>
+        <externalId>false</externalId>
+        <label>No. of Modifications</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_of_SOX_Requests__c</fullName>
+        <externalId>false</externalId>
+        <label>No. of SOX Requests</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Planning_Deployment_Migrations__c</fullName>
+        <description>Created for CR-20141204-8244.</description>
+        <externalId>false</externalId>
+        <label>Planning-Deployment/Migrations</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Planning_Resources__c</fullName>
+        <description>Created for CR-20141204-8244.</description>
+        <externalId>false</externalId>
+        <label>Planning-Resources</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Planning_Timeline__c</fullName>
+        <description>Created for CR-20141204-8244.</description>
+        <externalId>false</externalId>
+        <label>Planning-Timeline</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Postmortem_Notes__c</fullName>
+        <description>Created for CR-20141204-8244.</description>
+        <externalId>false</externalId>
+        <label>Postmortem Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Published_to_SVN__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Have all Release items been published to SVN?</inlineHelpText>
+        <label>Published to SVN</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>QA_Sandbox__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>QA Sandbox</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Environment__c.RecordType.Name</field>
+                <operation>equals</operation>
+                <value>Salesforce Sandbox</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Environment_Type__c</field>
+                <operation>equals</operation>
+                <value>QA</value>
+            </filterItems>
+            <infoMessage>Selection must be an Active QA sandbox of type Sandbox Instance</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Environment__c</referenceTo>
+        <relationshipLabel>SFDC Releases (QA Sandbox)</relationshipLabel>
+        <relationshipName>SFDC_Releases2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Recommended_SOX_Testing_Scenarios__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Which SOX Certification Test Scripts are recommended for this release?</inlineHelpText>
+        <label>Recommended SOX Testing Scenarios</label>
+        <picklist>
+            <controllingField>SOX_Certification_Type__c</controllingField>
+            <picklistValues>
+                <fullName>All - Full Certification</fullName>
+                <default>false</default>
+                <controllingFieldValues>Full</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Book a new NBB Contract from Opps</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Modify an Existing Contract</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Drop an Existing ATL Contract</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Modify Contract as Non-Finance Ops User</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Book Contract from Existing Renewal Opp</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Create a New Institution</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Attempt to Delete an Institution</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Attempt to Delete a Program</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Delete an Existing Integrated Account</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Add Integ&apos;d Acct to Existing Membership</fullName>
+                <default>false</default>
+                <controllingFieldValues>Mini</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Regression_Tester__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The SFDC Admin who verified and approved Regression Testing results</inlineHelpText>
+        <label>Regression Tester</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Regression_Testing_Completed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Regression Testing has been performed and all items passed.</inlineHelpText>
+        <label>Regression Testing Completed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Regression_Testing_Completion_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Regression Testing Completion Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Rehearse_Sandbox__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Rehearse Sandbox</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Environment__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Salesforce Sandbox</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Environment_Type__c</field>
+                <operation>equals</operation>
+                <value>Rehearse, UAT</value>
+            </filterItems>
+            <infoMessage>Selection must be an Active Salesforce Sandbox with an Environment Type of Rehearse or UAT</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Environment__c</referenceTo>
+        <relationshipLabel>SFDC Releases (Rehearse Sandbox)</relationshipLabel>
+        <relationshipName>SFDC_Releases3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Release_Manager__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Release Manager</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>SFDC_Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Release_Notes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Describe the items that were included with this release</inlineHelpText>
+        <label>Release Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_AP__c</fullName>
+        <externalId>false</externalId>
+        <label>SOX Certification (AP)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_Core__c</fullName>
+        <externalId>false</externalId>
+        <label>SOX Certification (Core)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the release passed SOX Certification in a Sandbox environment.</inlineHelpText>
+        <label>SOX Certification Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_FFDC__c</fullName>
+        <externalId>false</externalId>
+        <label>SOX Certification (FFDC)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_Primary_Tester__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Person who verified the SOX Certification and approved deploying the release to production.</inlineHelpText>
+        <label>SOX Certification Primary Tester</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>SFDC Releases</relationshipLabel>
+        <relationshipName>Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certification_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of SOX Certification Testing is required for this release?</inlineHelpText>
+        <label>SOX Certification Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Full</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mini</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Certified__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>All SOX testing has been completed successfully without errors/issues</inlineHelpText>
+        <label>SOX Certified</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Notes__c</fullName>
+        <description>Created for CR-20141204-8244</description>
+        <externalId>false</externalId>
+        <label>SOX Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>SOX_Primary_Tester_AP__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>SOX Primary Tester (AP)</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>SFDC Releases (SOX Primary Tester (AP))</relationshipLabel>
+        <relationshipName>SFDC_Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Primary_Tester_Core__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>SOX Primary Tester (Core)</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>SFDC Releases (SOX Primary Tester (Core))</relationshipLabel>
+        <relationshipName>SFDC_Releases1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SOX_Primary_Tester_FFDC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>SOX Primary Tester (FFDC)</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>SFDC Releases (SOX Primary Tester (FFDC))</relationshipLabel>
+        <relationshipName>SFDC_Releases2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SVN_Deployment_Notes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter any notes/comments about the SVN publishing and deployment process (eg: items that must be configured manually)</inlineHelpText>
+        <label>SVN/Deployment Notes</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>SVN_Published_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date release items were published to SVN</inlineHelpText>
+        <label>SVN Published Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SVN_Publisher__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>SVN Publisher</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Releases1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SVN_Revision_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Revision Number of the published SVN package</inlineHelpText>
+        <label>SVN Revision Number</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sandbox_Backup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Make a Config Backup of Production prior to deploying changes. Enter the name of the Backup Sandbox here.</inlineHelpText>
+        <label>Sandbox Backup</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sandbox_Environments__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(Dev_Sandbox__c)), Dev_Sandbox__r.Sandbox_Name__c, &quot;dev_&quot; &amp; IMAGE(&apos;/img/msg_icons/warning16.gif&apos;,&apos;Not Defined&apos;)) &amp; &quot; ➡ &quot; &amp;
+IF(NOT(ISBLANK(QA_Sandbox__c)), QA_Sandbox__r.Sandbox_Name__c &amp; &quot; ➡ &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK(UAT_Sandbox__c)), UAT_Sandbox__r.Sandbox_Name__c, &quot;uat_&quot; &amp; IMAGE(&apos;/img/msg_icons/warning16.gif&apos;,&apos;Not Defined&apos;)) &amp; &quot; ➡ &quot; &amp;
+&quot;Prod&quot;</formula>
+        <label>Sandbox Environments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sandbox_Primary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the name of the sandbox used for initial development and testing for this Release.</inlineHelpText>
+        <label>Sandbox - Primary</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status_CreateDate_Sort__c</fullName>
+        <description>Used for sorting the values in list views or related lists.  Originally created for the related lists on IS Environment</description>
+        <externalId>false</externalId>
+        <formula>CASE(TEXT(Status__c),
+  &apos;Deployed&apos;,&apos;2&apos;,
+  &apos;Cancelled&apos;,&apos;1&apos;,
+  &apos;9&apos;)
+&amp; &apos;-&apos;
+&amp; TEXT(YEAR(DATEVALUE(CreatedDate)))
+&amp; LPAD(TEXT(MONTH(DATEVALUE(CreatedDate))),2,&apos;0&apos;)
+&amp; LPAD(TEXT(DAY(DATEVALUE(CreatedDate))),2,&apos;0&apos;)
+&amp; IF(AND(NOT(ISPICKVAL(Status__c,&apos;Deployed&apos;)),NOT(ISPICKVAL(Status__c,&apos;Cancelled&apos;))),
+  &apos; &apos; &amp; IMAGE(&apos;/img/staleValue.gif&apos;,TEXT(Status__c)),
+  &apos;&apos;)</formula>
+        <label>Status-CreateDate Sort</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Scheduled - Planned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Scheduled - Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ready for Regression Testing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ready for SOX Certification</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ready for Deployment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Deployed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Story_Points__c</fullName>
+        <externalId>false</externalId>
+        <label>Story Points</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Target_Release_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the change request items associated with this list are scheduled to be available to users in Production.</inlineHelpText>
+        <label>Target Release Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Total_IS_CRM_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Total IS CRM Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_IS_CRM_Estimated_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Total IS CRM Estimated Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UAT_Sandbox__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>UAT Sandbox</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>IS_Environment__c.RecordType.Name</field>
+                <operation>equals</operation>
+                <value>Salesforce Sandbox</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <filterItems>
+                <field>IS_Environment__c.Environment_Type__c</field>
+                <operation>equals</operation>
+                <value>UAT</value>
+            </filterItems>
+            <infoMessage>Selection must be an Active UAT sandbox of type Sandbox Instance</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Environment__c</referenceTo>
+        <relationshipLabel>SFDC Releases (UAT Sandbox)</relationshipLabel>
+        <relationshipName>SFDC_Releases4</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>User_Documentation_Actual_Hrs__c</fullName>
+        <externalId>false</externalId>
+        <label>User Documentation: Actual Hrs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>SFDC Release</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_deployed</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>All -  deployed</label>
+    </listViews>
+    <listViews>
+        <fullName>All_not_deployed</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>All - not deployed</label>
+    </listViews>
+    <listViews>
+        <fullName>All_with_QA_Hours</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>IS_QA_Estimated_Hrs__c</columns>
+        <columns>IS_QA_Actual_Hrs__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>Workday Release</value>
+        </filters>
+        <label>All - with QA Hours</label>
+    </listViews>
+    <listViews>
+        <fullName>All_with_record_type</fullName>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All_with_record_type</label>
+    </listViews>
+    <listViews>
+        <fullName>Closed_ALL</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <label>Closed - ALL</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Closed_No_Workday</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>Workday</value>
+        </filters>
+        <label>Closed - No Workday</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Closed_Past_6_Months</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>Actual_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>LAST_N_MONTHS:6</value>
+        </filters>
+        <label>Closed - Past 6 Months</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Closed_Projects</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>release,hypercare</value>
+        </filters>
+        <label>Closed - Projects</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Deployed</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>Actual_Release_Date__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>3/27/2014</value>
+        </filters>
+        <label>NK&apos;s Release View</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Deployment_11_3</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>4/20/2016</value>
+        </filters>
+        <label>Deployment 4/20</label>
+    </listViews>
+    <listViews>
+        <fullName>Deployments</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>5/1/2016</value>
+        </filters>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>lessOrEqual</operation>
+            <value>7/1/2016</value>
+        </filters>
+        <label>Deployments</label>
+    </listViews>
+    <listViews>
+        <fullName>Deployments_Next_Month</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>LP_Project__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>NEXT_MONTH</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>JobScience</value>
+        </filters>
+        <label>Deployments Next Month</label>
+    </listViews>
+    <listViews>
+        <fullName>Deployments_Next_Week</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>NEXT_WEEK</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>JobScience</value>
+        </filters>
+        <label>Deployments Next Week</label>
+    </listViews>
+    <listViews>
+        <fullName>Deployments_This_Month</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>LP_Project__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>JobScience</value>
+        </filters>
+        <label>Deployments This Month</label>
+    </listViews>
+    <listViews>
+        <fullName>Deployments_This_Week</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_WEEK</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>JobScience</value>
+        </filters>
+        <label>Deployments This Week</label>
+    </listViews>
+    <listViews>
+        <fullName>Devika_s_Release_View</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Story_Points__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>Release 4,Release 5,Release 6,Mid</value>
+        </filters>
+        <label>BOA - Regular Release Cycle</label>
+        <sharedTo>
+            <group>eTech_Business_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>NK_s_Release_View</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <columns>External_LP_Id__c</columns>
+        <columns>LP_Project__c</columns>
+        <columns>Published_to_SVN__c</columns>
+        <columns>SOX_Certified__c</columns>
+        <columns>SVN_Revision_Number__c</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Royall</value>
+        </filters>
+        <label>Royall Releases</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Open_ALL</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Sandbox_Primary__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed</value>
+        </filters>
+        <label>Open - ALL</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Open_Approved_to_Ready_to_Deploy</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Sandbox_Primary__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed,Scheduled - Planned</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>Open - Approved to Ready to Deploy</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Open_Pure_SFDC_30_Hour_Releases</fullName>
+        <columns>NAME</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Sandbox_Primary__c</columns>
+        <columns>Regression_Testing_Completion_Date__c</columns>
+        <columns>SVN_Published_Date__c</columns>
+        <columns>SOX_Certification_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>p30,pure</value>
+        </filters>
+        <label>Open - Pure SFDC 30 Hour Releases - Open</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>PSA_or_FFA</fullName>
+        <booleanFilter>1 or 2</booleanFilter>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>*PSA*</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>financial</value>
+        </filters>
+        <label>PSA or FFA</label>
+    </listViews>
+    <listViews>
+        <fullName>PSA_or_FFA1</fullName>
+        <booleanFilter>1 or 2 or 3</booleanFilter>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>SOX_Certification_Type__c</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>PSA</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>financial</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>PM</value>
+        </filters>
+        <label>PSA or FFA</label>
+    </listViews>
+    <listViews>
+        <fullName>Q2C_Releases</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Q2C,CPQ</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed,Cancelled</value>
+        </filters>
+        <label>*Q2C Releases</label>
+    </listViews>
+    <listViews>
+        <fullName>Recent_Deployments_eTech</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>LP_Project__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>LAST_N_DAYS:21</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>SFDC_Release__c.eTech_Dev</value>
+        </filters>
+        <label>Recent Deployments - eTech</label>
+    </listViews>
+    <listViews>
+        <fullName>Recent_Deployments_eTech_last_six_mo</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>LP_Project__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Actual_Release_Date__c</field>
+            <operation>greaterThan</operation>
+            <value>3/1/2016</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>SFDC_Release__c.eTech_Dev</value>
+        </filters>
+        <label>Recent Deployments - eTech - last six mo</label>
+    </listViews>
+    <listViews>
+        <fullName>Upcoming_Deployments_eTech</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <columns>Actual_Release_Date__c</columns>
+        <columns>LP_Project__c</columns>
+        <columns>Sandbox_Environments__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Target_Release_Date__c</field>
+            <operation>equals</operation>
+            <value>NEXT_N_DAYS:60</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>SFDC_Release__c.eTech_Dev</value>
+        </filters>
+        <label>Upcoming Deployments - eTech</label>
+    </listViews>
+    <listViews>
+        <fullName>X2015_Incentives</fullName>
+        <columns>NAME</columns>
+        <columns>No_of_Change_Requests__c</columns>
+        <columns>Status__c</columns>
+        <columns>Target_Release_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>ISSP,Incentives</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>notEqual</operation>
+            <value>Deployed</value>
+        </filters>
+        <label>2015 Incentives</label>
+        <sharedTo>
+            <group>InformationSystems</group>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <label>Release Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>SFDC Releases</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>App_Release</fullName>
+        <active>true</active>
+        <description>Release for a specific application (Not for use with Salesforce Production release)</description>
+        <label>App Release</label>
+        <picklistValues>
+            <picklist>Change_permission_to_SOX_field_data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Change_permission_to_SOX_field_structure__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_Field_Struction__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_field_Data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_field_data_recurring__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Current_Test_Environments__c</picklist>
+            <values>
+                <fullName>Sandbox-Dev1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Dev2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Project Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Test</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Recommended_SOX_Testing_Scenarios__c</picklist>
+            <values>
+                <fullName>Add Integ%27d Acct to Existing Membership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All - Full Certification</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attempt to Delete a Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attempt to Delete an Institution</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Book Contract from Existing Renewal Opp</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Book a new NBB Contract from Opps</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Create a New Institution</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Delete an Existing Integrated Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Drop an Existing ATL Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Contract as Non-Finance Ops User</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify an Existing Contract</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SOX_Certification_Type__c</picklist>
+            <values>
+                <fullName>Full</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mini</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Deployed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for Deployment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for Regression Testing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for SOX Certification</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled - Approved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled - Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>eTech_Dev</fullName>
+        <active>true</active>
+        <description>eTech Development team record type.</description>
+        <label>eTech Dev</label>
+        <picklistValues>
+            <picklist>Change_permission_to_SOX_field_data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Change_permission_to_SOX_field_structure__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_Field_Struction__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_field_Data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Changes_to_SOX_field_data_recurring__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Current_Test_Environments__c</picklist>
+            <values>
+                <fullName>Sandbox-Dev1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Dev2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Project Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sandbox-Test</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Recommended_SOX_Testing_Scenarios__c</picklist>
+            <values>
+                <fullName>Add Integ%27d Acct to Existing Membership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All - Full Certification</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attempt to Delete a Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attempt to Delete an Institution</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Book Contract from Existing Renewal Opp</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Book a new NBB Contract from Opps</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Create a New Institution</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Delete an Existing Integrated Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Drop an Existing ATL Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Contract as Non-Finance Ops User</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify an Existing Contract</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SOX_Certification_Type__c</picklist>
+            <values>
+                <fullName>Full</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mini</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Deployed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for Deployment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for Regression Testing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready for SOX Certification</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled - Approved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled - Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Target_Release_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Actual_Release_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>SOX_Certified__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>SVN_Published_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Sandbox_Environments__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Target_Release_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Actual_Release_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>SOX_Certified__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>SVN_Published_Date__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Target_Release_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Actual_Release_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>SOX_Certified__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>SVN_Published_Date__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Target_Release_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Actual_Release_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>SOX_Certified__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>SVN_Published_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Sandbox_Environments__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Release_Cannot_Modify_LP_Integr_Fields</fullName>
+        <active>true</active>
+        <description>fields are not editable on eTech Dev events where External Id is populated.</description>
+        <errorConditionFormula>AND (
+    NOT( ISPICKVAL( $User.UserType, &quot;guest&quot;) ),
+    NOT( ISBLANK( External_LP_Id__c ) ),
+    OR(
+        ISCHANGED( Name ),
+        ISCHANGED( Target_Release_Date__c )
+    )
+)</errorConditionFormula>
+        <errorMessage>Name and Target Release Date cannot be updated for Releases that were synced from LiquidPlanner. To update the Target Release Date on this Release record, Update the date on the Deployment Milestone in LP (ie: Event Type = &quot;Milestone - Deployment&quot;).</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>SFDC_Release_Notes_Required</fullName>
+        <active>false</active>
+        <description>must have release notes when
+Deactivated for CR 9340 with Deployment Strategy Phase 1 updates.  If more process needs to be added, it can be done as an L2 or as part of Phase 2</description>
+        <errorConditionFormula>AND(  
+ISPICKVAL(Status__c ,&apos;Deployed&apos;), 
+LEN( Release_Notes__c ) &lt; 5,
+RecordType.DeveloperName = &apos;eTech Dev&apos;
+)</errorConditionFormula>
+        <errorDisplayField>Release_Notes__c</errorDisplayField>
+        <errorMessage>You must document Release Notes for deployed releases</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Change_Request_Modifications</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Change Request Modifications</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00OC0000006GDDF?pv0={!SFDC_Release__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Deployment_Manifest</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Deployment Manifest</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00OC0000006GDDG?pv0={!SFDC_Release__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Deployment_Manifest_by_Target_Release_Date</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Deployment Manifest by Target Release Date</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00OC0000006GDDG?pv1={!SFDC_Release__c.Target_Release_Date__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Deployment_Strategy_Wiki</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Deployment Strategy Wiki</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>{!URLFOR($Label.Deployment_Strategy_Wiki)}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>High_Impact_Mods</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>High Impact Mods</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00OC0000006GDDH?pv0={!SFDC_Release__c.Id}</url>
+    </webLinks>
+</CustomObject>

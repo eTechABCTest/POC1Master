@@ -1,0 +1,116 @@
+<!--
+*   Description     :   Chatter button component for Mobile version.
+*
+*   Created By      :   Rajeev Jain
+*
+*   Created Date    :   06/25/2015
+*
+*   Revision Log    :   V_1.0 - Created - CR-20150618-9016 - BoardRoom Mobile Phase 2
+-->
+<apex:component controller="IntranetChatterButtonController" allowDML="true">
+    
+    <!-- Component Attributes -->
+        
+    <!-- Component Attributes Ends Here-->
+    
+    <!-- Component Code Starts from Here -->
+        <div class="block chatterBlock">
+            
+            <ul id="topPanel">
+                <li><a href="#div1"><div class="chatterBtn chatterIcon"></div><div>Chatter</div></a></li>
+                <li><a href="#div2"><div class="chatterBtn peopleIcon"></div><div>People</div></a></li>
+                <li><a href="#div3"><div class="chatterBtn officeIcon"></div><div id="officeChatterTab">{!IF(SelectedOfficeName == '', 'Office',SelectedOfficeName )}</div></a></li>
+            </ul>
+            <div id="mainPanel">
+                <div id="div1" style="display:none;" class="tab-container">
+                    <c:IntranetChatter /> 
+                </div>
+                <div id="div2" style="display:none;" class="tab-container">
+                    
+                    <apex:form styleClass="search-form form-horizontal">
+                        <!-- Acction function to Search People -->
+                        <apex:actionFunction action="{!searchCore}" reRender="peopleResultBox, resultDetail" 
+                                             name="searchPeople" status="search-more-spinner"/>
+                    	<div class="form-group">
+                            <div class="col-xs-8">
+                                <apex:inputText styleClass="search-input"  html-placeholder="search" value="{!SearchTerm}" />
+                                <div class="search-icon mainSearchIcon" onClick="searchPeople();"><i class="fa fa-search"></i></div>
+                            </div>
+                            <div  class="col-xs-4 searchButtonWrapper">
+                                <input type="button" value="Search" class="search-button" onclick="searchPeople();"/>
+                            </div>
+                        </div>   
+                        <apex:actionStatus id="search-more-spinner" style="display:block;float:left;">
+                            <apex:facet name="start">
+                                <i class="fa fa-refresh fa-spin fa-lg"></i>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:form>
+                    <apex:outputPanel id="resultDetail" layout="block" styleClass="resultDetail">
+                        <h3 class="search-query" style="display:{!IF(SearchTerm != '','block;','none;')}">
+                            search results for 
+                            <span class="query">"{!SearchTerm}"</span>
+                            <span class="count">({!TotalCount})</span>
+                        </h3>
+                    </apex:outputPanel>
+                       
+                    <apex:outputPanel id="peopleResultBox">
+                        <apex:outputPanel rendered="{!UserSearchResult.Size > 0}">
+                            <div class="row" style="margin-top:15px;">
+                                <apex:repeat value="{!UserSearchResult}" var="item">
+                                    
+                                    <div class="col-sm-4">
+                                        <div class="user-card">
+                                            <div class="thumb"><a href="{!item.ChatterViewLink}" target="_blank"><img src="{!item.ChatterPicture}" /></a></div>
+                                            <div class="name"><a href="{!item.ChatterViewLink}" target="_blank">{!item.FirstName} {!item.LastName}</a></div>
+                                            <div class="department">{!item.Department}</div>
+                                            <div class="office-space">{!item.OfficeName}<apex:outputText rendered="{!item.SpaceNumber != null && item.OfficeName != null}" value=" - "/>{!item.SpaceNumber}</div>
+                                        </div>
+                                    </div>
+                                </apex:repeat>
+                            </div>
+                        </apex:outputPanel>   
+                        <apex:outputPanel layout="block" rendered="{!TotalCount>6}">
+                            <apex:form >
+                                <apex:commandLink styleClass="active showMoreResultsLink" action="{!showMoreResults}" value="Show More Results"  rerender="peopleResultBox" status="load-more-spinner">
+                                    <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                </apex:commandLink>
+                            </apex:form>   
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!searchResultMsg1 != '' || searchResultMsg2 != ''}" layout="none"> 
+                            <div class="row no-items">
+                                <apex:outputText rendered="{!searchResultMsg1 != ''}">{!searchResultMsg1}</apex:outputText>
+                                <apex:outputText rendered="{!searchResultMsg2 != ''}">{!searchResultMsg2}</apex:outputText>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+                <div id="div3" style="display:none;" class="tab-container">
+                   <!-- <select id="selected_list_Office" value="{!selectedOfficeId}" onchange="changeAbcOfficeData();">
+                        <apex:repeat value="{!currentOfficeSelectList}" var="office">
+                            <option value="{!office.value}">{!office.label}</option>
+                        </apex:repeat>    
+                    </select>-->
+                    <apex:form >
+                        <apex:selectList id="selected_list_Office" value="{!selectedOfficeId}" size="1" onchange="changeAbcOfficeData(this);">
+                            <apex:selectOptions value="{!currentOfficeSelectList}"/>
+                        </apex:selectList> 
+                        <span id="selectSpinner" style="display:none;">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </span>
+                    </apex:form>
+                </div>
+            </div>
+        </div>
+    <!-- Component Code Ends Here -->
+    <script>
+        function changeAbcOfficeData(elem){
+            //console.log('yes This method called ::: ' + $(elem).val());
+            $('.selected_list').val($(elem).val());
+            $('.selected_list').trigger('onchange');
+            var selectedOfficeText = $(elem).find('option:selected').text();
+            $('#officeChatterTab').text(selectedOfficeText);
+            $('.officeNameforMobile').text(selectedOfficeText);
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,592 @@
+<!--
+    /** 
+      * Description     :   This Component Holds Page Scripts and Other Static Resource   
+      *
+      * Created By      :   Rajeev Jain(Simplyforce)
+      *
+      * Created Date    :   04/07/2015
+      *
+      * Version         :   V1.0 Created
+	  *						V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Updated in order to remove the package selection page.
+      *
+      **/  
+--> 
+<apex:component layout="none">
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+    <!-- Bootstrap -->
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+    <!--<script src="js/bootstrapJS.js"></script>-->
+	<!--<apex:includeScript value="{!URLFOR($Resource.shipItAssets, 'js/bootstrapJS.js')}"/>-->
+    
+    <apex:includeScript value="{!URLFOR($Resource.ShipItAssets, 'js/shipIt-custom.js')}"/>
+        
+	<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+    
+    <script>
+    
+        /** Constants Value **/
+        var BILLING_TYPE_BLANK = '--',
+            BILLING_TYPE_PERSONAL = 'Personal',
+            BILLING_TYPE_DEPARTMENT = 'Department',
+            BILLING_TYPE_REQUEST_AUTHORIZATION = 'Request Authorization';
+        
+        var isAuthorizationRequired = 'false';
+        var fieldStates = {};
+        
+        $(function() {
+            $( ".dateField" ).datepicker({
+                showOn: "button",
+                buttonImage: "{!URLFOR($Resource.shipItAssets, 'img/calendar-icon.png')}",
+                buttonImageOnly: true,
+                buttonText: "Select date"
+            });
+        });
+        function detectBrowserVersions(){
+        	
+            /*var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+                // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+            var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+            var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+                // At least Safari 3+: "[object HTMLElementConstructor]"
+            var isChrome = !!window.chrome && !isOpera;              // Chrome 1+*/
+            
+            
+            var isIE = /*@cc_on!@*/false || !!document.documentMode;   // At least IE6
+            
+            if(isIE){
+                $("#alertDialog").dialog('open');
+            }
+        }
+/*$(document).bind("contextmenu",function(e) {
+                    e.preventDefault();
+        }); 
+        document.onkeydown = function (event)
+        {
+            event = (event || window.event);
+            if (event.keyCode == 123 || event.keyCode == 18)
+            {
+                //alert("This function is disabled here");
+                return false;
+            }
+        }*/
+        $(document).ready(function(){
+           
+            $("#AddressDialog").dialog({
+                autoOpen: false,
+                modal: true,
+            });  
+            $("#navDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    "Yes": reloadAppScreen,
+                    "No": goToCurrentScreen,
+                },
+            });
+            $("#alertDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                width:'35%',
+                dialogClass: "noclose" 
+            });  
+            
+             
+            //RJ[04-23-2015] :- Detect Browser version on Document Ready, block end user if browser version is found of internet explored
+            //CR - CR-20150413-8866, as pre Work order 3.0 we are not supporting ship it for Internet Explorer
+            detectBrowserVersions();
+            
+            
+            $(".appLinks").find(".appNav").on('click',function(){
+                 
+                if($(this).attr('compType') == 'shipAPackage'){
+                    var isAppSaved = document.getElementById('isAppDataHasSaved').value;
+                    var shipmentStatus = document.getElementById('shipmentStatusAtReview').value;
+                    if(shipmentStatus == 'Label Printed' || shipmentStatus == 'Shipped'){
+                    	window.location.href="/apex/ShipIt"; 
+                        return;
+                    }
+                    if(isAppSaved == 'false' || isAppSaved == undefined){
+                    	goToCurrentScreen();    
+                    }else{
+                        $("#navDialog").dialog('open');
+                    }
+                }else if($(this).attr('compType') == 'findAShipment' && !$(this).hasClass("selected")){
+                    $("#findAShipment").removeClass("hide");
+                    $("#findAShipment").siblings().addClass("hide");
+                    $(this).parent().parent().find(".selected").removeClass("selected");
+                    $(this).addClass("selected");
+                    
+                }/*else if($(this).attr('compType') == 'fAQ'){
+                    $("#FAQ").removeClass("hide");
+                    $("#FAQ").siblings().addClass("hide");
+                    $(this).parent().parent().find(".selected").removeClass("selected");
+                    $(this).addClass("selected");
+                }*/
+               
+            });
+            initializeMinJs('.stage-selection-box');
+            
+            <!-- V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Updated to show the service type screen -->
+            //Show Package Details and rate services screen if already was populated **/
+            if(document.getElementById('page:myForm:isPackageSelectionVerified').value == 'true'){
+                $("#packageDetailsWrapper").hide();
+                $("#packageInformation").show();
+             }
+             
+            $('#accordion-demo .panel-collapse').hide();  
+            $('#accordion-demo').find(".defaultOpen").slideToggle('500');
+            
+            triggerCustomLookup();
+            initializePageScript();
+        });
+
+		/** Method to reload whole screen **/
+		function reloadAppScreen(){
+            $("#navDialog").dialog('close');
+            window.location.href="/apex/ShipIt";
+        }
+		/** Method to Navigate to Current Screen **/
+		function goToCurrentScreen(){
+            $("#shipAPackage").removeClass("hide");
+            $("#shipAPackage").siblings().addClass("hide");
+            $("#shipAPackageLink").parent().parent().find(".selected").removeClass("selected");
+            $("#shipAPackageLink").addClass("selected");
+            $("#navDialog").dialog('close');
+        }
+		function nextNavigation(Panel,PanelToSlide){
+            PanelToSlide.slideToggle('500');
+            Panel.next('.panel').find('.panel-collapse').slideToggle('fast').siblings('.panel-collapse:visible').slideUp('fast');
+            Panel.find(".Edit").fadeIn();
+            Panel.find(".panel-heading").addClass("panel-HeadingOverride");
+            Panel.next('.panel').find(".panel-heading").removeClass("panel-HeadingOverride");
+        }
+        function previousNavigation(Panel,PanelToSlide){
+            PanelToSlide.slideToggle('500');
+            Panel.prev('.panel').find('.panel-collapse').slideToggle('fast').siblings('.panel-collapse:visible').slideUp('fast');
+        }
+        function editPanel(elem,PanelToSlide,Panel){
+            if(elem != null){
+                $(elem).hide();
+                $(elem).parent().parent().removeClass("panel-HeadingOverride");
+            }
+            PanelToSlide.siblings().find('.panel-collapse:visible').slideUp('fast');
+            Panel.slideToggle('fast');
+            PanelToSlide.siblings().find('.panel-heading').addClass("panel-HeadingOverride");
+            $('#page\\:myForm\\:isAddressVerified').val(false);  
+            
+        }
+        function choosePackage(){
+           
+            $("#packageDetailsWrapper").fadeOut();
+            $("#packageInformation").fadeIn();
+        }
+        function triggerCustomLookup(){
+            $("#selectAContat").on('click',function(){
+                $(".selectContactButton a")[0].click();  
+            }); 
+            $(".addressForm .timeLineIcon-red").hide(); 
+            $('#page\\:myForm\\:recipientSelectionMethod').val('Contact Search');	
+        }
+        function customlookupPick(elem,a,b,c,d,e,f){
+            elem.close();
+            document.getElementById('page:myForm:Contact_lkid').value = d;
+            document.getElementById('page:myForm:Contact_lkold').value = e;
+            document.getElementById('contactData').value = e;
+            $('#contactData').trigger('onchange');
+        }
+        function holdAdressInfo(){
+            
+            $(".addressForm .form-group input").each(function(i){
+                
+                if($(this).val() != '')
+                    fieldStates[$(this).attr('uid')] = $(this).val();    
+            });
+            
+        }
+        function populateHoldedInfo(){
+            $(".addressForm .senderDetails .form-group input").each(function(i){
+                if(fieldStates[$(this).attr('uid')] != ''){
+                    
+                    $(this).val(fieldStates[$(this).attr('uid')]);
+                } 
+            });
+            /*$(".addressForm .recieverDetails .form-group input").each(function(i){
+                
+                if($(this).val() == '' && fieldStates[$(this).attr('uid')] != ''){
+                    
+                    $(this).val(fieldStates[$(this).attr('uid')]);
+                } 
+            });*/
+        }
+        
+        
+        /** Function to navigates to package screen, if all requirement are met with criteria **/
+        function goToPackageStep(){
+            
+            //ReInitialize this
+            triggerCustomLookup();
+            
+            //Move to Next step on Conditional
+            if($('#page\\:myForm\\:isAddressVerified').val() == 'true'){
+                var fedExValidationStatus = '{!$CurrentPage.parameters.validationStatus}';
+                $(".addressForm .timeLineIcon-red").hide();
+                $("#addressErrorMsg").hide();
+                if($('#page\\:myForm\\:isPopupDisplay').val() == 'false'){
+                    
+                    nextNavigation($("#addressPanel"),$("#prerequisites"));
+                }else{
+                    $( "#AddressDialog" ).dialog( "option", "minWidth", 900 );
+                    $( "#AddressDialog" ).dialog( "open" ); 
+                    
+                }
+            }else{
+                $(".requiredInput .form-control").each(function(){
+                    if($(this).val() == ''){
+                        $(this).addClass("error");
+                    }
+                });
+                $(".addressForm .timeLineIcon-red").hide();
+                $("#addressErrorMsg").show();
+                $('.error').parent().parent().find('.timeLineIcon-red').show();
+            }
+            
+        }
+        function setRequiredFlag(elem){
+            if($(elem).val() == ''){
+                $('#page\\:myForm\\:isPopupDisplay').val(false);
+                $('#page\\:myForm\\:isAddressVerified').val(false);
+            }
+        }
+        function setChangeFlagForAddressValidationPopup(){
+            $("#isFieldOnValidationPopupChanged").val('true');
+        }
+        /** Reload Address Screen **/
+        function checkRequiredAndReValidateAddress(elem,validationCounter){
+            var isAllfieldsFilled = true;
+            $('#AddressDialog').find('.addressFieldRightBox .requiredData .suggestedInput').each(function(i){
+                
+                if($(this).val() == ''){
+                    $(this).css('border-color','#d74c3b');
+                    $(this).parent().find('.timeLineIcon-red').show();	
+                    isAllfieldsFilled = false
+                }else{
+                    $(this).css('border-color','none');
+                    $(this).parent().find('.timeLineIcon-red').hide();	
+                }                                                                   	
+            });
+            /*if(validationCounter > 0){
+                if($("#isFieldOnValidationPopupChanged").val() == 'false'){
+                    $("#userPromptMsg").show();
+                    isAllfieldsFilled = false;
+                }else{
+                    $("#userPromptMsg").hide();
+                    isAllfieldsFilled = true;
+                }
+			}*/
+            if(isAllfieldsFilled){
+                $('#AddressDialog').dialog('close');
+                reValidateAddress($('.suggestedInput1').val(),$('.suggestedInput2').val(),$('.suggestedInput3').val(),
+                                  $('.suggestedInput4').val(),$('.suggestedInput5').val());
+            }
+        }
+        
+        /** Method to navigates to package details screen from package selection screen **/
+        function navigatesToPackageDetails(isPackageSelected){
+            if(isPackageSelected == 'true'){
+                initializeMinJs("#packageDetailsWrapper .stage-selection-box");
+                initializePageScript(); 
+                
+                var authorizationRequired = $(".SelectedEntity").attr("isAuthorizationRequired");
+                if(authorizationRequired == 'true' && $(".billToBox").val() == BILLING_TYPE_DEPARTMENT){
+                    decideAdditionalOptions(BILLING_TYPE_REQUEST_AUTHORIZATION);
+                }
+                $("#packageDetailsWrapper").fadeIn();
+                $("#packageInformation").fadeOut();
+                
+            }
+        }
+        function initializePageScript(){
+            $( "#dialog" ).dialog({
+                autoOpen: false,
+                width:'35%',
+                modal: true,
+            });
+            
+            
+            $("#myCarousel .carousel-inner").find(".optionWrapper").on('click',function(){
+                
+                $("#myCarousel .carousel-inner").find(".selected").removeClass("selected");
+                $(this).addClass("selected");
+                var selectedElem = $(this);
+                var typeId =  $(this).attr("data-TypeId");
+                isAuthorizationRequired = $(this).attr("data-requiredAuthorization");
+                var anchorClass = '.option' + typeId;
+                
+                //Assing Selected Delivery Option Index to hidden var
+                document.getElementById('page:myForm:selectedOptionIndex').value = typeId;
+                $(".shipItOrderContinue").find(".nextNavigation").attr('selectedIndex',typeId);
+                
+                $("#myCarousel .carousel-inner").find(anchorClass).addClass("selected");
+                $(".SelectedEntity").find(".EntityTopContent").text(selectedElem.find(".EntityTopContent").text());
+                $(".SelectedEntity").find(".EntityBottomContent .innerItem1").html(selectedElem.find(".EntityBottomContent .innerItem1").html());
+                $(".SelectedEntity").find(".EntityBottomContent .innerItem2").html(selectedElem.find(".EntityBottomContent .innerItem2").html());                    
+                if(isAuthorizationRequired == 'false'){
+                    $(".shipItOrderContinue").find(".nextNavigation").val("Continue");
+                }else{
+                    $(".shipItOrderContinue").find(".nextNavigation").val("Send Request");
+                }
+                if(isAuthorizationRequired == 'true' && $(".billToBox").val() == BILLING_TYPE_DEPARTMENT){
+                    decideAdditionalOptions(BILLING_TYPE_REQUEST_AUTHORIZATION);
+                }else if(isAuthorizationRequired == 'false' && $(".billToBox").val() == BILLING_TYPE_DEPARTMENT){
+                    decideAdditionalOptions(BILLING_TYPE_DEPARTMENT);
+                }
+            });
+            $("#packageInformation").find(".packageItem").on('click',function(){
+                $("#packageDetailsWrapper").fadeIn();
+                $("#packageInformation").fadeOut();
+            });
+        }
+        function openAgreementPopup(elem){
+            if($(elem).hasClass("personalBillingLink")){
+                $( "#dialog" ).dialog('option','title','Personal Billing Agreement'); 
+                $( "#dialog" ).find(".personalAgreementText").show();
+                $( "#dialog" ).find(".departmentAgreementText").hide();
+            }else{
+                $( "#dialog" ).dialog('option','title','Department Billing Agreement');
+                $( "#dialog" ).find(".departmentAgreementText").show();
+                $( "#dialog" ).find(".personalAgreementText").hide();
+            }
+            $( "#dialog" ).dialog( "open" );    
+        }
+        function verifyEstimatedWeight(elem,weightLimit){
+            
+            if(isNaN(parseFloat($(elem).val())) || parseFloat($(elem).val()) > parseFloat(weightLimit) || $(elem).val() == '' || parseFloat($(elem).val()) <= 0){
+                $(elem).parent().parent().find(".timeLineIcon-red").show();
+                $(elem).css('border-color','#d74c3b');
+            }else{
+                $(elem).parent().parent().find(".timeLineIcon-red").hide();
+                $(elem).css('border-color','none');
+            }
+        }
+        function getDeliveryOptions(elem){
+            
+            var isDimensionsFilled = true, isBillToSelected = true, 
+                isShipDateSelected = true, isWeightEstimatedFilled = true, isAgreementChecked = true;
+            var shipDateElem = $('.shipDateSection').find('select');
+            var billToElem = $('.billToSection').find('select');
+            var estimatedWeightElem = $('.estimatedWeightField').find('input');
+            var estimatedWeightElemNum = Number(estimatedWeightElem);
+            var weightLimit = Number($(elem).attr("packageWeightLimit"));
+            //var weightLimitNum = Number(weightLimit);
+            var isCustomPackage = $(elem).attr("isCustom");
+            //Verify required field before proceeding to get delivery options
+            if(shipDateElem.val() == ''){
+                isShipDateSelected = false;
+                shipDateElem.parent().find('.show-value').css('border-color','#d74c3b');
+                shipDateElem.parent().find('.combo-show').css('border-color','#d74c3b');
+                shipDateElem.parent().parent().parent().parent().find('.timeLineIcon-red').show();
+            }else{
+                isShipDateSelected = true;
+                shipDateElem.parent().find('.show-value').css('border-color','none');
+                shipDateElem.parent().find('.combo-show').css('border-color','none');
+                shipDateElem.parent().parent().parent().parent().find('.timeLineIcon-red').hide();    
+            }
+            
+            if(billToElem.val() == '--'){
+                isBillToSelected = false;
+                billToElem.parent().find('.show-value').css('border-color','#d74c3b');
+                billToElem.parent().find('.combo-show').css('border-color','#d74c3b');
+                billToElem.parent().parent().parent().parent().find('.timeLineIcon-red').show();
+            }else{
+                isBillToSelected = true;
+                billToElem.parent().find('.show-value').css('border-color','none');
+                billToElem.parent().find('.combo-show').css('border-color','none');
+                billToElem.parent().parent().parent().parent().find('.timeLineIcon-red').hide(); 
+                
+                if($(".selectAgreement").prop('checked') == false){
+                    $(".selectAgreement").parent().css('border','1px solid #d74c3b');
+                    isAgreementChecked = false;
+                }else{
+                    $(".selectAgreement").parent().css('border','none');
+                    isAgreementChecked = true;    
+                }
+            }
+            //JRB if(estimatedWeightElemNum <= 0 || estimatedWeightElemNum > weightLimit || estimatedWeightElem.val() == ''){
+			if(isNaN(parseFloat($(estimatedWeightElem).val())) || parseFloat($(estimatedWeightElem).val()) > parseFloat(weightLimit) || $(estimatedWeightElem).val() == '' || parseFloat($(estimatedWeightElem).val()) <= 0){            
+                isWeightEstimatedFilled = false;
+                estimatedWeightElem.css('border-color','#d74c3b');
+                estimatedWeightElem.parent().parent().find('.timeLineIcon-red').show();
+            }else{
+                isWeightEstimatedFilled = true;
+                estimatedWeightElem.css('border-color','none');
+                estimatedWeightElem.parent().parent().find('.timeLineIcon-red').hide();    
+            }
+            if(isCustomPackage == 'true'){
+                $('.dimensionSection').find('input').each(function(i){	
+                    if($(this).val() == ''){
+                        isDimensionsFilled = false;
+                        $(this).css('border-color','#d74c3b');
+                    }else{
+                        $(this).css('border-color','none');   
+                    }
+                });
+            }
+            
+            //Call to Get Delivery Options
+            if(isDimensionsFilled && isBillToSelected && isShipDateSelected && isWeightEstimatedFilled && isAgreementChecked){
+                
+                getDeliveryOption();
+            }
+        }
+        
+        /** Hide Delivery options if any of the required field changed after retriving the options **/
+        function resetDeliveryOptions(){
+            
+            if(document.getElementById('isDeliveryOptionsPopulated').value == 'true'){
+                
+                $("#myCarousel").remove();
+                $("#optionsPlaceHolderAfterChange").show();
+                $(".SelectedEntity").find(".EntityTopContent").text('');
+                $(".SelectedEntity").find(".EntityBottomContent .innerItem1").html('');
+                $(".SelectedEntity").find(".EntityBottomContent .innerItem2").html('');
+                $(".shipItOrderContinue").find(".nextNavigation").val(""); 
+                $(".selectedDeliveryItem").hide();
+                $(".requestAuthorization").hide();
+            }
+        }  
+        /** Method to Validate Shipt It Order Screen and Decides that navigates to next screen or not **/
+        function validateAndNavigatesToReviewScreen(elem){
+            if($(elem).val() == 'Continue'){
+                
+                saveAndNavigatesToReview($(elem).attr('selectedIndex'));
+            }else if($(elem).val() == 'Send Request'){
+                
+                if($('.authorizationList').val() == ''){
+                    $('.authorizationList').parent().find('.show-value').css('border-color','#d74c3b');
+                    $('.authorizationList').parent().find('.combo-show').css('border-color','#d74c3b');
+                    $('.authorizationList').parent().parent().parent().parent().find('.timeLineIcon-red').show();    
+                }else{
+                    $('.authorizationList').parent().find('.show-value').css('border-color','none');
+                    $('.authorizationList').parent().find('.combo-show').css('border-color','none');
+                    $('.authorizationList').parent().parent().parent().parent().find('.timeLineIcon-red').hide(); 
+                    sendRequestAuthorization();
+                }
+            }
+            
+        }
+        
+        /** This Method is responsible to open review screen from Ship it Order Screen **/
+        function goToReviewScreen(){
+            
+            //ReInitialize this
+            triggerCustomLookup();
+            nextNavigation($('#shipmentDetailPanel'),$('#addwizard'));
+        }
+        /** Authorize or Denie Request **/
+        function authorizeOrDenieRequest(Elem){
+            if($(Elem).val() == 'Authorize Request'){
+                authorizeRequest(true);
+            }else{
+                
+                if($('.rejectedReasonSection').find('textarea').val() == ''){ 
+                    
+                    $('.rejectedReasonSection').find('textarea').css('border-color','#d74c3b');
+                    $('.rejectedReasonSection').find('.timeLineIcon-red').show();
+                }else{
+                    authorizeRequest(false);
+                    $('.rejectedReasonSection').find('textarea').css('border-color','none');
+                    $('.rejectedReasonSection').find('.timeLineIcon-red').hide();
+                }
+            }
+        }
+        /** Method to complete shipment process and Print Label or Resend to Shipment Detail Screen **/
+        function PrintLabelOrResendTOShippingDetails(Elem,selectedPackageName){
+            
+            //Print Label and complete the Shipment Process
+            if($(Elem).val() == 'Request Shipping Label'){
+                printShippingLabel();
+            }else if($(Elem).val() == 'Select Another Delivery Option'){
+                editPanel(null,$('#shipmentDetailPanel'),$('#shipmentDetailPanel').find('.panel-collapse'));
+                $('#shipmentDetailPanel').find(".panel-HeadingOverride").removeClass('panel-HeadingOverride');
+                $('#shipmentDetailPanel').find('.Edit').hide();
+                navigatesToShipItOrder(selectedPackageName);
+            }
+        }
+        
+        /** Function to Reset Find A shipment Package States **/
+        function resetFindAPackageComponentStates(){
+            
+            initializeMinJs("#findAShipment .stage-selection-box");
+            $( ".dateField" ).datepicker({
+                showOn: "button",
+                buttonImage: "{!URLFOR($Resource.shipItAssets, 'img/calendar-icon.png')}",
+                buttonImageOnly: true,
+                buttonText: "Select date"
+            });
+            
+            //Pre Select Radio Button
+            if($("#selectedShipmentCategory").val() == 'My Shipments'){
+                $("#myShipment").prop("checked",true);
+                $("#allShipment").prop("checked",false);
+            }else{
+                $("#allShipment").prop("checked",true);
+                $("#myShipment").prop("checked",false);
+            }
+        }
+        function verifyAndContinue(){
+            
+            //Continue to validation 
+            verifyAddress(); 
+        }
+        function keepExistingAddress(){
+            var validationStatus = $('#page\\:myForm\\:validationStatus').val();
+            if(validationStatus == 'Resolved' || validationStatus == 'Warning'){
+                //Validate and display Prompt
+                $("#ConfirmDialog").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width:'35%',
+                    buttons: {
+                        "Yes": yesAnswerHandler,
+                        "No": noAnswerHandler,
+                    },
+                });
+                $("#ConfirmDialog").dialog('open');
+            }else{
+                keepExistingAndnavigateToPackageSelectionScreen();
+            }
+        }
+        /*** Method to Accept Yes Answer from User and Perform Action According to that **/
+        function yesAnswerHandler(){
+            $("#ConfirmDialog").dialog('close');
+            $('#page\\:myForm\\:isAddressAccepted').val('');
+            acceptYesAnswer();
+        }
+        
+        /*** Method to Accept No Answer from User and Perform Action According to that **/
+        function noAnswerHandler(){
+            $("#ConfirmDialog").dialog('close');
+            $("#AddressDialog").dialog('open');
+            //$('#page\\:myForm\\:isAddressAccepted').val('');
+            //noAnswer();    
+        }
+        
+        function makeFinalDecision(shipmentStatus){
+            if(shipmentStatus == 'Shipped' || shipmentStatus == 'Label Printed'){
+                $("#shipmentDetailPanel").find(".Edit").remove();
+                $("#addressPanel").find(".Edit").remove();
+            }    
+        }
+        function updateAccessedAddress(){
+            if($("#isFieldOnValidationPopupChanged").val() == 'true'){
+                acceptUpdateWithAddressChange($('.suggestedInput1').val(),$('.suggestedInput2').val());    
+            }else{
+                acceptUpdateWithoutAddressChange();
+            }
+        }
+    </script>
+</apex:component>

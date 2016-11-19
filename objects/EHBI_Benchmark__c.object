@@ -1,0 +1,1452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Object to hold information about the health benefits plans and performance of Employee Health members. Conforms to requirements of Milliman MedInsight Benchmarks specification version 2.1.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>ABCO_Plan_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>ABCO Plan Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>EPO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PPO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HMO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CDHP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Audit_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Audit Notes</label>
+        <length>32000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Audit_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Audit Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Passed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Changes Required</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>BEN_COPAY_PCP__c</fullName>
+        <description>Physician co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Primary Care Physician co-pay</inlineHelpText>
+        <label>Office Copay (PCP)</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Benchmark_Notes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Describe any unusual circumstances, data anomalies, or other important considerations about this benchmark report</inlineHelpText>
+        <label>Benchmark Notes</label>
+        <length>10000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Benchmark_Report_Complete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box when this benchmark report is complete - including plan design, premiums, enrollment numbers, and a copy of the SPD and other applicable documents are attached to the &quot;Attachments&quot; section</inlineHelpText>
+        <label>Benchmark Report Complete</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Benefit_ID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Code found on membership/eligibility file that uniquely describes a benefit package</inlineHelpText>
+        <label>Benefit ID</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Care_Mgmt_Wellness_Incentive_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the annual amount of cash incentives OTHER THAN PREMIUM REDUCTIONS provided for participants in wellness and/or care management programs under this plan. If premium reductions are provided, enter monthly premiums in the appropriate fields</inlineHelpText>
+        <label>Annual Care Mgmt / Wellness Incentive</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Care_Mgmt_Wellness_Incentives__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicate whether and how this plan provides financial incentives for participation in care management or wellness programs</inlineHelpText>
+        <label>Care Mgmt / Wellness Incentives</label>
+        <picklist>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Premium Discounts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cash Payments</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Incentive</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Check_if_Grandfathered__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check box if this plan is grandfathered under the 2010 Patient Protection and Affordable Care Act</inlineHelpText>
+        <label>Check if Grandfathered</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Chiro_limit__c</fullName>
+        <description>Chiropractic service inclusion - enter 0 if chiropractic not covered</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Chiropractic service inclusion - enter 0 if chiropractic not covered</inlineHelpText>
+        <label>Chiropractic Visit Limits or Exclusion</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Chiropractic_Visit_Limits_or_Exclusion__c</fullName>
+        <description>Chiropractic service inclusion - enter 0 if chiropractic not covered</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Chiropractic service inclusion - enter 0 if chiropractic not covered</inlineHelpText>
+        <label>Chiropractic Visit Limits or Exclusion</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Coinsurance_Values_Domestic__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box if the coinsurance values reflect a domestic tier</inlineHelpText>
+        <label>Coinsurance Values Domestic</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Copay_Values_Domestic__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box if the copay values reflect a domestic tier</inlineHelpText>
+        <label>Copay Values Domestic</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Covered_Employees__c</fullName>
+        <externalId>false</externalId>
+        <label>Covered Employees</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Covered_Lives__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average number of individual lives covered under this plan during the time it is or was active</inlineHelpText>
+        <label>Covered Lives</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Benchmarks_Accessed__c</fullName>
+        <defaultValue>Today()</defaultValue>
+        <externalId>false</externalId>
+        <label>Date Benchmarks Accessed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Drug_Coverage__c</fullName>
+        <description>Select whether this plan covers prescription drugs</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select whether this plan covers prescription drugs</inlineHelpText>
+        <label>Drug Coverage</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Y</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>N</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ER_Co_Pay__c</fullName>
+        <description>Emergency room co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Emergency room co-pay</inlineHelpText>
+        <label>ER Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ER_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>ER Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>ER_Copay__c</fullName>
+        <description>Emergency room co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Emergency room co-pay</inlineHelpText>
+        <label>ER Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Exclude_From_Benchmarking__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box to exclude this benchmark report from benchmarking studies - for example, due to legal restrictions, insoluble accuracy problems, or other unusual circumstances. Make a note of the reason for exclusion in the Benchmarking Notes field.</inlineHelpText>
+        <label>Exclude From Benchmarking</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Generic_RX_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Tier 1 Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>HIP_COPAY__c</fullName>
+        <description>Inpatient facility co-pay for admissions</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Inpatient facility co-pay for admissions</inlineHelpText>
+        <label>Inpatient Facility Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HIP_PADA__c</fullName>
+        <description>Substance abuse and psych number of days limit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Substance abuse and psych number of days limit</inlineHelpText>
+        <label>Substance Abuse &amp; Psychiatric Day Limit</label>
+        <picklist>
+            <picklistValues>
+                <fullName>15D</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30D</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>60D</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>UNL</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>HRA_Employer_Contribution__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Employer contribution to the plan&apos;s Health Retirement Account, if HRA is offered with this plan</inlineHelpText>
+        <label>Health Retirement Acct Employer Contr.</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HRA_Offered__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check if a Health Retirement Account is offered with this plan</inlineHelpText>
+        <label>Health Retirement Account Offered</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>HSA_Contrib_Couple__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual Employer HSA Contrib (Couple)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HSA_Contrib_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual Employer HSA Contrib (Family)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HSA_Contrib_Single_Plus_Dep__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual Employer HSA Contrib (Emp + Dep)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HSA_Contrib_Single__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual Employer HSA Contrib (Single)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>HSA_Offered__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check box if a Health Savings Account is offered with this plan</inlineHelpText>
+        <label>HSA Offered</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Inpatient_Facility_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Inpatient Facility Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>MSB_RX_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Tier 3 Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Maximum_Annual_Benefit__c</fullName>
+        <externalId>false</externalId>
+        <label>Maximum Annual Benefit</label>
+        <precision>13</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Medical_Carrier__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Medical Carrier</label>
+        <referenceTo>Vendor__c</referenceTo>
+        <relationshipLabel>EHBI Medical Benchmarks</relationshipLabel>
+        <relationshipName>EHBI_Benchmarks</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Antidepressant_Percent_Generic__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Antidepressant % Generic</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Antihyperlipidemic_Generic__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Antihyperlipidemic % Generic</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Metric_CT_Per_1000__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: CT Per 1000</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metric_Emergency_Visits_Per_1000__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Emergency Visits Per 1000</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metric_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Latest date on which claims included in these benchmarking metrics were incurred</inlineHelpText>
+        <label>Metric End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Metric_MRI_Per_1000__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: MRI Per 1000</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metric_Medical_PMPM__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Medical PMPM</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Mental_Health_Visits_Per_1000__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Mental Health Visits Per 1000</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metric_Overall_Generic__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Overall % Generic</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Metric_PPI_Generic__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: PPI % Generic</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Percent_Employee_Paid__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Percent Employee Paid</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Pharmacy_PMPM__c</fullName>
+        <externalId>false</externalId>
+        <label>Metric: Pharmacy PMPM</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Metric_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>First date on which claims included in these benchmarking metrics were incurred</inlineHelpText>
+        <label>Metric Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Couple__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Premium: Couple</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Couple_w_wellness__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Monthly premium for this benefit plan for a couple if the employee receives a reduced premium as a result of participation in a care management or wellness program</inlineHelpText>
+        <label>Monthly Premium: Couple (w/wellness)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Premium: Family</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Family_w_wellness__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Monthly premium for this benefit plan for a family if the employee receives a reduced premium as a result of participation in a care management or wellness program</inlineHelpText>
+        <label>Monthly Premium: Family (w/wellness)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Single_Dep_w_wellness__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Monthly premium for this benefit plan for an individual and one dependent if the individual receives a reduced premium as a result of participation in a care management or wellness program</inlineHelpText>
+        <label>Monthly Premium: Single+Dep (w/wellness)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Single__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Premium: Single</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Single_and_Dependent__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Premium: Single and Dependent</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Premium_Single_w_wellness__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Monthly premium for this benefit plan for an individual if the individual receives a reduced premium as a result of participation in a care management or wellness program</inlineHelpText>
+        <label>Monthly Premium: Single (w/wellness)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>OOP_MAX_Single__c</fullName>
+        <description>The member&apos;s annual maximum</description>
+        <externalId>false</externalId>
+        <inlineHelpText>t	The member&apos;s annual maximum (for single plans)</inlineHelpText>
+        <label>Out-Of-Pocket Maximum Single</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Office_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Office Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Office_Copay_Specialty__c</fullName>
+        <externalId>false</externalId>
+        <label>Office Copay (Specialty)</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Oral_Contra__c</fullName>
+        <description>Inclusion of Oral Contraceptive benefits or not</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Inclusion of Oral Contraceptive benefits or not</inlineHelpText>
+        <label>Oral Contraceptive</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Oral Contraceptives Included</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Oral Contraceptives Excluded</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Out_Of_Pocket_Maximum_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Out-Of-Pocket Maximum Family</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PLAN_DEDUCT_SINGLE__c</fullName>
+        <description>Plan individual annual deductible</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Plan individual annual deductible (for single plans)</inlineHelpText>
+        <label>Plan Deductible Single</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PT_VISIT_LIMIT__c</fullName>
+        <description>Physical therapy visit limit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Physical therapy visit limit</inlineHelpText>
+        <label>Physical Therapy Visit Limit</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pharmacy_Carrier__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Pharmacy Carrier</label>
+        <referenceTo>Vendor__c</referenceTo>
+        <relationshipLabel>EHBI Pharmacy Benchmarks</relationshipLabel>
+        <relationshipName>EHBI_Benchmarks1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Plan_Deductible_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Plan Deductible Family</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Plan_ID_Field_Name__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the field or combination of fields on the source data that contain the Plan ID for mapping between this plan benchmark and individuals eligible for coverage under this plan</inlineHelpText>
+        <label>Plan ID Field Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plan_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Plan Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Base Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Base+Supp Major Med</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 100/0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 50/50</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 55/45</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 60/40</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 65/35</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 70/30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 75/25</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 80/20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 85/15</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 90/10</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Comp Major Med 95/5</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No Adjustment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Supp Only 80/20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Plan_Year_Begin_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the date this plan takes effect</inlineHelpText>
+        <label>Plan Year Begin Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Plan_Year_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the last date on which this plan is effective</inlineHelpText>
+        <label>Plan Year End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Plan_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Plan Year</label>
+        <picklist>
+            <picklistValues>
+                <fullName>2009</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2010</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2011</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2012</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2013</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2014</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2015</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2016</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2017</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2018</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2019</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2020</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_CT__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization CT</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_DME__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization DME</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Inpatient_Stays__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization Inpatient Stays</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_MRI__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization MRI</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Non_PBM_Drugs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization Non-PBM Drugs</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Preauthorization Notes</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Other_Imaging__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization Other Imaging</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Other__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization Other</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preauthorization_Specialty_Medications__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Preauthorization Specialty Medications</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Project_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Project Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <description>The EHBI project this benefits plan is related to</description>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>Project__c</referenceTo>
+        <relationshipLabel>EHBI Benchmarks</relationshipLabel>
+        <relationshipName>Benefits_Plans</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>RAD_CO_PAY__c</fullName>
+        <description>Radiology Co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Radiology Co-pay</inlineHelpText>
+        <label>Radiology Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>RX_GEN_COPAY__c</fullName>
+        <description>The generic drug prescription co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The generic drug prescription co-pay</inlineHelpText>
+        <label>Tier 1 Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>RX_MSB_COPAY__c</fullName>
+        <description>The multi-source brand drug prescription co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multi-source brand drug prescription co-pay</inlineHelpText>
+        <label>Tier 3 Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>RX_SSB_COPAY__c</fullName>
+        <description>The single-source brand drug prescription co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The single-source brand drug prescription co-pay</inlineHelpText>
+        <label>Tier 2 Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Radiology_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Radiology Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>SG_COPAY__c</fullName>
+        <description>Hospital outpatient surgery co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Hospital outpatient surgery co-pay</inlineHelpText>
+        <label>Surgery Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>SSB_RX_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Tier 2 Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Specialist_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Specialist Coinsurance</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Specialty_RX_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Specialty RX Coinsurance</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Specialty_RX_Copay__c</fullName>
+        <externalId>false</externalId>
+        <label>Specialty RX Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Stop_Loss_Threshold__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicate the dollars at which stop loss coverage is triggered for this plan</inlineHelpText>
+        <label>Stop Loss Threshold</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sub_Abuse_Psych_Visits_Limit__c</fullName>
+        <description>Substance abuse and psych number of visits limit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Substance abuse and psych number of visits limit</inlineHelpText>
+        <label>Sub Abuse &amp; Psych Prof Visit Limit</label>
+        <picklist>
+            <picklistValues>
+                <fullName>5V</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>10V</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>15V</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20V</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>25V</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>UNL</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Surgery_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Surgery Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Urgent_Care_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Urgent Care Coinsurance</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Urgent_Care_Copay__c</fullName>
+        <externalId>false</externalId>
+        <label>Urgent Care Copay</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>VS_COPAY__c</fullName>
+        <description>Vision co-pay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Vision co-pay</inlineHelpText>
+        <label>Vision Copay</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Vision_Benefit__c</fullName>
+        <description>The vision (glasses and contacts) benefit limit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The vision (glasses and contacts) benefit limit</inlineHelpText>
+        <label>Vision Benefit</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1 Per 2 Years - Contact Lenses Covered</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1 Per 2 Years - Contacts Medically Necessary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1 Per Year - Contact Lenses Covered</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1 Per Year - Contacts Medically Necessary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Covered</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Vision_Coinsurance__c</fullName>
+        <externalId>false</externalId>
+        <label>Vision Coinsurance</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <label>EHBI Benchmark</label>
+    <nameField>
+        <label>EHBI Benchmark Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>EHBI Benchmarks</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

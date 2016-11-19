@@ -1,0 +1,36 @@
+<apex:page standardController="Case" extensions="CaseController" >
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+    
+    <script type="text/javascript">
+        function testSetTabTitle() {
+            //Set the current tab's title
+            sforce.console.setTabTitle('{!Case.CaseNumber}');
+        }
+        var pageLoad = window.onload;
+          window.onload = function() {
+                if (pageLoad) {
+                        pageLoad();
+                }
+                  testSetTabTitle();
+          }
+    </script>
+     
+    <chatter:feedWithFollowers entityId="{!case.Id}"/>
+    <script>
+    //VH 6/26/14: The below code is added so we do not receive a XSS error while
+    // attepmpting to use standard links like Change Owner or Change Record Type
+    // while working in the console.
+    function srcUp(url) {
+        window.location.href = url;
+    }
+    </script>
+    <apex:form >
+        <apex:detail inlineEdit="true" relatedList="true" relatedListHover="true" />
+        <!-- HIDDEN FIELDS FOR USE IN CONTROLLER EXTENSION -->
+        <apex:inputHidden value="{!case.RecordType.DeveloperName}" />
+        <apex:inputHidden value="{!case.RecordTypeId}" />
+        <apex:inputHidden value="{!case.Member_Support_Ticket__c}" />
+        <apex:inputHidden value="{!case.Deadline__c}" />
+        <apex:inputHidden value="{!case.OwnerId}" />
+    </apex:form>
+</apex:page>

@@ -1,0 +1,24 @@
+<!-- 
+    Description     :   This VF page will invoke when an user will click on the "Accept Issue" button on MS record detail page.
+    
+    Created By      :   Abhinav Sharma
+    
+    Created Date    :   03/31/2016
+
+	Current Log		:	v1.0
+    
+    Revision Logs   :   v1.0 - Created - CR-20160224-9632 - 03/31/2016
+                     
+-->
+<apex:page standardController="Site_Issue__c" extensions="MemberSupportController" action="{!acceptIssue}">
+    <apex:form id="mainForm" >
+        <apex:pageMessages id="messages"/>
+        <apex:outputLink value="/{!siteIssue.Id}">Click here</apex:outputLink>&nbsp;to go to previous page.
+        <!-- HIDDEN FIELDS FOR USE IN CONTROLLER EXTENSION -->
+        <apex:inputHidden value="{!Site_Issue__c.Date_Time_Acknowledged__c}"/>
+        <apex:inputHidden value="{!Site_Issue__c.OwnerId}"/>
+        <apex:inputHidden value="{!Site_Issue__c.Technical_Project_Manager_new__c}"/>
+        <apex:inputHidden value="{!Site_Issue__c.Assigned_To_Contact__c}"/>
+        <apex:inputHidden value="{!Site_Issue__c.RecordTypeId}"/>
+    </apex:form>
+</apex:page>

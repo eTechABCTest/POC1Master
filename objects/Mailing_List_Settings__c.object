@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Stores default information for the mailing list project. (CR-1297)</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>PO_After_Hours_Cell__c</fullName>
+        <description>(CR-1297)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>PO After Hours Cell that will appear on the Purchase Order generated for a Mailing Campaign.</inlineHelpText>
+        <label>PO After Hours Cell</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>PO_Contact_Name__c</fullName>
+        <description>(CR-1297)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact Name that will appear on the Purchase Order generated for a Mailing Campaign.</inlineHelpText>
+        <label>PO Contact Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PO_Phone__c</fullName>
+        <description>(CR-1297)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>PO Phone that will appear on the Purchase Order generated for a Mailing Campaign.</inlineHelpText>
+        <label>PO Phone</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <label>Mailing List Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

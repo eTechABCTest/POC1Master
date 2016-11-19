@@ -1,0 +1,37 @@
+<!--V_1.1 - Modified By - Rajeev Jain - 07/13/2015 - CR-20150618-9016 - Board Room Mobile -->
+<!-- Description : Added scroll functionality touch based for IOS devices in mobile -->
+<apex:component layout="none">
+    
+    <div class="block chatter feed">
+        <h2 class="header">My Chatter</h2>
+        <div class="chatter-feeds-wrapper">
+            
+            <ul class="chatter-tabs">
+                <li title="My Chatter Feed"><a href="#chatter-feed-wrapper"><i class="fa fa-comments-o fa-fw"></i></a></li>
+                <li title="My Chatter Groups" class="no-border"><a href="#chatter-groups-wrapper"><i class="fa fa-users fa-fw"></i></a></li>
+                <li class="status"><apex:actionStatus id="load-more-spinner-chatter"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus></li>
+            </ul>
+            
+            <div id="chatter-feed-wrapper">
+                <!--V_1.1 - Modified By - Rajeev Jain - 07/13/2015 - CR-20150618-9016 - Board Room Mobile -->
+                <!-- Decscription : Added class from Iframe to wrapper div, created wrapper div, added new class to iframe -->
+                <div style="overflow-y:auto;-webkit-overflow-scrolling: touch;" class="chatter-iframe"> 
+                	<iframe src="/apex/IntranetChatter" frameBorder="0" class="chatter-iframe-iframe"/>    
+                </div>
+                
+                <div class="view_more right action_link">
+                    <a href="/_ui/core/chatter/ui/ChatterPage" target="_blank">Expand <i class="glyphicon glyphicon-new-window"></i></a>
+                </div>
+            </div>
+            
+            <div id="chatter-groups-wrapper" style="overflow-y: auto; overflow-x: auto;-webkit-overflow-scrolling: touch;">
+                <c:IntranetChatterGroups />
+                <div class="view_more right action_link">
+                    <a href="/_ui/core/chatter/groups/GroupListPage" target="_blank">View More <i class="glyphicon glyphicon-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</apex:component>

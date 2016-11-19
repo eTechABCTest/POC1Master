@@ -1,0 +1,188 @@
+<apex:page controller="PaymentReqProcessController" id="page" renderAs="PDF" applyBodyTag="false" >
+<!--  renderAs="PDF" -->
+	<head>
+	 <style type="text/css">
+	  @page
+	  {
+	    /* Put page numbers in the bottom right corner of each
+	    page in the pdf document. */
+	    @bottom-right {
+	      content: "Page " counter(page) " of " counter(pages);
+	    }
+	    @bottom-left {
+	    	/*content: "Batch{!IF(SelectedBatches.size > 1, 'es', '')}&nbsp;{!SelectedBatches}";*/
+	    	content: "Printed On {!TodaysDate}";
+	    }
+	    @bottom-center {
+	    	
+	    }
+	    /* landscape */
+	    size:landscape;
+	    /* margin around edges of page */
+	    margin:0.2in;
+	  }
+	  
+	  
+	  body {
+	   font-family: "Trebuchet MS", sans-serif;
+	   font-size:10pt;
+	  }
+		
+	  .customTable tr td {
+	  	Width:45%;
+	  }
+	    
+	  .centerHeaders {
+	  	text-align:center;
+	  }
+	  
+	  .innerTable { 
+		  font-size:85%;
+	  }
+	  
+	  div.mainHeader {
+	  	font-family:Arial;
+	  	background-color:#dd1111;
+	  	color:white;
+	  	width:100%;
+	  	text-align:center;
+	  	font-size:12px;
+	  	font-weight:bold;
+	  }
+	  
+	  .header1 {
+	  	border-top: 1px solid #00398E;
+	  	border-bottom: 1px solid #00398E;
+	  }
+	  
+	  .bold {
+	  	font-weight:bold;
+	  }
+	  
+	  td {
+	 	border: 0px;
+	    border-collapse: collapse;
+	    margin: 0px;
+	    padding-left: 0px;
+	   }
+	   
+	   table {
+	 	border: 0px;
+	    border-collapse: collapse;
+	    margin: 0px;
+	    padding-left: 0px;
+	   }
+	   
+	   tr {
+	 	border: 0px;
+	    border-collapse: collapse;
+	    margin: 0px;
+	    padding-left: 0px;
+	   }
+	  
+	  .odd {
+	  	background-color:#E0F0FF;
+	  }
+	  
+	  .odd td {
+	  	padding-bottom: 2px;
+	  }
+	  
+	  .even td {
+	  	padding-bottom: 2px;
+	  }
+	  
+	  table tr td {
+	  	padding-bottom:15px;
+	  }
+	  
+	  body {
+	  	 font-family:Arial;
+	  }
+	
+	 </style>
+	</head>
+	<body>
+		<span class="bold" style="font-size:16px;">Payment Request Batch{!IF(SelectedBatches.size > 1, 'es', '')}&nbsp;&nbsp;{!SelectedBatches_Formatted}</span>
+		<br/><br/>
+		<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!PaymentRequestsByBatchNum}" var="item" 
+													 style="width:95%;color: #00398E; border-collapse: collapse; " >
+			<apex:column >
+							<apex:facet name="header">Vendor</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Vendor__r.Name}" id="vendor" />
+						</apex:column>
+						<apex:column style="text-align:right" >
+							<apex:facet name="header">Amount</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="amtRepeat" >
+									<tr><td style="border-bottom:none;">
+									<apex:outputText styleClass="innerTable" value="{0, number, $#,##0.00}" style="white-space:nowrap; padding-right:3px;" >
+										<apex:param value="{!budgetLine.Payment_Amount__c}" />
+									</apex:outputText>
+									</td></tr>
+								</apex:repeat>
+							</table>
+							<!-- Total:&nbsp;
+							<apex:outputText value="{0, number, $#,##0.00}" style="white-space:nowrap; padding-right:3px;" >
+								<apex:param value="{!item.PaymentRequest.Amount__c}" />
+							</apex:outputText> -->
+						</apex:column>
+						<apex:column style="text-align: left;" >
+							<apex:facet name="header">Dept Name</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="deptNameRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Department_Name__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Dept #</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="deptNumRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Department_Number__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Acct #</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="acctNumRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Account_Number__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Inv #</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Invoice_Num__c}" />
+						</apex:column>
+						<apex:column style="width:100px;" >
+							<apex:facet name="header">Status</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Status__c}" />
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Inv Due Date</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Invoice_Due_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Contract Start</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Purchase_Request__r.Term_Start_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Contract End</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Purchase_Request__r.Term_End_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+		</apex:dataTable>
+	</body>
+</apex:page>

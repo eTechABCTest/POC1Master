@@ -1,0 +1,35 @@
+<apex:page controller="SiteProfileActionController" id="page" sidebar="false" showHeader="false" >
+    <c:IncludeJQuery />
+    
+    <apex:form id="mainForm" style="min-width:400px; min-height:240px;">
+        <apex:actionFunction name="execute" action="{!execute}" rerender="errorPanel" onComplete="refreshParent(); closePopup(); return false;" />
+        <apex:outputPanel id="errorPanel">
+            <!-- Include page messages by default -->
+            <apex:pageMessages escape="false" />
+            <apex:inputHidden value="{!hasError}" id="hasError" />
+        </apex:outputPanel>
+    </apex:form>
+    
+    <script>
+    j$(function() {
+        blockElement('#page\\:mainForm', null);
+        execute();
+    });
+    
+    function hasError() {
+        return j$("[id*='hasError']").val();
+    }
+    
+    function refreshParent() {
+        if (hasError() == 'false') window.opener.location.href='/{!siteProfileId}';
+    }
+    
+    function closePopup() {
+        
+        if (hasError() == 'false') setTimeout(function(){ self.close() }, 1500);
+        else {
+            unblockElement('#page\\:mainForm', null);
+        }
+    }
+    </script>
+</apex:page>

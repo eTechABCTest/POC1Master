@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>Rev Cycle Sol and Southwind</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Physician/PopHealth COS</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>PT_Lead</parentRole>
+</Role>

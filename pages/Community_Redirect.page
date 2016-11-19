@@ -1,0 +1,4 @@
+<apex:page controller="CaseListViewController" applyBodyTag="false" applyHtmlTag="false" 
+	showHeader="false" id="page" standardStylesheets="false" action="{!redirect}" >
+    <!--{!projectId}-->
+</apex:page>

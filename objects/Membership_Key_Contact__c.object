@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Contact_Institution__c</fullName>
+        <description>Created for CR-20160526-9880.</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/&quot;+ Contact__r.AccountId , Contact__r.Account.Name )</formula>
+        <label>Contact - Institution</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Status__c</fullName>
+        <description>Created for CR-20160526-9880.</description>
+        <externalId>false</externalId>
+        <formula>Text(Contact__r.Contact_Status__c)</formula>
+        <label>Contact - Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Membership Key Contacts</relationshipLabel>
+        <relationshipName>Membership_Key_Contacts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_Metro_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Legacy Metro Role</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Meetings__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Meetings</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Membership__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Membership</label>
+        <referenceTo>Membership__c</referenceTo>
+        <relationshipLabel>Membership Key Contacts</relationshipLabel>
+        <relationshipName>Membership_Key_Contacts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Performance_Technology__c</fullName>
+        <description>CR-3838</description>
+        <externalId>false</externalId>
+        <label>Performance Technology</label>
+        <picklist>
+            <picklistValues>
+                <fullName>ASE</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>iFormBuilder</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>iRound (mobile app)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>iRound IQ (dashboard)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Pubs__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Pubs</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reference__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of CR-3833</description>
+        <externalId>false</externalId>
+        <label>Reference</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Role_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Role Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>CIH programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HCIC programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Higher Ed Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hospital Research Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>iRound</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TD Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Role</label>
+        <picklist>
+            <controllingField>Role_Type__c</controllingField>
+            <picklistValues>
+                <fullName>Key Contact</fullName>
+                <default>true</default>
+                <controllingFieldValues>HCIC programs</controllingFieldValues>
+                <controllingFieldValues>Higher Ed Programs</controllingFieldValues>
+                <controllingFieldValues>Hospital Research Programs</controllingFieldValues>
+                <controllingFieldValues>TD Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Executive Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>PT</controllingFieldValues>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Leader</fullName>
+                <default>false</default>
+                <controllingFieldValues>PT</controllingFieldValues>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Physician Champion</fullName>
+                <default>false</default>
+                <controllingFieldValues>PT</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Project Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>PT</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Implementation Leader</fullName>
+                <default>false</default>
+                <controllingFieldValues>PT</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Project Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT Implementation Leader</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Network Administrator</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Device Procurement Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Expert – HCAHPS</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Expert – Census</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LEAN Specialist</fullName>
+                <default>false</default>
+                <controllingFieldValues>iRound</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Executive sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Primary Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-All Meetings and Pubs</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Terrain Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Cancer Services</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Cardiovascular</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Clinical Operations</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Clinician Relations</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Finance</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Human Resources</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Imaging and Radiology</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Information Technology</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Knowledge Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Leadership</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Nursing</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Quality</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Strategic Planning</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIH-Technology Analysis</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH-Executive Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH –Primary Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -All Meetings and Pubs</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Terrain Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Strategic Planning</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Finance</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Information Technology</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Technology Analysis</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Human Resources</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH -Leadership</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHH - Knowledge Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO-Executive Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO –Primary Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -All Meetings and Pubs</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Terrain Sponsor</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Clinical Operations</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Quality</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Cancer Services</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Cardiovascular</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Imaging and Radiology</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Clinician Relations</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHO -Knowledge Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Higher Ed Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHN- All Meetings and Pubs</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHN- Deputy</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIHN- Engagement Survey</fullName>
+                <default>false</default>
+                <controllingFieldValues>CIH programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Main Executive Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>TD Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Main Logistics Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>TD Programs</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Site_Profile_Status__c</fullName>
+        <description>Created for CR-20160526-9880.</description>
+        <externalId>false</externalId>
+        <formula>Text(Contact__r.Advisory_com_Site_Profile__r.Status__c )</formula>
+        <label>Site Profile - Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Membership Key Contact</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Membership Key Contact Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Membership Key Contacts</pluralLabel>
+    <searchLayouts>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Role_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Role__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Membership__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Pubs__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>New_Membership_Key_Contact</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Membership Key Contact</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0G/e?Name={!Membership__c.Name} - New Role&amp;CF00NC00000055pWJ={!Membership__c.Name}&amp;CF00NC00000055pWJ_lkid={!Membership__c.Id}&amp;retURL=%2F{!Membership__c.Id}</url>
+    </webLinks>
+</CustomObject>

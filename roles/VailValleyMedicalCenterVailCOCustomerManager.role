@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>Vail Valley Medical Center - Vail - CO Customer Manager</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Vail Valley Medical Center - Vail - CO Customer Manager</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>VailValleyMedicalCenterVailCOCustomerExecutive</parentRole>
+</Role>

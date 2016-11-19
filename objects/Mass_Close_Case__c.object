@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Created for CR-20160428-9802</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Close_Cases_Permitted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-20160428-9802.</description>
+        <externalId>false</externalId>
+        <label>Close Cases Permitted</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Mass Close Case</label>
+    <visibility>Public</visibility>
+</CustomObject>

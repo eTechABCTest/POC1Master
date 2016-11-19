@@ -1,0 +1,1568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>PANewOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Contains details of all credit cards or payment authorization agreements that person is responsible for.  One record per person, or per group responsible for a Meeting series</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account_Balance__c</fullName>
+        <description>Total of all outstanding balances on all cards
+        
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total Amount for all cards not matched to an Expense Report</inlineHelpText>
+        <label>zzzAccount Balance</label>
+        <summarizedField>Credit_Card__c.Card_Balance__c</summarizedField>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Active_Card_Count__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Active Credit Cards</inlineHelpText>
+        <label>zzzActive Card Count</label>
+        <summaryFilterItems>
+            <field>Credit_Card__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Active</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Advisory_Profile_Credit_Limit__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Credit_Limit__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credit Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Advisory_Profile__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Advisory Profile</label>
+        <referenceTo>ABC_Profile__c</referenceTo>
+        <relationshipName>Credit_Portfolios</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Age_Limit_Status__c</fullName>
+        <description>Used in reports and dashboards for grouping</description>
+        <externalId>false</externalId>
+        <formula>IF( Transaction_Age_Days__c &lt; Age_Limit_Warning_Days__c, 
+&apos;Under&apos;, 
+IF( Transaction_Age_Days__c &lt; Transaction_Age_Limit__c, 
+&apos;Warning&apos;, 
+&apos;Over&apos; ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Under - Below age limit
+Warning - Close to age limit 
+Over - Over age limit</inlineHelpText>
+        <label>zzzAge Limit Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Age_Limit_Warning_Days__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	OR(
+		ISNULL(Override_Age_Limit_Warning_Days__c), 
+		ISBLANK(Override_Age_Limit_Warning_Days__c)
+	),
+	Portfolio_Profile__r.Age_Limit_Warning_Days__c, 
+	Override_Age_Limit_Warning_Days__c
+)</formula>
+        <label>zzzAge Limit Warning Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Available_Balance_Percent__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(zzzCredit_Limit__c != 0,
+  (zzzCredit_Limit__c - Account_Balance__c)/zzzCredit_Limit__c,
+  0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Percent of credit remaining before limit</inlineHelpText>
+        <label>zzzAvailable Balance %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Available_Credit__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzAvailable Credit</label>
+        <summarizedField>Credit_Card__c.Available_Credit__c</summarizedField>
+        <summaryFilterItems>
+            <field>Credit_Card__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Active</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Above_Warning_Level__c</fullName>
+        <externalId>false</externalId>
+        <formula>zzzAvailable_Credit_Percentage__c   &lt;=  Balance_Limit_Warning_Level__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzBalance Above Warning Level</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Limit_Status__c</fullName>
+        <description>Used in reports and dashboards for grouping</description>
+        <externalId>false</externalId>
+        <formula>IF( Available_Balance_Percent__c &gt;  Balance_Limit_Warning_Level__c,
+    &apos;Under&apos;,
+    IF( Available_Balance_Percent__c &gt; 0,
+        &apos;Warning&apos;,
+        &apos;Over&apos; ) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Under - Below credit limit
+Warning - Close to credit limit
+Over - Over credit limit</inlineHelpText>
+        <label>zzzBalance Limit Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Balance_Limit_Warning_Level__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+	OR(
+		ISNULL( Override_Balance_Limit_Warning_Level__c ) ,  
+		ISBLANK( Override_Balance_Limit_Warning_Level__c )
+	), 
+	Portfolio_Profile__r.Balance_Limit_Warning_Level__c , 
+	Override_Balance_Limit_Warning_Level__c 
+)</formula>
+        <label>zzzBalance Limit Warning Level</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Over_Warning_Level__c</fullName>
+        <externalId>false</externalId>
+        <formula>AND( 
+(Available_Balance_Percent__c &lt;= Balance_Limit_Warning_Level__c), 
+(Active_Card_Count__c &gt; 0),
+(zzzCredit_Limit__c &gt; 0) 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzBalance Over Warning Level</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Balance__c</fullName>
+        <externalId>false</externalId>
+        <label>Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_Attention_To__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address Attention To</label>
+        <length>35</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_City__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address City</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_Line_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address Line 1</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_Line_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address Line 2</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_PostalCode__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address PostalCode</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Address State</label>
+        <length>2</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_Updated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Set as TRUE to send a card address update request to Comdata.</inlineHelpText>
+        <label>Billing Address Updated</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Card_Count__c</fullName>
+        <description>Count Number of related Credit Cards (active or not)
+        
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Card Count</label>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Card_Holder_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>Card_Holder__r.Email</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Card Holder Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Holder_First_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Card_Holder__r.FirstName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Card Holder First Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Holder_Last_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Card_Holder__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Card Holder Last Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Holder_Phone__c</fullName>
+        <externalId>false</externalId>
+        <formula>Card_Holder__r.Phone</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Card Holder Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Holder__c</fullName>
+        <externalId>false</externalId>
+        <label>Card Holder</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Credit Portfolios (Card Holder)</relationshipLabel>
+        <relationshipName>Credit_Portfolios</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Current_Days_Over_Age_Warning_Level__c</fullName>
+        <description>When the oldest outstanding transaction is over the threshold limit, increment this field once per day.  When the oldest transaction is back below the threshold limit, reset the fied to zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days the oldest outstanding transaction has been over the age limit.</inlineHelpText>
+        <label>zzzCurrent Days Over Age Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Days_Over_Balance_Warning_Level__c</fullName>
+        <description>When the Card is over the threshold limit, increment this field once per day.  When the user is back below the threshold limit, reset the field to zero</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days the card has currently been over the threshold amount limit.</inlineHelpText>
+        <label>zzzCurrent Days Over Bal Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Deactivation_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Deactivation Reason</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Over Credit Balance Limit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Over Age Limit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employee no longer exists</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Final_warning_Aging__c</fullName>
+        <externalId>false</externalId>
+        <label>Final warning – Aging</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Final_warning_Balance__c</fullName>
+        <externalId>false</externalId>
+        <label>Final warning - Balance</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>First_Name_On_Card__c</fullName>
+        <externalId>false</externalId>
+        <label>First Name On Card</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>International_Purchasing_Allowed__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISPICKVAL(Override_Intl_Purchasing_Allowed__c,&apos;&apos;)) , true, Portfolio_Profile__r.International_Purchasing_Allowed__c )</formula>
+        <label>zzzInternational Purchasing Allowed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Internet_Purchasing_Allowed__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISPICKVAL(Override_Internet_Purchasing_Allowed__c,&apos;&apos;)), 
+	true, 
+	Portfolio_Profile__r.Internet_Purchasing_Allowed__c
+)</formula>
+        <label>zzzInternet Purchasing Allowed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Oldest_Transaction_Over_Warning_Days__c</fullName>
+        <externalId>false</externalId>
+        <formula>Oldest_transaction__c &lt; TODAY() - (Advisory_Profile__r.Over_aging_Warning_days__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Is Oldest Transaction Over Warning Days</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Last_Batch_Age_Limit_Execution_Time_Stmp__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzLast Batch Age Limit Exec Time Stmp</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Last_Batch_Execution_Time_Stamp__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzLast Batch Execution Time Stamp</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Last_Name_On_Card__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Name On Card</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Over_Balance_Warning_Sent_On__c</fullName>
+        <description>This field is to hold the datetime value when the last balance warning email was sent.</description>
+        <externalId>false</externalId>
+        <label>Last Over Balance Warning Sent On</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Max_Per_Day__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(Override_Max_Per_Day__c), Portfolio_Profile__r.Max_Per_Day__c, Override_Max_Per_Day__c)</formula>
+        <label>zzzMax Per Day</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Max_Per_Transaction__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(Override_Max_Per_Transaction__c), Portfolio_Profile__r.Max_Per_Transaction__c, Override_Max_Per_Transaction__c)</formula>
+        <label>zzzMax Per Transaction</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Max_Succ_Days_Over_Age_Warning_Level__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>This is the max value for the Current Days over Age Warning Level.  If the Current Days over Age Warning Level is greater than the Max Successive Days, set Max Successive Days = Current Days over Threshold.  This field is not reset to zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of days in a row this Card has been over the Age Limit Warning Level.</inlineHelpText>
+        <label>zzzMax Succ Days Over Age Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Succ_Days_Over_Amount_Warning_Level__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>This is the max value for the Current Days over Threshold Limit.  If the Current Days over Threshold is greater than the Max Successive Days, set Max Successive Days = Current Days over Threshold.  This field is not reset to zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of days in a row this Card has been over the Limit Warning Level.</inlineHelpText>
+        <label>zzzMax Succ Days Over Bal Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Transactions_Per_Cycle__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(Override_Max_Transactions_Per_Cycle__c),
+	Portfolio_Profile__r.Max_Transactions_Per_Cycle__c, 
+	Override_Max_Transactions_Per_Cycle__c
+)</formula>
+        <label>zzzMax Transactions Per Cycle</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Transactions_Per_Day__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(Override_Max_Transactions_Per_Day__c), Portfolio_Profile__r.Max_Transactions_Per_Day__c, Override_Max_Transactions_Per_Day__c)</formula>
+        <label>zzzMax Transactions Per Day</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Nearing_Warning_Age_Limit__c</fullName>
+        <externalId>false</externalId>
+        <formula>AND( 
+	Transaction_Age_Days__c  &gt;  Age_Limit_Warning_Days__c ,
+	Transaction_Age_Days__c   &lt;=  Portfolio_Profile__r.Transaction_Age_Limit__c 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzNearing Warning Age Limit</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Oldest_Transaction_Days__c</fullName>
+        <externalId>false</externalId>
+        <formula>TODAY() - Oldest_transaction__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Oldest Transaction Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Oldest_transaction__c</fullName>
+        <externalId>false</externalId>
+        <label>Oldest transaction</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Over_Transaction_Age_Limit__c</fullName>
+        <description>True when Transaction Age (Days) &gt; Transaction Age Limit</description>
+        <externalId>false</externalId>
+        <formula>Transaction_Age_Days__c &gt; Transaction_Age_Limit__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzOver Transaction Age Limit</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Over_Warning_Age_Limit__c</fullName>
+        <description>True when there are open transactions over the Age Warning Limit</description>
+        <externalId>false</externalId>
+        <formula>Transaction_Age_Days__c &gt; Age_Limit_Warning_Days__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzOver Warning Age Limit</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Over_aging_Maximum_days__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_aging_Maximum_days__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over aging – Maximum days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Over_aging_Warning_days_1__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_aging_Warning_days__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over aging – Warning days 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Over_aging_Warning_days_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_aging_Warning_days_2__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over aging – Warning days 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Over_aging_Warning_days_3__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_aging_Warning_days_3__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over aging – Warning days 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Over_balance_Countdown_days__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( NOT(ISBLANK(Final_warning_Balance__c)),  Final_warning_Balance__c - TODAY(), null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over balance – Countdown days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Over_balance_Warning_threshold_1__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_balance_Warning_threshold_1__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over balance – Warning threshold 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Over_balance_Warning_threshold_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_balance_Warning_threshold_2__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over balance – Warning threshold 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Over_balance_Warning_threshold_3__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Profile__r.Over_balance_Warning_threshold_3__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Over balance – Warning threshold 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Override_Account_Limit__c</fullName>
+        <description>Value overrides total limit
+        
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Override total account limit amount</inlineHelpText>
+        <label>zzzOverride Account Limit</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Override_Age_Limit_Warning_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzOverride Age Limit Warning Days</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Override_Balance_Limit_Warning_Level__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzOverride Balance Limit Warning Level</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Override_Internet_Purchasing_Allowed__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzOverride Internet Purchasing Allowed</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Override_Intl_Purchasing_Allowed__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzOverride Intl Purchasing Allowed</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Override_Max_Per_Day__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzOverride Max Per Day</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Override_Max_Per_Transaction__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzOverride Max Per Transaction</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Override_Max_Transactions_Per_Cycle__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzOverride Max Transactions Per Cycle</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Override_Max_Transactions_Per_Day__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzOverride Max Transactions Per Day</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Override_Total_Credit_Limit__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzOverride Total Credit Limit</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Override_Transaction_Age_Limit__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzOverride Transaction Age Limit</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Portfolio_Owner_Finance_Code__c</fullName>
+        <description>Populate from Contact - Contact.Employee User Record.Finance Code
+        
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>true</externalId>
+        <label>Portfolio Owner Finance Code</label>
+        <length>6</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Portfolio_Owner_First_Name__c</fullName>
+        <description>used in email communication template</description>
+        <externalId>false</externalId>
+        <formula>Portfolio_Owner__r.FirstName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzPortfolio Owner First Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Portfolio_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzPortfolio Owner</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Payment_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Portfolio_Profile__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines default limits and settings.</inlineHelpText>
+        <label>zzzPortfolio Profile</label>
+        <referenceTo>Credit_Card_Profile__c</referenceTo>
+        <relationshipName>Payment_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Portfolio_Status__c</fullName>
+        <description>Overall status of the Payment Account
+        
+        Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>zzzPortfolio Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Rewards_Points__c</fullName>
+        <description>Imported from Magento system</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Balance of Advisory Board Rewards Points from Magento</inlineHelpText>
+        <label>Rewards Points</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Deactivated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total_Days_Over_Age_Warning_Level__c</fullName>
+        <description>Each day the oldest transaction is over the threshold number of days, , increment this field (once per day).  This field does not get reset back to zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of days the card has had an outstanding transaction over the Age Limit Warning Level.</inlineHelpText>
+        <label>zzzTotal Days Over Age Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Days_over_Amount_Warning_Level__c</fullName>
+        <description>Each day the Card is over the threshold limit and the email notice is sent, increment this field (once per day).  This field does not get reset back to zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of days the card has been over the Limit Warning Level</inlineHelpText>
+        <label>zzzTotal Days over Balance Warning Level</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transaction_Age_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzTransaction Age (Days)</label>
+        <summarizedField>Credit_Card__c.Transaction_Age_Days__c</summarizedField>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Age_Limit__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+OR(
+ISNULL(Override_Transaction_Age_Limit__c),
+ISBLANK(Override_Transaction_Age_Limit__c)
+),
+Portfolio_Profile__r.Transaction_Age_Limit__c,
+Override_Transaction_Age_Limit__c
+)</formula>
+        <label>zzzTransaction Age Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Update_Card_Balance_In_Comdata__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>zzzUpdate Card Balance In Comdata</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Utilized_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Advisory_Profile_Credit_Limit__c &gt; 0, Balance__c/Advisory_Profile_Credit_Limit__c, null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Utilized Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Warning_Email_Status__c</fullName>
+        <description>Created for CR-20151020-9342</description>
+        <externalId>false</externalId>
+        <label>Warning Email Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Send First Warning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>First Warning Sent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Send Second Warning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Second Warning Sent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Send Third Warning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Third Warning Sent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Deactivate Portfolio</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Portfolio Deactivated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Warning_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(
+		(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Warning_days__c) &lt; TODAY(),
+		(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Warning_days_2__c) &gt;= TODAY()
+	),
+	&apos;First&apos;,
+	IF(
+		AND(
+			(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Warning_days_2__c) &lt; TODAY(),
+			(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Warning_days_3__c) &gt;= TODAY()
+		),
+		&apos;Second&apos;,
+		IF(
+			AND(
+				(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Warning_days_3__c) &lt; TODAY(),
+				(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Maximum_days__c) &gt;= TODAY()
+			),
+			&apos;Third&apos;,
+			IF(
+				AND(
+					(Oldest_transaction__c + Advisory_Profile__r.Over_aging_Maximum_days__c) &lt; TODAY()
+				),
+				&apos;Deactivate&apos;,
+				&apos;&apos;
+			)
+		)
+	)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warning Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>of_Pending_Activation__c</fullName>
+        <description>Created for CR-20151105-9370</description>
+        <externalId>false</externalId>
+        <label># of Pending Activation</label>
+        <summaryFilterItems>
+            <field>Credit_Card__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Activation</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Credit_Card__c.Payment_Account__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>zzzAccount_Limit__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(Override_Account_Limit__c),  Portfolio_Profile__r.Max_Cycle_Amount__c, Override_Account_Limit__c)</formula>
+        <label>zzzAccount Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>zzzAvailable_Credit_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(zzzCredit_Limit__c &gt; 0, Available_Credit__c  /  zzzCredit_Limit__c, null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>zzzAvailable Credit Percentage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>zzzCredit_Limit__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <formula>IF(
+	OR(
+		ISNULL(Override_Total_Credit_Limit__c), 
+		ISBLANK(Override_Total_Credit_Limit__c)
+	),
+	Portfolio_Profile__r.Max_Cycle_Amount__c, 
+	Override_Total_Credit_Limit__c
+)</formula>
+        <label>zzzTotal Credit Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Credit Portfolio</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>No_Billing_Address</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Billing_Address_City__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>Billing_Address_State__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>Billing_Address_Line_1__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>No Billing Address</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Over_Credit_Limit</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Available_Balance_Percent__c</field>
+            <operation>lessThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Over Credit Limit</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Over_Credit_Warning_Level</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Balance_Over_Warning_Level__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Over Credit Warning Level</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Over_Trans_Age_Limit</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Over_Transaction_Age_Limit__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Over Trans Age Limit</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Over_Trans_Age_Warning_Level</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Over_Warning_Age_Limit__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Over Trans Age Warning Level</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Rewards_Points</fullName>
+        <columns>NAME</columns>
+        <columns>Advisory_Profile__c</columns>
+        <columns>Card_Holder__c</columns>
+        <columns>Status__c</columns>
+        <columns>Advisory_Profile_Credit_Limit__c</columns>
+        <columns>Balance__c</columns>
+        <columns>Utilized_Balance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Rewards_Points__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>Rewards Points</label>
+        <sharedTo>
+            <group>Credit_Card_Admins</group>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <label>Portfolio</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Credit Portfolios</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Employee_Payment_Account</fullName>
+        <active>true</active>
+        <description>Payment Account for all cards for an employee</description>
+        <label>Employee Payment Account</label>
+        <picklistValues>
+            <picklist>Override_Internet_Purchasing_Allowed__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Override_Intl_Purchasing_Allowed__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Portfolio_Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Meeting_Payment_Account</fullName>
+        <active>false</active>
+        <description>Payment Account for all cards used for Member meeting expenses</description>
+        <label>Meeting Payment Account</label>
+        <picklistValues>
+            <picklist>Override_Internet_Purchasing_Allowed__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Override_Intl_Purchasing_Allowed__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Portfolio_Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Card_Holder__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Advisory_Profile__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Advisory_Profile_Credit_Limit__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Balance__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>zzzCredit_Limit__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Available_Balance_Percent__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Rewards_Points__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>zzzCredit_Limit__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Available_Balance_Percent__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Rewards_Points__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Oldest_transaction__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Utilized_Balance__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Pending_Activation_Cards</fullName>
+        <active>true</active>
+        <description>Created for CR-20151105-9370</description>
+        <errorConditionFormula>of_Pending_Activation__c &gt; 1</errorConditionFormula>
+        <errorMessage>This portfolio already has a card which is waiting for activation. You cannot request another card until previous request is completed or deniened.</errorMessage>
+    </validationRules>
+</CustomObject>

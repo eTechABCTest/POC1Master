@@ -1,0 +1,199 @@
+<!--
+    Purpose         :   This page is used to create hold html body & control logic of "Request Feed Transmission" page.
+    
+    Created By      :   Subhash Garhwal  
+    
+    Created Date    :   12/30/2015
+    
+    Revision Logs   :   V_1.0 - Created - Feed Management - CR-20151216-9464 
+-->
+<apex:page controller="RequestFeedTransmissionController" showHeader="true" sidebar="false">
+    
+    <style>
+    	.list {border-collapse: collapse;}
+    	.list td div.evenData{background-color:#FFFFFF;}
+        .list td div.dataRow{border-top: 1px solid #ededed;}
+        .list td div.oddData{background-color:#F0F0F0;}
+        .list td div.dataRow {padding: 5px 5px;height: 20px;}
+        .list td {padding: 0 !important;border-bottom: 1px solid #CCCCCC !important;border-right:1px solid #CCCCCC !important;}
+        .headerWrapper{padding-left:5px;padding-right:5px;width:5px;}
+        .firstSection{float: left;width: 100%;}
+        .marginProperties{float: left;margin-top: 10px;}
+        .firstSection fieldset{display:inline-block;float:left;}
+        .dataRow a{white-space:pre}
+        .message .messageText a {margin: 0 4px; color: red; font-size: 14px;}
+    </style>
+    
+    <script>
+    	
+    	//Function to selected all the checkboxes
+    	function selectAllCheckboxes(obj,receivedInputClasses){
+	        var inputCheckBox = document.getElementsByClassName(receivedInputClasses);                  
+	        for(var i=0; i<inputCheckBox.length; i++){          
+	            inputCheckBox[i].checked = obj.checked;
+	        }
+		}
+		
+		//Function to show and hide the custom date/time variables
+		function showHideCustomDT(obj) {
+			
+			//Check for values
+			if(obj.value == 'Now') {
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('input')[0].disabled = true;
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('select')[0].disabled = true;
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('select')[1].disabled = true;
+			} else {
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('input')[0].disabled = false;
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('select')[0].disabled = false;
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('select')[1].disabled = false;
+			}	
+		}
+		function showHideCustomDTX(value){
+			if(value == 'Now') {
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('input')[0].disabled = true;
+				
+			} else {
+				document.getElementsByClassName('customDT')[0].getElementsByTagName('input')[0].disabled = false;
+				
+			}
+		}
+    	function deselectAllCheckBox(isSuccess){
+            if(isSuccess){
+                
+                var resultSection = document.getElementById('resultSection');
+                var allInputs = resultSection.getElementsByTagName('input');
+                for(var i=0; allInputs.length; i++){
+                    if(allInputs[i].type.toLowerCase() == 'checkbox'){
+                        allInputs[i].checked = false;
+                    }
+                }
+            }
+        }
+    </script>
+    <c:BlockUI />
+    <!-- Section Header -->
+    <apex:sectionHeader title="Feed Transmission Request"/>
+    
+    <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+    <!-- Form -->
+    <apex:form id="frm">
+        
+        <!-- Page block -->
+		<apex:pageBlock id="pB">
+                    
+        	<!-- MSG to display error messages in case of any error -->
+            <apex:pageMessages id="msg" escape="false"/>
+            
+            <!-- Command Button -->
+            <apex:pageBlockButtons id="pbb">
+                <!-- On complete if Request is Successfull, Uncheck all checkbox -->
+                <apex:commandButton value="Request" action="{!doSave}" reRender="pB"
+                                    onComplete="deselectAllCheckBox({!isSuccess});" status="waitMsg"/>
+                <apex:commandButton value="Cancel" action="{!doCancel}" />
+            </apex:pageBlockButtons>
+            
+            <div class="firstSection">
+            	<B class="marginProperties">Submit</B>
+            	<apex:selectRadio value="{!selectedView}" onclick="showHideCustomDT(this);">
+					<apex:selectOptions value="{!views}" />
+				</apex:selectRadio>
+				
+				<div style="margin-top: 10px;" class="customDT">
+					<apex:inputField value="{!feedInstance.Feed_Date_Temp__c}" />
+					&nbsp;
+					<apex:selectList size="1" value="{!selectedTime}" disabled="{!IF(selectedView == 'Now', 'true', 'false')}">
+						<apex:selectOptions value="{!timeViews}" />
+					</apex:selectList>
+					&nbsp;
+					<apex:selectList size="1" value="{!selectedTP}" disabled="{!IF(selectedView == 'Now', 'true', 'false')}">
+						<apex:selectOptions value="{!aMPMOptions}" />
+					</apex:selectList>
+				</div>
+				<script>
+					showHideCustomDTX('{!selectedView}');
+				</script>
+			</div>
+            <div>
+				
+				<h1 style="float:left;">Goals</h1>
+				
+				<div id="resultSection">
+					
+					<!-- Fix data table -->
+                    <table class="list">
+						
+						<!-- Headers -->
+						<thead>
+							
+							<tr class="headerRow">
+								
+								<!--  Dynamic Header -->
+                                <apex:variable value="{!1}" var="colCounter"/>
+                                
+                                <!-- Repeat through the headers list -->
+								<apex:repeat value="{!headers}" var="dynamicHeader">
+									<th class="headerWrapper">
+                                    	<apex:outputPanel layout="block" rendered="{!NOT(isReadyOnly)}">
+                                        	<input type="checkbox" onclick="selectAllCheckboxes(this,'feedCheck{!colCounter}')" checked="checked"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="block" rendered="{!isReadyOnly}">
+                                        	<input type="checkbox" onclick="selectAllCheckboxes(this,'feedCheck{!colCounter}')" checked="checked" disabled="{!isReadyOnly}"/>
+                                        </apex:outputPanel>
+                                    </th>
+                                    
+                                    <th>
+										<div>
+	                                       <span class="" title="{!dynamicHeader}">
+	                                           {!dynamicHeader}
+	                                       </span>
+										</div>
+                                    </th>
+                                    <apex:variable value="{!colCounter+1}" var="colCounter"/>
+                                </apex:repeat>
+                             </tr>
+                         </thead> 
+                         
+                         <!--  Table Body -->       
+						<tbody class="mainBody">
+							
+                            <!-- Repeat through Dynamic Wrapper list -->
+							<apex:variable value="{!1}" var="cellCounter"/>
+                            
+                            <tr class="mainRow">
+                            	<apex:repeat value="{!requestedFeeds}" var="reqFeed">
+                            	
+                            		<td style="vertical-align:top;" class="">
+                            			
+                            			<!-- Loop over Feed -->
+										<apex:repeat value="{!reqFeed.feedGroupWrapperList}" var="fGW">
+											
+											<div class="dataRow">
+												<apex:inputCheckbox rendered="{!NOT(ISNULL(fGW.feedRecord.Id))}" value="{!fGW.selected}" 
+                                                    styleClass="visibleCheckbox feedCheck{!cellCounter}" disabled="{!isReadyOnly}"/>
+                                                <apex:outputText rendered="{!ISNULL(fGW.feedRecord.Id)}">
+                                                    <label style="margin:3px 3px 3px 4px;font-size:1em;-webkit-appearance:checkbox;box-sizing:border-box;visibility:hidden;" class="fakeCheckBox">&nbsp;</label>
+                                                </apex:outputText>
+                                            </div>
+										</apex:repeat>
+                            		</td>
+                            		
+                            		<td class="">
+                            			<!-- Loop over Feed -->
+										<apex:repeat value="{!reqFeed.feedGroupWrapperList}" var="fGW">
+											<div class="dataRow">
+												<a href="/{!fGW.feedRecord.Id}" target="_blank">{!fGW.feedRecord.Name}</a>
+											</div>
+										</apex:repeat>
+									</td>
+                            		
+                            		<apex:variable value="{!cellCounter+1}" var="cellCounter"/>
+                            	</apex:repeat>
+                            </tr>                          
+						</tbody>
+                    </table>
+				</div>
+			</div>
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

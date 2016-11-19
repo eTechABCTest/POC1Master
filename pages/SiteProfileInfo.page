@@ -1,0 +1,103 @@
+<apex:page controller="SiteController" showHeader="false" sidebar="false" id="page" standardStylesheets="false" >
+
+	<style>
+         
+    table{
+   		font: 85em/1.4em Arial,Helvetica,sans-serif;
+   		font-size: .85em;
+   		color:#455560;
+	}
+        
+    table td{
+        padding:7px;
+    }
+
+	.labelCol{
+    	font-weight: 700;
+    	width:210px;
+        text-align:left;
+	}  
+
+	</style>
+    
+	<apex:form id="mainForm">
+	
+		<apex:pageBlock id="pageBlock">
+	                      
+			<apex:pageBlockSection id="pbSection" columns="1" >
+                
+                <apex:outputText label="Status Code" value="{!sUser.Site_Profile.Status_Code_Description__c}" escape="false" />
+                
+                <apex:outputText label="First Name" value="{!MainContact.Con.FirstName}" />
+                
+                <apex:outputText label="Last Name" value="{!MainContact.Con.LastName}" />
+                
+                <apex:outputText label="Email" value="{!MainContact.Con.Email}" />
+                
+                <apex:outputText label="Prefered Email Address" value="{!MainContact.Con.Advisory_com_Preferred_Email_Address__c}" />
+          	      
+                <br/>
+                
+                <br/>
+                
+                <apex:outputText label="Organization" value="{!MainContact.Con.Account.Name}" />
+                
+                <apex:outputText label="Organization ID" value="{0, number, 000}">
+                    <apex:param value="{!(MainContact.Con.Organization_Id__c)}" />
+                </apex:outputText>
+                
+                <apex:outputText label="Title" value="{!MainContact.Con.Advisory_com_Title__c}" />
+                
+                <apex:outputText label="Department" value="{!MainContact.Con.Function__c}" />
+                
+                <apex:outputText label="Job Function" value="{!MainContact.Con.Management_Level__c}" />	
+																						                            
+                <br/>
+                
+                <br/>
+                
+                <!--<apex:outputText label="Create Adv.com Account" value="{!MainContact.Con.Create_Advisory_com_User_Account__c}"
+                    style="{!IF(MainContact.Con.Create_Advisory_com_User_Account__c, 'color:green', 'color:red')}" />   -->
+                <br/>
+                                           
+                <apex:outputText label="User Status" value="{!sUser.Site_Profile.Status__c}"
+                	style="{!IF(sUser.Site_Profile.Status__c == 'In Progress' || sUser.Site_Profile.Status__c == 'Active', 'color:green', 'color:red')}" />
+                
+                <apex:outputText label="ID" value="{!MainContact.Con.ID}" />
+                
+                <apex:outputText label="User ID" value="{!sUser.Site_Profile.User_Id__c}" />
+  			          
+                <apex:outputText label="Bypass Domain Validation" value="{!sUser.Site_Profile.Bypass_Domain_Validation__c}"/>
+                
+                <apex:outputText label="Contact Status" value="{!MainContact.Con.Contact_Status__c}" />
+                              	                                                                                         
+                <br/>                             							
+				
+                <br/>
+                
+                <apex:outputText label="User Confirmed" value="{!IF(ISBLANK(MainContact.Con.Advisory_com_Verify_Date__c), 'No', 'Yes')}" />
+																										
+				<apex:outputText value="{0, date, MM'/'dd'/'yyyy}" label="Confirm Date" ><apex:param value="{!sUser.Site_Profile.Verify_Date__c}" /></apex:outputText>
+                
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" label="Last Login" ><apex:param value="{!sUser.Site_Profile.Last_Access__c}" /></apex:outputText>
+				
+				<apex:outputText label="Verify" value="{!sUser.Site_Profile.Verify__c}" />
+                
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" label="Verify Date" ><apex:param value="{!sUser.Site_Profile.Verify_Date__c}" /></apex:outputText>
+                
+                <!--<apex:outputText label="Created By" value="{!sUser.Site_Profile.CreatedBy.Name}" />
+                
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" label="Created Date" ><apex:param value="{!sUser.Site_Profile.CreatedDate}" /></apex:outputText>
+												
+				<apex:outputText label="Modified By" value="{!sUser.Site_Profile.ModifiedBy.Name}" />
+                
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" label="Modified Date" ><apex:param value="{!sUser.Site_Profile.ModifiedDate}" /></apex:outputText>-->
+																							                
+                                				
+			</apex:pageBlockSection>
+		
+		</apex:pageBlock>
+	
+	</apex:form>
+	
+</apex:page>

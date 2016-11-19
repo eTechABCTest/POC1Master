@@ -1,0 +1,4 @@
+<apex:page controller="AdvEventController" contenttype="text/javascript" showHeader="false" action="{!Initialize}">
+{!Response}
+<site:previewAsAdmin />
+</apex:page>

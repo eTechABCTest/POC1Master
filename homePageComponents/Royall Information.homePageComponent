@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HomePageComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <links>Royall_Dashboard</links>
+    <links>Royall_Clients</links>
+    <links>Royall_Account_Team</links>
+    <pageComponentType>links</pageComponentType>
+</HomePageComponent>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>MassCreateBundleOpportunities</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Created for CR-20140429-5272.Several opportunities will be tied to a single Bundle.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fieldSets>
+        <fullName>Basic_Information</fullName>
+        <description>Field set will be useful at MassCreateBundleOpportunities page.</description>
+        <displayedFields>
+            <field>Account__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>true</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Program__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>true</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OwnerId</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Margin__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Growth__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Population_Health__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Basic Information</label>
+    </fieldSets>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created for CR-20140429-5272. Populated via trigger with the first Opportunities account only if the field is already blank.</description>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Bundles</relationshipLabel>
+        <relationshipName>Bundles</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bundle_Number__c</fullName>
+        <description>Created for CR-5272. Will be append in the bundle name.</description>
+        <displayFormat>{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Bundle Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Bundle_Pursuit_Count__c</fullName>
+        <defaultValue>1</defaultValue>
+        <description>Created for 5272. Default value equals to 1.</description>
+        <externalId>false</externalId>
+        <label>Bundle Pursuit Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Earliest_Close__c</fullName>
+        <description>Created for CR-20140429-5272. Smallest/Earliest Close date on the related opportunities.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the smallest/earliest close date on the related opportunities.</inlineHelpText>
+        <label>Earliest Close</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Earliest_Stage__c</fullName>
+        <description>Created for CR-20140429-5272.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the lowest precedence stage value amongs all the related opportunities.</inlineHelpText>
+        <label>Earliest Stage</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Growth__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-5272.</description>
+        <externalId>false</externalId>
+        <label>Growth</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Latest_Close__c</fullName>
+        <description>Created for CR-20140429-5272. Largest/Latest Close date on the related opportunities.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the largest/latest close date on the related opportunities.</inlineHelpText>
+        <label>Latest Close</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Latest_Stage__c</fullName>
+        <description>Created for CR-20140429-5272.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the highest precedence stage value amongs all the related opportunities.</inlineHelpText>
+        <label>Latest Stage</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lost_Count__c</fullName>
+        <description>Will be populated via trigger with the count of all related opportunities for which the Type of field StageName = Closed/Lost
+Created for 5272</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with a count of the related opportunities in a Closed Stage that is considered a “Win”.</inlineHelpText>
+        <label>Lost Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lost_Value__c</fullName>
+        <description>Will be populate via trigger with sum of the Amount field on all related opportunities for which the Type of field StageName = Closed/Lost
+Created for CR-5272.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the sum of the “Amount” field on all of the related opportunities that have a Closed Stage that is considered a “Loss”.</inlineHelpText>
+        <label>Lost Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Lost__c</fullName>
+        <description>Created for CR-5272</description>
+        <externalId>false</externalId>
+        <formula>IF (Total_Count__c == 0, 0, Lost_Count__c / Total_Count__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>% Lost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Margin__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-5272.</description>
+        <externalId>false</externalId>
+        <label>Margin</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Open_Count__c</fullName>
+        <description>Created for CR-20140429-5272. Count of all related opportunities with Opportunity.Closed = False</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with a count of the related opportunities in a open stage.</inlineHelpText>
+        <label>Open Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Open_Value__c</fullName>
+        <description>Created for CR-20140429-5272. Sum the Amount field on all related opportunities with Opportunity.Closed = False</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the sum of the “Amount” field on all of the related opportunities that have open stage.</inlineHelpText>
+        <label>Open Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Open__c</fullName>
+        <description>Created for CR-5272</description>
+        <externalId>false</externalId>
+        <formula>IF (Total_Count__c == 0, 0, Open_Count__c / Total_Count__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>% Open</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Population_Health__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-5272</description>
+        <externalId>false</externalId>
+        <label>Population Health</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Program__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created for CR-20140429-5272</description>
+        <externalId>false</externalId>
+        <label>Program</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Program__c.Available_to_Bundle__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Program__c</referenceTo>
+        <relationshipLabel>Bundles</relationshipLabel>
+        <relationshipName>Bundles</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Prorated_Open_Value__c</fullName>
+        <description>Sum the Prorated_Proposal_Value__c field on all related opportunities for which the Type of field StageName (according to the field level settings) = Open
+Created for 5272</description>
+        <externalId>false</externalId>
+        <label>Prorated Open Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Count__c</fullName>
+        <description>Created for CR-20140429-5272. Count all related opportunities</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with a count of all related opportunities.</inlineHelpText>
+        <label>Total Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Value__c</fullName>
+        <description>Created for CR-20140429-5272. Sum the Amount field on all related opportunities.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with a sum of the Amount value on all related opportunities.</inlineHelpText>
+        <label>Total Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Won_Count__c</fullName>
+        <description>Will be populated via count of all related opportunities for which the Type of field StageName = Closed/Won
+Created for CR-5272</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with a count of the related opportunities in a Closed Stage that is considered a “Win”.</inlineHelpText>
+        <label>Won Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Won_Value__c</fullName>
+        <description>Will be populated via sum of the Amount field on all related opportunities for which the Type of field StageName = Closed/Won
+Created for 5272</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto-populated with the sum of the “Amount” field on all of the related opportunities that have a Closed Stage that is considered a “Win”.</inlineHelpText>
+        <label>Won Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Won__c</fullName>
+        <description>Created for CR-5272</description>
+        <externalId>false</externalId>
+        <formula>IF (Total_Count__c == 0, 0, Won_Count__c / Total_Count__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>% Won</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <label>Bundle</label>
+    <listViews>
+        <fullName>Closed_All</fullName>
+        <columns>NAME</columns>
+        <columns>Latest_Close__c</columns>
+        <columns>Won__c</columns>
+        <columns>Lost__c</columns>
+        <columns>Won_Value__c</columns>
+        <columns>Won_Count__c</columns>
+        <columns>Total_Value__c</columns>
+        <columns>Total_Count__c</columns>
+        <columns>Bundle_Pursuit_Count__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Open__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Closed - All</label>
+    </listViews>
+    <listViews>
+        <fullName>Open_All</fullName>
+        <columns>NAME</columns>
+        <columns>Earliest_Stage__c</columns>
+        <columns>Latest_Stage__c</columns>
+        <columns>Open__c</columns>
+        <columns>Won__c</columns>
+        <columns>Lost__c</columns>
+        <columns>Open_Count__c</columns>
+        <columns>Open_Value__c</columns>
+        <columns>Won_Value__c</columns>
+        <columns>Won_Count__c</columns>
+        <columns>Total_Value__c</columns>
+        <columns>Total_Count__c</columns>
+        <columns>Bundle_Pursuit_Count__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Open__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>Open - All</label>
+    </listViews>
+    <nameField>
+        <label>Bundle Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Bundles</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

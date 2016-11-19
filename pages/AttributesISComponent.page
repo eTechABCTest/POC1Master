@@ -1,0 +1,14 @@
+<!--
+*   Purpose:    Used to show the attribute icons that relate to an IS System Component object record.
+*               
+*   Created By:  Jason Bennett
+*    
+*   Revision Log:       V1.0 - (Code Added)- Jason Bennett - 10/16/2015 - Created
+*
+*
+-->
+<apex:page standardController="IS_System_Component__c" extensions="AttributesISSysComponentExtension">
+    
+    <apex:dynamicComponent componentValue="{!DynamicOutputPanel}" />
+    
+</apex:page>

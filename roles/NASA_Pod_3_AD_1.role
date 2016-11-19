@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>NASA Pod 3 AD 1</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>NASA Pod 3 AD 1</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>NASA_Pod_3_Associate_1</parentRole>
+</Role>

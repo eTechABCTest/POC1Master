@@ -1,0 +1,30 @@
+<!--
+/**
+ *  Description     :   
+ *  
+ *  Created By      :   Rajeev Jain
+ *
+ *  Created Date    :   06/16/2016
+ *
+ *  Deprecated      :   
+ *
+ *  Revision Logs   :  v1.0 - Created
+ * 					:  V1.0 - Modified - Rajeev Jain - 06/16/2016 - SFDC schema Release - Manual Code Migration from Royall Enviournment, Rename this class with Preceeding text Royall
+ *  
+ **/
+-->
+<apex:page standardController="Account" extensions="AcctExt">
+    <apex:form >
+        <apex:message />
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save" id="savebut"/>
+                <apex:commandButton action="{!cancel}" value="Cancel" id="cancelbut"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Change owner of Account">
+                <apex:inputField value="{!Account.r_NewOwner__c}"/>
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

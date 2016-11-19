@@ -1,0 +1,98 @@
+<!-- 
+    Purpose:    This page is to display the event details. This page will be used as Salesforce to
+                outlook integration.
+    Create By:  Simplyforce Technology
+    
+    Created Date:   12/22/2011
+    
+    Current Version:    v1.0
+    
+    Revision Log:
+    
+ -->
+ 
+ <apex:page standardController="Event" extensions="EventDetailsForOutlook" showHeader="false" sidebar="false" title="Event details">
+    <P><I><B>NOTE</B>: This is not a standard Outlook invitation. Please see bottom of invite for details regarding when/how the event time and details update.</I></P>
+    <BR/><BR/>
+    
+    <B><U>DETAILS</U>:&nbsp;</B>
+    <BR/>
+    <B>Event</B>:&nbsp;<apex:outputLink value="/{!Event.Id}"><apex:outputField value="{!Event.Subject}" /></apex:outputLink>
+    <BR/>
+    <B>Opportunity</B>:&nbsp;<apex:outputField value="{!Event.WhatId}" />
+    <BR/><BR/>
+    
+    <B><U>DIRECTIONS</U></B>
+    <BR/>
+    <B>Directions</B>:&nbsp;<apex:outputField value="{!Event.Directions__c}" />
+    <BR/>
+    <apex:outputLink value="http://maps.google.com/maps?f=q&hl=en&q={!Event.Account.Primary_Address_Line_1__c}+{!Event.Account.Primary_City__c}+{!Event.Account.Primary_State_Province__c}&om=1">
+        <B>Google Map</B>
+    </apex:outputLink>
+    
+    <BR/>
+    <B>GtM Link</B>:&nbsp;<apex:outputField value="{!Event.Gotomeeting_Url__c}" /> 
+    
+    
+    <BR/><BR/>
+    <B><U>EVENT OVERVIEW</U></B>
+    <BR/>
+    <B>Contact Name</B>:&nbsp;<apex:outputField value="{!Event.WhoId}" /> -&nbsp; <apex:outputField value="{!contact.Title}" />
+    <BR/>
+
+    <B>Description Information</B>:&nbsp;<apex:outputField value="{!Event.Description}" />
+    <BR/>
+    <B>Additional Attendees</B>:&nbsp;<apex:outputField value="{!Event.Additional_Attendees__c}" />
+    <BR/>
+    <B>Other ABC Attendees/Syndicated Support</B>:&nbsp;<apex:outputField value="{!Event.Additional_ABC_Attendees__c}" />{!IF(AND(NOT(ISBLANK(Event.Additional_ABC_Attendees__c)), NOT(ISBLANK(Event.Syndicated_Support__c))),';','')}<apex:outputField value="{!Event.Syndicated_Support__c}" />
+    
+    <BR/><BR/>
+    <B><U>CONTACT DETAILS</U></B>
+    <BR/>
+    <B>Contact Key Notes</B>: &nbsp;<apex:outputField value="{!contact.Description}" />
+    <BR/>
+    <B>Contact Phone</B>:&nbsp;<apex:outputField value="{!contact.Phone}" />
+    <BR/>
+    <B>Assistant, Asst. Phone</B>: <apex:outputField value="{!contact.AssistantName}" />{!IF(NOT(ISBLANK(contact.AssistantPhone)),',','')}<apex:outputField value="{!contact.AssistantPhone}" />
+    <BR/>
+    <B>Contact reports to</B>:&nbsp;<apex:outputField value="{!contact.ReportsToId}" />
+    
+    <BR/><BR/>
+    <B><U>RELATIONSHIP DETAILS</U></B>
+    <BR/>
+    <B>Trip Prep</B>:&nbsp;Coming Soon!
+    <BR/>
+    <B>Institution</B>:&nbsp;<apex:outputLink value="/{!Event.AccountId}">{!Event.Account.Account_Formal_Name__c}</apex:outputLink>
+    <BR/>
+    <B>Membership:</B>&nbsp;<apex:outputLink value="/{!opportunity.Membership__c}" ><apex:outputField value="{!opportunity.Membership__r.Membership_Status__c}" />{!IF(NOT(ISBLANK(opportunity.Membership__c)),' - ','')}<apex:outputField value="{!opportunity.Membership__c}" /></apex:outputLink>
+    <BR/>
+    <apex:outputLink value="/00OC0000004rTpi?srPos=0&srKp=00O">
+        <B>Pricing History</B>
+    </apex:outputLink>
+    <BR/>
+    <apex:outputLink value="/00OC0000004sBW5"> 
+        <B>Enterprise Activity Report</B>
+    </apex:outputLink>
+    
+    <BR/><BR/>
+    
+    <B><U>CONTACT ROLES</U></B>
+    <div style="margin-left:50px;">
+	    <apex:repeat value="{!opportunity.OpportunityContactRoles}" var="item">
+	        <li><apex:outputField value="{!item.Contact.Name}"/>&nbsp;{!IF(ISBLANK(item.Contact.Title),'','-')}&nbsp;<apex:outputField value="{!item.Contact.Title}" /></li>
+	    </apex:repeat>
+    </div>
+    <BR/>
+    
+    <B><U>LOGISTICS</U></B>
+    <BR/>
+    <apex:outputPanel layout="block" rendered="{!AND(Event.RecordType.Name = 'PT Marketing')}">
+        <B>Confirmed PSS Resources</B>:&nbsp;{!IF(Event.PSS_Resource_Confirmed__c,'Yes', 'No')}
+    </apex:outputPanel>
+    <B>Projector Confirmed</B>:&nbsp;{!IF(Event.Projector_Confirmed__c,'Yes', 'No')}
+    <BR/>
+    <B>Internet Access</B>:&nbsp;{!IF(Event.Internet_Access_Confirmed__c,'Yes', 'No')}
+    <BR/><BR/>
+    
+    <P><I><B>Synching Rules/Expectations:</B> Salesforce to Outlook: The information contained in this invite pulls directly from Event, Opportunity and Contact data stored in Salesforce. You may update the day or time in Outlook and it will update accordingly in Salesforce. HOWEVER, any cancelled events must be deleted exclusively within Salesforce. Updates made to the body of this invite will NOT be saved in Salesforce AND will be Lost/Overwritten when the Event is re-saved in Salesforce.</I></P>
+</apex:page>

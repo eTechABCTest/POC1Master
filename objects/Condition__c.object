@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>OverrideConditionNewButton</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Each Individual Goal has limiting/defining factors. Those factors commonly include (among others):
+•	Collection Perspectives
+•	Dates
+•	Staff Relationships
+•	Assignment roles
+This object holds those limiting/defining factors, both those that are inclusions and those that are exclusions.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Agreement_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Agreement Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Assignment_Role__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assignment Role</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>The Assignment Role you have selected is inactive.</errorMessage>
+            <filterItems>
+                <field>Team_Role__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Team_Role__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Collection_Perspective__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Collection Perspective</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>The Collection Perspective you have selected is inactive.</errorMessage>
+            <filterItems>
+                <field>Program_Perspective__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Program_Perspective__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Condition_Set__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Condition Set</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Condition_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Condition Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Include</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>Cd{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Type__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Credit Type</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Value_Type__c.Category__c</field>
+                <operation>equals</operation>
+                <value>Credit Type</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Value_Type__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Date_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>From_Relationship__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>From Relationship</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Relationship_Type__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Relationship_Type__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Individual_Program__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Individual Program</label>
+        <referenceTo>Program__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Matches_Any_Staff__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Matches Any Staff</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Personal_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Personal Goal</label>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Staff_Member__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Staff Member</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.Employee_User_Record__r.IsActive</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Standard_Goal_Detail__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Template Detail</label>
+        <referenceTo>Standard_Goal_Detail__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Standard_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Template</label>
+        <referenceTo>Standard_Goal__c</referenceTo>
+        <relationshipLabel>Conditions</relationshipLabel>
+        <relationshipName>Conditions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>To_Relationship__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>To Relationship</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Relationship_Type__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Relationship_Type__c</referenceTo>
+        <relationshipLabel>Conditions (To Relationship)</relationshipLabel>
+        <relationshipName>Conditions1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	RecordType.DeveloperName = &apos;Collection_Perspective&apos;, 
+	IF(
+		ISBLANK(Collection_Perspective__c), 
+		Individual_Program__r.Name, 
+		Collection_Perspective__r.Name 
+	),
+	IF(
+		RecordType.DeveloperName = &apos;Assignment_Role&apos;,
+		Assignment_Role__r.Name,
+		IF(
+			RecordType.DeveloperName = &apos;Institution&apos;,
+			Institution__r.Account_Formal_Name__c,
+			IF(
+				RecordType.DeveloperName = &apos;Relationship&apos;,
+				IF(
+					ISBLANK(To_Relationship__c),
+					From_Relationship__r.Name, 
+					To_Relationship__r.Name
+				),
+				IF(
+					RecordType.DeveloperName = &apos;Renewal_Type&apos;,
+					TEXT(Agreement_Type__c),
+					IF(
+						RecordType.DeveloperName = &apos;Activity_Date&apos;,
+						TEXT(Date_Type__c) + &apos; &apos; + TEXT(Start_Date__c) + &apos; - &apos; + TEXT(End_Date__c),
+						IF(
+							RecordType.DeveloperName = &apos;Credit_Type&apos;,
+							Credit_Type__r.Name,
+							IF(
+								RecordType.DeveloperName = &apos;Staff_Member&apos;,
+								Staff_Member__r.FirstName + &apos; &apos; +  Staff_Member__r.LastName,
+								&apos;&apos;
+							)
+						)
+					)
+
+				)
+
+			)
+		)
+	)
+)</formula>
+        <label>Value</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Condition</label>
+    <nameField>
+        <label>Condition Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Conditions</pluralLabel>
+    <recordTypes>
+        <fullName>Activity_Date</fullName>
+        <active>true</active>
+        <label>Activity Date</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Assignment_Role</fullName>
+        <active>true</active>
+        <label>Assignment Role</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Collection_Perspective</fullName>
+        <active>true</active>
+        <label>Collection Perspective</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Credit_Type</fullName>
+        <active>true</active>
+        <label>Credit Type</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Institution</fullName>
+        <active>true</active>
+        <label>Institution</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Relationship</fullName>
+        <active>true</active>
+        <label>Relationship</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Renewal_Type</fullName>
+        <active>true</active>
+        <label>Renewal Type</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Staff_Member</fullName>
+        <active>true</active>
+        <label>Staff Member</label>
+        <picklistValues>
+            <picklist>Agreement_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LOA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Condition_Type__c</picklist>
+            <values>
+                <fullName>Exclude</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Include</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Date_Type__c</picklist>
+            <values>
+                <fullName>Anniversary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>VR_Key_Value_Required_Goal</fullName>
+        <active>true</active>
+        <description>Goal Template and Personal Goal, are both blank, or both are populated</description>
+        <errorConditionFormula>OR(
+	AND(
+		ISBLANK(Standard_Goal__c),
+		ISBLANK(Personal_Goal__c)
+	),
+	AND(
+		NOT(ISBLANK(Standard_Goal__c)),
+		NOT(ISBLANK(Personal_Goal__c))
+	)
+)</errorConditionFormula>
+        <errorMessage>You must indicate a Goal Template OR a Pesonal Goal</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Agreement_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Renewal Type&apos;),
+	ISBLANK(TEXT(Agreement_Type__c))
+)</errorConditionFormula>
+        <errorDisplayField>Agreement_Type__c</errorDisplayField>
+        <errorMessage>You must supply an Agreement Type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Assignment_Role</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Assignment Role&apos;),
+	ISBLANK(Assignment_Role__c)
+)</errorConditionFormula>
+        <errorDisplayField>Assignment_Role__c</errorDisplayField>
+        <errorMessage>You must supply an Assignment Role.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Collection_Perspective</fullName>
+        <active>true</active>
+        <description>Record Type contains Collection Perspective.
+Collection Perspective and Individual Program are both blank, or are both populated</description>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Collection Perspective&apos;),
+        OR(
+            AND(
+	        ISBLANK(Collection_Perspective__c),
+	        ISBLANK(Individual_Program__c)
+            ),
+            AND(
+	        NOT(ISBLANK(Collection_Perspective__c)),
+	        NOT(ISBLANK(Individual_Program__c))
+            )
+        )
+)</errorConditionFormula>
+        <errorDisplayField>Collection_Perspective__c</errorDisplayField>
+        <errorMessage>You must supply EITHER Collection Perspective OR Program</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Condition_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>ISBLANK(TEXT(Condition_Type__c))</errorConditionFormula>
+        <errorDisplayField>Condition_Type__c</errorDisplayField>
+        <errorMessage>You must select a condition type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Credit_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	RecordType.DeveloperName = &apos;Credit_Type&apos;,
+	ISBLANK(Credit_Type__c)
+)</errorConditionFormula>
+        <errorDisplayField>Credit_Type__c</errorDisplayField>
+        <errorMessage>You must supply a Credit Type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Date_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Activity Date&apos;),
+	ISBLANK(TEXT(Date_Type__c))
+)</errorConditionFormula>
+        <errorDisplayField>Date_Type__c</errorDisplayField>
+        <errorMessage>You must choose a date type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Effective_Goal_Dates</fullName>
+        <active>true</active>
+        <errorConditionFormula>Start_Date__c &gt; End_Date__c</errorConditionFormula>
+        <errorDisplayField>Start_Date__c</errorDisplayField>
+        <errorMessage>The Start date cannot be later than the End date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Institution</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Institution&apos;),
+	ISBLANK(Institution__c)
+)</errorConditionFormula>
+        <errorDisplayField>Institution__c</errorDisplayField>
+        <errorMessage>You must supply an Institution.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Relationship</fullName>
+        <active>true</active>
+        <description>•	Recordtype contains Relationship.
+•	From relationship and To relationship are blank, or both are populated.</description>
+        <errorConditionFormula>AND( 
+CONTAINS(RecordType.Name, &apos;Relationship&apos;), 
+OR( 
+AND( 
+ISBLANK(From_Relationship__c), 
+ISBLANK(To_Relationship__c) 
+), 
+AND( 
+NOT(ISBLANK(From_Relationship__c)), 
+NOT(ISBLANK(To_Relationship__c)) 
+) 
+) 
+)</errorConditionFormula>
+        <errorDisplayField>From_Relationship__c</errorDisplayField>
+        <errorMessage>You must supply EITHER the From or To Relationship.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Staff_Member</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+CONTAINS(RecordType.Name, &apos;Staff Member&apos;),
+ISBLANK(Staff_Member__c)
+)</errorConditionFormula>
+        <errorDisplayField>Staff_Member__c</errorDisplayField>
+        <errorMessage>You must supply a Staff Member</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Start_Date</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+	CONTAINS(RecordType.Name, &apos;Activity Date&apos;),
+	ISBLANK(Start_Date__c)
+)</errorConditionFormula>
+        <errorDisplayField>Start_Date__c</errorDisplayField>
+        <errorMessage>You must supply at least a Start date.</errorMessage>
+    </validationRules>
+</CustomObject>

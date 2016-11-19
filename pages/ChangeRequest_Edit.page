@@ -1,0 +1,482 @@
+<!-- 
+    V1.1 - 06/26/2012 - Bhavi - Added Notification_Status_Change__c field in Page - CR-20120508-830
+    V1.2 - 07/28/2012 - Bhavi - Added Description_Objective__c field in Page - CR-20120713-1120
+    V1.3 - 02/22/2014 - Ajit Surana - Added Release_Change_Reason__c field in Page - CR-20130830-3549
+    V1.4 - 04/08/2014 - Ajit Surana - Added a new section named "Testing" in Page for LII and LIII Section - CR-20130830-3549
+                                    - SF Instance field is removed from both LII and LIII Section - CR-20130830-3549
+    V1.5 - 04/18/2014 - Ajit Surana - Added Story_Size__c field on LII page layout - CR-20140303-4690
+    V1.6 - 04/29/2014 - Ajit Surana - Added Design_Lead__c field on LII & LIII page layouts - CR-20140303-4690
+    V1.7 - 08/19/2014 - Ajit Surana - Added Status_Solution_Review__c field on LII & Multiphase_UAT_Required__c field on LII & LIII page layouts - CR-20140814-7014
+    V1.8 - 09/08/2014 - Ajit Surana - Added Requester_Sub_Department__c field on LII and LIII page layouts - CR-20140825-7119
+	V1.9 - Modified By - Mahendra Swarnkar - 12/08/2015 - CR-20150324-8806 - Modified to remove the "Testing_Results_QA__c"field references as the field was no longer in use
+-->
+
+<apex:page standardController="SFDC_Change_Request__c" extensions="ChangeRequestExtension" action="{!Redirect}" >
+    <!-- include jquery -->
+    <c:IncludeJQuery />
+        <!-- setup dialog -->
+    <script type="text/javascript">
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <script src="../../soap/ajax/24.0/connection.js" type="text/javascript"></script>
+    <script src="../../soap/ajax/24.0/apex.js" type="text/javascript"></script>
+    
+    <style>
+        .ui-autocomplete-loading { background: white url('/img/loading.gif') right center no-repeat; }
+        
+        .ui-autocomplete {
+            min-height:0px;
+            max-height: 250px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        }
+    </style>
+    
+    <script>
+        var contacts = new Array();
+        
+        function trim(str) {
+            str.replace(/^\s*/, '').replace(/\s*$/, '');
+        
+           return str;
+        }
+        
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        
+        function FindContacts(contactName) {
+            sforce.connection.sessionId = "{!$Api.Session_ID}";
+            // first, split out the contact name
+            var contactNames = contactName.split(",");
+            contactName = contactNames[contactNames.length-1].trim();
+            if (contactName.length > 2) {
+                j$("[id*=ISTeamField]").addClass('ui-autocomplete-loading');
+            }
+            contacts = new Array();
+            var result = sforce.connection.query("select c.id, c.name from Contact c WHERE Name LIKE '%" + contactName + "%' AND Contact_Status__c = 'Active' AND RecordTypeId = '012C0000000BkFB' ORDER BY Name ASC");
+            var iterator = new sforce.QueryResultIterator(result);
+            while (iterator.hasNext()) {
+                var contact = iterator.next();
+                var obj = {
+                    value: contact.Name
+                }
+                
+                contacts.push(obj);
+            }
+            //j$("[id*=ISTeamField]").removeClass("includeSpinner");
+            return contacts;
+        }
+
+    j$(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+
+        j$( "[id*=ISTeamField]" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === j$.ui.keyCode.TAB &&
+                        j$( this ).data( "autocomplete" ).menu.active ) {
+                    event.preventDefault();
+                }
+                if (this.value.length > 1) {
+                    j$(this).addClass("includeSpinner");
+                }
+                else if (this.value == null) {
+                    j$(this).removeClass("includeSpinner");
+                }
+            })
+            .bind("change", function() {
+                j$(this).removeClass("includeSpinner");
+            })
+            .bind("blur", function() {
+                j$(this).removeClass("includeSpinner");
+            })
+            .autocomplete({
+                source: function( request, response ) {
+                        var data = FindContacts(request.term);
+                        response(data);
+                        setTimeout(function() {j$("[id*=ISTeamField]").removeClass("includeSpinner");},500);
+                },
+                search: function() {
+                    // custom minLength
+                    var term = extractLast( this.value );
+                    if (term.length > 1) {
+                        j$(this).addClass("includeSpinner");
+                    }
+                    if ( term.length < 2 ) {
+                        //j$(this).removeClass("ui-autocomplete-loading");
+                        return false;
+                    }
+                },
+                focus: function() {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( ", " );
+                    j$(this).removeClass("includeSpinner");
+                    return false;
+                }
+            });
+    });
+
+
+
+    function lastChar(str) {
+        return str.trim().charAt(str.length-2);
+    }
+
+    function defaultCursorPositon() {
+        var element = j$("[id*=ISTeamField]");
+        if (j$.browser.msie) {
+            /*element.val(element.val());
+            var range= element.createTextRange();
+            range.collapse(false);
+            range.select();*/
+        } else {
+            element.focus();
+            var v= element.val();
+            element.val('');
+            if (v != '' && lastChar(v) != ',') {
+                v = v + ', ';
+            }
+            element.val(v);
+        }
+    }
+    
+    if(typeof String.prototype.trim !== 'function') {
+      String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g, ''); 
+      }
+    }
+
+
+    </script>
+
+    <apex:form id="mainForm" >
+        <apex:sectionHeader title="Change Request Edit" subtitle="{!IF(ChangeRequest.Name != null, ChangeRequest.Name, 'New Change Request')}" />
+        <apex:pageBlock id="pageBlock" mode="edit" >
+            <apex:pageBlockButtons >
+                <apex:commandButton value=" Save" action="{!SaveOverride}" />
+                <apex:commandButton value=" Cancel" action="{!Cancel}" />
+            </apex:pageBlockButtons>
+            
+            <!-- System Outage Section -->
+            <apex:outputPanel rendered="{!IsSystemOutage}" id="systemOutage" >
+                <apex:pageBlockSection id="pbSection2">
+                    <apex:outputPanel id="outputPanel" styleclass="leftColumn">
+                        <apex:pageBlockSection columns="1" id="pbSection1">
+                            <apex:inputField required="true" value="{!ChangeRequest.Title__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.IS_System__c}" />
+                            <apex:inputField required="false" value="{!ChangeRequest.SF_Instance__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Start_Date_Time__c}" />
+                            <apex:inputField value="{!ChangeRequest.Resolution_Date_Time__c}" />
+                            <!-- <apex:inputField value="{!ChangeRequest.SF_Instance__c}" /> -->
+                            <apex:inputTextArea value="{!ChangeRequest.IS_Team_Involved__c}" Label="IS Team Involved" id="ISTeamField"
+                                onClick="defaultCursorPositon();" style="width:320px;height:60px;" />
+                            <!-- Bhavi - Added Notification_Status_Change__c field in Page - CR-20120508-830 -->
+                            <apex:inputField value="{!ChangeRequest.Notification_Status_Change__c}" />
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                        <apex:pageBlockSection columns="1">
+                            <apex:outputField value="{!ChangeRequest.Owner.Name}" label="Owner" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Reported_By__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Status__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Functionality__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Users_Affected__c}" />
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.System_Outage_Information}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1">
+                    <apex:inputField required="true" value="{!ChangeRequest.Description__c}" />
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1">
+                    <apex:inputField value="{!ChangeRequest.Expected_Resolution__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Workaround__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Other_Notes__c}" style="width:500px;" />
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Update Information" columns="1" >
+                    <apex:inputField value="{!ChangeRequest.Next_Update__c}" />
+                    <apex:inputField value="{!ChangeRequest.Latest_Public_Update__c}" />
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="2" >
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.System_Outage_Update_Information}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            
+            <!-- LII Section -->
+            <apex:outputPanel rendered="{!IsLevel2}" id="levelII" >
+                <apex:pageBlockSection title="Information" >
+                    <apex:outputPanel styleclass="leftColumn">
+                        <apex:pageBlockSection columns="1" id="leftColumn">
+                            <apex:outputField value="{!ChangeRequest.Name}" />
+                            <apex:inputField value="{!ChangeRequest.Parent_Change_Request__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Title__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.IS_System__c}" />
+                            
+                            <!-- Ajit Surana - Removed SF_Instance__c field from Page - CR-20130830-3549 -->
+                            <!-- <apex:inputField value="{!ChangeRequest.SF_Instance__c}" /> -->
+                            <apex:inputField required="true" value="{!ChangeRequest.Requested_By2__c}" />
+                            <apex:inputField value="{!ChangeRequest.Requester_Department2__c}" />
+                            
+                            <!-- Added By - Ajit Surana - Added Requester_Sub_Department__c field on the Page - CR-20140825-7119 -->
+                            <apex:inputField required="true" value="{!ChangeRequest.Requester_Sub_Department__c}"/>
+                            
+                            <apex:inputField required="true" value="{!ChangeRequest.Business_Operations_Contact2__c}" />
+                            <!-- Bhavi - Added Notification_Status_Change__c field in Page - CR-20120508-830 -->
+                            <apex:inputField value="{!ChangeRequest.Notification_Status_Change__c}" />
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                         <apex:pageBlockSection columns="1" id="rightColumn">
+                            <!--<apex:outputField value="{!ChangeRequest.Owner.Name}" label="Owner" />-->
+                            <apex:inputField value="{!ChangeRequest.IS_QA_Lead2__c}" />
+                            
+                            <!-- Ajit Surana - Added Design_Lead__c field in Page - CR-20140303-4690 -->
+                            <apex:inputField value="{!ChangeRequest.Design_Lead__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Priority__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Status__c}" />
+                            <apex:inputField value="{!ChangeRequest.Stage__c}" />
+                            <apex:inputField value="{!ChangeRequest.Approved_Date__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Users_Affected__c}" />
+                            <apex:inputField value="{!ChangeRequest.Requested_Completion_Date__c}" />
+                            <apex:inputField value="{!ChangeRequest.Closed_Date__c}" />
+                        </apex:pageBlockSection> 
+                    </apex:outputPanel>
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LII_Information}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Release Information">
+                    <apex:inputField value="{!ChangeRequest.Release__c}" />
+                    
+                    <!-- Ajit Surana - Added Release_Change_Reason__c field in Page - CR-20130830-3549 -->
+                    <apex:inputField value="{!ChangeRequest.Release_Change_Reason__c}"/>
+                    
+                    <apex:inputField value="{!ChangeRequest.SOX_Certification_Required__c}" />
+                    
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LII_Release_Information}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    
+                    <!-- Ajit Surana - Added Status_Solution_Review__c field in Page - CR-20140814-7014 -->
+                    <apex:inputField value="{!ChangeRequest.Status_Solution_Review__c}" />
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="1" title="Request Summary">
+                    <apex:inputField required="true" value="{!ChangeRequest.Request_Description__c}" />
+                    <apex:inputField required="true" value="{!ChangeRequest.Business_Justification__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.OPTIONAL_Recommended_Solution__c}" />
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LII_Request_Summary}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                   
+                <apex:pageBlockSection title="Work Effort" columns="1" >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputText value="Work Required" />
+                        <c:MultiSelectPicklist TargetObject="{!ChangeRequest}"
+                            TargetField="Work_Required__c" Size="9" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem />
+                    
+                    <!-- Ajit Surana - Added Story_Size__c picklist field in Page - CR-20140303-4690 -->
+                    <apex:inputField value="{!ChangeRequest.Story_Size__c}" />
+                    
+                    <apex:inputTextArea value="{!ChangeRequest.IS_Team_Involved__c}" Label="IS Team Involved" id="ISTeamField"
+                     onClick="defaultCursorPositon();" style="width:320px;height:60px;" />
+                     <apex:inputField value="{!ChangeRequest.Design_Estimated__c}" />
+                     <apex:inputField value="{!ChangeRequest.Config_Estimated_Hrs__c}" />
+                     <apex:inputField value="{!ChangeRequest.Coding_Estimated_Hrs__c}" />
+                     <apex:inputField value="{!ChangeRequest.IS_QA_Estimated_Hrs__c}" />
+                     <apex:inputField value="{!ChangeRequest.Data_Imports_Updates_Estimated_Hrs__c}" />
+                     <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LII_Work_Effort}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1" >
+                    <!-- Bhavi - Added Description_Objective__c field in Page - CR-20120713-1120 -->
+                    <apex:inputField value="{!ChangeRequest.Description_Objective__c}" />
+                    <apex:inputField value="{!ChangeRequest.Solution_Design_Work_Order__c}" />
+                </apex:pageBlockSection>
+                
+               <!-- Ajit Surana - Added a new section named "Testing"  in Page - CR-20130830-3549 -->
+                <apex:pageBlockSection title="Testing" columns="1" >
+                   <!--Commented By - Mahendra Swarnkar - 12/08/2015 - CR-20150324-8806 --> 
+                   <!--  <apex:inputField value="{!ChangeRequest.Testing_Results_QA__c}"/> -->
+                    <apex:inputField value="{!ChangeRequest.Testing_Results_UAT__c}"/>
+                    <apex:inputField value="{!ChangeRequest.Testing_Results_Notes__c}" style="width:500px;"/>
+                    <apex:inputField value="{!ChangeRequest.Steps_To_Test_Expected_Results__c}" style="width:500px;"/>
+                    
+                    <!-- Ajit Surana - Added Multiphase_UAT_Required__c field - CR-20140814-7014 -->
+                    <apex:inputField value="{!ChangeRequest.Multiphase_UAT_Required__c}"/>
+                </apex:pageBlockSection> 
+                
+                <apex:pageBlockSection title="System Information" columns="2">
+                    <apex:pageBlockSectionItem />
+                    <apex:outputField label="Record Type" value="{!ChangeRequest.RecordTypeId}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:inputField value="{!ChangeRequest.Sifter__c}" />
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            
+            
+            <!-- LIII Section -->
+            <apex:outputPanel rendered="{!IsLevel3}" id="levelIII" >
+                <apex:pageBlockSection title="Information" >
+                    <apex:outputPanel styleclass="leftColumn" >
+                        <apex:pageBlockSection columns="1">
+                            <apex:outputField value="{!ChangeRequest.Name}" />
+                            <apex:inputField value="{!ChangeRequest.Parent_Change_Request__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Title__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.IS_System__c}" />
+                            
+                            <!-- Ajit Surana - Removed SF_Instance__c field from Page - CR-20130830-3549 -->
+                            <!-- <apex:inputField value="{!ChangeRequest.SF_Instance__c}" /> -->
+                            <apex:inputField required="true" value="{!ChangeRequest.Requested_By2__c}" />
+                            <apex:inputField value="{!ChangeRequest.Requester_Department2__c}" />
+                            
+                            <!-- Added By - Ajit Surana - Added Requester_Sub_Department__c field on the Page - CR-20140825-7119 -->
+                            <apex:inputField required="true" value="{!ChangeRequest.Requester_Sub_Department__c}"/>
+                            
+                            <apex:inputField required="true" value="{!ChangeRequest.Executive_Sponsor__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Business_Operations_Contact2__c}" />
+                            <!-- Bhavi - Added Notification_Status_Change__c field in Page - CR-20120508-830 -->
+                            <apex:inputField value="{!ChangeRequest.Notification_Status_Change__c}" />
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                        <apex:pageBlockSection columns="1">
+                            <apex:outputField value="{!ChangeRequest.Owner.Name}" label="Owner" />
+                            <apex:inputField value="{!ChangeRequest.IS_QA_Lead2__c}" />
+                            
+                            <!-- Ajit Surana - Added Design_Lead__c field in Page - CR-20140303-4690 -->
+                            <apex:inputField value="{!ChangeRequest.Design_Lead__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Status__c}" />
+                            <apex:inputField value="{!ChangeRequest.Stage__c}" />
+                            <apex:inputField value="{!ChangeRequest.Approved_Date__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Priority__c}" />
+                            <apex:inputField required="true" value="{!ChangeRequest.Users_Affected__c}" />
+                            <apex:inputField value="{!ChangeRequest.Release__c}" />
+                            
+                            <!-- Ajit Surana - Added Release_Change_Reason__c field in Page - CR-20130830-3549 -->
+                            <apex:inputField value="{!ChangeRequest.Release_Change_Reason__c}"/>   
+                            
+                            <!-- Bhavi - Added Current_Test_Enviroments_CR__c field in Page - CR-20121207-1869 -->
+                            <apex:inputField value="{!ChangeRequest.Current_Test_Environments_CR__c}" />
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LIII_Information}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="1" title="Request Summary">
+                    <apex:inputField required="true" value="{!ChangeRequest.Request_Description__c}" />
+                    <apex:inputField required="true" value="{!ChangeRequest.Business_Justification__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.OPTIONAL_Recommended_Solution__c}" />
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LIII_Request_Summary}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                    
+                <apex:pageBlockSection title="Key Dates" columns="2" >
+                    <apex:inputField value="{!ChangeRequest.Requested_Completion_Date__c}" />
+                    <apex:inputField value="{!ChangeRequest.Project_Kickoff_Date__c}" />
+                    <apex:inputField value="{!ChangeRequest.Scheduled_Completion_Date__c}" />
+                    <apex:inputField value="{!ChangeRequest.Requirements_Completed__c}" />
+                    <apex:inputField value="{!ChangeRequest.Scheduled_Date_Change_Reason__c}" />
+                    <apex:inputField value="{!ChangeRequest.Code_Config_Completed__c}" />
+                    <apex:inputField value="{!ChangeRequest.Actual_Completion_Date__c}" />
+                    <apex:inputField value="{!ChangeRequest.UAT_Completed__c}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:inputField value="{!ChangeRequest.SOX_Certification_Required__c}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:inputField value="{!ChangeRequest.SOX_Certification_Completed__c}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:inputField value="{!ChangeRequest.SOX_Certification_Approver__c}" />
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LIII_Key_Dates}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Work Effort" columns="1" >
+                    <apex:inputTextArea value="{!ChangeRequest.IS_Team_Involved__c}" Label="IS Team Involved" id="ISTeamField"
+                     onClick="defaultCursorPositon();" style="width:320px;height:60px;" />
+                     <apex:pageBlockSectionItem >
+                        <apex:outputText value="Work Required" />
+                        <c:MultiSelectPicklist TargetObject="{!ChangeRequest}"
+                            TargetField="Work_Required__c" Size="9" />
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField value="{!ChangeRequest.Design_Estimated__c}" />
+                    <apex:inputField value="{!ChangeRequest.Config_Estimated_Hrs__c}" />
+                    <apex:inputField value="{!ChangeRequest.Coding_Estimated_Hrs__c}" />
+                    <apex:inputField value="{!ChangeRequest.IS_QA_Estimated_Hrs__c}" />
+                    <apex:inputField value="{!ChangeRequest.Data_Imports_Updates_Estimated_Hrs__c}" />
+                     <!-- Bhavi - Added Description_Objective__c field in Page - CR-20120713-1120 -->
+                     <apex:inputField value="{!ChangeRequest.Description_Objective__c}" />
+                    <apex:inputField value="{!ChangeRequest.Solution_Design_Work_Order__c}" />
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LIII_Work_Effort}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection> 
+                
+                <!-- Ajit Surana - Added a new section named "Testing" - CR-20130830-3549 -->
+                <apex:pageBlockSection title="Testing" columns="1" >
+                    <!--Commented By - Mahendra Swarnkar - 12/08/2015 - CR-20150324-8806 -->
+                    <!--<apex:inputField value="{!ChangeRequest.Testing_Results_QA__c}"/> -->
+                    <apex:inputField value="{!ChangeRequest.Testing_Results_UAT__c}"/>
+                    <apex:inputField value="{!ChangeRequest.Testing_Results_Notes__c}" style="width:500px;"/>
+                    <apex:inputField value="{!ChangeRequest.Steps_To_Test_Expected_Results__c}" style="width:500px;"/>
+                    
+                    <!-- Ajit Surana - Added Multiphase_UAT_Required__c field in Page - CR-20140814-7014 -->
+                    <apex:inputField value="{!ChangeRequest.Multiphase_UAT_Required__c}"/>
+                </apex:pageBlockSection> 
+                
+                <apex:pageBlockSection title="Project Check-In" columns="1" >
+                    <apex:inputField value="{!ChangeRequest.Accomplishments__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Next_Steps__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Blocking_Issues_Challenges__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Risk_Areas_Concerns__c}" style="width:500px;" />
+                    <apex:inputField value="{!ChangeRequest.Changes_in_Scope__c}" style="width:500px;" />
+                    <apex:repeat value="{!$ObjectType.SFDC_Change_Request__c.FieldSets.LIII_Project_Check_In}" var="f">
+                        <apex:inputField value="{!ChangeRequest[f.fieldPath]}"  required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="System Information" columns="2">
+                    <apex:pageBlockSectionItem />
+                    <apex:outputField label="Record Type" value="{!ChangeRequest.RecordTypeId}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:inputField value="{!ChangeRequest.Sifter__c}" />
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

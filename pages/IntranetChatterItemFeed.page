@@ -1,0 +1,35 @@
+<!--V_1.1 - Modified By - Rajeev Jain - 08/06/2015 - CR-20150618-9016 - Board Room Mobile -->
+<!-- Description : 1- Modified Style.
+-->
+<apex:page sidebar="false" showHeader="false"  docType="html-5.0" language="en-US" applyHTMLTag="false">
+    <head>
+        <c:IntranetChatterIncludes />
+        <!--V_1.1 - Added By - Rajeev Jain - 08/06/2015 - CR-20150618-9016 - Board Room Mobile -->
+        <style>
+            @media (max-device-width:991px) {
+                .feedcontainer .feeditemcontent{
+                    margin-left:50px !important;
+                }
+            }
+        </style>
+        <!--V_1.1 - Added By - Rajeev Jain - 08/06/2015 - CR-20150618-9016 - Board Room Mobile - Upto Here-->
+    </head>
+    <body>
+
+        <chatter:feed EntityId="{!$CurrentPage.parameters.entityid}"/>
+    
+        <script>
+        
+        jQuery(document).ready(function($) {
+            $('#publishersharebutton').on('click', function() {
+                window.parent.postComment();
+            });
+            
+        });
+        
+        </script>
+        
+        
+    </body>
+    
+</apex:page>

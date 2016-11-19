@@ -1,0 +1,32 @@
+<!--
+/** 
+  * Description     :   Visualforce page for adding new eligible reference perks
+  *
+  * Created By      :   Rajeev Jain(Simplyforce)
+  *
+  * Created Date    :   12/15/2015
+  *
+  * Version         :   V1.0 Created - Refernece Tracking Project  - CR-20150826-9191
+  **/
+-->
+<apex:page controller="AddEligiblePerksController">
+	<c:BlockUI />
+    <style>
+        .message .messageText a {
+            margin: 0 4px;
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+    <apex:form id="frm">
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        <apex:actionFunction name="addEligiblePerk" action="{!addEligiblePerks}" reRender="frm" status="waitMsg"/>
+        <apex:pageMessages escape="false"/>
+    </apex:form>
+    <script>
+        window.onload = cloneGT();
+        function cloneGT() {
+            addEligiblePerk();
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Each Staff Assignment may relate to zero or many Program Perspectives. Each of these records has its own effective dating, and these records are aggregated into a viewable list on its parent Staff Assignment for presentation on related lists and simple reports.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>Cn{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Effective_End__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective End</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Effective_Start__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective Start</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Perspective_Short_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Perspective__r.Program_Group__r.Short_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Perspective Short Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Perspective__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Program Perspective</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Program_Perspective__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Program_Perspective__c</referenceTo>
+        <relationshipLabel>Role Program Perspectives</relationshipLabel>
+        <relationshipName>Role_Program_Perspectives</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Staff_Assignment__c</fullName>
+        <externalId>false</externalId>
+        <label>Staff Assignment</label>
+        <referenceTo>Team_Membership__c</referenceTo>
+        <relationshipLabel>Role Program Perspectives</relationshipLabel>
+        <relationshipName>Role_Program_Perspectives</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>Role Program Perspective</label>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Role Program Perspectives</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Assigned</fullName>
+        <active>true</active>
+        <label>Assigned</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>VR_Appropriate_Effective_Dates</fullName>
+        <active>true</active>
+        <description>The Effective Start date cannot be later than the Effective End date.</description>
+        <errorConditionFormula>Effective_Start__c &gt; Effective_End__c</errorConditionFormula>
+        <errorDisplayField>Effective_Start__c</errorDisplayField>
+        <errorMessage>The Effective Start date cannot be later than the Effective End date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_End_Date</fullName>
+        <active>true</active>
+        <description>The Effective End cannot be later than the Staff Assignment’s.</description>
+        <errorConditionFormula>Effective_End__c &gt; Staff_Assignment__r.End_date__c</errorConditionFormula>
+        <errorDisplayField>Effective_End__c</errorDisplayField>
+        <errorMessage>The Effective End cannot be later than the Staff Assignment’s.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Start_Date</fullName>
+        <active>true</active>
+        <description>The Effective Start cannot be earlier than the Staff Assignment’s.</description>
+        <errorConditionFormula>Effective_Start__c  &lt; Staff_Assignment__r.Start_date__c</errorConditionFormula>
+        <errorDisplayField>Effective_Start__c</errorDisplayField>
+        <errorMessage>The Effective Start cannot be earlier than the Staff Assignment’s.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/RedirectWithVariables?redirect=Object--Role_Program_Perspective__c!!Name--Will Auto-Populate!!Staff_Assignment__c--{!Team_Membership__c.Id}!!Effective_Start__c--{!Team_Membership__c.Start_date__c}!!returnURL--/{!Team_Membership__c.Id}</url>
+    </webLinks>
+</CustomObject>

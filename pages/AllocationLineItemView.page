@@ -1,0 +1,49 @@
+<apex:page Extensions="BudgetAllocationExtension" standardController="Budget_Allocation__c" id="page" >
+    <apex:form id="form">
+	    <!-- Include page messages by default -->
+		<apex:pageMessages escape="false" />
+        <apex:pageBlock id="pblock" mode="mainDetail">
+            <apex:pageBlockSection id="pbsAllocatedAmts" columns="1" collapsible="false" >
+                <!-- ALLOCATION ITEM GRID -->
+                <apex:pageBlockTable value="{!AllocationWrappers}" var="item" id="pricingTable" 
+                rendered="{!AllocationWrappers.size > 0}"
+                rowClasses="odd,even" styleClass="tableClass" style="width:100%;font-size: 95%;">
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Year" />
+                        </apex:facet>
+                        <apex:outputText value="{!YEAR(item.BudgetAllocation.Allocation_Date__c)}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Quarter" />
+                        </apex:facet>
+                        <apex:outputText value="Q{!CEILING(Month(item.BudgetAllocation.Allocation_Date__c) / 3)}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Month" />
+                        </apex:facet>
+                        <apex:outputText value="{!item.Month}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Budgeted" />
+                        </apex:facet>
+                        <apex:outputText value="{0, number, $#,##0.00}" >
+                            <apex:param value="{!item.Budgeted}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Allocation" />
+                        </apex:facet>
+                        <apex:outputText value="{0, number, $#,##0.00}" >
+                            <apex:param value="{!item.BudgetAllocation.Allocation_Amount__c}" />
+                        </apex:outputText>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

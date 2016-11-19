@@ -1,0 +1,214 @@
+<apex:page standardController="Relationship_Interaction__c" extensions="RelationshipInteractionExtension" id="page" >
+	<apex:form id="mainForm">
+        <c:IncludeJQuery id="jQueryComponent" />
+        
+        <!-- refresh attendee function -->
+        <apex:actionFunction name="refreshAttendees" action="{!getAttendeeDetails}" rerender="pbSection_Information,pbSection_InteractionAttendees" onComplete="unblockTable(); return false;" >
+            <apex:param name="conId" assignTo="{!contactId}" value="" />
+        </apex:actionFunction>
+        <!-- add attendee function -->
+        <apex:actionFunction name="addAttendee" action="{!addInteractionAttendee}" rerender="pbSection_InteractionAttendees" onComplete="unblockTable(); return false;" />
+        <!-- remove attendee function -->
+        <apex:actionFunction name="removeAttendee" action="{!removeAttendee}" rerender="pbSection_Information,pbSection_InteractionAttendees" onComplete="unblockTable(); return false;">
+            <apex:param name="index" value="{!indexVal}" />
+        </apex:actionFunction>
+        
+        <!-- section header -->
+        <apex:sectionHeader title="Relationship Interaction Edit" subtitle="{!IF( Relationship_Interaction__c.Id != null , Relationship_Interaction__c.Name, 'New Relationship Interaction')}" />
+    	<apex:pageBlock id="pgBlock" title="Relationship Interaction Edit" mode="edit">
+            <!-- buttons -->
+            <apex:pageBlockButtons id="pbButtons" >
+                <apex:commandButton value="Save" action="{!save}" reRender="jQueryComponent" status="saveStatus" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+                <apex:actionStatus id="saveStatus" onstart="disableButtons();" onstop="enableButtons();" />
+            </apex:pageBlockButtons>
+            <!-- information -->
+        	<apex:pageBlockSection title="Information" id="pbSection_Information">
+                <apex:outputField value="{!Relationship_Interaction__c.Name}" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.Assigned_To__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!Relationship_Interaction__c.Assigned_To__c}" />
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.Institution__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:actionFunction name="setAcct" action="{!setAcct}" rerender="pbSection_Information,pbSection_InteractionAttendees" />
+                        <apex:inputField value="{!Relationship_Interaction__c.Institution__c}" onChange="setAcct();" />
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.Start_Date_Time__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!Relationship_Interaction__c.Start_Date_Time__c}" />
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!Relationship_Interaction__c.Primary_Contact__c}" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.End_Date_Time__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!Relationship_Interaction__c.End_Date_Time__c}" />
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem /> <!-- blank space -->
+                <apex:inputField value="{!Relationship_Interaction__c.Cancelled__c}" />
+            </apex:pageBlockSection>
+            <!-- interaction details -->
+            <apex:pageBlockSection title="Interaction Details" id="pbSection_InteractionDetails">
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.Interaction_Level__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!Relationship_Interaction__c.Interaction_Level__c}" />
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem /> <!-- blank space -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="{!$ObjectType.Relationship_Interaction__c.fields.Interaction_Type__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:selectList value="{!Relationship_Interaction__c.Interaction_Type__c}" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="--None--" itemvalue="" />
+                            <apex:selectOptions value="{!interactionTypes}"/>
+                        </apex:selectList>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem /> <!-- blank space -->
+                <apex:inputField value="{!Relationship_Interaction__c.Key_Objectives__c}" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="pbSection_InteractionDetails_comments" columns="1">
+            	<apex:inputField value="{!Relationship_Interaction__c.Comments__c}" />
+            </apex:pageBlockSection>
+            <!-- System Information -->
+            <apex:pageBlockSection title="System Information" id="pbSection_SystemInformation">
+                <apex:OutputField value="{!Relationship_Interaction__c.RecordTypeId}" />
+                <apex:OutputField value="{!Relationship_Interaction__c.OwnerId}" />
+            </apex:pageBlockSection>
+            
+            <!-- Interaction Attendees -->
+            <apex:pageBlockSection title="Interaction Attendees" id="pbSection_InteractionAttendees" columns="1">
+                <apex:pageBlockTable value="{!interactionAttendees}" var="wrapper" id="attendeeTable" width="100%">
+                    <apex:variable value="{!0}" var="cnt"/>    <!-- This counter is used to track the row number which is then sent to the apex class when a radio button is clicked -->
+                    <apex:column style="text-align:center; width:25px;" id="actionColumn">
+                        <!-- plus icon -->
+                        <apex:outputPanel rendered="{!cnt >= interactionAttendees.size}" id="addPanel">
+                            <a href="" onClick="blockTable(); addAttendee();" id="addLink{!cnt}" >
+                                <i class="fa fa-plus-circle" style="font-size: 16px; cursor:pointer; color:rgb(9, 178, 5);" title="add" />
+                            </a>
+                        </apex:outputPanel>
+                        <!-- minus icon -->
+                        <apex:outputPanel rendered="{!cnt < interactionAttendees.size}" id="removePanel">
+                            <a href="" onClick="removeContact(this.getAttribute('id'), {!cnt})" id="removeLink{!cnt}" html-for="{!wrapper.contactMtM.Contact__r.Name}">
+                                <i class="fa fa-minus-circle" style="font-size: 16px; cursor:pointer; color:rgb(204, 0, 0);" title="delete" />
+                            </a>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Contact" >
+                        <!-- this section is necessary for the actual current location and storage ship location fields to filter properly -->
+                        <apex:outputPanel layout="block" id="hiddenLookupPanel" style="position:absolute; left:-9999px;">
+                            <apex:inputField value="{!wrapper.dummyInteraction.Institution__c}" id="inputHidden_Institution" />
+                        </apex:outputPanel>
+                        <!-- note: the reason we are hiding this field via css is due to some odd behavior when the same criteria was attempting to be used in the rendered parameter -->
+                        <apex:outputPanel styleClass="requiredInput" layout="block" style="{!IF(cnt >= interactionAttendees.size, 'position:absolute; left:-9999px; top: -9999px !important;', '')}">
+                            <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                            <apex:inputField value="{!wrapper.dummyInteraction.Primary_Contact__c}" rendered="{!wrapper.contactMTM.Id == null}"
+                                         id="contact" onchange="getContact(this.getAttribute('id'));" />
+                        </apex:outputPanel>
+                    	<apex:inputField value="{!wrapper.contactMtM.Contact__r.Name}" rendered="{!wrapper.contactMTM.Id != null}" id="contactName" />
+                        <apex:outputPanel rendered="{!cnt >= interactionAttendees.size}">
+                            <a href="" onClick="blockTable(); addAttendee();" id="addLink{!cnt}" >
+                                <apex:outputText value="Add Interaction Attendee" style="cursor:pointer;" />
+                            </a>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Primary">
+                        <!-- active radio button -->
+                        <apex:outputpanel rendered="{!wrapper.contactMtM.Primary_Contact__c}">
+                            <input type="radio" checked="true"/>
+                        </apex:outputpanel>
+                        <!-- inactive radio button -->
+                        <apex:outputPanel rendered="{!NOT(wrapper.contactMtM.Primary_Contact__c) && cnt < interactionAttendees.size}">
+                            <!-- We use AJAX to call an apex function when a radio button is clicked -->
+                            <apex:actionsupport action="{!selectPrimary}" event="onclick" rerender="pbSection_Information,pbSection_InteractionAttendees">
+                                <input type="radio" />
+                                <apex:param name="index" value="{!cnt}"/>
+                            </apex:actionsupport>
+                        </apex:outputPanel>
+                        <apex:variable var="cnt" value="{!cnt+1}"/>  
+                    </apex:column>
+                    <apex:column headerValue="Title" >
+                        <apex:outputText value="{!wrapper.Title}" id="title"/>
+                    </apex:column>
+                    <apex:column headerValue="Email" >
+                        <apex:outputText value="{!wrapper.Email}" id="email"/>
+                    </apex:column>
+                    <apex:column headerValue="Phone" >
+                        <apex:outputText value="{!wrapper.Phone}" id="phone" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <script>
+                //constants
+                var title = "title";
+                var email = "email";
+                var phone = "phone";
+                var lkid = "_lkid";  //contactId
+                var lkold = "_lkold";//contactName
+                var blankContactId = "000000000000000";
+                
+                //get contact id and refresh attendee list to display details
+                function getContact(elemId) {
+                    var contactId = j$("#" + elemId.split(":").join("\\:") + lkid).val();
+                    if (contactId == null || contactId == "" || contactId == blankContactId) return false;
+                    else { //only block the table and rerender if a contact was selected from the lookup popup
+                        blockTable();
+                        refreshAttendees(contactId);
+                    }
+                }
+                
+                //prompt the user to see if they actually want to delete this contact
+                function removeContact(elemId, indx) {
+                    
+                    var contactName = j$("#" + elemId).attr("html-for"); //contact name for inserted records is in the html-for attribute
+                    
+                    if (contactName == null || contactName == "") {
+                        //get the contact name
+                        var parentId = j$("#" + elemId).parent().attr("id");
+                        var nameId = parentId.replace("removePanel", "contact" + lkold).split(":").join("\\:");
+                        contactName = j$("#" + nameId).val();
+                    }
+                    //confirm the deletion
+                    if (confirm("Delete Contact " + contactName + "?")) {
+                        blockTable();
+                        removeAttendee(indx);
+                    }
+                }
+                
+                function blockTable() {
+                    blockElement("[id$='attendeeTable']");
+                }
+                function unblockTable() {
+                    unblockElement("[id$='attendeeTable']");
+                }
+                
+                function disableButtons() {
+                    j$("input[type=button]").attr("disabled", "disabled");
+                }
+                function enableButtons() {
+                    j$("input[type=button]").removeAttr("disabled");
+                }
+                </script>
+                <style>
+                    input[type=button]:disabled {
+                    background: #dddddd;
+                    color: #888484;
+                    }
+                </style>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

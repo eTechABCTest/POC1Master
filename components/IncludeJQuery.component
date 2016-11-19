@@ -1,0 +1,84 @@
+<apex:component access="global" >
+    <!-- JQuery library/css -->
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.7.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.16.custom.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/custom-theme/jquery-ui-1.8.custom.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/blockUI.js')}" /> 
+    <!-- font awesome -->
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+	
+	<style type="text/css">
+	.includeSpinner {
+		background-image: url(/img/loading.gif);
+		background-repeat:no-repeat;
+		background-position:top right;
+		background-attachment:url(fixed);
+	}
+	
+	.leftColumn {
+		display:block;
+		padding-left:6em;
+		white-space:nowrap;
+	}
+	
+    div.blockMsg {
+     
+	    /* css3 drop shadow */
+	    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+	     
+	    /* css3 border radius */
+	    -moz-border-radius: 5px;
+	    -webkit-border-radius: 5px;
+	    border-radius: 5px;
+	     
+	    background:#eee;
+	    padding:10px;
+	    
+	     
+	}
+	div.blockOverlay {
+		/* transparency for different browsers */
+	    filter:alpha(opacity=50) !important;
+	    -moz-opacity:0.5;
+	    -khtml-opacity: 0.5;
+	    opacity: 0.5;
+	    background:#000; 
+	}
+    </style>
+	
+	<script>
+		// define jquery variable as 'j$' so that it does not conflict with the Prototype '$'
+		var j$ = jQuery.noConflict();
+		
+		// add the loading gif after an element on the page to indicate that something is loading
+		function showLoading(obj) {
+			j$(obj).append('<img src=\'/img/loading.gif\' id=\'loading\'></img>');
+		}
+		
+		function blockElement(ElementLocator,Message)
+	    	{
+	    		if(Message == null) Message = 'Working...';
+		    	
+		    	j$(ElementLocator).block
+		        ({ 
+		            message: '<img src="/img/loading.gif"/>&nbsp;&nbsp;<font size=\"3\">' + Message + '</font>'
+		        }); 
+	    	}
+	    	function unblockElement(ElementLocator)
+	    	{
+		    	j$(ElementLocator).unblock();
+	    	}
+	    	
+	    	function blockPage(Message) 
+		    {
+		    	// changed from #bodyTable to .bodyDiv because #bodyTable did not work with IE8
+		    	blockElement('.bodyDiv',Message);
+	    
+		    }
+	</script>
+	
+	<!-- Include page messages by default -->
+	<apex:pageMessages escape="false" />
+</apex:component>

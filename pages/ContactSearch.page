@@ -1,0 +1,48 @@
+<!-- 
+    Description     :   This page is to allow the user to search for a contact record on the Institution detail page using 
+                        "Account" as standard controller.
+    
+    Created By      :   Ajit Surana
+    
+    Created Date    :   08/04/2014
+    
+    Revision Logs   :   V1.0 - Created - CR-20140512-5442
+    
+-->
+
+<apex:page standardController="Account" extensions="ContactSearch_Ext">  
+    <style type="text/css">
+        body {background: #F3F3EC; padding-top: 20px}
+    </style>
+
+    <apex:form >
+        <apex:pageBlock title="Contact Records on this Account" id="block" mode="edit">
+            <apex:pageMessages />
+
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="searchText">Name</apex:outputLabel>
+                    <apex:panelGroup >
+                    <apex:inputText id="searchText" value="{!searchText}"/>
+                    <apex:commandButton value="Search" action="{!search}" rerender="resultsBlock" status="status"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:actionStatus id="status" startText="Searching... Please wait..."/>
+            <apex:pageBlockSection id="resultsBlock" columns="1">
+               <apex:pageBlockTable value="{!searchResults}" var="con" rendered="{!IF(searchResults.size > 0, true, false)}">
+                    <apex:column headerValue="Name">
+                        <a onclick="window.open('/{!con.Id}')" target="_blank" style="cursor: pointer; text-decoration:underline;">{!con.Name}</a>
+                    </apex:column>
+                    <apex:column value="{!con.Title}"/>
+                    <apex:column value="{!con.Email}"/>
+                    <apex:column value="{!con.Phone}"/>
+                </apex:pageBlockTable>
+                <apex:outputPanel rendered="{!isSearch}">
+                    No records to display!
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

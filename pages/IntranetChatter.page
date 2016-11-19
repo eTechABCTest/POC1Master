@@ -1,0 +1,8 @@
+<apex:page sidebar="false" showHeader="false"  docType="html-5.0" language="en-US" applyHTMLTag="false">
+    <head>
+        <c:IntranetChatterIncludes />
+    </head>
+    <body>
+        <chatter:newsfeed />
+    </body>
+</apex:page>

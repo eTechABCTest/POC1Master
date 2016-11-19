@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Log of all requests and corresponding responses with an external web service</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Activity_Type__c</fullName>
+        <description>CR-20150217-8686 - Temporary field to track user activity.</description>
+        <externalId>false</externalId>
+        <label>Activity Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Vendor__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Card Vendor</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Profile__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Credit Card Profile</label>
+        <referenceTo>Credit_Card_Profile__c</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Request_Message_Log__c</fullName>
+        <description>This field is created for CR-20150917-9254</description>
+        <externalId>false</externalId>
+        <label>Credit Card Request Message Log</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Request_Message__c</fullName>
+        <description>This field is created for  CR-20150917-9254.</description>
+        <externalId>false</externalId>
+        <label>Credit Card Request Message</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Response_Message_Log__c</fullName>
+        <description>This field is created for CR-20150917-9254.</description>
+        <externalId>false</externalId>
+        <label>Credit Card Response Message Log</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Response_Message__c</fullName>
+        <description>This field is created for CR-20150917-9254.</description>
+        <externalId>false</externalId>
+        <label>Credit Card Response Message</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Credit_Card_Transaction__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Credit Card Transaction</label>
+        <referenceTo>Credit_Card_Transaction__c</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Card__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Credit Card</label>
+        <referenceTo>Credit_Card__c</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Error_Message__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Error Message</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <description>Created as part of CR-8947 to record the external id of records related to the web service log.</description>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Object_API_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Object API Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Object_Type__c</fullName>
+        <description>CR-20150217-8686 - Temporary field to track user activity.</description>
+        <externalId>false</externalId>
+        <label>Object Label</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Record_Id__c</fullName>
+        <description>CR-20150217-8686 - Temporary field to track user activity.</description>
+        <externalId>false</externalId>
+        <label>Record Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Record_Type_Name__c</fullName>
+        <description>CR-20150217-8686 - Temporary field to track user activity.</description>
+        <externalId>false</externalId>
+        <label>Record Type Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Request_Message_Log__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Request Message Log</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Request_Message__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Message sent/received in XML format</inlineHelpText>
+        <label>Request Message</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Request_Sent__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Request Sent</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Requested_By__c</fullName>
+        <description>Created for the EAB / Advisory project.  Used for tracking the user that submitted a request.  In some cases, the request is sent through the Site page but was initiated by an internal user (ie: user with chatter plus profile).</description>
+        <externalId>false</externalId>
+        <label>Requested By</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Response_Message_Log__c</fullName>
+        <externalId>false</externalId>
+        <label>Response Message Log</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Response_Message__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Response Message</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Response_Received__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Response Received</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Shipment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shipment</label>
+        <referenceTo>Shipment__c</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Site_Profile__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Site Profile</label>
+        <referenceTo>Site_Profile__c</referenceTo>
+        <relationshipLabel>Web Service Logs</relationshipLabel>
+        <relationshipName>Web_Service_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>URL__c</fullName>
+        <description>CR-20150217-8686 - Temporary field to track user activity.</description>
+        <externalId>false</externalId>
+        <label>URL Path</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Web_Service_Class__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Web Service Class</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Web_Service_Method__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Web Service Method</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Web_Service_Name__c</fullName>
+        <description>Origin: CR-2089 - CreditCardAdmin</description>
+        <externalId>false</externalId>
+        <label>Web Service Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Web Service Log</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Credit_Card__c</columns>
+        <columns>Credit_Card_Profile__c</columns>
+        <columns>Web_Service_Method__c</columns>
+        <columns>Web_Service_Name__c</columns>
+        <columns>Request_Sent__c</columns>
+        <columns>Response_Received__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Credit_Card_Logs</fullName>
+        <columns>NAME</columns>
+        <columns>Credit_Card__c</columns>
+        <columns>Credit_Card_Profile__c</columns>
+        <columns>Web_Service_Method__c</columns>
+        <columns>Web_Service_Name__c</columns>
+        <columns>Request_Sent__c</columns>
+        <columns>Response_Received__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Web_Service_Log__c.Comdata_Credit_Card</value>
+        </filters>
+        <label>Credit Card Logs</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Real_Time_Transaction_History</fullName>
+        <columns>NAME</columns>
+        <columns>Web_Service_Method__c</columns>
+        <columns>Web_Service_Name__c</columns>
+        <columns>Request_Sent__c</columns>
+        <columns>Response_Received__c</columns>
+        <columns>Response_Message__c</columns>
+        <columns>Error_Message__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Web_Service_Class__c</field>
+            <operation>equals</operation>
+            <value>CreditCardService</value>
+        </filters>
+        <filters>
+            <field>Web_Service_Method__c</field>
+            <operation>equals</operation>
+            <value>realTimeTransactionHistory</value>
+        </filters>
+        <label>Real Time Transaction History</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>ShipIt_Logs</fullName>
+        <columns>NAME</columns>
+        <columns>Web_Service_Method__c</columns>
+        <columns>Web_Service_Name__c</columns>
+        <columns>Request_Sent__c</columns>
+        <columns>Response_Received__c</columns>
+        <columns>Error_Message__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Web_Service_Log__c.ShipIt_App</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>LAST_N_DAYS:7</value>
+        </filters>
+        <label>ShipIt Logs</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Uncommitted_Work_Pending_Error</fullName>
+        <columns>NAME</columns>
+        <columns>Web_Service_Method__c</columns>
+        <columns>Web_Service_Name__c</columns>
+        <columns>Request_Sent__c</columns>
+        <columns>Response_Received__c</columns>
+        <columns>Response_Message__c</columns>
+        <columns>Error_Message__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Web_Service_Class__c</field>
+            <operation>equals</operation>
+            <value>CreditCardService</value>
+        </filters>
+        <label>Uncommitted Work Pending Error</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <displayFormat>{0000000000}</displayFormat>
+        <label>Log Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Web Service Logs</pluralLabel>
+    <recordTypes>
+        <fullName>Comdata_Credit_Card</fullName>
+        <active>true</active>
+        <description>Transaction Log with Comdata Web Service API</description>
+        <label>Comdata Credit Card</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Institution</fullName>
+        <active>true</active>
+        <label>Institution</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Internal_Tracking</fullName>
+        <active>true</active>
+        <description>Used to track internal SF user activity.</description>
+        <label>Internal Tracking</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>ShipIt_App</fullName>
+        <active>true</active>
+        <description>Transaction Log with Shipping vendor API (currently FedEx)</description>
+        <label>ShipIt App</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Site_Profile</fullName>
+        <active>true</active>
+        <description>Transaction Log with Site Profile callout details.</description>
+        <label>Site Profile</label>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Web_Service_Method__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Request_Sent__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Response_Received__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Error_Message__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Credit_Card__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Credit_Card_Transaction__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Credit_Card_Profile__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Web_Service_Method__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Request_Sent__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Response_Received__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Error_Message__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Credit_Card__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Credit_Card_Transaction__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Credit_Card_Profile__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Web_Service_Method__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Request_Sent__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Response_Received__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Error_Message__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Credit_Card__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Credit_Card_Transaction__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Credit_Card_Profile__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Web_Service_Method__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Request_Sent__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Response_Received__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Error_Message__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Credit_Card__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Credit_Card_Transaction__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Credit_Card_Profile__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

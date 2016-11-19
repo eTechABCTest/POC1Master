@@ -1,0 +1,37 @@
+<apex:component >
+    <apex:attribute name="RestrictionMtMList" description="" type="Restricted_MtM__c[]" required="true"/>
+    <br/><br/><br/>
+    <!-- Restriction Information -->
+    <apex:outputPanel >
+        <span class="bold">Restriction Information:</span><br/>
+        <apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!RestrictionMtMList}" var="item" 
+                            id="activeRestrictions" style="width:95%;color: #00398E; border-collapse: collapse; overflow:hidden; white-space:nowrap; " >
+            <apex:column style="padding-right:5px;width:75px;" >
+                <apex:facet name="header">Owner</apex:facet>
+                <div style="max-height:44px; white-space:normal; width:75px;">{!item.Restriction__r.Owner.Name}</div>
+            </apex:column>
+            <apex:column style="padding-right:5px;width:75px;" >
+                <apex:facet name="header">Subject</apex:facet>
+                <div style="max-height:44px; white-space:normal; width:75px;">{!item.Restriction__r.Category__c}</div>
+            </apex:column>
+            <apex:column style="padding-right:5px;width:75px;" >
+                <apex:facet name="header">Reason</apex:facet>
+                <div style="max-height:44px; white-space:normal; width:75px;">{!item.Restriction__r.Reason__c}</div>
+            </apex:column>
+            <apex:column style="padding-right:5px;width:75px;" >
+                <apex:facet name="header">Source Department</apex:facet>
+                <div style=" white-space:normal; width:75px;">{!item.Restriction__r.Source_Department__c}</div>
+            </apex:column>
+            <apex:column style="width:75px;"  >
+                <apex:facet name="header">Expiration Date</apex:facet>
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" >
+                    <apex:param value="{!item.Restriction__r.Expiration_Date__c}" />
+                </apex:outputText>
+            </apex:column>
+            <apex:column style="width:95px;" >
+                <apex:facet name="header">Comments</apex:facet>
+                <div style='max-height:44px; white-space:normal; vertical-align:text-top;'>{!item.Restriction__r.Comments__c}</div>
+            </apex:column>
+        </apex:dataTable>
+    </apex:outputPanel>
+</apex:component>

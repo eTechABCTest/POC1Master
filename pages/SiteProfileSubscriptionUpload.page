@@ -1,0 +1,70 @@
+<apex:page controller="SiteProfileSubscriptionUploadController" id="page" tabStyle="Load_Subscriptions__tab" >
+	<c:IncludeJQuery />
+    <style type="text/css">
+		#preload-01 { background: url(/img/loading.gif) no-repeat -9999px -9999px; }
+    </style>
+	<apex:form id="form" >
+		<apex:sectionHeader title="Load Subscriptions"/>
+		<apex:pageblock mode="detail" id="pgBlock" >
+			<apex:pageBlockSection columns="1" id="pbSection" >
+				<apex:outputPanel style="margin-left:5%; display: block; padding-top:5px;" id="outputPanel" >
+                    <apex:pageBlockSectionItem >
+                        <span style="color:#4a4a56; padding-top: 3px; padding-bottom: 3px; font-size:91%; font-weight:bold;margin-right: 15px;">
+                            Subscription
+                        </span>
+                        <apex:inputField value="{!EligibleSubOption.Related_Subscription__c}" style="display:inline-block;" required="false" />
+                    </apex:pageBlockSectionItem>
+                    <div style="padding-top:15px; padding-bottom:25px; " >
+                        <apex:inputfile value="{!FileRecords}" accept="csv" />
+                        <apex:commandButton value="Upload File" action="{!UploadFile}" onClick="blockElement('#page\\:form\\:pgBlock\\:pbSection\\:outputPanel', 'Working...');" />
+                        <br/><br/>
+                        <font color="red" style="font-size: 80%;"> <b>Note: You must use a .csv file and include 'Eloqua Email' as the header value.   
+                            <!--Commented by - Abhinav Sharma - 03/27/2016 - CR-20151201-9428-->
+                            <!--<a href="{!URLFOR($Resource.SubscriptionUploadTemplate)}" target="_blank"> 
+								Click here 
+							</a> 
+							to download the template.  Once downloaded, append “.csv” to the filename to ready 
+							the file for use.</b> -->
+                            <!--Added by - Abhinav Sharma - 03/27/2016 - CR-20151201-9428-->
+                        	<!--Start from here-->
+                            <a href="{!URLFOR($Resource.SubscriptionUploadTemplate, '/Sample/SubscriptionUploadTemplate.csv')}" target="_blank"> 
+                                Click here 
+                            </a> to download the template.</b>
+                        </font>
+                        <!--Added by - Abhinav Sharma - 03/27/2016 - CR-20151201-9428-->
+                        <!--Start from here-->
+                        <br/>
+						<font color="red" style="font-size: 80%;"> 
+                            <b>{!$Label.LOAD_SUBSCRIPTIONS_PAGE_CSV_RELATED_INSTRUCTIONS}</b>
+                        </font>
+                        <!--Upto Here-->
+                    </div>
+					<!-- Data table -->
+                    <apex:outputPanel rendered="{!PagedContactWrapperList != null && PagedContactWrapperList.0.size > 0}">
+                        <div style=" max-height:300px; overflow:auto; width:755px;" >
+                            <apex:pageBlockTable value="{!PagedContactWrapperList.0}" var="wrapper" style="width:738px;">
+                                <apex:column headerValue="Contact" style="width:180px;" >
+                                    <a href='/{!wrapper.ConId}' target='_blank' >{!wrapper.ConName}</a>
+                                </apex:column>
+                                <apex:column headerValue="Eloqua Email" style="width:200px;">
+                                    <apex:outputText value="{!wrapper.Email}" />
+                                </apex:column>
+                                <apex:column headerValue="Result">
+                                    <apex:outputText value="{!wrapper.SubscriptionEligibility}" />
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </div>
+                        <!-- Records Displayed / Processed -->
+                        <apex:outputPanel layout="block" style="margin-top: 5px;" >
+                            1 - {!IF(emailCount > 1000, '1000', emailCount)} of {!emailCount}
+                        </apex:outputPanel>
+                        <!-- Export Details -->
+                        <apex:commandButton value="Export Details" action="{!ExportToExcel}" style="margin-top:15px; margin-bottom:15px;" />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+		</apex:pageblock>
+	</apex:form>
+    <!-- below div is used to preload loading.gif -->
+	<div id="preload-01" />
+</apex:page>

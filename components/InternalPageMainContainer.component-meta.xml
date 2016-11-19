@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>31.0</apiVersion>
+    <description>This is the Main Section of  all Internal pages where dynamically Container section will be displayed based on the Id .</description>
+    <label>InternalPageMainContainer</label>
+</ApexComponent>

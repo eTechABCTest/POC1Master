@@ -1,0 +1,40 @@
+<apex:page standardController="pse__Proj__c" extensions="BillableMilestoneController" showHeader="true" sidebar="true">
+    <head>
+        <script type="text/javascript">  
+
+            function checkAll(cb){
+            var inputElem = document.getElementsByTagName('input');
+                for(var i=0; i<inputElem.length; i++){
+                    if(inputElem[i].id.indexOf('selectLine')!=-1 && !inputElem[i].disabled){
+                        inputElem[i].checked = cb.checked;
+                    }
+                }
+            }
+        </script>
+    </head>
+    <apex:sectionHeader title="{!project.Name}" subtitle="Project" />
+    <apex:form >
+        <apex:pageMessages />
+    	<apex:pageBlock title="Create Billable Milestones">
+    		<apex:pageBlockButtons location="both">
+                <apex:commandButton value="Create Milestones" action="{!createMilestones}" style="margin-right:10px" rendered="{!wrapperSize>0}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+    		</apex:pageBlockButtons>
+    		<apex:pageBlockSection title="Line Item Schedules" columns="1">
+                <apex:pageBlockTable value="{!LISWrappers}" var="lisw" width="100%">
+                    <apex:column width="3%">
+                        <apex:facet name="header" >
+                            <apex:inputCheckBox onclick="checkAll(this)" rendered="{!wrapperSize>0}"/> 
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!lisw.isSelected}" Id="selectLine"  disabled="{!lisw.isDisabled}"/>
+                    </apex:column>
+                    <apex:column value="{!lisw.lis.Name}" style="color:{!lisw.color}"/>
+                    <apex:column value="{!lisw.lis.Type__c}" style="color:{!lisw.color}"/>
+                    <apex:column value="{!lisw.lis.Amount__c}" style="color:{!lisw.color}"/>
+                    <apex:column value="{!lisw.lis.Invoice_Date__c}" style="color:{!lisw.color}"/>
+                    <apex:column value="{!lisw.lis.Invoice_Comment__c}" style="color:{!lisw.color}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+    	</apex:pageBlock>
+    </apex:form>
+</apex:page>

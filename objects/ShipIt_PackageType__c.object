@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>This contain the list of available Package Types and additional information, including weight limits and other specific requirements.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used to indicate active or inactive packaging types</description>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Default_Dimension__c</fullName>
+        <description>Contains the default dimension in the format (Length x Breadth x Height ).</description>
+        <externalId>false</externalId>
+        <label>Default Dimension</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_Custom__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This is the flag to check that package is custom or standard.</description>
+        <externalId>false</externalId>
+        <label>Is Custom</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Package_Description__c</fullName>
+        <description>Additional text to describe the package.  This will appear below the package in the selection screen.</description>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Package_Full_Name__c</fullName>
+        <description>Name of the package provided by the shipping vendor.</description>
+        <externalId>false</externalId>
+        <label>Display Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Package_Image__c</fullName>
+        <description>URL to the Static Resource or Content Delivery Network location containing the image of the package.</description>
+        <externalId>false</externalId>
+        <label>Image</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Weight_Limit__c</fullName>
+        <description>Max weight for the package specified by Vendor.</description>
+        <externalId>false</externalId>
+        <label>Weight Limit</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>ShipIt PackageType</label>
+    <visibility>Protected</visibility>
+</CustomObject>

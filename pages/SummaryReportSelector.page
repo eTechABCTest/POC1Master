@@ -1,0 +1,99 @@
+<apex:page id="page" controller="SummaryReportController" showHeader="false" sidebar="false" action="{!IsValid}" >
+	<c:IncludeJQuery />
+	<style>
+        #preload-01 { background: url(/img/loading.gif) no-repeat -9999px -9999px; }
+        
+		.prettyHeader {
+			background: #fff url('/img/alohaSkin/grid_headerbg.gif') 0 bottom repeat-x;
+		    color: #000;
+		    font-size: .9em;
+		    font-weight: bold;
+		}
+	</style>
+	
+	
+	<script>
+		// toggle all checkboxes
+		function toggleCheckboxes(isChecked) {
+			if (isChecked == true) {
+				checkAll();
+			} 
+			else {
+				unCheckAll();
+			}
+		}
+		
+		function checkAll() {
+			j$('[type=checkbox]').attr('checked', true)
+		}
+		
+		function unCheckAll() {
+			j$('[type=checkbox]').attr('checked', false)
+		}
+	</script>
+	
+	<apex:sectionHeader title="{!mainEvent.What.Name}" subtitle="Trip Prep Report"/>
+	
+	<apex:form id="form" >
+		
+		<apex:pageBlock id="pageBlock" mode="mainDetail" >
+			<!-- Buttons -->
+			<apex:pageBlockButtons location="bottom" >
+				<apex:commandButton value="Generate PDF" rendered="{!NOT(HasErrors)}" onClick="blockElement('#page\\:form', 'Working...');" action="{!GeneratePDF}" />
+				<apex:commandButton value="Cancel" onClick="window.close();" />
+			</apex:pageBlockButtons>
+			
+			<table style="border-collapse:collapse; width:60%; margin-left:50px;" >
+				<tr class="prettyHeader">
+					<td style="width:25px;" ><input type="checkbox" onClick="toggleCheckboxes(this.checked);" /></td>
+					<td >Appendix Selection</td>
+				</tr>
+				<tr>
+					<td ><apex:inputCheckbox id="PricingHistoryCheckbox" value="{!ShowPricingHistory}"/></td>
+					<td ><apex:outputText value="Pricing History" style="white-space:nowrap;" /></td>
+				</tr>
+				<tr class="dataRow even  first  last" style="{!IF(IsMarketingEvent, 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="OpportunitiesCheckbox" value="{!ShowOpportunities}"/></td>
+					<td class="dataCell" ><apex:outputText value="Current Marketing Activity" style="white-space:nowrap;" /></td>
+				</tr>
+                <tr class="dataRow even  first  last" style="{!IF(NOT(IsMarketingEvent), 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="RestrictionCheckbox" value="{!ShowRestrictions}"/></td>
+					<td class="dataCell" ><apex:outputText value="Restriction Information" style="white-space:nowrap;" /></td>
+				</tr>
+                <tr class="dataRow even  first  last" style="{!IF(NOT(IsMarketingEvent), 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="MapCheckbox" value="{!ShowMap}"/></td>
+					<td class="dataCell" ><apex:outputText value="Google Map" style="white-space:nowrap;" /></td>
+				</tr>
+                <tr class="dataRow even  first  last" style="{!IF(NOT(IsMarketingEvent), 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="WarmLeadCheckbox" value="{!ShowWarmLeads}"/></td>
+					<td class="dataCell" ><apex:outputText value="Warm Leads on Opportunity" style="white-space:nowrap;" /></td>
+				</tr>
+                <tr class="dataRow even  first  last" style="{!IF(NOT(IsMarketingEvent), 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="MarketingOppsCheckbox" value="{!ShowMarketingOpps}"/></td>
+					<td class="dataCell" ><apex:outputText value="Active Marketing Opportunities" style="white-space:nowrap;" /></td>
+				</tr>
+                
+				<tr class="dataRow even  first  last" >
+					<td class="dataCell" ><apex:inputCheckbox id="AcctMgmtVisitsCheckbox" value="{!ShowAcctMgmtVisits}"/></td>
+					<td class="dataCell" ><apex:outputText value="Marketing and Acct Mgmt Visits" style="white-space:nowrap;" /></td>
+				</tr>
+				<tr class="dataRow even  first  last" >
+					<td class="dataCell" ><apex:inputCheckbox id="RenewalNotesCheckbox" value="{!ShowRenewalNotes}"/></td>
+					<td class="dataCell" ><apex:outputText value="Pending Renewal Notes" style="white-space:nowrap;" /></td>
+				</tr>
+                
+                <tr class="dataRow even  first  last" style="{!IF(NOT(IsMarketingEvent), 'Display:none', '')}" >
+					<td class="dataCell" ><apex:inputCheckbox id="AcctMgmtPhoneCallsCheckbox" value="{!ShowAcctMgmtPhoneCalls}"/></td>
+					<td class="dataCell" ><apex:outputText value="Marketing and Acct Mgmt Phone Calls" style="white-space:nowrap;" /></td>
+				</tr>
+                
+				<tr class="dataRow even  first  last" >
+					<td class="dataCell" ><apex:inputCheckbox id="UtilizationSnapshotCheckbox" value="{!ShowUtilizationSnapshot}"/></td>
+					<td class="dataCell" ><apex:outputText value="Utilization Snapshot" style="white-space:nowrap;" /></td>
+				</tr>
+			</table>
+		</apex:pageBlock>
+	</apex:form>
+    <!-- below div is used to preload loading.gif -->
+	<div id="preload-01" />
+</apex:page>

@@ -1,0 +1,78 @@
+<!-- 
+ *  Purpose         :   This page is to display the Credit Card Transactions in real time
+ *
+ *  Created By      :   Bhavi Sharma
+ *
+ *  Created Date    :   12/05/2014
+ *
+ *  Revision Logs   :   V_1.0 - Created
+ *						V_1.1 - Replaced the vandor field with Merchant field -By - Mahendra Swarnakar - CR-20151019-9334 - 10/23/2015
+ *
+-->
+<apex:page standardController="Portfolio__c" extensions="TransactionsController" id="pg" >
+    
+	<!-- Script -->
+    <apex:stylesheet value="{!URLFOR($Resource.jqueryTableSorter, 'themes/blue/style.css')}" />
+    
+	<apex:includeScript value="{!URLFOR($Resource.jQueryMultiselect, 'js/jquery.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.jQueryMultiselect, 'js/jquery-ui.min.js')}"/>       
+	<apex:includeScript value="{!URLFOR($Resource.jqueryTableSorter, 'jquery.tablesorter.js')}" />
+
+    <!-- BlockUI -->
+    <c:BlockUI />
+    
+    <!-- Form -->
+    <apex:form id="frm">
+        <script>
+            $(function(){
+                applyTableSorting();
+            });
+        
+        	function applyTableSorting() {
+                $("#pg\\:frm\\:pb\\:pbs\\:pbt").tablesorter();
+            }
+        </script>
+        
+        <!--Messages -->
+        <apex:pageMessages />
+        
+        <!-- Action Statuses -->
+        <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        
+        <!-- Page Block -->
+        <apex:pageBlock id="pb">
+            
+            <apex:outputPanel style="margin-left: 8px; float: left;" layout="block" >
+                <apex:commandButton value="Refresh" action="{!refreshTransactions}" style="width: 200px;height: 32px;" reRender="frm" status="waitMsg"/>
+            </apex:outputPanel>
+            
+            <apex:outputPanel style="margin-right: 20px; float: right;" layout="block">
+                <apex:selectList value="{!noOfDays}" multiselect="false" size="1" style="width: 200px;height: 32px;border-radius: 10px;">
+                    <apex:selectOption itemLabel="1 day" itemValue="1" />
+                    <apex:selectOption itemLabel="5 days" itemValue="5" />
+                    <apex:selectOption itemLabel="10 days" itemValue="10" />
+                </apex:selectList>
+            </apex:outputPanel>
+                        
+            <!--  Page block section -->
+            <apex:pageBlockSection columns="1" id="pbs" >
+               
+                <!-- Page Block Table -->
+                <apex:dataTable value="{!transactionRecords}" var="item"  id="pbt" cellspacing="0" cellpadding="0" border="0" styleClass="list tablesorter" >
+                    <apex:column headerValue="Card" value="{!item.cardNumber}"/>
+                    
+                    <!--Replaced the vandor field with Merchant- By-Mahendra Swarnkar -CR-20151019-9334 - 10/23/2015 -->
+                    <!--Start from here -->
+                    
+                    <!-- <apex:column headerValue="Vendor" value="{!item.customerName}"/> -->
+                    <apex:column headerValue="Merchant" value="{!item.merchantName}"/>
+                    
+                    <!-- Ends here -->
+                    
+                    <apex:column headerValue="Date" value="{!item.transactionDate}"/>
+                    <apex:column headerValue="Amount" value="{!item.postedAmount}"/>
+                </apex:dataTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>

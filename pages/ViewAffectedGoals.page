@@ -1,0 +1,263 @@
+<!--
+    Purpose         :   Visualforce page for View Affected Goals button on Incentive Change Batch
+ 
+    Created By      :   Rajeev Jain
+ 
+    Created Date    :   04/25/2016
+    
+    Revision Logs   :   V_1.0 - Created - CR-20151120-9402
+-->
+<apex:page standardController="Incentive_Change_Batch__c" id="pge" sidebar="false" extensions="ViewAffectedGoalsController">
+    
+     <!-- Blocking the Screen While Ajax Request -->
+    <c:BlockUI />
+    
+    <meta charset="utf-8" />
+    <title>Create Personal Goal</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+     <style>
+        
+        #resultSectionData{clear:both;margin-top:20px;}
+        #resultSectionData .list td div{padding:10px;height:15px;}
+        #resultSectionData .list{border-collapse:collapse;}
+        #resultSectionData .list th, #resultSectionData .list td{padding-left:10px;}
+        
+        .customDialog {position: absolute;height: auto;min-width:200px;min-height:100px;width: auto;top: 30%;left: 471px;display: block;z-index: 2;background:#FFFFAA !important;}
+        .headerMy {border: 1px solid #aaaaaa;background: #cccccc url("https://code.jquery.com/ui/1.11.4/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;color: #222222;font-weight: bold;}
+        .dialogWrapper{padding:20px;background-color:#FFFFAA;}
+        .loadingBox{position:relative;width:300px;height:100px;}
+        .loadingBox .loadingInnerWrapper{position:absolute;top:50%;left:30%}
+        .bPageBlock, .brandSecondaryBrd, .bEditBlock, .secondaryPalette {background-color: #fff !important; background: transparent !important;}
+        table.list tr:hover td{background-color:#e3f3ff;}
+        #iCLs {border-collapse: collapse;border:1px solid #e0e3e5;}
+        #iCLs th{background: #f2f3f3;border:1px solid #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 5px 4px 5px;}
+        #iCLs td{border:1px solid #e0e3e5;padding: 5px 5px 4px 5px;}
+        
+    </style>
+    <!-- Section Header -->
+    <apex:sectionHeader title="View Affected Goals"/>
+    
+    <!-- Form -->
+    <apex:form id="frm">
+        
+        <!-- Page block -->
+        <apex:pageblock id="pB" mode="edit">
+            
+            <!-- Messages -->
+            <apex:pageMessages id="validationMsg" />
+            
+            <!-- Action Status -->
+            <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+            
+             <!-- Action function to load the ICL data  -->
+            <apex:actionFunction name="loadIncentiveChangeLogs" action="{!loadIncentiveChangeLogs}" oncomplete="hideLoading();" reRender="incentiveChangeLog">
+                <apex:param name="changeType" value="" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction name="affectedGoals" action="{!loadAffectedGoals}" reRender="affectedGoals" status="waitMsg"/>
+            
+             <!-- Command Button -->
+            <apex:pageBlockButtons id="pbb">
+                <apex:commandButton value="Apply" action="{!doSave}" reRender="affectedGoals" status="waitMsg"/>
+                <apex:commandButton value="Referesh" action="{!inIt}" reRender="pB" status="waitMsg"/>
+                <apex:commandButton value="Close" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <!-- Page block section -->
+            <apex:pageBlockSection columns="2">
+                
+                <!-- Page block section -->
+                <apex:pageBlockSection columns="1">
+                    
+                    <!-- Input field -->
+                    <apex:inputField value="{!affectedGoal.Change_Batch__c}" label="Change Batch" onchange="affectedGoals();"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1">
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputPanel >
+                            <b>Show Only</b> &nbsp; 
+                            <apex:selectList value="{!selectedChangeType}" size="1" id="ChangeTypeList">
+                                <apex:selectOptions value="{!changeTypes}"/>
+                                <apex:actionSupport event="onchange" action="{!loadAffectedGoals}" reRender="affectedGoals" status="waitMsg"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlockSection>
+            
+            <!-- Output Panel for grid -->
+            <apex:outputPanel id="affectedGoals">
+                <!-- Result data section starts (This section is used to create Affected Goal )-->
+                <div id="resultSectionData">
+                    
+                    <!-- Grid table -->
+                    <table class="list" style="collapse:table-collapse;">
+                        
+                        <!-- Headers -->
+                        <thead>
+                            <tr class="headerRow">
+                                <th style="width:30px;"><input type="checkbox" onchange="selectAllCheckboxes(this, 'isCompleteMark');"/></th>
+                                <th>Payee</th>
+                                <th>Goal</th>
+                                
+                                <!-- Repeat to draw headers dynamically according to Incentive Change Log's Change Type-->
+                                <apex:repeat value="{!dynamicHeaders}" var="dynamicHeader">
+                                    <th class="dynamicCol dynamicHeader">{!dynamicHeader}</th>
+                                </apex:repeat>
+                            </tr>
+                        </thead>
+                         <!-- Table body -->
+                        <tbody>
+                            
+                            <!-- Apex variable to hold the row counter -->
+                            <apex:variable value="{!0}" var="rowCounter"/>
+                                            
+                            <apex:variable value="payeeName" var="payeeName"/>
+                            
+                            <!-- Repeat-->
+                            <apex:repeat value="{!affectedGoals}" var="aG">
+                                <tr>
+                                    <!--  Check Box Column will be shown only if ShowSelected is true -->
+                                    <td>
+                                        <apex:inputCheckbox value="{!aG.selected}" styleClass="isCompleteMark"/>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel rendered="{!IF(payeeName != aG.conName, true,false)}">
+                                            <a href="/{!aG.conId}" target="_blank">
+                                                 {!aG.conName}
+                                            </a>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!IF(payeeName == aG.conName,true,false)}">&nbsp;</apex:outputPanel>
+                                    </td>
+                                    <td>
+                                        <a href="/{!aG.personalGoal.Id}" target="_blank">
+                                            <apex:outputText value="{!aG.personalGoal.Name}"/>
+                                        </a>
+                                    </td>
+                                    <apex:repeat value="{!dynamicHeaders}" var="dynamicCol">
+                                        <td class="dynamicCol">
+                                           
+                                            <apex:outputPanel rendered="{!IF(contains(aG.changeTypeStrings,'_'+dynamicCol+'_'),true,false)}">
+                                                <a href="javascript:void(0);" style="cursor:pointer;" onclick="showIncentiveChangeLogs('{!dynamicCol}')">
+                                                   {!aG.changeTypesMap[dynamicCol]}
+                                                </a>
+                                            </apex:outputPanel> 
+                                            <apex:outputPanel rendered="{!IF(contains(aG.changeTypeStrings,dynamicCol),false,true)}">
+                                                &nbsp;
+                                            </apex:outputPanel>
+                                        </td>
+                                    </apex:repeat>
+                                    <apex:variable value="{!IF(payeeName != aG.conName, aG.conName, payeeName)}" var="payeeName"/>
+                                </tr>
+                            </apex:repeat>
+                            <apex:variable value="{!rowCounter+1}" var="rowCounter"/>
+                        </tbody>
+                    </table>    
+                </div>
+            </apex:outputPanel>
+        </apex:pageblock>
+        <!-- Page block Ends Here-->
+        
+        <!-- Incentive Change Log Popup -->
+        <div id="incentiveChangeLogs" style="display:none;" 
+                    class="customDialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable">
+            <div  class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">Incentive Change Logs</div>
+             
+            <!-- Loding box -->
+            <apex:outputPanel layout="block" styleClass="loadingBox">
+                <div class="loadingInnerWrapper">
+                    <img src="/img/loading32.gif" width="25" height="25" />
+                    <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                </div>
+            </apex:outputPanel>
+            
+            <!-- Popup -->
+            <div class="dialogWrapper">
+                <apex:outputPanel layout="block" id="incentiveChangeLog">
+                    <table width="100%" class="list " id="iCLs">
+                        <thead>
+                            <tr class="headerRow">
+                                <th>Change Log</th>
+                                <th>Change Record</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!incentiveChangeLogs}" var="item">
+                                <tr>
+                                    <td>
+                                        <a href="/{!item.Id}" target="_blank">
+                                            {!item.Name}    
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <apex:outputField value="{!item.Change_Record__c}"/>    
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+                <!-- Buttons -->
+                <div>
+                    <BR/>
+                    <input type="button" value="Close" onClick="$('#incentiveChangeLogs').hide();$('#overlay').hide();" style="cursor: pointer;"/>
+                </div>
+            </div>
+        </div>
+        <div class="ui-widget-overlay ui-front" style="z-index: 1;display:none;" id="overlay" ></div>
+        
+    </apex:form>
+    <!-- Form Ends Here-->
+    <script>
+         
+        //Function to display the ICLs
+        function showIncentiveChangeLogs(changeType) {
+            showIncentiveChangeLogsDialogbox();
+            showLoading();
+            loadIncentiveChangeLogs(changeType);
+        }
+        
+        //Function to open ICL popup
+        function showIncentiveChangeLogsDialogbox() {
+            $("#incentiveChangeLogs").show();
+            decidePopupDimensions($("#incentiveChangeLogs"),$("#incentiveChangeLogs").width(),'',$(document).scrollTop(), $(document).scrollLeft());
+            $("#overlay").show();
+        }
+        function decidePopupDimensions($obj,w,h,top,leftPadding){
+            var left = (screen.width/2) - (w/2) + leftPadding;
+            $obj.css({"left":left, "top":top});
+        }
+        
+        //Loading Popup
+        function showLoading(){
+            $('.dialogWrapper').hide();
+            $('.loadingBox').show();
+            $('.loadingText').text('Loading....');
+        }
+        
+        //Hide loading function
+        function hideLoading(){
+                   
+            $('.loadingBox').hide();
+            $('.dialogWrapper').show();
+            
+            //Get Visible Popup
+            var $visibleDialogWrapper = $('.customDialog:visible');
+            
+            var dialogHeight = $visibleDialogWrapper.outerHeight();
+            if(dialogHeight >= screen.height){
+                $visibleDialogWrapper.css({'overflow' : 'auto', 'height':screen.height - $('.bPageHeader').outerHeight() - 200});           
+            }
+        } 
+        function selectAllCheckboxes(obj,receivedInputClasses){
+            var inputCheckBox = document.getElementsByClassName(receivedInputClasses);                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                inputCheckBox[i].checked = obj.checked;
+            }
+        }
+    </script>
+</apex:page>

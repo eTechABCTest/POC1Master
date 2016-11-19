@@ -1,0 +1,146 @@
+<apex:page standardController="Case" extensions="CaseController" id="page" >
+    <c:IncludeJQuery />
+    <style>
+        .singleColumnWidth {
+            width:390px;
+        }
+    </style>
+    
+    <apex:form id="mainForm" >
+        <apex:sectionHeader subtitle="{!IF(ISNULL(case.Id),'New Case', Case.CaseNumber)}" title="Case Edit" />
+        <!-- ACTION FUNCTIONS -->
+        <apex:actionFunction action="{!refreshProjOptions}" name="refreshProjOptions" onComplete="setupPage();" rerender="pbSection_CaseInfo" />
+        <apex:actionFunction name="refreshAddtlInfo" rerender="pbSection_AddtlInfo" />
+        <apex:actionFunction name="refreshInternalCaseInfo" rerender="internalCaseInfo" >
+            <apex:param assignTo="{!case.Closed_Reason__c}" value="Resolved" name="closedReason" />
+        </apex:actionFunction>
+        <apex:pageBlock id="pgBlock" title="Case Edit" mode="Edit">
+            <!--BUTTONS-->
+            <apex:pageBlockButtons >
+                <apex:commandButton value=" Save " action="{!save}" />
+                <apex:commandButton value=" Cancel " action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <!--CASE INFO-->
+            <apex:pageBlockSection id="pbSection_CaseInfo" title="Case Information">
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="Contact" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                            <apex:inputfield value="{!case.ContactId}" onchange="refreshProjOptions(); return false;" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <apex:inputField value="{!case.Status}" id="caseStatus" onChange="refreshInternalCaseInfo(); refreshAddtlInfo(); return false;" />
+                <apex:selectList value="{!case.Project_Source_MS__c}" id="projList" multiselect="false" size="1">
+                    <apex:selectOptions value="{!projectOptions}"/>
+                </apex:selectList>
+                <apex:inputField value="{!case.Priority}" />
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Case.fields.Subject.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputText value="{!case.Subject}" size="75" maxlength="255" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <apex:pageBlockSectionItem />
+                <apex:inputTextArea value="{!case.Description}" label="{!$ObjectType.Case.fields.Description.Label}" cols="75" rows="6" />
+            </apex:pageBlockSection>
+            <!--ADDITIONAL INFO-->
+            <apex:pageBlockSection id="pbSection_AddtlInfo" title="Additional Information">
+                <apex:outputField value="{!memberSupport.Tier__c}" />
+                <apex:inputField value="{!memberSupport.Browser_Used__c}" />
+                <!-- SUPPORT CATEGORY -->
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Site_Issue__c.fields.Support_Category__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!memberSupport.Support_Category__c}" onchange="refreshAddtlInfo(); return false;"/>
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <apex:inputField value="{!memberSupport.Browser_Version__c}" />
+                <!-- STEPS TO REPRODUCE -->
+                <apex:inputTextArea value="{!case.Steps_to_Reproduce_MS__c}" 
+                                    rendered="{!memberSupport.Support_Category__c != 'Configuration/Site Error'}" cols="75" rows="6"
+                                    label="{!$ObjectType.case.fields.Steps_to_Reproduce_MS__c.Label}" />
+                <!-- STEPS TO REPRODUCE (REQUIRED) -->
+                <apex:pageblocksectionitem rendered="{!memberSupport.Support_Category__c == 'Configuration/Site Error'}" >
+                    <apex:outputlabel value="{!$ObjectType.case.fields.Steps_to_Reproduce_MS__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputTextArea value="{!case.Steps_to_Reproduce_MS__c}" cols="75" rows="6" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <!-- SUPPORT CATEGORY DETAILS -->
+                <apex:inputField value="{!memberSupport.Support_Category_Details__c}"
+                                    rendered="{!memberSupport.Support_Category__c != 'Application Question' && memberSupport.Support_Category__c != 'Service Request / Task'}" />
+                <!-- SUPPORT CATEGORY DETAILS (REQUIRED) -->
+                <apex:pageblocksectionitem rendered="{!memberSupport.Support_Category__c == 'Application Question' || memberSupport.Support_Category__c == 'Service Request / Task'}" >
+                    <apex:outputlabel value="{!$ObjectType.Site_Issue__c.fields.Support_Category_Details__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!memberSupport.Support_Category_Details__c}" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <!-- CURRENT RESULTS -->
+                <apex:pageblocksectionitem rendered="{!memberSupport.Support_Category__c == 'Configuration/Site Error'}" >
+                    <apex:outputlabel value="{!$ObjectType.case.fields.Current_Results__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputTextArea value="{!case.Current_Results__c}" cols="75" rows="6" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <apex:pageBlockSectionItem />
+                <!-- EXPECTED RESULTS -->
+                <apex:pageblocksectionitem rendered="{!memberSupport.Support_Category__c == 'Configuration/Site Error'}" >
+                    <apex:outputlabel value="{!$ObjectType.case.fields.Expected_Results__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputTextArea value="{!case.Expected_Results__c}" cols="75" rows="6" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+                <apex:pageBlockSectionItem />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" >
+                <!-- MEMBER RESOLUTION SUMMARY -->
+                <apex:pageblocksectionitem rendered="{!case.Status == '80-Solution Provided' || case.Status == '90-Closed'}" >
+                    <apex:outputlabel value="{!$ObjectType.case.fields.Member_Facing_Resolution_Summary__c.Label}" />
+                    <apex:outputpanel layout="block" styleClass="requiredInput">
+                        <apex:outputpanel layout="block" styleClass="requiredBlock" />
+                        <apex:inputField value="{!case.Member_Facing_Resolution_Summary__c}" />
+                    </apex:outputpanel>
+                </apex:pageblocksectionitem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Internal Case Information" id="internalCaseInfo" >
+                <apex:inputField value="{!case.Tier_I_Support_Analyst__c}" />
+                <apex:outputField value="{!case.Member_Support_Ticket__c}" />
+                <apex:inputField value="{!case.Tier_II_Support_Analyst_Contact__c}" />
+                <apex:inputField value="{!memberSupport.Visible_In_Portal__c}" />
+                <apex:inputField value="{!case.PHI__c}" />
+                <apex:inputField value="{!case.Closed_Reason__c}" />
+                <apex:inputTextarea label="Internal Comments" value="{!internalComments}" styleClass="singleColumnWidth" />
+                <apex:inputField value="{!case.Origin}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!-- HIDDEN FIELDS FOR USE IN CONTROLLER EXTENSION -->
+        <apex:inputHidden value="{!case.Member_Support_Ticket__c}" />
+        <apex:inputHidden value="{!case.Deadline__c}" />
+        <apex:inputField value="{!case.First_Comment_Date_Time__c}" rendered="false" />
+    </apex:form>
+    <script>
+    j$(function() {
+        removeClosedStatus();
+    });
+    
+    //unable to only display case status' that are not closed in Apex, so we have to manually pull the value from the list via javascript
+    function removeClosedStatus() {
+        var closedStatusStr = "{!closedCaseStatusList}";
+        var closedStatusStrArray = closedStatusStr.substring(1, closedStatusStr.length-1).split(', ');
+        for (var i = 0; i < closedStatusStrArray.length; i++) {
+            if("{!case.Status}" != closedStatusStrArray[i] &&
+               j$("[value='" + closedStatusStrArray[i] + "']").length > 0) 
+            {
+                j$("[value='" + closedStatusStrArray[i] + "']").remove();
+            }
+        }
+    }
+    </script>
+</apex:page>

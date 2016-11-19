@@ -1,0 +1,9 @@
+<apex:page controller="SiteController" contenttype="text/javascript" showHeader="false" action="{!Initialize}">
+	{!JSONResponse}
+    <!-- TEST START -->
+    <apex:outputPanel rendered="{!showDebugInfo}">
+        {!sUser}
+    </apex:outputPanel>
+    <!-- TEST STOP -->
+	<site:previewAsAdmin />
+</apex:page>

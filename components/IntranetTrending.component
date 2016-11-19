@@ -1,0 +1,63 @@
+<apex:component layout="none">
+    <apex:attribute name="ItemContent" type="IntranetContainer" description="Container record" />
+    
+    <div class="block trending">
+        <h2 class="header">Trending<apex:outputText ></apex:outputText></h2>
+        
+        <ul class="trending-wrapper list_elements">
+            
+            <apex:repeat value="{!ItemContent.SubContainers}" var="item">
+                <li class="row">
+                    <!--V_1.1 Modified By - Rajeev Jain - 06/17/2015 - CR-20150611-9000 --->
+                    <div class="col-lg-9 col-md-12 {!if(item.isPreview, 'preview-mode', '')}">
+                        <h4 class="hidden-lg hidden-xl trending-title">{!IF(item.DisplayName == 'Advisory.com', 'The Advisory Board Company', IF(item.DisplayName == 'EAB.com', 'Education Advisory Board', ''))}</h4>
+                        <ul class="trend-section list_elements {!IF(item.DisplayName == 'Advisory.com', 'trending-abc', IF(item.DisplayName == 'EAB.com', 'trending-eab', ''))}">
+                            <apex:repeat value="{!item.RelatedContent}" var="iC" rows="3">
+                                <li class="row callout">
+                                    <h5 class="trending-type">{!iC.Trend_Type}<span> <i class="glyphicon glyphicon-{!IF(item.DisplayName == 'Advisory.com', 'star', IF(item.DisplayName == 'EAB.com', 'flag', ''))}"></i></span></h5>
+                                    <a href="{!iC.Link_Location}" target="_blank"><h4>{!iC.Article_Title}</h4></a>
+                                    <div class="trending-meta">
+                                        <p class="description">
+                                            <apex:outputPanel rendered="{!NOT(ISBLANK(iC.ArticlePublishDate))}">
+                                                {!MONTH(iC.ArticlePublishDate)}/{!DAY(iC.ArticlePublishDate)}/{!YEAR(iC.ArticlePublishDate)} - 
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!NOT(ISBLANK(iC.Trending_View_Count))}">
+                                                {!ROUND(iC.Trending_View_Count, 0)} {!IF(iC.Trend_Type == 'Most Downloaded Last 7 Days', 'Downloads', 'Views')}
+                                            </apex:outputPanel>
+                                        </p>
+                                        <c:IntranetChatterLinks itemId="{!iC.IntranetItemId}" containerId="{!ItemContent.ContainerId}" scheduleId="{!iC.IntranetScheduleId}" itemData="{!iC}" view="Trending"/>
+                                    </div>
+                                </li>
+                            </apex:repeat>
+                            
+                        </ul>
+                    </div>
+                    <div class="col-xs-3 trending-logo hidden-xs hidden-sm hidden-md">
+                    
+                        <apex:outputPanel rendered="{!item.DisplayName = 'Advisory.com'}" layout="none">
+                            <img src="//www.advisory.com/~/media/Advisory-com/abcLogo.png" />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!item.DisplayName = 'EAB.com'}" layout="none">
+                            
+                            <!--Added By - Abhinav Sharma - 02/11/2016 - CR-20160114-9515-->
+                            <img src="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/images/EAB-Logo.png')}"/>
+                            
+                            <!--Commented By - Abhinav Sharma - 02/11/2016 - CR-20160114-9515-->
+                            <!--<img src="//i.imgur.com/ZYtOsU4.png" />-->
+                        </apex:outputPanel>
+                       
+                    </div>
+                    
+                    <div class="view-more right action-link" style="display:none;">
+                        <a href="#">View More <span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                    
+                </li>   
+                
+            </apex:repeat>
+            
+        </ul>
+        
+        
+    </div>
+</apex:component>

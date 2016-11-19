@@ -1,0 +1,957 @@
+<!--
+    Purpose         :   Visualforce page to customize the Creating Goals from Standards as per Goal Management request.
+ 
+    Created By      :   Subhash Garhwal
+ 
+    Created Date    :   8/25/2015
+    
+    Revision Logs   :   V_1.0 - Created
+                        V_1.1 - Modified - Subhash Garhwal - 12/14/2015 - CR-20151217-9469 - ISSP Deployment C.
+                        V_1.2 - Modified - Rajeev Jain - 02/26/2016 - CR-20160115-9534 - ISSP Deployment D - Made Tenure Box Read only in special cases
+                        V_1.3 - Modified - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message
+                        V_1.4 - Modified - Rajeev Jain - 04/08/2016 - CR-20160309-9688 - Added Tenure field on Each personal Goal
+                        V_1.5 - Modified - Rajeev Jain - 04/15/2016 - CR-20160304-9675 - Added Individual Payee selection option in limit to picklist
+-->
+<apex:page showHeader="true" sidebar="false" controller="CreatePersonalGoalsFromStdGoalController" id="pge" title="Create Personal Goals" tabstyle="Standard_Goal__c">
+    
+    <!-- Blocking the Screen While Ajax Request -->
+    <c:BlockUI />
+    
+    <!-- HTML -->
+    <html lang="en">
+        
+        <!-- Component -->
+        <c:CreatePGFromStdGoalHeaderIncludesComp />
+        
+        <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message -->
+        <style>
+             .customToolTip {
+                position: relative;
+                display: inline-block;
+            }
+            
+            .customToolTip .tooltiptext1 {
+                visibility: hidden;
+                background-color: yellow;
+                color: #000;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px;
+                position: absolute;
+                z-index: 999;
+                top: -5px;
+                left: 15px;
+                border:2px solid black;
+            }
+            
+            .customToolTip .tooltiptext1::after {
+                content: "";
+                position: absolute;
+                top: 8px;
+                left: -10px;
+                margin-left: 0;
+                border-width: 5px;
+                border-style: solid;
+                border-color: rgba(0, 0, 0, 0) yellow rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+                z-index: 2;
+            }
+            .customToolTip .tooltiptext1::before{    
+                content: "";
+                position: absolute;
+                top: 5px;
+                left: -17px;
+                margin-left: 0;
+                border-width: 8px;
+                border-style: solid;
+                border-color: rgba(0, 0, 0, 0) #000 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+                z-index: -2;
+            }
+            .customToolTip:hover .tooltiptext1 {
+                visibility: visible;
+            }
+        </style>
+        <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message - Upto here -->
+        
+        <!--  Main body -->
+        <body style="overflow-x:hidden;">
+            
+            <!--  Apex form -->
+            <apex:form id="frm" style="display:block;overflow:auto;">
+                
+                <!-- MSG to display errors -->
+                <apex:pageMessages id="msg"/>
+                
+                <!-- Functions -->
+                <apex:actionFunction name="loadAvailPayees" action="{!loadPayees}" reRender="availablePayees,selectedPayees,msg,CreatePGSection" status="waitMsg"/>  
+                <apex:actionFunction name="loadPersonalGoals" action="{!drawCreatePersonalGoalSection}" reRender="CreatePGSection" status="waitMsg"/>
+                <apex:actionFunction name="loadFilPayees" action="{!loadFilteredPayees}" reRender="availablePayees,CreatePGSection, msg" status="waitMsg"/>
+                <!-- V_1.5 - Added by - Rajeev Jain - 04/15/2016 - CR-20160304-9675 - Added Individual Payee selection option in limit to picklist -->
+                <apex:actionFunction name="loadFilPayees1" action="{!loadFilteredPayees}" reRender="availablePayees,selectedPayees,msg,CreatePGSection" status="waitMsg"/>
+                <!-- V_1.5 - Added by - Rajeev Jain - 04/15/2016 - CR-20160304-9675 - Added Individual Payee selection option in limit to picklist - Upto here--> 
+                <apex:actionFunction name="saveDescription" action="{!addDescription}" reRender="CreatePGSection" oncomplete="$('#commentsDialog').hide();$('#overlay').hide();">
+                    <apex:param name="rowIndex" value=""/>
+                    <apex:param name="colIndex" value=""/>
+                    <apex:param name="itemIndex" value=""/>
+                    <apex:param name="contId" value=""/>
+                    <apex:param name="stdWrapperId" value=""/>
+                    <apex:param name="pacingId" value=""/>
+                    <apex:param name="desc" value=""/>
+                </apex:actionFunction>
+                
+                <apex:actionFunction name="loadPGMPs" action="{!loadPGMPs}" reRender="pGMPPopupPanel" oncomplete="hideLoading();">
+                    <apex:param name="rowIndex"  assignTo="{!mainRow}" value=""/>
+                    <apex:param name="colIndex" assignTo="{!gTDRow}" value=""/>
+                    <apex:param name="itemIndex" assignTo="{!columnRow}" value=""/>
+                </apex:actionFunction>
+                
+                <!-- Action function for incline calculation -->
+                <apex:actionFunction name="inlineGoalCalculation" action="{!doInclineGoalCalculation}" reRender="CreatePGSection" status="waitMsg">
+                    <apex:param name="rowIndex" value=""/>
+                    <apex:param name="colIndex" value=""/>
+                    <apex:param name="itemIndex" value=""/>
+                </apex:actionFunction>
+                
+                <!-- Action function for incline calculation -->
+                <apex:actionFunction name="doInclineSRAndGoalCalc" action="{!doInclineSRAndGoalCalc}" reRender="CreatePGSection" status="waitMsg">
+                    <apex:param name="rowIndex" value=""/>
+                    <apex:param name="colIndex" value=""/>
+                    <apex:param name="itemIndex" value=""/>
+                    <apex:param name="selectCB" value=""/>
+                </apex:actionFunction>
+                
+                <!-- Action function for incline calculation -->
+                <apex:actionFunction name="inlineItemGoalCalculation" action="{!doItemGoalCalculation}" reRender="CreatePGSection" status="waitMsg">
+                    <apex:param name="rowIndex" value=""/>
+                    <apex:param name="colIndex" value=""/>
+                    <apex:param name="itemIndex" value=""/>
+                </apex:actionFunction>
+                
+                <!-- Function for global calculation -->
+                <apex:actionFunction name="doGloabalGoalCalculation" action="{!doGoalCalculation}" reRender="CreatePGSection" status="waitMsg"/>
+                <apex:actionFunction name="doGlobalSelectRowAndCalc" action="{!doGlobalSelectRowAndCalc}" reRender="CreatePGSection" status="waitMsg"/>
+                
+                <!-- Function to load the payee staff relationship data -->
+                <apex:actionFunction name="loadpayeeStaffRelationships" action="{!loadPayeeStaffRelationships}" reRender="StaffRelationshipPanel,stafftRelationshipWrapper"
+                                     oncomplete="hideLoading();defaultScript();">
+                    <apex:param name="payee" assignTo="{!payeeId}" value="" />
+                </apex:actionFunction>
+                
+                <!-- Action function to load the Program Relationship data -->
+                <apex:actionFunction name="loadPGStaffRelationships" action="{!loadPGStaffRelationship}" reRender="StaffRelationshipPanel,stafftRelationshipWrapper"
+                                     oncomplete="hideLoading(); defaultScript();">
+                    <apex:param name="rowIndex" value="" assignTo="{!rowIndex}"/>
+                    <apex:param name="colIndex" value="" assignTo="{!colIndex}"/>
+                    <apex:param name="itemIndex" value="" assignTo="{!itemIndex}"/>
+                </apex:actionFunction>
+                
+                <!-- Function to call the save and close method (This function will call from Save and Close button of Staff Relationship)-->
+                <apex:actionFunction name="saveAndClose" action="{!saveAndClose}" reRender="CreatePGSection,StaffRelationshipPanel,stafftRelationshipWrapper" 
+                                     oncomplete="closeStaffRelationshipPopup(); defaultScript();" status="waitMsg"/>
+                
+                <!-- Function to call the Cancel method (This function will call from Close button of Staff Relationship)-->
+                <apex:actionFunction name="closeSR" action="{!executeStaffRelationshipLogic}" reRender="CreatePGSection,StaffRelationshipPanel,stafftRelationshipWrapper" 
+                                     oncomplete="closeStaffRelationshipPopup(); defaultScript();" status="waitMsg"/>
+                
+                <!-- Function to call on the std goal change -->
+                <apex:actionFunction name="reloadinIt" action="{!inIt}" reRender="firstSectionOP,msg,CreatePGSection" status="waitMsg"/>
+                
+                <!-- Action function to load the condition data for std goal detail -->
+                <apex:actionFunction name="loadCondtions" action="{!fatchStdGoalDetailConditions}" oncomplete="hideLoading();" reRender="condtionsPopupPanel">
+                    <apex:param name="stdGDId" value="" />
+                </apex:actionFunction>
+                
+                <apex:actionFunction name="loadGTDMPeriods" action="{!fatchGTDMPeriods}" oncomplete="hideLoading();" reRender="gTDMPPopupPanel">
+                    <apex:param name="stdGDId" value="" />
+                </apex:actionFunction>
+                
+                <!--  This Action Function Load StaffrelationShip data for Edit -->
+                <apex:actionFunction name="editStaffRelationship" action="{!sRelationship.editRelationShip}" reRender="stafftRelationshipWrapper" oncomplete="hideLoading1();defaultScript();">
+                    <apex:param name="editIndex" value="" assignTo="{!sRelationship.selectedStaffRelationshipIndex}"/>
+                </apex:actionFunction>
+                
+                <!--  This Action function to cancell All popup actions -->
+                <apex:actionFunction name="cancelAll" action="{!sRelationship.cancelAllPopupActions}" reRender="stafftRelationshipWrapper" oncomplete="defaultScript();"/>
+                <!-- Action Status -->
+                
+                <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+                
+                <!-- Page block -->
+                <apex:pageBlock id="pB" mode="edit">
+                    
+                    <!-- Accordion starts here -->
+                    <div id="accordion">
+                        
+                        <!-- First Tab -->
+                        <h3>Identify Payees</h3>
+                        
+                        <!-- First Tab main div -->
+                        <div>
+                            
+                            <apex:outputPanel layout="block" id="firstSectionOP">
+                                
+                                <!-- Drawing filters -->
+                                <table width="100%" class="MailSectionTable">
+                                    
+                                    <!-- Apply disableInputEnter class to disable the enter key on the input field -->
+                                    <tr class="disableInputEnter">
+                                        <td><label for="StandardGoal" >Goal Template</label></td>
+                                        <td><apex:inputField value="{!stdPersonalGoal.Standard_Goal__c}" id="StandardGoal" required="true" onChange="enableLimitTo(this);"/></td>
+                                        <td>Limit To &nbsp;
+                                            <!-- Limit To Values -->
+                                            <apex:selectList size="1" value="{!selectedLimitToValue}" id="limitTo" onChange="selectedLimitTo(this);">
+                                               <apex:selectOptions value="{!limitTo}"/>
+                                            </apex:selectList>
+                                        </td>
+                                        
+                                        <!-- Input fields will display according to selected limit to option -->
+                                        <td>
+                                            <apex:inputField value="{!personalGoal.Business_Title__c}" id="businessTitle" style="display:none;" onChange="loadFilPayees();" />
+                                            <apex:inputField value="{!personalGoal.Value_Type__c}" id="valueType" style="display:none;" onChange="loadFilPayees();" />
+                                            <apex:inputField value="{!personalGoal.Standard_Goal__c}" id="stdGoal" style="display:none;" onChange="loadFilPayees();" />
+                                            <apex:inputField value="{!personalGoal.Rate_Template__c}" id="rateTemp" style="display:none;" onChange="loadFilPayees();" />
+                                            
+                                            <!-- V_1.5 - Added by - Rajeev Jain - 04/15/2016 - CR-20160304-9675 - Added Individual Payee selection option in limit to picklist -->
+                                            <apex:inputField value="{!personalGoal.Payee__c}" id="individualPayee" style="display:none;" onChange="loadFilPayees1();" />
+                                            <!-- V_1.5 - Added by - Rajeev Jain - 04/15/2016 - CR-20160304-9675 - Added Individual Payee selection option in limit to picklist - Upto here-->
+                                        </td>
+                                        <td style="float:right;"></td>
+                                    </tr>
+                                </table>
+                                
+                                <!-- Available Payees and Selected Payees section -->
+                                <table width="100%" class="MailSectionTable">
+                                    <tr>
+                                        <td style="width:50%;">
+                                            
+                                            <!-- Available Payees Header and buttons section -->
+                                            <table width="100%">
+                                                <tr>
+                                                    <td><b>Available Payees</b></td>
+                                                    <td colspan="2" style="float:right;">
+                                                        <apex:commandButton value="Select" action="{!selectPayee}" reRender="availablePayees,selectedPayees,msg,CreatePGSection" status="waitMsg" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- End -->
+                                            
+                                            <!-- Drawing available payees -->
+                                            <div class="payeeWrapper">
+                                                <apex:pageblockTable var="item" value="{!availablePayees}" id="availablePayees">
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'condListCheck1')"/>
+                                                        </apex:facet>
+                                                        <apex:inputCheckbox value="{!item.selected}" id="inputId" styleClass="condListCheck1"/>
+                                                    </apex:column>
+                                                    <apex:column headerValue="Name">
+                                                        <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message-->
+                                                        <apex:facet name="header">
+                                                            <div style="float:left;">Name</div>
+                                                            <div class="customToolTip" style="float:left;font-weight:normal;margin-left:5px;"><img src="/s.gif" alt="" class="helpIcon"/>
+                                                              <span class="tooltiptext1">All values are current, based on today’s date</span>
+                                                            </div>
+                                                        </apex:facet>
+                                                        <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message - Upto here -->
+                                                        <apex:outputLink value="/{!item.contactId}" target="_blank">{!item.contactName}</apex:outputLink>
+                                                    </apex:column>
+                                                    <apex:column value="{!item.businessTitle}" headerValue="Business Title" rendered="{!IF(OR(selectedLimitToValue == '3', selectedLimitToValue == '4'), false, true)}"/>
+                                                    <apex:column value="{!item.payeeDepartment}" headerValue="Department"/>
+                                                    <apex:column value="{!item.incentiveRole}" headerValue="Incentive Role" rendered="{!IF(selectedLimitToValue == '5', false, true)}"/>
+                                                    
+                                                    <!-- V_1.4 - Modified - Rajeev Jain - 04/28/2016 - CR-20160309-9688 - Removed Tenure Column as per the suggested on CR's chatter -->
+                                                    <!-- <apex:column headerValue="Tenured">
+                                                        <apex:inputCheckbox html-checked="true" rendered="{!IF(item.tenured == 'Yes',true,false)}" disabled="true"/>
+                                                        <apex:inputCheckbox rendered="{!IF(item.tenured != 'Yes',true,false)}" disabled="true"/>
+                                                    </apex:column> -->
+                                                    
+                                                    <apex:column headerValue="Has Goal">
+                                                        <apex:inputCheckbox html-checked="true" rendered="{!IF(item.hasGoal == 'Yes',true,false)}" disabled="true"/>
+                                                        <apex:inputCheckbox rendered="{!IF(item.hasGoal != 'Yes',true,false)}" disabled="true"/>
+                                                    </apex:column>
+                                                </apex:pageblockTable>
+                                            </div>
+                                         </td>
+                                         
+                                         <td style="width:0;"></td>
+                                         <td style="width:50%;">
+                                            
+                                            <!-- Selected Payees header and button section -->
+                                            <table width="100%">
+                                                <tr>
+                                                    <td><b>Selected Payees</b></td>
+                                                    <td colspan="2" style="float:right;">
+                                                        <apex:commandButton value="Remove" action="{!removeSelectedPayee}" reRender="availablePayees,selectedPayees,msg,CreatePGSection" status="waitMsg"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- End -->
+                                            
+                                            <!-- Drawing selected payees -->
+                                            <div class="selectedPayeeWrapper">
+                                                <apex:pageblockTable var="item" value="{!selectedPayees}" id="selectedPayees">
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'selectedPayyeCheck')"/>
+                                                        </apex:facet>
+                                                        <apex:inputCheckbox value="{!item.selected}" id="inputId" styleClass="selectedPayyeCheck"/>
+                                                    </apex:column>
+                                                    
+                                                    <apex:column headerValue="Name">
+                                                        <apex:outputLink value="/{!item.contactId}" target="_blank">{!item.contactName}</apex:outputLink>
+                                                    </apex:column>
+                                                </apex:pageblockTable>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </div>
+                        <!-- First section Ends -->
+                        
+                        <!-- Second Section -->
+                        <h3>Create Personal Goals</h3>
+                        
+                        <!-- Second Section Start (Create Personal Goal Section)-->
+                        <div>
+                            
+                            <!-- Top panel to refresh the section -->
+                            <apex:outputPanel id="CreatePGSection">
+                                
+                                <!-- Std goal info and Begins drop-down section start -->
+                                <div id="CreatePGWrapper">
+                                    
+                                    <!-- Std goal info -->
+                                    <div class="col-block">
+                                        <b style="white-space:normal;"><apex:outputField value="{!stdGoal.Name}"/></b>&nbsp;
+                                        <apex:outputText value="{0, number,,000}" rendered="{!IF(AND(stdGoal.Amount__c != null, stdGoal.Amount__c > 0), true, false)}">
+                                            Amount &nbsp; $<apex:param value="{!stdGoal.Amount__c}" /> 
+                                        </apex:outputText>
+                                        
+                                        <apex:outputText value="{0, number,,00}" rendered="{!IF(AND(stdGoal.Counter__c != null, stdGoal.Counter__c > 0), true, false)}">
+                                            Count &nbsp; <apex:param value="{!stdGoal.Counter__c}" /> 
+                                        </apex:outputText>
+                                        
+                                        <apex:outputPanel rendered="{!IF(AND(stdGoal.Percent__c != null, stdGoal.Percent__c > 0), true, false)}">
+                                            Percent &nbsp; <apex:outputField value="{!stdGoal.Percent__c}" />
+                                        </apex:outputPanel>
+                                    </div>
+                                    
+                                    <!-- Begins drop-down section -->
+                                    <div class="col-block" style="margin-top: 10px;">
+                                        <apex:outputLabel value="Begins" /> &nbsp;
+                                            <apex:selectList size="1" value="{!selectedPeriod}" id="period" onchange="loadPersonalGoals();">
+                                                <apex:selectOptions value="{!createPGBegains}"/>
+                                            </apex:selectList>
+                                            Show &nbsp;
+                                        <apex:inputCheckbox value="{!showEarlier}" onclick="loadPersonalGoals();"/> &nbsp; earlier &nbsp;
+                                        <apex:inputCheckbox value="{!showLater}" onclick="loadPersonalGoals();"/> &nbsp; later
+                                    </div>
+                                </div>
+                                <!-- Std goal info and Begins drop-down section end -->
+                                
+                                <!-- Result data section starts (This section is used to create new Personal goal data for all the selected payees)-->
+                                <div class="fullblock">
+                                   <div id="resultSectionData">
+                                    
+                                    <!-- Main data table -->
+                                    <table class="list">
+                                        
+                                        <!-- Headers -->
+                                        <thead>
+                                            <tr class="headerRow">
+                                                <th class="staticCol name {!IF(createPGSecWrapper.size > 0,' nameCol','')}" style=" margin-top: -1px;">&nbsp;&nbsp;Name</th>
+                                                <th class="staticCol businessTitle">
+                                                    <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message -->
+                                                    <div style="float:left;">Business Title</div>
+                                                     <div class="customToolTip" style="float:left;font-weight:normal;margin-left:5px;"><img src="/s.gif" alt="" class="helpIcon"/>
+                                                       <span class="tooltiptext1" style="padding:4px;">Value based on Begins start date</span>
+                                                     </div>
+                                                    <!-- V_1.3 - Added - Rajeev Jain - 03/29/2016 - CR-20160316-9699 - Added two help tooltip for informational message - Upto here -->
+                                                </th>
+                                                
+                                                <!-- Select all checkbox and calculation button to do calculation for all the data -->
+                                                <th class="checkBoxHeader" style="min-width:0px !important;">
+                                                    <apex:inputCheckbox value="{!selectAll}" onclick="showHideAllCalBtn(this,'#resultSectionData'); if(this.checked){doGlobalSelectRowAndCalc();} " />
+                                                    <input type="button" value="#" style="border-radius: 5px;cursor: pointer;display:{!IF(AND(showMultiplier,selectAll), 'inline;', 'none;')}" class="{!IF(showMultiplier,'calGlobBtn', 'neverDisplay')}" onclick="doGloabalGoalCalculation();"/>
+                                                </th>
+                                                
+                                                <!-- variable to hold column index this variable is use in inline edit-->
+                                                <apex:variable value="{!0}" var="colIndex"/>
+                                                        
+                                                <!-- Repeat to draw headers dynamically according to Std. goal detail records on selected std. goal-->
+                                                <apex:repeat value="{!stdGoalDetails}" var="dynamicHeader">
+                                                    <th class="dynamicCol dynamicHeader dynamicCol{!colIndex}">
+                                                        <span class="contentFloterLeft headerText" title="{!dynamicHeader.sGDdesc}">
+                                                            {!dynamicHeader.sGDdesc}
+                                                        </span>
+                                                        <span class="contentFloterLeft" style="margin-left:10px;">
+                                                            
+                                                            <span class="contentFloterRight">
+                                                                <apex:image url="{!URLFOR($Resource.Incetive, 'Images/BlankCal.png')}" width="18" height="16" rendered="{!IF(NOT(dynamicHeader.hasGTDMPs), true, false)}"/>
+                                                                
+                                                                <a href="javascript:void(0);" style="cursor:pointer;" onclick="loadGTDMPs('{!dynamicHeader.sGDId}');">
+                                                                    <apex:image url="{!URLFOR($Resource.Incetive, 'Images/Calendar.png')}" width="18" height="16" rendered="{!dynamicHeader.hasGTDMPs}"/>
+                                                                </a>
+                                                                
+                                                                <apex:image url="{!URLFOR($Resource.Incetive, 'Images/emptyfilter.png')}" width="18" height="16" rendered="{!IF(NOT(dynamicHeader.hasConditions), true, false)}"/>
+                                                                
+                                                                <a href="javascript:void(0);" style="cursor:pointer;" onclick="loadConditions('{!dynamicHeader.sGDId}');">
+                                                                    <apex:image url="{!URLFOR($Resource.Incetive, 'Images/filledfilter.png')}" width="18" height="16" rendered="{!dynamicHeader.hasConditions}"/>
+                                                                </a>
+                                                            </span>
+                                                        </span>
+                                                     </th>
+                                                     <apex:variable value="{!colIndex+1}" var="colIndex"/>
+                                                </apex:repeat>
+                                            </tr>
+                                        </thead>
+                                        <!-- Headers end -->
+                                        
+                                        <!-- Table body -->
+                                        <tbody>
+                                            
+                                            <!-- Apex variable to hold the row counter -->
+                                            <apex:variable value="{!0}" var="rowCounter"/>
+                                            
+                                            <!-- Repeat through main table. This table is holding the data for all the rows-->
+                                            <apex:repeat value="{!createPGSecWrapper}" var="wrapperFirst">
+                                                <tr>
+                                                    
+                                                    <!-- Variable to hold the blank rows counter for payee. (Means according to selected period and max. no.
+                                                          of std. goal pacing records on std goal detail we need to draw payee once for all the pacing records) -->
+                                                    <apex:variable value="{!wrapperFirst.maxRowSize-1}" var="blankCounter"/>
+                                                    
+                                                    <!-- Contact name column -->
+                                                    <td style="vertical-align:top;" class="nameCol">
+                                                        <!-- Add class="evenData" on this if you wants effect on this even and odd data. -->
+                                                        <div class="dataRow EditData" datacounter="0">
+                                                            <apex:outputLink value="/{!wrapperFirst.conId}" target="_blank" styleClass="contentFloterLeft nameLink" style="margin-top: 3px;">
+                                                                {!wrapperFirst.conName}
+                                                            </apex:outputLink>
+                                                            
+                                                            <a href="javascript:void(0);" style="cursor:pointer;" onclick="loadPayeeSRelationshipPopup('{!wrapperFirst.conId}');" class="contentFloterRight">
+                                                                <apex:image url="{!URLFOR($Resource.Incetive, 'Images/EmptyRelationship.png')}" width="20" height="18" rendered="{!IF(wrapperFirst.hasStaffRelationship, false, true)}"/>
+                                                                <apex:image url="{!URLFOR($Resource.Incetive, 'Images/HasRelationship.png')}" width="20" height="18" rendered="{!IF(wrapperFirst.hasStaffRelationship, true, false)}"/>
+                                                            </a>
+                                                            
+                                                        </div>
+                                                        
+                                                        <!-- Variable to apply even odd style on blank rows -->
+                                                        <apex:variable value="{!1}" var="dataCounter"/>
+                                                        
+                                                        <!-- Repeat to draw blank rows -->
+                                                        <apex:repeat value="{!wrapperFirst.maxRowSizeList}" var="counter" >
+                                                            <!-- Add class="{!IF(MOD(dataCounter,2) == 0,'evenData','oddData')}" on this if you wants effect on this even and odd data. -->
+                                                            <apex:outputPanel styleClass="dataRow EditData" rendered="{!IF(counter > 0,true,false)}" html-datacounter="{!dataCounter-1}" layout="block">
+                                                                &nbsp;
+                                                            </apex:outputPanel>
+                                                            <apex:variable value="{!dataCounter+1}" var="dataCounter"/>
+                                                        </apex:repeat>
+                                                    </td>
+                                                    
+                                                    <!-- Business Title column -->
+                                                    <td style="vertical-align:top;">
+                                                        
+                                                        <!-- Add class="evenData" on this if you wants effect on this even and odd data. -->
+                                                        <div class="dataRow">
+                                                            <label class="contentFloterLeft nameLink">{!wrapperFirst.businessTitle}</label>
+                                                            <apex:inputText styleClass="contentFloterRight" value="{!wrapperFirst.businessTitlePercent}" style="width: 45px;" rendered="{!showMultiplier}"/> 
+                                                        </div>
+                                                        
+                                                        <!-- Variable to apply even odd style on blank rows -->
+                                                        <apex:variable value="{!1}" var="dataCounter"/>
+                                                        
+                                                        <!-- Repeat to draw blank rows -->
+                                                        <apex:repeat value="{!blankCounter}" var="counter">
+                                                            <!-- Add class="{!IF(MOD(dataCounter,2) == 0,'evenData','oddData')}" on this if you wants effect on this even and odd data. -->
+                                                            <div class="dataRow" style="display:{!IF(counter > 0,'block;','none;')}">
+                                                                &nbsp;
+                                                            </div>
+                                                             <apex:variable value="{!dataCounter+1}" var="dataCounter"/>
+                                                        </apex:repeat>
+                                                    </td>
+                                                    
+                                                    <!-- Check box and calculation button column -->
+                                                    <td class="checkBoxCol">
+                                                        
+                                                        <!-- variable to hold column index this variable is use in inline edit-->
+                                                        <apex:variable value="{!0}" var="colIndex"/>
+                                                        
+                                                         <!-- Variable is used in inline edit -->
+                                                         <apex:variable value="{!0}" var="dataCounter"/>
+                                                        <apex:repeat var="selectedRowKey" value="{!wrapperFirst.mapSelectableRows}" id="subRowIndexCol1">
+                                                            
+                                                            <!-- drow check box and calcultion button -->
+                                                                <div style="display:{!IF(wrapperFirst.mapSelectableRows[selectedRowKey] == true,'block','none')};height:{!IF(wrapperFirst.mapSelection[selectedRowKey],'45px','')};" class="mainCheckBoxParent EditData dataRow innerRow {!IF(MOD(dataCounter,2) == 0,' evenData',' oddData')}" dataCounter="{!dataCounter}">
+                                                                    <apex:inputCheckbox value="{!wrapperFirst.mapSelection[selectedRowKey]}" onclick="showHideCalBtn({!rowCounter},{!dataCounter},this,'#resultSectionData'); if(this.checked){doInclineSRAndGoalCalc({!rowCounter},{!colIndex},{!dataCounter}, 'selectCB')}" styleClass="mainCheckBox editRowMarginAligner" style="margin-top:{!IF(wrapperFirst.mapSelection[selectedRowKey],'15px','0px')};"/>
+                                                                    <input type="button" value="#" style="border-radius: 5px;cursor: pointer;display:{!IF(AND(wrapperFirst.mapSelection[selectedRowKey],mapControlCalcs[selectedRowKey]),'inline','none')};margin-top:{!IF(wrapperFirst.mapSelection[selectedRowKey],'15px','0px')};" class="{!IF(mapControlCalcs[selectedRowKey],'calBtn editRowMarginAligner','neverDisplay editRowMarginAligner')}" onclick="inlineGoalCalculation({!rowCounter},{!colIndex},{!dataCounter})"/>
+                                                                </div>
+                                                                <div style="display:{!IF(wrapperFirst.mapSelectableRows[selectedRowKey] == true,'none;','block;')}height:{!IF(wrapperFirst.mapSelection[selectedRowKey],'45px','')};" class="EditData dataRow innerRow {!IF(MOD(dataCounter,2) == 0,' evenData',' oddData')}" dataCounter="{!dataCounter}">
+                                                                    &nbsp;
+                                                                </div> 
+                                                                <apex:variable value="{!dataCounter+1}" var="dataCounter"/> 
+                                                        </apex:repeat>
+                                                        <!-- std goal detail end -->       
+                                                    </td>
+                                                    <apex:variable value="{!0}" var="colIndex"/>
+                                                    
+                                                    <apex:variable value="false" var="isFirstPacingSelected"/>
+                                                    
+                                                    <!-- Repeat through Std goal details list -->
+                                                    <apex:repeat value="{!wrapperFirst.stdGoalDetails}" var="stdDetail">
+                                                        <td class="dynamicCol dynamicCol{!colIndex} dynamicDataCol">
+                                                            
+                                                            <!-- Variable -->
+                                                            <apex:variable value="{!0}" var="dataCounter"/>
+                                                           
+                                                            <!-- Repeat Pacings -->
+                                                            <apex:repeat value="{!stdDetail.stdGDetailPacings}" var="pacing"> 
+                                                                
+                                                                <!-- Draw column data -->
+                                                                <apex:outputPanel layout="block" rendered="{!pacing.isDisplay}" style="position:relative;" styleclass="EditData dataRow innerRow {!IF(MOD(dataCounter,2) == 0,' evenData',' oddData')}" html-dataCounter="{!dataCounter}" html-colIndex="{!colIndex}">
+                                                                    <apex:inputCheckbox rendered="{!AND(pacing.showSelected, NOT(ISBLANK(pacing.stdGDPacing.Description__c)))}" value="{!pacing.selected}" styleClass="editRowMarginAligner visibleCheckBox contentFloterLeft" style="margin-top:{!IF(pacing.selected == false,'0px',IF(pacing.stdGDPacing.Description__c == '', '0px','15px'))}" 
+                                                                    onclick="showHideCalIBtnIndividual({!rowCounter},{!colIndex},{!dataCounter},this,'#resultSectionData', {!IF(OR(pacing.stdGDPacing.Standard_Goal_Detail__r.Summary__c,AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers')),'true', 'false')});setMaxWidth();resetDynamicColWidth();if(this.checked && this.getAttribute('PGId') == ''){inlineItemGoalCalculation({!rowCounter},{!colIndex},{!dataCounter});}" 
+                                                                    html-rowCounter="{!rowCounter}" html-colIndex="{!colIndex}" html-dataCounter="{!dataCounter}" html-PGId="{!pacing.pGoal.Id}" html-isCalBtn="{!IF(OR(pacing.stdGDPacing.Standard_Goal_Detail__r.Summary__c,AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers')),'true', 'false')}"/>
+                                                                    <span class="editRowMarginAligner contentFloterLeft {!IF(pacing.showSelected == false,'neverEditBlock',IF(pacing.stdGDPacing.Description__c == '', 'neverEditBlock','editBlock'))}" style="display:{!IF(pacing.selected == false,'none',IF(pacing.stdGDPacing.Description__c == '', 'none','inline'))};margin-top:{!IF(pacing.selected == false,'0px',IF(pacing.stdGDPacing.Description__c == '', '0px','15px'))};">
+                                                                        <a href="javascript:void(0);" style="cursor:pointer;" onclick="loadPGSRelationshipPopup('{!rowCounter}','{!colIndex}','{!dataCounter}')" class="contentFloterLeft">
+                                                                            <apex:image url="{!URLFOR($Resource.Incetive, 'Images/EmptyRelationship.png')}" width="20" height="18" rendered="{!IF(NOT(pacing.haveRelationships), true, false)}"/>
+                                                                            <apex:image url="{!URLFOR($Resource.Incetive, 'Images/HasRelationship.png')}" width="20" height="18" rendered="{!IF(pacing.haveRelationships, true, false)}"/>
+                                                                        </a>
+                                                                        
+                                                                        <a href="javascript:void(0);" style="cursor:pointer;" onclick="showPGMPPopup('{!rowCounter}','{!colIndex}','{!dataCounter}')" class="contentFloterLeft">
+                                                                            <apex:image url="{!URLFOR($Resource.Incetive, 'Images/BlankCal.png')}" width="20" height="18" rendered="{!IF(pacing.pGMPeriods != null && pacing.pGMPeriods.SIZE > 0, false, true)}"/>
+                                                                            <apex:image url="{!URLFOR($Resource.Incetive, 'Images/Calendar.png')}" width="20" height="18" rendered="{!IF(pacing.pGMPeriods != null && pacing.pGMPeriods.SIZE > 0, true, false)}"/>
+                                                                        </a>
+                                                                        <input type="button" value="#" style="padding: 0px 2px;border-radius: 5px;cursor: pointer;display:{!IF(OR(pacing.stdGDPacing.Standard_Goal_Detail__r.Summary__c,AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers')),'block;', 'none;')}" class="calBtn contentFloterLeft" onclick="inlineItemGoalCalculation({!rowCounter},{!colIndex},{!dataCounter})"/>
+                                                                    </span>
+                                                                    <!-- Tooltip -->
+                                                                    <a class="tooltip contentFloterLeft editRowMarginAligner" data-geo="Hello" style="text-decoration:none;margin-top:{!IF(pacing.selected == false,'0px',IF(pacing.stdGDPacing.Description__c == '', '0px','15px'))};">
+                                                                        <apex:outputText escape="false" value="{!pacing.description}" style="display:none;" styleClass="toolTipText"/>
+                                                                        <apex:outputText escape="false" value="{!pacing.stdGDPacing.Description__c}"/>
+                                                                    </a>
+                                                                    <span class="contentFloterRight">
+                                                                        <span class="{!IF(pacing.showSelected == false,'neverEditBlock',IF(pacing.stdGDPacing.Description__c == '', 'neverEditBlock','editBlock'))}" style="float:left;display:{!IF(pacing.selected == false,'none',IF(pacing.stdGDPacing.Description__c == '', 'none','inline'))};" 
+                                                                            pgType="{!IF(pacing.pGoal.Id != null, 'existingPg', 'newPg')}" pgTenuredValue="{!pacing.pGoal.Tenure__c}" pgTenuredPercentage="{!pacing.pGoal.Tenure_Percentage__c}">
+                                                                            
+                                                                            <!-- Inputs to enter data for PG if Std goal detail is Paced -->
+                                                                            
+                                                                            <!--  V_1.4 - Added By - Rajeev Jain - Add Tenure Multipliers on each personal Goal Level -->
+                                                                            <div class="contentFloterLeft tenuredBox" style="display:{!IF(AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers'),'block;', 'none;')}" >
+                                                                                <div class="entryHeaderLabel tenureLabelFlag" style="color:{!IF(pacing.labelColorTenuredFlag != null, pacing.labelColorTenuredFlag, 'black')}">Tenure</div>
+                                                                                <apex:inputCheckBox value="{!pacing.pGoal.Tenure__c}" onchange="tenureValueFlipFlop(this,'tenured');"/>
+                                                                                <apex:inputHidden value="{!pacing.labelColorTenuredFlag}"/>
+                                                                            </div>
+                                                                            <div class="contentFloterLeft tenuredBox tenuredPercentBox" style="display:{!IF(AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers'),'block;', 'none;')}">
+                                                                                <div class="entryHeaderLabel tenureLabel" style="color:{!IF(pacing.labelColorTenured != null, pacing.labelColorTenured, 'black')}">/%</div>
+                                                                                <apex:inputHidden value="{!pacing.labelColorTenured}"/>
+                                                                                <apex:inputText value="{!pacing.pGoal.Tenure_Percentage__c}" style="width:30px;" styleClass="tenurePercentageBox" onchange="SetLabelColor(this,'tenured');"/>
+                                                                            </div>
+                                                                            <!--  V_1.4 - Added By - Rajeev Jain - Add Tenure Multipliers on each personal Goal Level - upto here-->
+                                                                            
+                                                                            <div class="contentFloterLeft" style="display:{!IF(AND(pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__c != null,pacing.stdGDPacing.Standard_Goal_Detail__r.Goal_Type__r.Discount_Type__c == 'Multipliers'),'block;', 'none;')}">
+                                                                                <div class="entryHeaderLabel adJLabel" style="color:{!IF(pacing.labelColorBTMultiplier != null, pacing.labelColorBTMultiplier, 'black')}">Adj %</div>
+                                                                                <apex:inputHidden value="{!pacing.labelColorBTMultiplier}"/>
+                                                                                <apex:inputText value="{!pacing.bTMultiplier}" style="width:30px;" onchange="SetLabelColor(this, 'Adj%');"/>
+                                                                            </div>
+                                                                            <apex:outputPanel styleClass="contentFloterLeft" layout="block">
+                                                                                <div class="entryHeaderLabel adJvalLabel" style="color:{!IF(pacing.labelColorAdjustmentValue != null, pacing.labelColorAdjustmentValue, 'black')}">Adj #/$</div>
+                                                                                <apex:inputHidden value="{!pacing.labelColorAdjustmentValue}"/>
+                                                                                <apex:inputText value="{!pacing.adjustmentValue}" style="width:40px;" onchange="SetLabelColor(this,'Adj#');"/>
+                                                                            </apex:outputPanel>
+                                                                            <div class="contentFloterLeft">
+                                                                                <div class="entryHeaderLabel pgGoalValueLabel" style="color:{!IF(pacing.labelColorValue != null, pacing.labelColorValue, 'black')}">Goal Value</div>
+                                                                                <div>
+                                                                                    <apex:inputHidden value="{!pacing.labelColorValue}"/>
+                                                                                    <apex:inputField value="{!pacing.pGoal.Amount__c}" style="width:80px;" rendered="{!pacing.displayAmount}" onchange="SetLabelColor(this,'value');"/>
+                                                                                    <apex:inputField value="{!pacing.pGoal.Count__c}" style="width:80px;" rendered="{!pacing.displayCount}" onchange="SetLabelColor(this,'value');"/>
+                                                                                    <apex:inputField value="{!pacing.pGoal.Percent__c}" style="width:80px;" rendered="{!pacing.displayPercent}" onchange="SetLabelColor(this,'value');"/>   
+                                                                                </div>
+                                                                            </div>
+                                                                        </span>
+                                                                        <span class="amountElipsis editRowMarginAligner {!IF(pacing.showSelected == true, ' nonEditBlock', '')}" style="display:{!IF(pacing.selected,'none;','block;')}">{!pacing.amount}</span>
+                                                                        <span style="float:left;vertical-align:sub;cursor:pointer;display:{!IF(pacing.selected == false,'none',IF(pacing.stdGDPacing.Description__c == '', 'none','inline'))}" class="{!IF(pacing.showSelected == false,'neverEditBlock',IF(pacing.stdGDPacing.Description__c == '', ' neverEditBlock',' editBlock'))}"
+                                                                              onclick="editDescription(this,{!rowCounter},{!colIndex},{!dataCounter},'{!wrapperFirst.conId}','{!stdDetail.stdGoalDetail.Id}','{!pacing.stdGDPacing.Id}')"
+                                                                              desc="{!pacing.comments}"><apex:image url="{!URLFOR($Resource.Incetive, 'Images/EditIcon.png')}" width="20" height="18" styleClass="editRowMarginAligner" style="margin-top:{!IF(pacing.selected == false,'0px',IF(pacing.stdGDPacing.Description__c == '', '0px','15px'))};"/>
+                                                                        </span>
+                                                                    </span>
+                                                                </apex:outputPanel> 
+                                                                <apex:variable value="{!dataCounter+1}" var="dataCounter"/>
+                                                            </apex:repeat>
+                                                        </td>
+                                                        <apex:variable value="{!colIndex+1}" var="colIndex"/>
+                                                    </apex:repeat>
+                                                </tr>
+                                                <apex:variable value="{!rowCounter+1}" var="rowCounter"/>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    </div>
+                                <script>
+                                    setMaxWidth();
+                                    resetDynamicColWidth();
+                                </script>
+                            </apex:outputPanel>
+                            <apex:commandButton value="Apply" action="{!doSave}" style="margin-left: 42%;margin-top: 10px;"/>
+                        </div>
+                        <!-- Second Section Ends (Create Personal Goal Section)-->
+                    </div>
+                </apex:pageBlock>
+                
+                <!-- Dilog for comment -->
+                <div id="commentsDialog" title="Justification/Comments" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" selectedRType="">
+                    <div class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">Justification/Comments</div>
+                    <div class="dialogWrapper">
+                        <div class="contentDialog">
+                            
+                            <textarea class="inputTextArea" rows="4" cols="50">
+                            </textarea> 
+                        </div>
+                        <div>
+                            <BR/>
+                            <input type="button" value="Save" class="btn" onClick="saveDesc(this);" contId="" stdWrapperId="" pacingId="" rowIndex="" colIndex="" itemIndex=""/>
+                            <input type="button" value="Cancel" class="btn" onClick="$('#commentsDialog').hide();$('#overlay').hide();"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Overlay div -->
+                <div class="ui-widget-overlay ui-front" style="z-index: 1;display:none;" id="overlay" ></div>
+                
+                <!-- Staff Relationship Popup -->
+                <div id="staffRelationshipPopup" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" selectedRType="">
+                    
+                    <!-- Loding box -->
+                    <apex:outputPanel layout="block" styleClass="loadingBox">
+                        <div class="loadingInnerWrapper">
+                            <img src="/img/loading32.gif" width="25" height="25" />
+                            <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                        </div>
+                    </apex:outputPanel>
+                         
+                    <!-- Popup -->
+                    <div class="dialogWrapper">
+                        
+                        <!-- Output panel -->
+                        <apex:outputPanel id="StaffRelationshipPanel" layout="block">
+                            
+                            <!-- This component holds the Staff Relationship functionality -->
+                            <c:PGAndPayeeStaffRelationshipComp sRelationshipWrapper="{!sRelationship}"/>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                
+                <!-- Overlay div -->
+                <div class="ui-widget-overlay ui-front" style="z-index: 3;display:none;background:#000000;opacity:0.6;" id="overlay1" ></div>
+                
+                <!-- New Staff RelationShip Popup -->
+                <div id="newEditStaffRelationshipPopup" title="Poppu to New and Edit Staff Relationship Popup" style="display:none;z-index:4;" 
+                            class="customDialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable">
+                    <div  class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">Staff RelationShip</div>
+                     <!-- ActionRegion to avoid other sections validation -->
+                    <apex:actionRegion >
+                        
+                        <apex:actionFunction action="{!sRelationship.populateDirectionList}" name="populateDirectionList" reRender="directionListPanel" status="waitMsg"/>
+                        
+                         <!-- Loding box -->
+                        <apex:outputPanel layout="block" styleClass="loadingBox">
+                            <div class="loadingInnerWrapper">
+                                <img src="/img/loading32.gif" width="25" height="25" />
+                                <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                            </div>
+                        </apex:outputPanel>
+                        <!-- Popup -->
+                        <div class="dialogWrapper">
+                        
+                            <!-- Function to add New or Edit Staff RelationShip data -->
+                            <apex:actionFunction name="saveStaffRelationShip" action="{!sRelationship.saveNewStaffReltionShipData}" onComplete="closeAnyTypePopup('#newEditStaffRelationshipPopup');defaultScript();" reRender="oPRels, oPActionButtons, stafftRelationshipWrapper,validationMsg"/>
+                            
+                            <span class="errorMSG"></span>
+                            <apex:outputPanel layout="block" id="stafftRelationshipWrapper">
+                                <table>
+                                    <tr>
+                                        <td class="leftCol"><apex:outputLabel value="Contact" /></td>
+                                        <td class="rightCol">
+                                            <div class="requiredField toggleField">
+                                                <span class="timeLineIcon-red"></span>
+                                                <apex:inputField value="{!sRelationship.newEditStaffRelationShip.sR.From__c}" id="fromContact" onchange="checkToggleFiledState(this,'.toggleField');"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="leftCol"><apex:outputLabel value="Type" /></td>
+                                        <td class="rightCol">
+                                            <div class="requiredField toggleField">
+                                                <span class="timeLineIcon-red"></span>
+                                                <apex:inputField value="{!sRelationship.newEditStaffRelationShip.sR.Relationship__c}" id="relationShipType" onchange="checkToggleFiledState(this,'.toggleField');"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="leftCol"><apex:outputLabel value="Direction" /></td>
+                                        <td class="rightCol">
+                                            <apex:outputPanel id="directionListPanel">
+                                                <apex:selectRadio value="{!sRelationship.newEditStaffRelationShip.selectedDirection}" layout="pageDirection">
+                                                    <apex:selectOptions value="{!sRelationship.newEditStaffRelationShip.directionList}"/>
+                                                </apex:selectRadio> 
+                                            </apex:outputPanel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="leftCol"><apex:outputLabel value="Starting" /></td>
+                                        <td class="rightCol">
+                                            <div class="requiredField">
+                                                <span class="timeLineIcon-red"></span>
+                                                <apex:inputField value="{!sRelationship.newEditStaffRelationShip.sR.Start_Date__c}" id="rStartDate" /> 
+                                            </div>   
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="leftCol"><apex:outputLabel value="Ending" /></td>
+                                        <td class="rightCol">
+                                            <apex:inputField value="{!sRelationship.newEditStaffRelationShip.sR.End_Date__c}" id="rEndDate" />  
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <apex:outputPanel layout="none" rendered="{!IF(sRelationship.clickedICON == 'Personal Goal',true,false)}">
+                                            <td class="leftCol">&nbsp;</td>
+                                            <td class="rightCol">
+                                                <apex:outputPanel >
+                                                    <apex:inputCheckbox value="{!sRelationship.newEditStaffRelationShip.appliedonGoal}" />
+                                                    <label>Applies to current goal</label>
+                                                </apex:outputPanel>  
+                                            </td>
+                                        </apex:outputPanel>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            <div>
+                                <BR/>
+                                <input type="button" value="Save" class="btn" onClick="saveStaffRelationShipMed(this);"/>
+                                <input type="button" value="Cancel" class="btn" onClick="cancelbtn();"/>
+                            </div>
+                        </div>
+                        
+                    </apex:actionRegion>
+                </div>
+                <div id=""></div>
+                
+            <!-- PGMP Popup -->
+            <div id="pGMPpopup" title="PGMP" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" selectedRType="">
+                <div class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">PG Measurement Periods</div>
+                
+                 <!-- ActionRegion to avoid other sections validation -->
+                <apex:actionRegion >
+                    <apex:actionFunction action="{!reRender}" name="pGMPListReRender" onComplete="$('#pGMPpopup').hide();$('#overlay').hide();"
+                                                               reRender="CreatePGSection"/>
+                    
+                    <apex:actionFunction name="upsertPGMP" action="{!addPGMeasurementPeriods}" onComplete="refreshGTDMPs()" reRender="pGMPPopupPanel,msg,pGMPPanel" />
+                    
+                     <!-- Loding box -->
+                     <apex:outputPanel layout="block" styleClass="loadingBox">
+                         <div class="loadingInnerWrapper">
+                             <img src="/img/loading32.gif" width="25" height="25" />
+                             <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                         </div>
+                     </apex:outputPanel>
+                     
+                     <!-- Popup -->
+                     <div class="dialogWrapper">
+                        
+                        <!-- GTDMP popup panel -->
+                        <apex:outputPanel id="pGMPPopupPanel" layout="block">
+                            <div id="pGMPs">
+                                <!-- GTDMP and New and Delete buttons table -->
+                                <table width="100%">
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2" style="float:right;">
+                                            <input type="button" value="New" class="btn" onClick="openPGMPDialogbox();" />
+                                            <apex:commandButton action="{!removePGMeasurementPeriods}" value="Delete" reRender="msg,pGMPPopupPanel" status="waitMsg" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="100%" class="list conditions" id="sGDconds">
+                                    <thead>
+                                    <tr class="headerRow">
+                                        <th>
+                                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'pGMPs')"/>
+                                        </th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <apex:repeat value="{!pGMPeriods}" var="item">
+                                        <tr>
+                                            <td><apex:inputCheckbox value="{!item.selected}" id="inputId" styleClass="pGMPs"/></td>
+                                            <td><apex:inputField value="{!item.pGMP.Measurement_Date__c}"/></td>
+                                        </tr>
+                                    </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </apex:outputPanel>
+                        
+                        <!-- Buttons -->
+                        <div>
+                            <BR/>
+                            <input type="button" value="OK" class="btn" onClick="pGMPListReRender();"/>
+                        </div>
+                                
+                     </div>
+                 </apex:actionRegion>
+            </div>
+            
+            <!-- PGMP Add and popup -->
+            <div id="pGMPcustomDialog" title="New PGMP" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" isItOpenedFromFilterPopup="false">
+                 <div class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">New PGMP</div>
+                 
+                 <!-- ActionRegion to avoid the other sections validation -->
+                 <apex:actionRegion >
+                     
+                     <!-- ActionFunctions to add/edit conditions -->
+                     <apex:actionFunction name="addPGMP" action="{!reRender}" onComplete="upsertPGMP()"/>
+                     
+                     <!-- Loading -->
+                     <apex:outputPanel layout="block" styleClass="loadingBox">
+                         <div class="loadingInnerWrapper">
+                             <img src="/img/loading32.gif" width="25" height="25" />
+                             <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                         </div>
+                     </apex:outputPanel>
+                     
+                     <!-- Condtion Popup -->
+                     <div class="dialogWrapper">
+                         
+                         <apex:outputPanel id="pGMPPanel" layout="none">
+                             <!-- Measurement date -->
+                             <div id="mDDiv" class="mDInner">
+                                 <br/>
+                                 <span class="errorMSG"></span>
+                                 <table>
+                                     <tr>
+                                         <td class="leftCol" style="padding:5px;"><apex:outputLabel value="Measurement Date" /></td>
+                                         <td class="rightCol" style="padding:5px;">
+                                             <div class="requiredField">
+                                                 <span class="timeLineIcon-red"></span>
+                                                 <apex:inputField value="{!pGMPeriod.Measurement_Date__c}" id="mPD"/>
+                                             </div>
+                                         </td>
+                                     </tr>
+                                 </table>
+                             </div>
+                         </apex:outputPanel>
+                         
+                         <div id="commandButton">
+                             <BR/>
+                             <input type="button" value="Save" class="btn" onClick="addPGMPs(this);"/>
+                             <input type="button" value="Cancel" class="btn" onClick="refreshGTDMPs();"/>
+                         </div>
+                     </div>
+                 </apex:actionRegion>
+             </div>
+             <!-- PGMP add Popup ends -->
+            </apex:form>
+            
+                <!-- Std goal detail conditions Popup -->
+            <div id="conditionsPopup" title="Conditions" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" selectedRType="">
+                <div class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">Conditions</div>
+                
+                <!-- Loding box -->
+                <apex:outputPanel layout="block" styleClass="loadingBox">
+                    <div class="loadingInnerWrapper">
+                        <img src="/img/loading32.gif" width="25" height="25" />
+                        <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                    </div>
+                </apex:outputPanel>
+                  
+                <!-- Popup -->
+                <div class="dialogWrapper">
+                    
+                    <!-- Comman section for all record types -->
+                    <apex:outputPanel id="condtionsPopupPanel" layout="block">
+                        <div id="stdDetailsConditions" class="tableMargin">
+                        
+                            <table width="100%" class="list conditions" id="sGDconds">
+                                <thead>
+                                    <tr class="headerRow">
+                                        <th>Type</th>
+                                        <th>Value</th>
+                                        <th>Condition Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:repeat value="{!conditions}" var="item">
+                                        <tr>
+                                            <td>
+                                                <apex:outputText value="{!item.RecordType.Name}" rendered="{!IF(item.RecordType.Name != 'Collection Perspective', true, false)}" />
+                                                <apex:outputText value="Collection" rendered="{!IF(item.RecordType.Name == 'Collection Perspective', true, false)}" />
+                                            </td>
+                                            <td>{!item.Value__c}</td>
+                                            <td>{!item.Condition_Type__c}</td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                     
+                    <!-- Buttons -->
+                    <div>
+                        <BR/>
+                        <input type="button" value="OK" class="btn" onClick="$('#conditionsPopup').hide();$('#overlay').hide();"/>
+                    </div>
+                            
+                  </div>
+            </div>
+            
+            <!-- GTDMP popup -->
+            <div id="gTDMPPopup" title="GTDMPs" style="display:none;" class="customDialog disableInputEnter ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" selectedRType="">
+                <div class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">GTDMPs</div>
+                
+                <!-- Loding box -->
+                <apex:outputPanel layout="block" styleClass="loadingBox">
+                    <div class="loadingInnerWrapper">
+                        <img src="/img/loading32.gif" width="25" height="25" />
+                        <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                    </div>
+                </apex:outputPanel>
+                  
+                <!-- Popup -->
+                <div class="dialogWrapper">
+                    
+                    <!-- Comman section for all record types -->
+                    <apex:outputPanel id="gTDMPPopupPanel" layout="block">
+                        <div id="gTDMPeriods" class="tableMargin">
+                        
+                            <table width="100%" class="list" id="sGDMP">
+                                <thead>
+                                    <tr class="headerRow">
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:repeat value="{!gTDMPeriods}" var="item">
+                                        <tr>
+                                            <td>
+                                                <apex:outputField value="{!item.Measurement_Date__c}"/>
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                     
+                    <!-- Buttons -->
+                    <div>
+                        <BR/>
+                        <input type="button" value="OK" class="btn" onClick="$('#gTDMPPopup').hide();$('#overlay').hide();"/>
+                    </div>
+                  </div>
+            </div>
+        </body>
+    </html>
+</apex:page>

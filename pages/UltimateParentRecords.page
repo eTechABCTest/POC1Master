@@ -1,0 +1,869 @@
+<apex:page controller="UltimateParentRecordController" readonly="true">
+    <apex:form >
+        <script>
+            var fields = '';
+            var Contact = '';
+            var Opportunity = '';
+            var Contract = ''; 
+            var Case = '';
+            var Program_Package = ''; 
+            var Client_Interaction = '';
+            var Visit = '';            
+        </script>
+        <apex:repeat value="{!$ObjectType.Account.FieldSets.Account_Fields_Set}" var="fieldSet">
+            <script>
+                if(fields.length == 0)
+                fields = '{!fieldSet}';
+                else
+                fields = fields + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <apex:repeat value="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set}" var="fieldSet">
+            <script>
+                if(Contact.length == 0)
+                Contact = '{!fieldSet}';
+                else
+                Contact = Contact + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <apex:repeat value="{!$ObjectType.Opportunity.FieldSets.OpportunityFields}" var="fieldSet">
+            <script>                
+                if(Opportunity.length == 0)
+                Opportunity = '{!fieldSet}';
+                else
+                Opportunity = Opportunity + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <!--    Field set for Program Package -->
+        <apex:repeat value="{!$ObjectType.Program_Package__c.FieldSets.Program_Package_Fields_Set}" var="fieldSet">
+            <script>    
+                if(Program_Package.length == 0)
+                Program_Package = '{!fieldSet}';
+                else
+                Program_Package = Program_Package + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <!--    Field set for Client Interaction -->
+        <apex:repeat value="{!$ObjectType.Client_Interaction__c.FieldSets.Client_Interactions_Fields_Set}" var="fieldSet">
+            <script>    
+                if(Client_Interaction.length == 0)
+                Client_Interaction = '{!fieldSet}';
+                else
+                Client_Interaction = Client_Interaction + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>  
+        <!--    Field set for Visit -->
+        <apex:repeat value="{!$ObjectType.Visit__c.FieldSets.Visits_Fields_Set}" var="fieldSet">
+            <script>    
+                if(Visit.length == 0)
+                Visit = '{!fieldSet}';
+                else
+                Visit = Visit + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>            
+        <apex:repeat value="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set}" var="fieldSet">
+            <script>    
+                if(Contract.length == 0)
+                Contract = '{!fieldSet}';
+                else
+                Contract = Contract + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <apex:repeat value="{!$ObjectType.Case.FieldSets.Case_Fields_Set}" var="fieldSet"> 
+            <script>    
+                if(Case.length == 0)
+                Case = '{!fieldSet}';
+                else
+                Case = Case + ',' + '{!fieldSet}';
+            </script>
+        </apex:repeat>
+        <apex:inputHidden Id="fieldNames" value="{!fields}"/> 
+        <apex:actionFunction name="AFGenerateRelatedLists" action="{!getData}" status="fetchingFieldSet" rerender="fields,pbData"/> 
+        <script> 
+            fields = 'Account#' + fields + '~' + 'opportunity#' + Opportunity + '~' + 'Contact#' + Contact + '~' + 'contract#' + Contract + '~' + 'case#' + Case;
+            var fId = document.getElementById('{!$Component.fieldNames}');
+            fId.value = fields;
+            window.onload = function(){ AFGenerateRelatedLists(); } 
+        </script>
+        <apex:actionStatus id="fetchingFieldSet">
+            <apex:facet name="start">  
+                <img src="/img/loading.gif"/>&nbsp;<span class="waitingDescription"><b>Loading...</b></span>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:outputPanel id="pbData">
+            <apex:pageMessages /> 
+            <!--    page Block for the Account Related Lists for 1000 Records--> 
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="AccountPB" rendered="{!objectType == 'Account'}">
+                    <apex:sectionHeader title="Accounts" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Account" value="{!lstAccount}" var="Acc" Title="Account" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Account.FieldSets.Account_Fields_Set}" var="fieldSet"> 
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Acc.Id}" rendered="{!If(fieldSet.Label == 'Account Name', True,False)}">{!Acc.Name}</apex:outputLink>
+                                <apex:outputField value="{!Acc[fieldSet]}" rendered="{!If(fieldSet.Label != 'Account Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Account Name" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Acc.Id}" >{!Acc.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!Acc.ParentID}" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Account Type" value="{!Acc.Type}" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Phone" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}">
+                            <apex:outputText value="{!Acc.Phone}" />
+                        </apex:column>
+                        <apex:column value="{!Acc.Website}" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Owner" value="{!Acc.OwnerId}" rendered="{!$ObjectType.Account.FieldSets.Account_Fields_Set.size == 0}"/>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstAccount.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!FirstPage/currentPageCount == 0}">
+                                <img src="/s.gif" class="firstoff"/>
+                                &nbsp;
+                                <span class="prevNext">
+                                <img src="/s.gif" class="prevoff" />  
+                                <font color="#A8A8A8">Previous</font>
+                                </span>
+                                &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!FirstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="AccountPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="AccountPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(FirstPage/currentPageCount + 1) == LastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(FirstPage/currentPageCount + 1) != LastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="AccountPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="AccountPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!FirstPage/currentPageCount + 1}) + ' of ' + {!LastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <!--    page Block for the Contact Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="ContactPB" rendered="{!objectType == 'Contact'}">
+                    <apex:sectionHeader title="Contacts" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Contact" value="{!lstContact}" var="Con" Title="Contact" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Con.Id}" rendered="{!If(fieldSet.Label == 'Full Name', True,False)}">{!Con.Name}</apex:outputLink>
+                                <apex:outputField value="{!Con[fieldSet]}" rendered="{!If(fieldSet.Label != 'Full Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Contact Name" rendered="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Con.Id}" >{!Con.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!Con.Title}" rendered="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Con.Phone}" rendered="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Con.Email}" rendered="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="DOB" value="{!Con.Birthdate}" rendered="{!$ObjectType.Contact.FieldSets.Contact_Fields_Set.size == 0}"/>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstContact.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="ContactPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="ContactPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="ContactPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="ContactPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span> 
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <!--    page Block for the Opportunities Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="OpportunityPB" rendered="{!objectType == 'Opportunity'}">
+                    <apex:sectionHeader title="Opportunities" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Opportunity" value="{!lstOpportunity}" var="Opp" Title="Opportunity" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Opportunity.FieldSets.OpportunityFields}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Opp.Id}" rendered="{!If(fieldSet.Label == 'Name', True,False)}">{!Opp.Name}</apex:outputLink>
+                                <apex:outputField value="{!Opp[fieldSet]}" rendered="{!If(fieldSet.Label != 'Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Opportunity Name" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}">
+                            <apex:outputLink value="/{!Opp.Id}" >{!Opp.Name}</apex:outputLink> 
+                        </apex:column>
+                        <apex:column value="{!Opp.AccountId}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/>
+                        <apex:column value="{!Opp.Amount}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/>
+                        <apex:column value="{!Opp.StageName}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/>
+                        <apex:column value="{!Opp.ForecastCategory}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/>
+                        <apex:column headerValue="Close Date" value="{!Opp.CloseDate}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/> 
+                        <apex:column headerValue="Opportunity Type" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}">
+                            <apex:outputText value="{!Opp.Type}" />
+                        </apex:column>
+                        <apex:column value="{!Opp.IsClosed}" rendered="{!$ObjectType.Opportunity.FieldSets.OpportunityFields.size == 0}"/>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstOpportunity.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="OpportunityPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="OpportunityPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="OpportunityPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="OpportunityPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                            <script>
+                            document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel>
+
+            <!--    page Block for the Visit Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="VisitPB" rendered="{!objectType == 'Visit'}">
+                    <apex:sectionHeader title="Visits" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Visit" value="{!lstVisit}" var="Con" Title="Visit" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Visit__c.FieldSets.Visits_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Con.Id}" rendered="{!If(fieldSet.Label == 'Full Name', True,False)}">{!Con.Name}</apex:outputLink>
+                                <apex:outputField value="{!Con[fieldSet]}" rendered="{!If(fieldSet.Label != 'Full Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Name" rendered="{!$ObjectType.Visit__c.FieldSets.Visits_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Con.Id}" >{!Con.Name}</apex:outputLink>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstVisit.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="VisitPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="VisitPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="VisitPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="VisitPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span> 
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel>
+
+            <!--    page Block for the ProgramPackage Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="Program_PackagePB" rendered="{!objectType == 'Program_Package'}">
+                    <apex:sectionHeader title="Program Packages" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Program_Package" value="{!lstProgram_Package}" var="Con" Title="Program Package" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Program_Package__c.FieldSets.Program_Package_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Con.Id}" rendered="{!If(fieldSet.Label == 'Full Name', True,False)}">{!Con.Name}</apex:outputLink>
+                                <apex:outputField value="{!Con[fieldSet]}" rendered="{!If(fieldSet.Label != 'Full Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Name" rendered="{!$ObjectType.Program_Package__c.FieldSets.Program_Package_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Con.Id}" >{!Con.Name}</apex:outputLink>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstProgram_Package.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="Program_PackagePB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="Program_PackagePB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="Program_PackagePB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="Program_PackagePB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span> 
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel>            
+
+            <!--    page Block for the Client_Interaction Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="Client_InteractionPB" rendered="{!objectType == 'Client_Interaction'}">
+                    <apex:sectionHeader title="Client Interactions" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Client_Interaction" value="{!lstClient_Interaction}" var="Con" Title="Client Interaction" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Client_Interaction__c.FieldSets.Client_Interactions_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Con.Id}" rendered="{!If(fieldSet.Label == 'Full Name', True,False)}">{!Con.Name}</apex:outputLink>
+                                <apex:outputField value="{!Con[fieldSet]}" rendered="{!If(fieldSet.Label != 'Full Name', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Name" rendered="{!$ObjectType.Client_Interaction__c.FieldSets.Client_Interactions_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Con.Id}" >{!Con.Name}</apex:outputLink>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstClient_Interaction.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="Client_InteractionPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="Client_InteractionPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="Client_InteractionPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="Client_InteractionPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span> 
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel> 
+            
+        <!--    page Block for the Contracts Related Lists for 1000 Records--> 
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="ContractPB" rendered="{!objectType == 'Contract'}">
+                    <apex:sectionHeader title="Contracts" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Contract" value="{!lstContract}" var="Cont" Title="Contracts" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Cont.Id}" rendered="{!If(fieldSet.Label == 'Contract Number', True,False)}">{!Cont.ContractNumber}</apex:outputLink>
+                                <apex:outputField value="{!Cont[fieldSet]}" rendered="{!If(fieldSet.Label != 'Contract Number', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column value="{!Cont.AccountId}" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Cont.Status}" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Cont.StartDate}" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Length of Term" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}">
+                            <apex:outputText value="{!Cont.ContractTerm}" />
+                        </apex:column>
+                        <apex:column value="{!Cont.EndDate}" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Contract Number" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Cont.Id}" >{!Cont.ContractNumber}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!Cont.OwnerId}" rendered="{!$ObjectType.Contract.FieldSets.Contract_Fields_Set.size == 0}"/>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstContract.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                            <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                <img src="/s.gif" class="firstoff"/>
+                                &nbsp;
+                                <span class="prevNext">
+                                    <img src="/s.gif" class="prevoff" />  
+                                    <font color="#A8A8A8">Previous</font>
+                                </span>
+                                &nbsp;
+                            </apex:outputText>                        
+                            <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="ContractPB">
+                                    <img src="/s.gif" class="first"/>
+                                </apex:commandLink>
+                                &nbsp;
+                                <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="ContractPB">
+                                    <img src="/s.gif" class="prev" />
+                                    Previous
+                                </apex:commandLink>
+                                &nbsp;
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                <span>
+                                    <font color="#A8A8A8">Next</font>
+                                    <img src="/s.gif" class="nextoff"/>
+                                </span>
+                                &nbsp;
+                                <img src="/s.gif" class="lastoff" />
+                            </apex:outputText>
+                            <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="ContractPB">
+                                    Next
+                                    <img src="/s.gif" class="next"/>
+                                </apex:commandLink>
+                                &nbsp;
+                                <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="ContractPB">
+                                    <img src="/s.gif" class="last" />
+                                </apex:commandLink>
+                            </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->              
+                </apex:pageBlock>
+            </apex:outputPanel>
+        <!--    page Block for the Cases Related Lists for 1000 Records--> 
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="CasePB" rendered="{!objectType == 'Case'}">
+                    <apex:sectionHeader title="Cases" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="Case" value="{!lstCase}" var="Case" Title="Cases" first="{!FirstPage}" rows="{!currentPageCount}">
+                        <apex:repeat value="{!$ObjectType.Case.FieldSets.Case_Fields_Set}" var="fieldSet">
+                            <apex:column headerValue="{!fieldSet.Label}">               
+                                <apex:outputLink value="/{!Case.Id}" rendered="{!If(fieldSet.Label == 'Case Number', True,False)}">{!Case.CaseNumber}</apex:outputLink>
+                                <apex:outputField value="{!Case[fieldSet]}" rendered="{!If(fieldSet.Label != 'Case Number', True,False)}"/>
+                            </apex:column>
+                        </apex:repeat> 
+                        <apex:column headerValue="Case" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}">
+                            <apex:outputLink value="/{!Case.Id}" >{!Case.CaseNumber}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!Case.ContactId}" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Case.Subject}" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Case.Priority}" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}"/>
+                        <apex:column value="{!Case.Status}" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}"/>
+                        <apex:column headerValue="Owner" value="{!Case.OwnerId}" rendered="{!$ObjectType.Case.FieldSets.Case_Fields_Set.size == 0}"/>
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstCase.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="CasePB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="CasePB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="CasePB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="CasePB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->          
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <!--    page Block for the Open Activities Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="OpenActivityPB" rendered="{!objectType == 'OpenActivity'}">
+                    <apex:sectionHeader title="Open Activities" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back 
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="OpenActivity" value="{!lstOpenActivity}" var="OP" Title="Open Activities" first="{!FirstPage}" rows="{!currentPageCount}"> 
+                        <apex:column headerValue="Subject">
+                            <apex:outputLink value="/{!OP.Id}" >{!OP.Subject}</apex:OutputLink>
+                        </apex:column>
+                        <apex:column value="{!OP.WhoId}" />
+                        <apex:column headerValue="Related To">                  
+                            <apex:outputLink value="/{!OP.WhatId}" >{!OP.What.Name}</apex:outputLink>
+                        </apex:column> 
+                        <apex:column value="{!OP.IsTask}" />
+                        <apex:column headerValue="Due Date">
+                            <apex:outputText value="{!OP.ActivityDate}" />
+                        </apex:column> 
+                        <apex:column value="{!OP.Status}" />
+                        <apex:column value="{!OP.Priority}" />
+                        <apex:column value="{!OP.OwnerId}" />
+                        <apex:column headerValue="Type">
+                            <apex:outputText value="{!OP.ActivityType}" />
+                        </apex:column> 
+                    </apex:pageBlockTable>
+                <!--    Start Displaying Pagination Code -->
+                <apex:outputLabel rendered="{!lstOpenActivity.size > 0}">
+                    <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                        <div style="margin:0 auto; width:auto; text-align:center;">
+                            <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                <img src="/s.gif" class="firstoff"/>
+                                &nbsp;
+                                <span class="prevNext">
+                                    <img src="/s.gif" class="prevoff" />  
+                                    <font color="#A8A8A8">Previous</font>
+                                </span>
+                                &nbsp;
+                            </apex:outputText>                        
+                            <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="OpenActivityPB">
+                                    <img src="/s.gif" class="first"/>
+                                </apex:commandLink>
+                                &nbsp;
+                                <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="OpenActivityPB">
+                                    <img src="/s.gif" class="prev" />
+                                    Previous
+                                </apex:commandLink>
+                                &nbsp;
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                <span>
+                                    <font color="#A8A8A8">Next</font>
+                                    <img src="/s.gif" class="nextoff"/>
+                                </span>
+                                &nbsp;
+                                <img src="/s.gif" class="lastoff" />
+                            </apex:outputText>
+                            <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="OpenActivityPB">
+                                    Next
+                                    <img src="/s.gif" class="next"/>
+                                </apex:commandLink>
+                                &nbsp;
+                                <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="OpenActivityPB">
+                                    <img src="/s.gif" class="last" />
+                                </apex:commandLink>
+                            </apex:outputtext>
+                        </div>
+                        <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                        <script>
+                            document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                        </script>
+                    </div>
+                </apex:outputLabel>
+                <div style="clear:both"></div>
+                <!--    End Displaying Pagination Code -->              
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <!--    page Block for the Open Activities Related Lists for 1000 Records-->
+            <apex:outputPanel rendered="{!isRender}">
+                <apex:pageBlock id="ActivityHistoryPB" rendered="{!objectType == 'ActivityHistory'}">
+                    <apex:sectionHeader title="Activity History" />
+                    <apex:outputLink value="../apex/UltimateParent?id={!AccId}" target="_self">
+                        Go Back  
+                    </apex:outputLink>
+                    <br /><br />
+                    <apex:pageBlockTable id="ActivityHistory" value="{!lstActivityHistory}" var="AH" Title="Activity History" first="{!FirstPage}" rows="{!currentPageCount}"> 
+                        <apex:column headerValue="Subject">
+                            <apex:outputLink value="/{!AH.Id}" >{!AH.Subject}</apex:OutputLink>
+                        </apex:column>
+                        <apex:column value="{!AH.WhoId}" />
+                        <apex:column headerValue="Related To">
+                            <apex:outputLink value="/{!AH.WhatId}" >{!AH.What.Name}</apex:outputLink>
+                        </apex:column> 
+                        <apex:column value="{!AH.IsTask}" />
+                        <apex:column headerValue="Due Date">
+                            <apex:outputText value="{!AH.ActivityDate}" />
+                        </apex:column>
+                        <apex:column value="{!AH.OwnerId}" />
+                        <apex:column value="{!AH.LastModifiedDate}" />
+                        <apex:column headerValue="Type">
+                            <apex:outputText value="{!AH.ActivityType}" />
+                        </apex:column> 
+                    </apex:pageBlockTable>
+                    <!--    Start Displaying Pagination Code -->
+                    <apex:outputLabel rendered="{!lstActivityHistory.size > 0}">
+                        <div style="position:relative; width:100% height:30px; text-align:center;" class="paginator" >
+                            <div style="margin:0 auto; width:auto; text-align:center;">
+                                <apex:outputText rendered="{!firstPage/currentPageCount == 0}">
+                                    <img src="/s.gif" class="firstoff"/>
+                                    &nbsp;
+                                    <span class="prevNext">
+                                        <img src="/s.gif" class="prevoff" />  
+                                        <font color="#A8A8A8">Previous</font>
+                                    </span>
+                                    &nbsp;
+                                </apex:outputText>                        
+                                <apex:outputText rendered="{!firstPage/currentPageCount != 0}" >
+                                    <apex:commandLink action="{!firstPage}" style="text-decoration:none;" rerender="ActivityHistoryPB">
+                                        <img src="/s.gif" class="first"/>
+                                    </apex:commandLink>
+                                        &nbsp;
+                                    <apex:commandLink action="{!previousPage}" style="text-decoration:none;" rerender="ActivityHistoryPB">
+                                        <img src="/s.gif" class="prev" />
+                                        Previous
+                                    </apex:commandLink>
+                                    &nbsp;
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(firstPage/currentPageCount + 1) == lastPage}">
+                                    <span>
+                                        <font color="#A8A8A8">Next</font>
+                                        <img src="/s.gif" class="nextoff"/>
+                                    </span>
+                                    &nbsp;
+                                    <img src="/s.gif" class="lastoff" />
+                                </apex:outputText>
+                                <apex:outputtext rendered="{!(firstPage/currentPageCount + 1) != lastPage}">
+                                    <apex:commandLink action="{!nextPage}" style="text-decoration:none;" rerender="ActivityHistoryPB">
+                                        Next
+                                        <img src="/s.gif" class="next"/>
+                                    </apex:commandLink>
+                                    &nbsp;
+                                    <apex:commandLink action="{!lastPage}" style="text-decoration:none;" rerender="ActivityHistoryPB">
+                                        <img src="/s.gif" class="last" />
+                                    </apex:commandLink>
+                                </apex:outputtext>
+                            </div>
+                            <span style="position:absolute; top:0; right:5px;" Id="spnPageNumber"></span>
+                            <script>
+                                document.getElementById('spnPageNumber').innerHTML = 'Page' + Math.ceil({!firstPage/currentPageCount + 1}) + ' of ' + {!lastPage}
+                            </script>
+                        </div>
+                    </apex:outputLabel>
+                    <div style="clear:both"></div>
+                    <!--    End Displaying Pagination Code -->              
+                </apex:pageBlock>   
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>    
+</apex:page>

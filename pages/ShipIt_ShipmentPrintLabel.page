@@ -1,0 +1,20 @@
+<!--
+    /** 
+      * Description     :   This is used to display PDF Shipment Label returned from fedEx.
+      *                     Purpose of this page is to avoid any security and permission issue accross the users.
+      *
+      * Created By      :   Rajeev Jain(Simplyforce)
+      *
+      * Created Date    :   04/03/2015
+      *
+      * Version         :   V1.0 Created
+      *
+      **/   
+--> 
+<apex:page controller="ShipIt_ShipmentPrintLabelController" showHeader="false">
+    
+    <body style="overflow-x:hidden">
+        <iframe src="data:{!contentType};base64,{!attachmentBody}" width="100%" style="min-height:660px;"></iframe>
+    </body>
+   <!--<embed width="100%" height="100%" name="plugin" src="data:{!shipmentAttachement.ContentType},base64,{!attachmentBody}" type="application/pdf"/>-->
+</apex:page>

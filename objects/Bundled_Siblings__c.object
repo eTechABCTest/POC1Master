@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object is for UI purpose only, supporting a related list on each opportunity to show 
+Siblings.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Bundle__c</fullName>
+        <description>Created for CR</description>
+        <externalId>false</externalId>
+        <label>Bundle</label>
+        <referenceTo>Bundle__c</referenceTo>
+        <relationshipLabel>Bundled Siblings</relationshipLabel>
+        <relationshipName>Bundled_Siblings</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Close_Date_To__c</fullName>
+        <description>Created for CR-5272.</description>
+        <externalId>false</externalId>
+        <formula>To__r.CloseDate</formula>
+        <label>Close Date (To)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>From__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created for CR-5272.</description>
+        <externalId>false</externalId>
+        <label>From</label>
+        <lookupFilter>
+            <active>true</active>
+            <booleanFilter>1 OR 2 OR 3</booleanFilter>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>BI_Marketing</value>
+            </filterItems>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>Core_Marketing</value>
+            </filterItems>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>Southwind</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Bundled Siblings (From)</relationshipLabel>
+        <relationshipName>Bundled_Siblings1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Marketer_Name_To__c</fullName>
+        <description>Created for CR-5272</description>
+        <externalId>false</externalId>
+        <formula>To__r.Marketer_Name1__c</formula>
+        <label>Marketer Name (To)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Proposal_Value_To__c</fullName>
+        <externalId>false</externalId>
+        <formula>To__r.Amount</formula>
+        <label>Proposal Value (To)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created for CR</description>
+        <externalId>false</externalId>
+        <label>To</label>
+        <lookupFilter>
+            <active>true</active>
+            <booleanFilter>1 OR 2 OR 3</booleanFilter>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>BI_Marketing</value>
+            </filterItems>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>Core_Marketing</value>
+            </filterItems>
+            <filterItems>
+                <field>Opportunity.RecordType.DeveloperName</field>
+                <operation>equals</operation>
+                <value>Southwind</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Bundled Siblings</relationshipLabel>
+        <relationshipName>Bundled_Siblings</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Bundled Siblings</label>
+    <nameField>
+        <displayFormat>BS-{00000}</displayFormat>
+        <label>Bundled Siblings Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Bundled Siblings</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

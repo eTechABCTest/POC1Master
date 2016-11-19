@@ -1,0 +1,170 @@
+<apex:page standardController="Restrictions__c"
+    extensions="RestrictionController" tabStyle="Restrictions__c">
+    <apex:sectionHeader title="Restriction Edit" subtitle="New Restriction"
+        rendered="{!Restriction.Id == null}" />
+    <apex:sectionHeader title="Restriction Edit"
+        subtitle="{!Restriction.Name}" rendered="{!Restriction.Id != null}" />
+    <c:IncludeJQuery />
+
+    <script>
+        j$(function() { setupPage(); });
+        
+        function setupPage() {
+            FormatDeletes();
+        }
+        
+        function FormatDeletes()
+        {
+            // Just in case this is getting run twice, remove any previous events on the delete button.
+            j$('.rowDelete').button().unbind();
+
+            // Format the delete buttons and add the delete functionality to them.
+            j$('.rowDelete').button().click(function() {
+                // Check the 'isdeleted' box and hide the row.
+                j$(this).next('input').val('true'); // tells the backend the row is deleted.
+                j$(this).closest('tr').toggle(); // hides the row from the user, doesn't actually delete until they hit save.
+            });
+        }
+    </script>
+
+    <apex:form id="mainForm">
+        <!--Modified By - Abhinav Sharma - CR-20150331-8828 - Added escape attribute in page message-->
+        <apex:pageMessages escape="false"/>
+        <apex:pageBlock id="pageBlock" mode="edit" title="Restriction Edit">
+            <apex:actionStatus id="mtmStatus"
+                onstart="blockElement('[id*=mtmPanel]');"
+                onstop="unblockElement('[id*=mtmPanel]');setupPage();" />
+
+            <!--Modify By - Ajit Surana - CR-20140620-5875 - 10/18/2014 -->
+            <!-- Buttons -->
+            <apex:pageBlockButtons id="pbButtons">
+                <apex:actionStatus id="saveStatus">
+                    <apex:facet name="stop">
+                        <apex:commandButton value=" Save " action="{!Save}" status="saveStatus" rerender="pbButtons,mainForm"/>
+                    </apex:facet>
+                    <apex:facet name="start">
+                        <apex:commandButton value=" Saving... " action="{!Save}" rerender="pbButtons" disabled="true" status="saveStatus" />
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:actionStatus id="cancelStatus">
+                    <apex:facet name="stop">
+                        <apex:commandButton value=" Cancel " action="{!Cancel}" rerender="pbButtons" status="cancelStatus" />
+                    </apex:facet>
+                    <apex:facet name="start">
+                        <apex:commandButton value=" Working... " action="{!Cancel}" disabled="true" status="cancelStatus" />
+                    </apex:facet>
+                </apex:actionStatus>
+                <!--<apex:commandButton value=" Save " action="{!Save}" />
+                <apex:commandButton value=" Cancel " action="{!Cancel}" />-->
+            </apex:pageBlockButtons>
+
+            <!-- Restriction MTM -->
+            <apex:pageBlockSection title="Restriction MTMs" id="mtmSection"
+                collapsible="false" columns="2">
+                <apex:actionRegion id="region">
+                    <apex:outputPanel layout="block" id="mtmPanel">
+                        <apex:pageBlockTable value="{!RestrictionMTMsForDisplay}"
+                            id="repeater" var="mtm" style="width:100%">
+                            <apex:column >
+                                <div class="ui-state-default ui-corner-all" title="delete"
+                                    style="float: left; height: 19px; width: 19px; text-align: center; cursor: pointer;">
+                                <div class="ui-icon ui-icon-closethick rowDelete"
+                                    style="height: 16px; width: 16px; border: none;"></div>
+                                <apex:inputHidden id="IntIsDeleted" value="{!mtm.IsDeleted}" />
+                                </div>
+                            </apex:column>
+                            <apex:column headerValue="Object Type">
+                                <apex:selectList value="{!mtm.ObjectType}" style="width:100px"
+                                    multiselect="false" size="1">
+                                    <apex:selectOptions value="{!ObjectTypes}" />
+                                    <apex:actionSupport event="onchange" rerender="mtmSection"
+                                        status="mtmStatus" />
+                                </apex:selectList>
+                            </apex:column>
+                            <apex:column headerValue="Associated Record">
+                                <apex:inputField value="{!mtm.RestrictionMTM.Account__c}"
+                                    rendered="{!mtm.ObjectType == 'Account'}" />
+                                <apex:inputField value="{!mtm.RestrictionMTM.Contact__c}"
+                                    rendered="{!mtm.ObjectType == 'Contact'}" />
+                            </apex:column>
+                            <br />
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                    <br />
+                    <apex:commandButton value=" Add " action="{!AddRestrictionMTM}" rerender="mtmSection" status="mtmStatus" />
+                </apex:actionRegion>
+            </apex:pageBlockSection>
+
+            <!-- Information -->
+            <apex:pageBlockSection title="Information" id="sectionItem"
+                collapsible="false">
+                <!-- <apex:inputField value="{!Restriction.Name}" required="true" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Owner" />
+                    <apex:outputText value="{!CurrentUserName}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem /> -->
+                <apex:inputField value="{!Restriction.Delegate__c}" />
+                <apex:repeat value="{!$ObjectType.Restrictions__c.FieldSets.InformationSection}"
+                    var="f">
+                    <apex:inputField value="{!Restriction[f]}" required="{!f.required}" />
+                </apex:repeat>
+            </apex:pageBlockSection>
+
+            <!-- Restriction Detail -->
+            <apex:pageBlockSection title="Restriction Detail" id="detailSection"
+                columns="1">
+                <apex:inputField value="{!Restriction.Category__c}" required="true" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason" />
+                    <c:MultiSelectPicklist TargetObject="{!Restriction}"
+                        TargetField="Reason__c" Size="9" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Restriction.Source_Department__c}"
+                    required="true" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Does Not Apply To" />
+                    <c:MultiSelectPicklist TargetObject="{!Restriction}"
+                        TargetField="Does_Not_Apply_To__c" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Restriction.Expiration_Date__c}"
+                    required="true" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Program Exceptions" />
+                    <c:MultiSelectPicklist TargetObject="{!Restriction}"
+                        TargetField="Program_Exceptions__c" Size="10" />
+                </apex:pageBlockSectionItem>
+                <apex:repeat value="{!$ObjectType.Restrictions__c.FieldSets.RestrictionDetail}"
+                    var="f">
+                    <apex:inputField value="{!Restriction[f]}" required="{!f.required}" />
+                </apex:repeat>
+            </apex:pageBlockSection>
+
+            <!-- Restriction action steps -->
+            <apex:pageBlockSection title="Restriction Action Steps"
+                id="RestrictionActionSteps" columns="2">
+                <apex:repeat value="{!$ObjectType.Restrictions__c.FieldSets.RestrictionActionSteps}"
+                    var="f">
+                    <apex:inputField value="{!Restriction[f]}" required="{!f.required}" />
+                </apex:repeat>
+            </apex:pageBlockSection>
+
+            <!-- Comments -->
+            <apex:pageBlockSection title="Comments" id="commentsSection"
+                columns="1">
+                <apex:inputField value="{!Restriction.Comments__c}"
+                    style="width:75%" />
+            </apex:pageBlockSection>
+
+            <!-- System Information -->
+            <apex:pageBlockSection title="System Information"
+                id="systemInfoSection">
+                <apex:inputField value="{!Restriction.Restriction_Unique_ID__c}" />
+                <apex:repeat value="{!$ObjectType.Restrictions__c.FieldSets.SystemInformation}"
+                    var="f">
+                    <apex:inputField value="{!Restriction[f]}" required="{!f.required}" />
+                </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,76 @@
+<!--
+*    Purpose         :   VF page to enable the User to close the selected Cases from the list view. 
+*                
+*    Create By       :   Mahendra Swarnkar
+*    
+*    Created Date    :   09/05/2016
+*    
+*    Revision Log    :   V1.0 - Created By - Mahendra Swarnkar - CR-9802 
+*                       
+-->
+<!-- Apex page Starts from here -->
+<apex:page standardController="Case" extensions="ManageCasesController" recordSetVar="cases" action="{!selectedCasesOnFromListView}">
+    
+    <!-- Apex Form Starts from here -->
+    <apex:form >
+        <!-- Apex Page Block -- Starts from here -->
+       <apex:pageBlock title="{!if(isEligible, 'Selected Cases', '' )}" > 
+           
+           <!-- Apex Page Messages -->
+           <apex:pageMessages />
+           
+           <!-- Apex Page block Buttons :- Cancel/Okay and Close Case -- Starts from here -->
+           <apex:pageBlockButtons location="Top">
+               
+               <!-- Close Case Button  -->
+               <apex:commandButton action="{!updateCases}" value="Close Case" rendered="{! isEligible}"  />
+               
+               <!-- Cancel/Okay Button  -->
+               <apex:commandButton action="{!cancel}" value="{! if(NOT(isEligible), '   OK   ', 'Cancel')}" />
+               
+           </apex:pageBlockButtons>
+           <!-- Apex Page block Buttons :- Cancel/Okay and Close Case  -- Ends here -->
+           
+           <!-- Apex Page block section to show the cases fields that are required while closing a case -- Starts here -->
+           <apex:pageBlockSection collapsible="false" columns="1"  rendered="{! isEligible}">
+               
+               <!-- Case Status List to update the case status -->
+               <apex:selectList value="{!selectedStatus}" label="Case Status" size="1" required="true"  tabindex="0" >
+                   <apex:selectOptions value="{! CaseStatusOptions}" />
+               </apex:selectList>
+               <!--<apex:inputField value="{!Cas.Status}"/>-->
+               
+               <!-- Case Reasons List:- the Reason for closing a case -->
+               <apex:selectList value="{!selectedReason}"  label="Case Reason" size="1"  required="true" tabindex="0"  >
+                   <apex:selectOptions value="{! CaseReasonOptions}"  />
+               </apex:selectList>
+               
+               <!-- Internal Comments for the case by the Users -->
+               <apex:inputTextarea value="{!caseInternalComments}" label="Internal Comments" rows="4" />
+               
+           </apex:pageBlockSection> 
+           <!-- Apex Page block section to show the cases fields that are required while closing a case -- Ends here -->
+           
+           <!-- Apex table to show the cases that will be selected for closing Starts from here -->
+           <apex:pageBlockTable value="{!selected}" var="case" rendered="{! isEligible}">
+               
+               <!-- Column 1 = Case Number --> 
+               <apex:column value="{!case.casenumber}"/>
+               
+               <!-- Column 2 = Subject --> 
+               <apex:column value="{!case.subject}"/>
+                
+               <!-- Column 3 = Case Priority --> 
+               <apex:column value="{!case.priority}"/>
+               
+            </apex:pageBlockTable> 
+           <!-- Apex table to show the cases that will be selected for closing -- Ends here -->
+
+        </apex:pageBlock>
+        <!-- Apex Page block Ends here -->
+        
+    </apex:form>    
+    <!-- Apex Form Ends here -->
+    
+</apex:page>
+<!-- Apex page Ends here -->

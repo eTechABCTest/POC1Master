@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for the Integrated Sites (ie: Advisory.com &amp; EAB.com)</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>AdvAdmin_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Base URL for the Advisory.com Admin Tool. This is used on the AdvAdmin search page to redirect the user to the User Detail View in the Admin Tool.</inlineHelpText>
+        <label>AdvAdmin URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Advisory_Password_Reset_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>URL That is included in the password reset emails sent to Advisory.com Users.</inlineHelpText>
+        <label>Advisory Password Reset URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Advisory_com_SF_URL__c</fullName>
+        <description>ie: http://advisorytest.advsfdc.cs14.force.com/Query is the URL for the Test environment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>URL of the Salesforce Sites page that hosts the Advisory.com page. to go Setup -&gt; Develop -&gt; Sites to get the URL for the Advisory.com Site.</inlineHelpText>
+        <label>Advisory.com SF URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>EAB_Password_Reset_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>EAB Password Reset URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Encryption_Key__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Key used for encrypting data sent between SF and Integrated Sites.</inlineHelpText>
+        <label>Encryption Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Sitecore Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

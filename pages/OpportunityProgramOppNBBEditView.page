@@ -1,0 +1,1441 @@
+<!-- 
+    Description     :   VF page to CPQ Program opportunities New/Edit 
+    
+    Created By      :   Subhash Garhwal
+    
+    Created Date    :   06/27/2016
+    
+    Revision Logs   :   V_1.0 - Created - CR-20160414-9762
+    
+ -->
+<apex:page standardController="Opportunity" id="pge" extensions="OppControllerExtension">
+    
+    <!-- Header -->
+    <apex:sectionHeader title="Opportunity Edit" subtitle="{!IF(ISBLANK(Opportunity.Id), 'New Opportunity', Opportunity.Name)}" rendered="{!NOT(isParentClosed)}"/>
+    
+    <c:OpportunityProbability />
+    <c:BlockUI />
+    
+    <!-- Script to populate Probability according to stage -->
+    <script>
+        
+        //Function
+        function showHideSections(elem) {
+            
+            //Get value of Stage
+            var stageValue = elem.value;
+            var flowControlVar = '';
+            
+            var flowControlVarCurrentValue = document.getElementById('pge:frm:pB:flowControl').value;
+            
+            //Get Flow Control variable value
+            if(flowControlVarCurrentValue.indexOf('V1_INFO_OPEN_STAGE') != -1)
+                flowControlVar = 'V1_INFO_OPEN_STAGE,';
+            else if(flowControlVarCurrentValue.indexOf('V1_INFO_ADVANCE_STAGE') != -1)
+                flowControlVar = 'V1_INFO_ADVANCE_STAGE,';
+            else if(flowControlVarCurrentValue.indexOf('V1_INFO_Closed') != -1)
+                flowControlVar = 'V1_INFO_Closed,';
+            
+            //Check for On Deck stage or Pipeline stage
+            if(flowControlVarCurrentValue.indexOf('V1_INFO_Open_ON_DECK') != -1)
+                flowControlVar = flowControlVar + 'V1_INFO_Open_ON_DECK,';
+            else if(flowControlVarCurrentValue.indexOf('V1_INFO_ADVANCE_STAGE') != -1)
+                flowControlVar = flowControlVar + 'V1_INFO_ADVANCE_STAGE,';
+                
+            
+            //Check for value
+            if(stageValue != null && stageValue != '' && stageValue != undefined) {
+                
+                
+                if(stageValue != 'Closed Won' && stageValue != 'Closed Lost') {
+                    
+                    if(stageValue != 'Prospect' && stageValue != 'Outreach' && stageValue != 'Initial Visit Scheduled' && stageValue != 'Prewire') {
+                        flowControlVar = flowControlVar + 'V2_MSND_ADVANCE_STAGE,';
+                    }
+                    
+                    flowControlVar = flowControlVar + 'V2_OPEN_ADVANCE';
+                }
+                
+                //Check for Close Opps
+                if(stageValue == 'Closed Won' || stageValue == 'Closed Lost') {
+                    flowControlVar = flowControlVar + 'V2_CLOSED_ADVANCE';
+                }
+            }
+            
+            //Check for value
+            if(flowControlVar.localeCompare(document.getElementById('pge:frm:pB:flowControl').value) != 0) {
+                document.getElementById('pge:frm:pB:flowControl').value = flowControlVar;
+                reRenderAF(flowControlVar);
+                
+            }
+        }
+    </script>
+    
+    <apex:outputPanel rendered="{!isParentClosed}">
+        <apex:pageMessage strength="2" summary="{!$Label.CLOSED_CONTRACT_PROGRAM_OPP}" severity="error" escape="false"/>
+        <apex:outputLink value="/{!retURL}">Click here</apex:outputLink>&nbsp;to go to previous page.
+    </apex:outputPanel>
+    
+    <!--Form -->
+    <apex:form id="frm" rendered="{!NOT(isParentClosed)}">
+    
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        
+        <!--Page Block -->
+        <apex:pageBlock id="pB" title="Opportunity Edit" mode="edit">
+            
+            <!-- Page Messages -->
+            <apex:pageMessages id="msg" escape="false"/>
+            
+            <apex:inputHidden value="{!flowControl}" id="flowControl"/>
+            
+            <!-- Page Block buttons -->
+            <apex:pageBlockButtons id="btn">
+                <apex:commandButton action="{!doSave}" value="Save"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+            <!-- Information section start -->
+            <!-- Information Section (New case)-->
+            <apex:pageBlockSection collapsible="false" title="Opportunity Information" columns="2" id="newOPPInfoPBS" rendered="{!IF(contains(flowControl, 'V1_INFO_New'), 'true', 'false')}">
+                
+                <!-- Section Items to display fields -->
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.OwnerId.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Owner"/>
+                    <apex:inputField value="{!Opportunity.OwnerId}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketer__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketer__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketer__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CloseDate.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CloseDate.Label}"/>
+                    <apex:inputField value="{!Opportunity.CloseDate}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketing_Associate__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.StageName.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.StageName.Label}"/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!Opportunity.StageName}" required="true" onChange="validateProbability(this);showHideSections(this);" rendered="{!IF(stageValues.SIZE > 0, 'false', 'true')}"/>
+                        <apex:selectList value="{!Opportunity.StageName}" required="true" onChange="validateProbability(this);showHideSections(this);" size="1" multiselect="false" rendered="{!IF(stageValues.SIZE > 0, 'true', 'false')}">
+                            <apex:selectOptions value="{!stageValues}"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Name.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Name.Label}"/>
+                    <apex:inputField value="{!Opportunity.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Amount.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Amount.Label}"/>
+                    <apex:inputField value="{!Opportunity.Amount}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.AccountId.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.AccountId.Label}"/>
+                    <apex:inputField value="{!Opportunity.AccountId}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Program__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <!-- Information Section (New case) End-->
+            
+            <!-- Information Section (Open Opp)-->
+            <apex:pageBlockSection collapsible="false" title="Opportunity Information" columns="2" id="openOPPInfoPBS" rendered="{!IF(contains(flowControl, 'V1_INFO_OPEN_STAGE'), 'true', 'false')}" >
+                
+                <!-- Section Items to display fields -->
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.OwnerId.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Owner"/>
+                    <apex:inputField value="{!Opportunity.OwnerId}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.RecordTypeId.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Record Type"/>
+                    <apex:outputField value="{!Opportunity.RecordTypeId}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketer__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketer__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketer__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CloseDate.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CloseDate.Label}"/>
+                    <apex:inputField value="{!Opportunity.CloseDate}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketing_Associate__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Contract_LOA_Opp_Stage__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Contract_LOA_Opp_Stage__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Contract_LOA_Opp_Stage__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <!-- VH commented out 7/18 per request from JB
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Account_EA_AE__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Account_EA_AE__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Account_EA_AE__c}"/>
+                </apex:pageBlockSectionItem>-->
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.StageName.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.StageName.Label}"/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!Opportunity.StageName}" required="true" onChange="validateProbability(this);showHideSections(this);" rendered="{!IF(stageValues.SIZE > 0, 'false', 'true')}"/>
+                        <apex:selectList value="{!Opportunity.StageName}" required="true" onChange="validateProbability(this);showHideSections(this);" size="1" multiselect="false" rendered="{!IF(stageValues.SIZE > 0, 'true', 'false')}">
+                            <apex:selectOptions value="{!stageValues}"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Parent_Opportunity__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Parent_Opportunity__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Parent_Opportunity__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Amount.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Amount.Label}"/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!Opportunity.Amount}" required="true" rendered="{!IF(contains(flowControl, 'V1_INFO_Open_ON_DECK'), 'true', 'false')}"/>
+                        <apex:outputField value="{!Opportunity.Amount}" rendered="{!IF(contains(flowControl, 'V1_INFO_ADVANCE_STAGE'), 'true', 'false')}"/> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Name.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Name"/>
+                    <apex:inputField value="{!Opportunity.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Probability.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Probability.Label}"/>
+                    <apex:inputField value="{!Opportunity.Probability}" styleclass="probabilityClass"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.AccountId.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.AccountId.Label}"/>
+                    <apex:inputField value="{!Opportunity.AccountId}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.RFP_Stage__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.RFP_Stage__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.RFP_Stage__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Institution_Restriction_Status__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Institution_Restriction_Status__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Institution_Restriction_Status__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Risk_Contract__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Risk_Contract__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Risk_Contract__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Program__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.IsParentClosed__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.IsParentClosed__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.IsParentClosed__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Main_Contact__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Main_Contact__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Main_Contact__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Scope_MtM__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Scope_MtM__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Scope_MtM__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_Visit_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_Visit_Date__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Initial_Visit_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Pipeline_Freshness__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Pipeline_Freshness__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Pipeline_Freshness__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_PA_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_PA_Date__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Next_PA_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Activity_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Activity_Date__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Next_Activity_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            <!-- Information Section (Open Opp) End-->
+            
+            <!-- Information Section (Closed Opp)-->
+            <apex:pageBlockSection collapsible="false" title="Opportunity Information" columns="2" id="closedOPPInfoPBS" rendered="{!IF(contains(flowControl, 'V1_INFO_Closed'), 'true', 'false')}" >
+                
+                <!-- Section Items to display fields -->
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.OwnerId.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Owner"/>
+                    <apex:inputField value="{!Opportunity.OwnerId}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.RecordTypeId.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Record Type"/>
+                    <apex:outputField value="{!Opportunity.RecordTypeId}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketer__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketer__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketer__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CloseDate.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CloseDate.Label}"/>
+                    <apex:outputField value="{!Opportunity.CloseDate}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Marketing_Associate__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Contract_LOA_Opp_Stage__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Contract_LOA_Opp_Stage__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Contract_LOA_Opp_Stage__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <!-- VH commented out 7/18 per request from JB
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Account_EA_AE__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Account_EA_AE__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Account_EA_AE__c}"/>
+                </apex:pageBlockSectionItem>-->
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.StageName.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.StageName.Label}"/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!Opportunity.StageName}" required="true" onChange="showHideSections(this);" rendered="{!IF(stageValues.SIZE > 0, 'false', 'true')}"/>
+                        <apex:selectList value="{!Opportunity.StageName}" required="true" onChange="showHideSections(this);" size="1" multiselect="false" rendered="{!IF(stageValues.SIZE > 0, 'true', 'false')}">
+                            <apex:selectOptions value="{!stageValues}"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Parent_Opportunity__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Parent_Opportunity__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Parent_Opportunity__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Amount.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Amount.Label}"/>
+                    <apex:outputField value="{!Opportunity.Amount}" />  
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Name.inlineHelpText}">
+                    <apex:outputLabel value="Opportunity Name"/>
+                    <apex:inputField value="{!Opportunity.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.AccountId.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.AccountId.Label}"/>
+                    <apex:outputField value="{!Opportunity.AccountId}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.RFP_Stage__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.RFP_Stage__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.RFP_Stage__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Institution_Restriction_Status__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Institution_Restriction_Status__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Institution_Restriction_Status__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Risk_Contract__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Risk_Contract__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Risk_Contract__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Program__c}"/>   
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.IsParentClosed__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.IsParentClosed__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.IsParentClosed__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Main_Contact__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Main_Contact__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Main_Contact__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Scope_MtM__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Scope_MtM__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Scope_MtM__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_Visit_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_Visit_Date__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Initial_Visit_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Pipeline_Freshness__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Pipeline_Freshness__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Pipeline_Freshness__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_PA_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_PA_Date__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Next_PA_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Activity_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Activity_Date__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Next_Activity_Date__c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <!-- Information Section (Open Opp) End-->
+            
+            <!-- New Opp (Pipeline section) -->
+            <apex:pageBlockSection collapsible="false" title="Pipeline Information" columns="2" id="newOPPPipelinePBS" rendered="{!IF(contains(flowControl, 'V2_PIPELINE_NEW'), 'true', 'false')}" >
+                
+                <!-- Subhash Garhwal - 07/11/2016 - New field added (QA# 76)-->
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Is_there_are_hard_next_step__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Next_Step_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Primary_Competitor__c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <!-- New Opp (Pipeline section) End-->
+            
+            <!-- New Opp (Pipeline section hidden) -->
+            <apex:pageBlockSection showHeader="false" collapsible="false" columns="1" id="newOPPPipelineHPBS" rendered="{!IF(contains(flowControl, 'V2_PIPELINE_NEW'), 'true', 'false')}" >
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.Label}"/>
+                    <apex:inputField value="{!Opportunity.Next_Steps_Text__c}" style="width: 800px;height: 75px;"/>
+                </apex:pageBlockSectionItem>
+                    
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Description.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Description.Label}"/>
+                    <apex:inputField value="{!Opportunity.Description}" style="width: 800px;height: 75px;"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:actionRegion >
+                
+                <apex:actionFunction name="reRenderAF" reRender="reRenderPanel,msg" status="waitMsg">
+                    <apex:param name="param1" value="" assignTo="{!flowControl}"/>
+                </apex:actionFunction>
+                
+                <apex:outputPanel id="reRenderPanel">
+                    
+                    <!-- Open Opp (Pipeline section) -->
+                    <apex:pageBlockSection collapsible="false" title="Pipeline Information" columns="2" id="OpenOPPPipelinePBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}" >
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Are_They_Evaluating__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Are_They_Evaluating__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Are_They_Evaluating__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Decision_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Decision_Date__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Decision_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_the_Evaluation_Competitive__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_the_Evaluation_Competitive__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Is_the_Evaluation_Competitive__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_Exposed_to_Research__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_Exposed_to_Research__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Prospect_Exposed_to_Research__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <!-- Subhash Garhwal - 07/11/2016 - New field added (QA# 76)-->
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Is_there_are_hard_next_step__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem />
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Next_Step_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Sell_Type__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Sell_Type__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Sell_Type__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Next_Steps_Text__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Trend_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Trend_Line__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Trend_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Pipeline section) End-->
+                    
+                    <!-- Open Opp (Pipeline section hidden) -->
+                    <apex:pageBlockSection showHeader="false" collapsible="false" title="Pipeline Information" columns="1" id="OpenOPPPipelineHPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}" >
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Description.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Description.Label}"/>
+                            <apex:inputField value="{!Opportunity.Description}" style="width: 800px;height: 75px;"/>
+                        </apex:pageBlockSectionItem>    
+                    </apex:pageBlockSection>
+                    
+                    <!-- Open Opp (Manager Forecast section) -->
+                    <apex:pageBlockSection collapsible="false" title="Manager Forecast" columns="2" id="OpenOPPMFPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Weekly_Best_Bet__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Weekly_Best_Bet__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Weekly_Best_Bet__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Month_80_50__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Month_80_50__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Next_Month_80_50__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Month_80_50__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Month_80_50__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Month_80_50__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Manager_Comments__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Manager_Comments__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Marketing_Manager_Comments__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Manager Forecast section) End-->
+                    
+                    <!-- Open Opp (Competition section) -->
+                    <apex:pageBlockSection collapsible="false" title="Competition" columns="2" id="OpenOPPCompetitionPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Primary_Competitor__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.R_I_Competitors__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.R_I_Competitors__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.R_I_Competitors__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Physician_Competitors__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Physician_Competitors__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Physician_Competitors__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Southwind_Competitor__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Southwind_Competitor__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Southwind_Competitor__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Competitor_Notes__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Competitor_Notes__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Competitor_Notes__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Competition section) End-->
+                    
+                    <!-- Open Opp (Outreach section) -->
+                    <apex:pageBlockSection collapsible="false" title="Outreach" columns="2" id="OpenOPPOutreachPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Type__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Type__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Outreach_Type__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.of_ELs_Sent__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.of_ELs_Sent__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.of_ELs_Sent__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Campaign__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Campaign__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Outreach_Campaign__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Engagement_Letter_Sent__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Engagement_Letter_Sent__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Engagement_Letter_Sent__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Campaign_Month__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Campaign_Month__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Outreach_Campaign_Month__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specialties__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specialties__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Specialties__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Other_Outreach_Campaign__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Other_Outreach_Campaign__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Other_Outreach_Campaign__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Outreach section) End-->
+                    
+                    <!-- Open Opp (Milestone – Creating the Opportunity section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Creating the Opportunity" columns="2" id="OpenOPPMSCOPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prewire_Completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prewire_Completed__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Prewire_Completed__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_Decision_Maker_Attending_Visit__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_Decision_Maker_Attending_Visit__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Is_Decision_Maker_Attending_Visit__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.No_of_Prewires__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.No_of_Prewires__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.No_of_Prewires__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Was_Decision_Maker_Prewired__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Was_Decision_Maker_Prewired__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Was_Decision_Maker_Prewired__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Warm_Lead__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Warm_Lead__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Warm_Lead__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.No_of_Visit_Attendees__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.No_of_Visit_Attendees__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.No_of_Visit_Attendees__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.LeadSource.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.LeadSource.Label}"/>
+                            <apex:inputField value="{!Opportunity.LeadSource}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Size_of_Organization__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Size_of_Organization__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Size_of_Organization__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Wildcard__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Wildcard__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Wildcard__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_VQ_Grade__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_VQ_Grade__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Initial_VQ_Grade__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specialties__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specialties__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Specialties__c}" />
+                        </apex:pageBlockSectionItem>
+                            
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_VQ_Value__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_VQ_Value__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Initial_VQ_Value__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Milestone – Creating the Opportunity section) End-->
+                    
+                    <!-- Open Opp (Milestone – Establishing the Need section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Establishing the Need" columns="2" id="OpenOPPMSEPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Why_Would_They_Join__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Why_Would_They_Join__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Why_Would_They_Join__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_reference_calls_been_requested__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_reference_calls_been_requested__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Has_reference_calls_been_requested__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Why_Would_They_Not_Join__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Why_Would_They_Not_Join__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Why_Would_They_Not_Join__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_an_ROI_Walk_Through_been_completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_an_ROI_Walk_Through_been_completed__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Has_an_ROI_Walk_Through_been_completed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specific_need_priority_identified__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specific_need_priority_identified__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Specific_need_priority_identified__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_Technical_feasibility_been_confirmed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_Technical_feasibility_been_confirmed__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Has_Technical_feasibility_been_confirmed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_Articulates_Need_for_Membership__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_Articulates_Need_for_Membership__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Prospect_Articulates_Need_for_Membership__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.of_Revisits__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.of_Revisits__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.of_Revisits__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_agreed_to_paperwork_by_date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_agreed_to_paperwork_by_date__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Prospect_agreed_to_paperwork_by_date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Tools_Demonstration_Completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Tools_Demonstration_Completed__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Tools_Demonstration_Completed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Statement_of_Work_Status__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Statement_of_Work_Status__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Statement_of_Work_Status__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Add_Stakeholder_IdentifiedEnfranchised__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Add_Stakeholder_IdentifiedEnfranchised__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Add_Stakeholder_IdentifiedEnfranchised__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Milestone – Establishing the Need section) End-->
+                    
+                    <!-- Open Opp (Milestone – Navigating to Decision section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Navigating to Decision" columns="2" id="OpenOPPMSNDPBS" rendered="{!IF(contains(flowControl, 'V2_MSND_ADVANCE_STAGE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CXO_Project_Endorsement__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CXO_Project_Endorsement__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.CXO_Project_Endorsement__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Budget_Approval_Process_Clear__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Budget_Approval_Process_Clear__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Budget_Approval_Process_Clear__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CXO_Endorsement__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CXO_Endorsement__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.CXO_Endorsement__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Signatory_Established__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Signatory_Established__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Signatory_Established__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Redline_received_from_member__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Redline_received_from_member__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Redline_received_from_member__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Milestone – Navigating to Decision section) End-->
+                    
+                    
+                    <!-- Open Opp (Business Information section) -->
+                    <apex:pageBlockSection collapsible="false" title="Business Information" columns="2" id="OpenOPBIPBS" rendered="{!IF(contains(flowControl, 'V2_OPEN_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Large_Contract__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Large_Contract__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Large_Contract__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Function__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Function__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Function__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Business_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Business_Line__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Business_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Signed_Opportunity_Contract__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Signed_Opportunity_Contract__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Signed_Opportunity_Contract__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.New_Business_Group__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.New_Business_Group__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.New_Business_Group__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program_Line__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Program_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.New_Business_Marketer__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.New_Business_Marketer__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.New_Business_Marketer__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.NBB__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.NBB__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.NBB__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Group__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Group__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Marketing_Group__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.NBB_Units__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.NBB_Units__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.NBB_Units__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Membership__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Membership__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Membership__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prorated_Proposal_Value__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prorated_Proposal_Value__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prorated_Proposal_Value__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Float_Loss__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Float_Loss__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Float_Loss__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Range_Low__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Range_Low__c.Label}"/>
+                            <apex:outputPanel >
+                                <apex:inputField value="{!Opportunity.Range_Low__c}" rendered="{!IF(contains(flowControl, 'V1_INFO_Open_ON_DECK'), 'true', 'false')}"/>
+                                <apex:outputField value="{!Opportunity.Range_Low__c}" rendered="{!IF(contains(flowControl, 'V1_INFO_ADVANCE_STAGE'), 'true', 'false')}"/>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Reason_for_Float__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Reason_for_Float__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Reason_for_Float__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Range_High__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Range_High__c.Label}"/>
+                            <apex:outputPanel >
+                                <apex:inputField value="{!Opportunity.Range_High__c}" rendered="{!IF(contains(flowControl, 'V1_INFO_Open_ON_DECK'), 'true', 'false')}"/>
+                                <apex:outputField value="{!Opportunity.Range_High__c}" rendered="{!IF(contains(flowControl, 'V1_INFO_ADVANCE_STAGE'), 'true', 'false')}"/>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Pool_Year__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Pool_Year__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Pool_Year__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Calculated_Close_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Calculated_Close_Date__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Calculated_Close_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Type2__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Type2__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Type2__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program_Proposal_Status__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program_Proposal_Status__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Program_Proposal_Status__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Segment_Index__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Segment_Index__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Segment_Index__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Source_Stage__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Source_Stage__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Source_Stage__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Milestone – Creating the Opportunity section) End-->
+                    
+                    <!-- Closed Opp (Closed Opportunity Details section) -->
+                    <apex:pageBlockSection collapsible="false" title="Closed Opportunity Details" columns="2" id="closedOPPCODPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}" >
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Reason_Won__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Reason_Won__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Reason_Won__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Primary_Reason_Lost__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Primary_Reason_Lost__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Primary_Reason_Lost__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Closed_Opp_Comments__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Closed_Opp_Comments__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Closed_Opp_Comments__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Secondary_Reason_Lost__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Secondary_Reason_Lost__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Secondary_Reason_Lost__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Re_approach_Opportunity__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Re_approach_Opportunity__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Re_approach_Opportunity__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Warming_Effort__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Warming_Effort__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Marketing_Warming_Effort__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Re_approach_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Re_approach_Date__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Re_approach_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Re_Approach_Within_12_Months__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Re_Approach_Within_12_Months__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Re_Approach_Within_12_Months__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Closed Opportunity Details section) End-->
+                    
+                    <!-- Closed Opp (Pipeline section) -->
+                    <apex:pageBlockSection collapsible="false" title="Pipeline Information" columns="2" id="closedOPPPipelinePBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}" >
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Are_They_Evaluating__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Are_They_Evaluating__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Are_They_Evaluating__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Decision_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Decision_Date__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Decision_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_the_Evaluation_Competitive__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_the_Evaluation_Competitive__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Is_the_Evaluation_Competitive__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_Exposed_to_Research__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_Exposed_to_Research__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prospect_Exposed_to_Research__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <!-- Subhash Garhwal - 07/11/2016 - New field added (QA# 76)-->
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_there_are_hard_next_step__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Is_there_are_hard_next_step__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem />
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Step_Date__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Next_Step_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Sell_Type__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Sell_Type__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Sell_Type__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Steps_Text__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Next_Steps_Text__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Trend_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Trend_Line__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Trend_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Pipeline section) End-->
+                    
+                    <!-- Closed Opp (Pipeline section hidden) -->
+                    <apex:pageBlockSection showHeader="false" collapsible="false" title="Pipeline Information" columns="1" id="closedOPPPipelineHPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}" >
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Description.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Description.Label}"/>
+                            <apex:inputField value="{!Opportunity.Description}" style="width: 800px;height: 75px;"/>
+                        </apex:pageBlockSectionItem>    
+                    </apex:pageBlockSection>
+                    
+                    <!-- Closed Opp (Manager Forecast section) -->
+                    <apex:pageBlockSection collapsible="false" title="Manager Forecast" columns="2" id="closedOPPMFPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Weekly_Best_Bet__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Weekly_Best_Bet__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Weekly_Best_Bet__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Next_Month_80_50__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Next_Month_80_50__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Next_Month_80_50__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Month_80_50__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Month_80_50__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Month_80_50__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Manager_Comments__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Manager_Comments__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Marketing_Manager_Comments__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Manager Forecast section) End-->
+                    
+                    <!-- Closed Opp (Competition section) -->
+                    <apex:pageBlockSection collapsible="false" title="Competition" columns="2" id="closedOPPCompetitionPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Primary_Competitor__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Primary_Competitor__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.R_I_Competitors__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.R_I_Competitors__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.R_I_Competitors__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Physician_Competitors__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Physician_Competitors__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Physician_Competitors__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Southwind_Competitor__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Southwind_Competitor__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Southwind_Competitor__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Competitor_Notes__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Competitor_Notes__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Competitor_Notes__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Competition section) End-->
+                    
+                    <!-- Closed Opp (Outreach section) -->
+                    <apex:pageBlockSection collapsible="false" title="Outreach" columns="2" id="closedOPPOutreachPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Type__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Type__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Outreach_Type__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.of_ELs_Sent__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.of_ELs_Sent__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.of_ELs_Sent__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Campaign__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Campaign__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Outreach_Campaign__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Engagement_Letter_Sent__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Engagement_Letter_Sent__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Engagement_Letter_Sent__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Outreach_Campaign_Month__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Outreach_Campaign_Month__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Outreach_Campaign_Month__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specialties__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specialties__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Specialties__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Other_Outreach_Campaign__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Other_Outreach_Campaign__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Other_Outreach_Campaign__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Outreach section) End-->
+                    
+                    <!-- Closed Opp (Milestone – Creating the Opportunity section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Creating the Opportunity" columns="2" id="closedOPPMSCOPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prewire_Completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prewire_Completed__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prewire_Completed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Is_Decision_Maker_Attending_Visit__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Is_Decision_Maker_Attending_Visit__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Is_Decision_Maker_Attending_Visit__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.No_of_Prewires__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.No_of_Prewires__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.No_of_Prewires__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Was_Decision_Maker_Prewired__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Was_Decision_Maker_Prewired__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Was_Decision_Maker_Prewired__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Warm_Lead__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Warm_Lead__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Warm_Lead__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.No_of_Visit_Attendees__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.No_of_Visit_Attendees__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.No_of_Visit_Attendees__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.LeadSource.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.LeadSource.Label}"/>
+                            <apex:outputField value="{!Opportunity.LeadSource}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Size_of_Organization__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Size_of_Organization__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Size_of_Organization__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Wildcard__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Wildcard__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Wildcard__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_VQ_Grade__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_VQ_Grade__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Initial_VQ_Grade__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specialties__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specialties__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Specialties__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Initial_VQ_Value__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Initial_VQ_Value__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Initial_VQ_Value__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- closed Opp (Milestone – Creating the Opportunity section) End-->
+                    
+                    <!-- CLosed Opp (Milestone – Establishing the Need section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Establishing the Need" columns="2" id="closedOPPMSEPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Why_Would_They_Join__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Why_Would_They_Join__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Why_Would_They_Join__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_reference_calls_been_requested__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_reference_calls_been_requested__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Has_reference_calls_been_requested__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Why_Would_They_Not_Join__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Why_Would_They_Not_Join__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Why_Would_They_Not_Join__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_an_ROI_Walk_Through_been_completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_an_ROI_Walk_Through_been_completed__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Has_an_ROI_Walk_Through_been_completed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Specific_need_priority_identified__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Specific_need_priority_identified__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Specific_need_priority_identified__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Has_Technical_feasibility_been_confirmed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Has_Technical_feasibility_been_confirmed__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Has_Technical_feasibility_been_confirmed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_Articulates_Need_for_Membership__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_Articulates_Need_for_Membership__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prospect_Articulates_Need_for_Membership__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.of_Revisits__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.of_Revisits__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.of_Revisits__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prospect_agreed_to_paperwork_by_date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prospect_agreed_to_paperwork_by_date__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prospect_agreed_to_paperwork_by_date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Tools_Demonstration_Completed__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Tools_Demonstration_Completed__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Tools_Demonstration_Completed__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Statement_of_Work_Status__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Statement_of_Work_Status__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Statement_of_Work_Status__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Add_Stakeholder_IdentifiedEnfranchised__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Add_Stakeholder_IdentifiedEnfranchised__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Add_Stakeholder_IdentifiedEnfranchised__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Milestone – Creating the Opportunity section) End-->
+                    
+                    <!-- CLosed Opp (Milestone – Navigating to Decision section) -->
+                    <apex:pageBlockSection collapsible="false" title="Milestone – Navigating to Decision" columns="2" id="closedOPPMSNDPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CXO_Project_Endorsement__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CXO_Project_Endorsement__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.CXO_Project_Endorsement__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Budget_Approval_Process_Clear__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Budget_Approval_Process_Clear__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Budget_Approval_Process_Clear__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.CXO_Endorsement__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.CXO_Endorsement__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.CXO_Endorsement__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Signatory_Established__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Signatory_Established__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Signatory_Established__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Redline_received_from_member__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Redline_received_from_member__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Redline_received_from_member__c}"/>
+                        </apex:pageBlockSectionItem>
+                    
+                    </apex:pageBlockSection>
+                    <!-- Closed Opp (Milestone – Creating the Opportunity section) End-->
+                    
+                    <!-- Closed Opp (Business Information section) -->
+                    <apex:pageBlockSection collapsible="false" title="Business Information" columns="2" id="closedOPBIPBS" rendered="{!IF(contains(flowControl, 'V2_CLOSED_ADVANCE'), 'true','false')}">
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Large_Contract__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Large_Contract__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Large_Contract__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Function__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Function__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Function__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Business_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Business_Line__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Business_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Signed_Opportunity_Contract__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Signed_Opportunity_Contract__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Signed_Opportunity_Contract__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.New_Business_Group__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.New_Business_Group__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.New_Business_Group__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program_Line__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program_Line__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Program_Line__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.New_Business_Marketer__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.New_Business_Marketer__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.New_Business_Marketer__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.NBB__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.NBB__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.NBB__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Marketing_Group__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Marketing_Group__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Marketing_Group__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.NBB_Units__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.NBB_Units__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.NBB_Units__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Membership__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Membership__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Membership__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Prorated_Proposal_Value__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Prorated_Proposal_Value__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Prorated_Proposal_Value__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Float_Loss__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Float_Loss__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Float_Loss__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Range_Low__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Range_Low__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Range_Low__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Reason_for_Float__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Reason_for_Float__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Reason_for_Float__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Range_High__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Range_High__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Range_High__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Pool_Year__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Pool_Year__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Pool_Year__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Calculated_Close_Date__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Calculated_Close_Date__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Calculated_Close_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Type2__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Type2__c.Label}"/>
+                            <apex:inputField value="{!Opportunity.Type2__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Program_Proposal_Status__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Program_Proposal_Status__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Program_Proposal_Status__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Segment_Index__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Segment_Index__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Segment_Index__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Source_Stage__c.inlineHelpText}">
+                            <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Source_Stage__c.Label}"/>
+                            <apex:outputField value="{!Opportunity.Source_Stage__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <!-- Open Opp (Milestone – Creating the Opportunity section) End-->
+                </apex:outputPanel>
+            </apex:actionRegion>
+            
+            <!-- System Info section-->
+            <apex:pageBlockSection collapsible="false" title="System Information" columns="2" id="openclosedOPPSIPBS" rendered="{!IF(NOT(ISBLANK(Opportunity.Id)), 'true', 'false')}">
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"/>
+                    <apex:outputPanel >
+                        <apex:outputField value="{!Opportunity.CreatedById}"/> &nbsp;
+                        <apex:outputField value="{!Opportunity.CreatedDate}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Counter_ID__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Counter_ID__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Counter_ID__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"/>
+                    <apex:outputPanel >
+                        <apex:outputField value="{!Opportunity.LastModifiedById}"/> &nbsp;
+                        <apex:outputField value="{!Opportunity.LastModifiedDate}"/> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.Opportunity.fields.Probability_Field_Update__c.inlineHelpText}">
+                    <apex:outputLabel value="{!$ObjectType.Opportunity.fields.Probability_Field_Update__c.Label}"/>
+                    <apex:outputField value="{!Opportunity.Probability_Field_Update__c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>            
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

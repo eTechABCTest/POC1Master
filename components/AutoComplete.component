@@ -1,0 +1,75 @@
+<apex:component controller="AutoCompleteController" allowDML="true" access="global">
+    <!-- JQuery Files -->
+    <apex:includeScript value="{!URLFOR($Resource.jqueryui1104, '/js/jquery-1.10.2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jqueryui1104, '/js/jquery-ui-1.10.4.custom.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jqueryui1104,'css/black-tie/jquery-ui-1.10.4.custom.min.css')}"/>
+
+  <!-- Attributes Required For Component -->
+  <apex:attribute name="objectname" description="The object name you want to look for." type="String" required="false" />
+  <apex:attribute name="additionalfield" description="Any additional fields you'd like to search and include in the display." type="String" required="false"/>
+  <apex:attribute name="addFilter" description="To filter on this." type="String" required="false"/>
+  <apex:attribute name="autocomplete_textbox" description="The ID for the Autocomplete List Textbox." type="String" required="false" />
+
+  <!-- CSS Style -->
+  <style>
+    .ui-autocomplete-loading {background: white url({!URLFOR($Resource.jqueryui1104, '/css/black-tie/images/animated-overlay.gif')}) right center no-repeat;}
+    .ui-helper-hidden-accessible { display:none; }
+  </style>
+
+  <!-- Javascript -->
+  <script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function() 
+    {
+        var sObjects;
+        var queryTerm;
+
+        j$(esc('{!autocomplete_textbox}')).autocomplete({
+            minLength: 2,
+            source: function(request, response) {
+                        queryTerm = request.term;
+                        AutoCompleteController.findSObjects("{!objectname}", request.term, "{!additionalfield}", "{!addFilter}", function(result, event){
+                            if(event.type == 'exception') {
+                                  //alert(event.message);
+                            } else {
+                                 sObjects = result;
+                                 response(sObjects);
+                            }
+                        });
+                   },
+            focus: function( event, ui ) {
+                    j$(esc('{!autocomplete_textbox}')).val( ui.item.Name );
+                    return false;
+                    },
+            select: function( event, ui ) {
+                        j$(esc('{!autocomplete_textbox}')).val( ui.item.Name ).blur();
+                        j$(esc('{!autocomplete_textbox}_lkold')).val( ui.item.Name );
+                        j$(esc('{!autocomplete_textbox}_lkid')).val( ui.item.Id );
+                        if (event.keyCode == 13) { 
+                            event.preventDefault();
+                        }                        
+                        return false;
+                    },
+         })
+
+         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            var entry = item.Name;
+            if("{!additionalfield}" !='')
+            {
+                j$.each("{!additionalfield}".split(",") , function(key, value) {
+                    entry = entry + " " + item[value];
+                });
+            }
+            entry = entry.replace( new RegExp( "(" + queryTerm + ")" , "gi" ), "<strong>$1</strong>" );
+            return j$( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + entry + "</a>")
+                .appendTo( ul );
+        };
+    });
+
+    function esc(myid) {
+           return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+    }
+  </script>
+</apex:component>

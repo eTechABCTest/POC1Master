@@ -1,0 +1,145 @@
+<!--V_1.2 - Modified By - Rajeev Jain - 07/08/2015 - CR-20150618-9016 - Board Room Mobile -->
+<!-- Description : 1- Added some style to adjsut the image 
+-->
+<!-- Modified By - Rajeev Jain - CR-20141003-7634 - 07/28/2015 - BoardRoom Header System Status -->
+<apex:page sidebar="false" showHeader="false" standardStyleSheets="false" docType="html-5.0" language="en-US"
+           applyHTMLTag="false" controller="BoardroomHomeContainerController">
+    <head>
+    	<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />--> 
+         
+        <!--Modified By - Rajeev Jain - 06/16/2015 - CR-20150416-8884 - Board Room Page Title Dynamic-->
+        <c:IntranetIncludes pageTitle="{!$Label.IntranetContentViewerPageTitle}"/>
+        <style>
+            #main_wrapper .post-content img{
+                width:auto; 
+            }  
+            /*V_1.2 - Modified By - Rajeev Jain - 07/08/2015 - CR-20150618-9016 - Board Room Mobile*/
+            .panelCalendar-mobile, .panelMonth-mobile{display:none;}
+            .navigation-mobile .navBt{color:#00A3E3!important;font-size:40px;}
+            .navigation-mobile .navBt:hover{color:#333!important;}
+            .event-title-link:hover{color:#00A3E3!important;}
+            .comment-icon-mobile{display:none !important;}
+            @media(max-width:767px){
+            	.navigation, .panelCalendar, .panelMonth, .comment-icon-desktop{display:none !important;}
+            	.panelCalendar-mobile, .panelMonth-mobile{display:block !important;}
+            	.comment-icon-mobile{display:block !important;}
+            	.contentViewerStory .chatter-post{display:none;}
+                    #main_wrapper .post-content img{
+                    width:100%; 
+                }  
+            }
+            @media(max-width:992px){
+                .post-header .post-image img{height:100%}
+            	#main_wrapper .post-content img{
+                    width:100%; 
+                }  
+            }
+            @media(max-width:1199px){
+            	.post-header .post-image img{height:100%}
+                .post-header.image-mode .post-title-wrapper{bottom:25px;}
+                .post-title-wrapper h1{font-size:30px;}
+                .post-title-wrapper h3{font-size:20px;}
+            }
+            /*V_1.2 - Modified By - Rajeev Jain - 07/08/2015 - CR-20150618-9016 - Board Room Mobile*/
+        </style>
+        <meta http-equiv="X-Frame-Options" content="allow"/>
+    </head>
+    <body>
+        
+        <!-- Modified By - Rajeev Jain - CR-20141003-7634 - 07/28/2015 - BoardRoom Header System Status -->
+        <!-- Header -->
+        <c:IntranetHeader containerId="{!LEFT(intranetContainer.Header_Container__c, 15)}" ABCMenu="{!ABCMenu}"
+                          top5AccessAppSetting="{!top5AccessAppSetting}" SystemStatus="{!SystemStatus}"/>
+        <!-- Modified By - Rajeev Jain - CR-20141003-7634 - 07/28/2015 - BoardRoom Header System Status - Upto Here -->
+        
+        <!-- <c:IntranetHeader /> -->
+        <div id="main_wrapper">
+            <div id="content" class="container">
+                
+                <apex:variable var="view" value="{!$CurrentPage.parameters.view}" />
+                <apex:variable var="mode" value="{!$CurrentPage.parameters.mode}" />
+                
+                <c:IntranetContentViewerStory View="{!$CurrentPage.parameters.view}" rendered="{!$CurrentPage.parameters.view != null && $CurrentPage.parameters.mode != 'calendar'}"/>
+                <c:IntranetContentViewerCalendar rendered="{!$CurrentPage.parameters.mode == 'calendar'}"/>
+                
+            </div>
+        </div>
+        
+        <c:IntranetFooter containerId="{!LEFT(intranetContainer.Footer_Container__c, 15)}" />
+        <script> 
+        
+        
+        jQuery(document).ready(function($) {
+            
+            if(/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+            } else {
+                $('.chatter-iframe').iFrameResize();
+            }
+            
+        });
+        
+        //Added By - Rajeev Jain - 07/08/2015 - CR-20150618-9016 - Board Room Mobile
+        function hideAndShowCommentSection(elem){
+        	if($(elem).hasClass('contentViewerStory')){
+                if($('.chatter-post').is(':visible')){
+                	
+                    $('.chatter-post').slideUp();
+                }else{
+                    $('.chatter-post').slideDown();
+                }
+            }    
+        }
+        function postComment() {
+            
+            var scheduleId = '{!$CurrentPage.parameters.ScheduleId}';
+            
+            //Added By - Abhinav Sharma - CR-20140930-7536 - 01/20/2015
+            //Start FROM here
+            var schId = '{!scheduleIdValue}';
+            
+            if(scheduleId == undefined || scheduleId == '')
+             scheduleId  = schId;   
+            //Upto here
+            //<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+            
+           //Instantiate UA Parser Object
+            var parser = new UAParser();
+            var result = parser.getResult();
+            var screenSize = parseDeviceTracking(result);
+            //<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+            
+            //@Remote Action to Record Utiliztion CLick
+            //Pass All AArgument over Here
+            RemoteActionController.recordClickUtilization('Comment', '',null,scheduleId,null, null,
+                                                          	parseNullData(result.device.model) + ' ' + parseNullData(result.device.type) + ' ' + parseNullData(result.device.vendor),
+                                                            parseNullData(result.browser.name) + ' ' + parseNullData(result.browser.version),
+                                                            screenSize,
+                                                            parseNullData(result.ua),
+                                                          function(result, event) {
+                if(result == 'SuccessComment') {
+                
+                    var current_count =  $('#chatter-' + scheduleId).find('.chatter_links .comment .count').text();
+                    //console.log('Current COunt ::: ' + current_count);
+                    if(current_count == '' || current_count == undefined)
+                        current_count = 0;
+                    
+                    current_count = parseInt(current_count) + 1;
+                    $('#chatter-' + scheduleId).find('.chatter_links .comment .count').text(current_count);
+
+                }
+            });
+        }
+        </script>
+    </body>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-61178291-2', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</apex:page>

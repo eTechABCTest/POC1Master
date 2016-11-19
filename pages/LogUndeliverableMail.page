@@ -1,0 +1,284 @@
+<apex:page sidebar="false" showHeader="false" controller="LogUndeliverableMailController" id="page" standardStylesheets="false" >
+    
+    <!-- JQuery library/css -->
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.7.2.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.16.custom.min.js')}" />
+    
+    <style>
+        /* set some css styles */
+        body {
+        font-family: Verdana, Geneva, sans-serif;
+        }
+        
+        input[type="text"] {
+        padding: 5px;
+        margin: 2px;
+        width: 250px;
+        }
+        
+        .title {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 58px;
+        border-bottom: 1px solid #e1e1e1;
+        }
+        
+        .content-wrapper {
+        max-width: 58.75em;
+        margin: 0 auto;
+        }
+        
+        .message.WARNING {
+        background-image:url(/img/msg_icons/warning16.png);
+        background-repeat: no-repeat;
+        padding-left: 30px;
+		list-style-type: none;
+        border-color: #f90;
+        background-color: #ffc;
+        }
+        
+        .message.INFO {
+        background-image:url(/img/msg_icons/info16.png);
+        background-repeat: no-repeat;
+        padding-left: 30px;
+		list-style-type: none;
+        border-color: blue;
+        background-color: #ffc;
+        }
+        
+        .message.CONFIRM {
+        background-image:url(/img/msg_icons/confirm16.png);
+        background-repeat: no-repeat;
+        padding-left: 30px;
+		list-style-type: none;
+        border-color: green;
+        background-color: #ffc;
+        }
+        
+        .message.ERROR {
+        background-image:url(/img/msg_icons/error16.png);
+        padding-left: 30px;
+		list-style-type: none;
+        border-color: red;
+        background-color: #ffc;
+        }
+        
+        
+        
+        
+        .message {
+        display:inline-block;
+        margin-left:9px;
+        font-size: 12px;
+        background-repeat: no-repeat;
+        moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background-position-y: center;
+        background-position-x: 10px;
+        border-style: solid;
+        border-width: 1px;
+        }
+        
+        .message li {
+        	margin: 8px;
+        }
+        
+        .tableClass th, .tableClass td {  padding:6px; white-space:nowrap; }
+        
+        .requiredInput { position: relative; height: 100%; }
+        
+        .requiredBlock {
+        background-color: #c00;
+        position: absolute;
+        left: -4px;
+        width: 3px;
+        top: 1px;
+        bottom: 1px;
+        }
+        
+        /** only used for IE9 and below compatibility **/
+        .ieLabel {
+        display: block;
+        color: #95A2AC;
+        margin-right: 5px;
+        margin-top: 5px;
+        }
+        
+        
+    </style>
+    <apex:form id="mainForm" styleClass="content-wrapper">
+        <!-- action functions -->
+        <apex:actionFunction name="rerenderMainPanel" rerender="pageBlock" action="{!clearSearchResults}" onComplete="focusOnFirstInputText(); return false;" />
+        <apex:actionFunction name="findCampaignMembers" action="{!findCampaignMembers}" rerender="mainForm" />
+        <apex:pageBlock id="pageBlock" >
+            <div class="title">Log Undeliverable Mail</div>
+            <apex:pageBlockSection columns="1" id="pbSection">
+                <apex:outputPanel id="searchPanel" style="margin-bottom:10px;" layout="block">
+                    <apex:selectRadio value="{!searchType}" onchange="rerenderMainPanel();">
+                        <apex:selectOption itemLabel="Barcode Scan" itemValue="BARCODE" />
+                        <apex:selectOption itemLabel="Manual Search" itemValue="MANUAL" />
+                    </apex:selectRadio>
+                    <!-- barcode search -->
+                    <apex:outputPanel id="barcodeSearchPanel" rendered="{!searchType == 'BARCODE'}">
+                        <apex:outputPanel layout="block" styleClass="inputBlockWrapper" >
+                                <!--[if lt IE 10 ]>
+                                <span class="ieLabel">Barcode</span>
+                                <![endif]-->
+                            <apex:inputText value="{!mailPieceId}" html-placeholder="Barcode" id="barcodeInput" />
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <!-- manual search -->
+                    <apex:outputPanel id="manualSearchPanel" rendered="{!searchType == 'MANUAL'}">
+                        <apex:pageBlockSection columns="1">
+                            
+                            <apex:outputPanel layout="block" styleClass="inputBlockWrapper" >
+                                <!--[if lt IE 10 ]>
+                                <span class="ieLabel">First Name</span>
+                                <![endif]-->
+                                <apex:outputPanel layout="block" styleClass="requiredInput">
+                                    <apex:outputPanel layout="block" styleClass="requiredBlock" />
+                                    <apex:inputText value="{!firstName}" html-placeholder="First Name" id="firstNameInput" />
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="block" styleClass="inputBlockWrapper" >
+                                <!--[if lt IE 10 ]>
+                                <span class="ieLabel">Last Name</span>
+                                <![endif]-->
+                                <apex:outputPanel layout="block" styleClass="requiredInput">
+                                    <apex:outputPanel layout="block" styleClass="requiredBlock" />
+                                    <apex:inputText value="{!lastName}" html-placeholder="Last Name" id="lastNameInput" />
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">Address Line 1</span>
+                                <![endif]-->
+                                <apex:outputPanel layout="block" styleClass="requiredInput">
+                                    <apex:outputPanel layout="block" styleClass="requiredBlock" />
+                                    <apex:inputText value="{!addressLine1}" html-placeholder="Address Line 1" />
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">Address Line 2</span>
+                                <![endif]-->
+                                <apex:inputText value="{!addressLine2}" html-placeholder="Address Line 2" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">Address Line 3</span>
+                                <![endif]-->
+                                <apex:inputText value="{!addressLine3}" html-placeholder="Address Line 3" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">City</span>
+                                <![endif]-->
+                                <apex:inputText value="{!city}" html-placeholder="City" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">State</span>
+                                <![endif]-->
+                                <apex:inputText value="{!state}" html-placeholder="State" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">Postal Code</span>
+                                <![endif]-->
+                                <apex:inputText value="{!postalCode}" html-placeholder="Postal Code" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" >
+                            	<!--[if lt IE 10 ]>
+                                <span class="ieLabel">Country</span>
+                                <![endif]-->
+                                <apex:inputText value="{!country}" html-placeholder="Country" />
+                            </apex:outputPanel>
+                            
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    <div>
+                        <apex:commandButton value="Search" onclick="findCampaignMembers(); return false;" />
+                    </div>
+                </apex:outputPanel>
+                
+                <!-- page messages -->
+                <apex:messages styleClass="message {!iconType}" />
+                
+                <!-- Campaign Membmer search results -->
+                <apex:dataTable value="{!campaignMemberList}" var="cm" rendered="{!campaignMemberList != null && campaignMemberList.size > 1}"
+                                rowClasses="odd,even" styleClass="tableClass" id="cmTable">
+                    <apex:column style="text-align:left;">
+                        <apex:facet name="header"></apex:facet>
+                        <apex:commandLink value="select" action="{!recordUndeliverableMail}">
+                            <apex:param name="campaignMemberId" value="{!cm.Id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column style="text-align:left;">
+                        <apex:facet name="header"><div style="text-align:left;">Campaign</div></apex:facet>
+                        <apex:outputText value="{!cm.Campaign.Name}"/>
+                    </apex:column>
+                    <apex:column style="text-align:left;">
+                        <apex:facet name="header"><div style="text-align:left;">First Name</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.FirstName}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Last Name</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.LastName}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Address Line 1</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_Address_Line_1__c}"/>
+                    </apex:column>
+                    <!--<apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Address Line 2</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_Address_Line_2__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Address Line 3</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_Address_Line_3__c}"/>
+                    </apex:column>-->
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">City</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_City__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">State</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_State_Province__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Postal Code</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_Postal_Code__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><div style="text-align:left;">Country</div></apex:facet>
+                        <apex:outputText value="{!cm.Contact.Primary_Country__c}"/>
+                    </apex:column>
+                </apex:dataTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <script>
+        //set the focus on the barcode field
+        $(function() {
+            focusOnFirstInputText();
+        });
+        
+        function focusOnFirstInputText() {
+            //j$('[id*=barcodeInput]').focus();
+            $(":input:visible:enabled:first[type=text]").focus();
+        }
+        
+        //detect when the enter key is pressed and perform the search
+        $(document).keypress(function(e) {
+            if(e.which == 13) {
+                findCampaignMembers();
+                return false;
+            }
+        });
+        </script>
+    </apex:form>
+</apex:page>

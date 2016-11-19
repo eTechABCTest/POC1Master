@@ -1,0 +1,64 @@
+<apex:page controller="ContactExtension" id="editPage" >
+	<c:IncludeJQuery />
+	<apex:form id="mainForm" >
+		<apex:pageBlock id="mainBlock" mode="edit" title="Contact Edit">
+			<apex:pageBlockButtons >
+				<apex:commandButton value=" Save " action="{!SaveOverride}" />
+			</apex:pageBlockButtons>
+			
+			<!-- Record Type: EXTERNAL -->
+			<apex:outputPanel rendered="true">
+				<apex:pageBlockSection id="contactPB" collapsible="false" title="Contact Information">
+					<apex:pageBlockSectionItem />
+					<apex:inputField value="{!Con.Contact_Status__c}" id="Contact_Status__c" /> 
+					<apex:pageBlockSectionItem id="NameSection" >
+						<apex:outputText value="First Name" />
+						<apex:outputPanel >
+							<apex:inputField value="{!ContactQueue.Salutation__c}" id="Salutation" /> 
+							<apex:inputField value="{!ContactQueue.First_Name__c}" id="FirstName" /> 
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:inputField value="{!ContactQueue.Phone__c}" id="Phone" />
+					<apex:inputField value="{!ContactQueue.Last_Name__c}" id="LastName" />
+					<apex:inputField value="{!ContactQueue.Mobile__c}" id="MobilePhone" />
+					<apex:inputField value="{!ContactQueue.Middle_Name__c}" id="Middle_Name__c" />
+					<apex:inputField value="{!ContactQueue.Email__c}" id="Email" />
+					<apex:inputField value="{!ContactQueue.Suffix__c}" id="Suffix__c" />
+					<apex:inputField value="{!ContactQueue.Email_Opt_Out__c}" id="HasOptedOutOfEmail" />
+					<apex:inputField value="{!ContactQueue.Nickname__c}" id="Nickname__c" />
+					<apex:inputField value="{!ContactQueue.Advisory_com_Preferred_Email_Address__c}" id="Advisory_com_Preferred_Email_Address__c" />
+					<apex:inputField value="{!ContactQueue.Institution_Name__c}" id="AccountId" />
+					<apex:inputField value="{!ContactQueue.Record_Type__c}" id="Record_Type__c" />
+					<apex:inputField value="{!ContactQueue.Title__c}" id="Title" />
+					<apex:inputField value="{!ContactQueue.Function__c}" id="Function__c" />
+					<apex:inputField value="{!ContactQueue.Reports_To__c}" id="ReportsToId" />
+					<apex:inputField value="{!ContactQueue.Assistant__c}" id="AssistantName" />
+					<apex:inputField value="{!ContactQueue.Previous_Institution_Record__c}" id="Previous_Institution_Record__c" />
+					<apex:inputField value="{!ContactQueue.Asst_Phone__c}" id="AssistantPhone" />
+					<apex:pageBlockSectionItem />
+					<apex:inputField value="{!Con.Asst_Email__c}" id="Asst_Email__c" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection id="Description" title="Description Information" collapsible="false" >
+					<apex:inputField Value="{!ContactQueue.Key_Notes__c}" style="width:430px;height:93px;" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection id="AddressInfo" title="Address Information" collapsible="false" >
+					<apex:inputField value="{!ContactQueue.Primary_Address_Line_1__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Address_Name__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_Address_Line_2__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Address_Line_1__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_Address_Line_3__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Address_Line_2__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_City__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Address_Line_3__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_State_Province__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_City__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_Postal_Code__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_State_Province__c}" />
+					<apex:inputField value="{!ContactQueue.Primary_Country__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Postal_Code__c}" />
+					<apex:inputField value="{!ContactQueue.Secondary_Country__c}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

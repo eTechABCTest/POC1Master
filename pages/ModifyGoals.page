@@ -1,0 +1,216 @@
+<!--
+/**
+ * Description  :   VF page to provide option for Perosnal Goal. 
+ * 
+ * Created By   :   Rajeev Jain
+ * 
+ * Created Date :   02/17/2015 - CR-20160115-9542
+ * 
+ * Revision Log :   V_1.0 - Created
+ *              :   V_1.1 - Modified - Rajeev Jain - 04/15/2016 - ISSP Deployment E - CR-20160302-9661
+ *                          Modified - Rajeev Jain - 05/12/2016 - ISSP Deployment E - Added help Text for Supersedes field - UAT enhancement.
+ * 
+ * */
+-->
+<apex:page standardController="Personal_Goal__c" extensions="ModifyGoalsController" id="page" recordSetVar="unUsed">
+    
+    <!-- Background Processing -->
+    <c:BlockUI />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <style>
+        .floater{float:left;min-height:100px;}
+        .topMainBlockWrapper{overflow:auto;background:#FFFFFF;}
+        .floater.topLeftBlock{width:30%;}
+        .floater.topRightBlock{width:70%;}
+        .floater.topRightFirstBlock{width:70%;}
+        .floater.topRightSecondBlock{width:30%;text-align:center;}
+        .floater.topRightSecondBlock input[type = "button"]{margin-top:30px;padding:6px 30px;border-radius:5px;font-size:14px;}
+        .floater.topLeftBlock input[type="radio"]{height:18px;width:18px;}
+        .floater.topLeftBlock label{vertical-align:middle;}
+        #resultSection{background:#FFFFFF;padding:10px;}
+        #option2Details{margin:auto;margin-top:30px;width:48%;font-size:14px;text-align:left}
+        #option3Details{margin:auto;margin-top:14px;font-size:14px;text-align:left}
+        .filterField{margin-bottom:10px;}
+        .infoText1{padding:5px;font-size:14px;}
+        .supersedes{display:none;}
+        .ui-tooltip .list{border-collapse: collapse;background:#ffffff;width:100%}
+         .ui-tooltip .list tr.headerRow th, .ui-tooltip .list tr td{border: 1px solid #ededed !important;padding:5px !important;}
+         .ui-tooltip .list tr.headerRow th{background: #f2f3f3;border-width: 0 0 1px 1px;border-color: #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 2px 4px 5px;}
+         .ui-tooltip-content{padding:10px !important;}
+         .ui-tooltip, .arrow:after {background: #FFFFAA;border: 2px solid #000000;}
+         .ui-tooltip {padding: 10px;color: #000000;font: 14px "Helvetica Neue", Sans-Serif;box-shadow: 0 0 7px black;}
+         .arrow {width: 70px;height: 16px;overflow: hidden;position: absolute;left: 50%;margin-left: -35px;bottom: -16px;}
+         .arrow.top {top: -16px;bottom: auto;}
+         .arrow.left {left: 20%;}
+         .arrow:after {content: "";position: absolute;left: 20px;top: -20px;width: 25px;height: 25px;box-shadow: 6px 5px 9px -9px black;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);}
+         .arrow.top:after {bottom: -20px;top: auto;}
+    </style>    
+    
+    <!-- Section Header -->
+    <apex:sectionHeader title="Modify Goals"/>
+    
+    <!--  Main Form Starts form Here -->
+    <apex:form id="frm">
+        
+        <!-- Messages -->
+        <apex:pageMessages id="validationMsg" />
+        
+        <!-- Main Page Block Starts from here -->
+        <apex:pageBlock id="pb" mode="edit">
+            
+            <!--Block UI Action Status-->
+            <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+            
+            <!-- Page Top Section Starts from Here-->
+            <!-- Containing filter options on the page -->
+            <div columns="1">
+                <div class="topMainBlockWrapper">
+                    <div class="floater topLeftBlock">
+                        
+                        <!--  Filter Option As Radio Buttons -->
+                        <apex:selectRadio value="{!selectedFilterValue}" layout="pageDirection" style="font-size:14px;" onchange="renderOptionDetails(this);">
+                            <apex:selectOptions value="{!pgFilterOptions}"/>
+                        </apex:selectRadio>
+                    </div>
+                    <div class="floater topRightBlock">
+                        <div class="floater topRightFirstBlock">
+                            <div id="option2Details" style="display:none;">
+                                <span class="infoText"><b>Next Step</b>:&nbsp;<apex:outputText value="{!createNexProposalText}"/></span>
+                            </div>  
+                            <div id="option3Details" style="display:none;">
+                                <div style="overflow:auto;">
+                                        <span class="tooltip nameText" data-geo="Hello" style="text-decoration:none;margin-bottom:2px;">
+                                            <!--  Goal Name -->
+                                            Supersedes <img src="/s.gif" alt="" class="helpIcon"/>
+                                             <!--  On hover of Goal name display Goal Plans in table in tooltip popup -->
+                                            <span class="tooltipData" style="display:none;">
+                                                Default Filter shows Personal Goals with the following: <br/>
+                                                - Record Type=Proposed Goal, <br/>
+                                                - Contact=&#60;current goal&#180;s contact&#62;<br/>
+                                                - Status="Pending" or "Payee Approved"
+                                        </span>
+                                    </span>
+                                </div>
+                                <div style="overflow:auto;margin-top:10px;">
+                                    <div style="float:left;">
+                                        <div class="filterField"><label>Start date</label><apex:inputField value="{!personalGoal.Period_Start__c}"/></div>
+                                        <div class="filterField"><label>End date </label><apex:inputField value="{!personalGoal.Period_End__c}"/></div>
+                                    </div>
+                                    <!-- <div style="float:left;margin-left:30px;margin-top:13px;">
+                                        <div>Supersedes</div>
+                                        <div><apex:inputField value="{!personalGoal.Supersedes__c}"/></div>
+                                    </div> -->
+                                    
+                                </div>
+                                <div><apex:inputCheckBox value="{!isSubmitForPlanManagement}"/><label>Submit for plan management</label></div>
+                            </div>
+                        </div>
+                        <div class="floater topRightSecondBlock">
+                            <apex:commandButton value="Proceed" action="{!proceedWithSelection}" reRender="pbTable, validationMsg" status="waitMsg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Page Top Section Ends Here-->
+            
+            <!--  Page result Section Starts here-->
+            <div id="resultSection" columns="1">
+                
+                <!--Personal Goal Grid Starts from Here -->
+                <apex:pageBlockTable value="{!filteredPgs}" var="personalGoal" id="pbTable">
+                    <apex:column headerValue="Payee" styleClass="payeeCol">
+                        <!--  Show normal anchor tag instead of Output field so we can open Relationship Type in new tab -->
+                        <div class="newLabel">
+                            <a href="/{!personalGoal.Payee__c}" target="_blank">{!personalGoal.Payee__r.Name}</a>
+                        </div>
+                    </apex:column>
+                    <apex:column headerValue="Goal" styleClass="goalCol">
+                      
+                        <!--  Show normal anchor tag instead of Output field so we can open Relationship Type in new tab -->
+                        <div>
+                            <a href="/{!personalGoal.Id}" target="_blank">{!personalGoal.Name}</a>
+                        </div>
+                    </apex:column>
+                    <apex:column headerValue="Supersedes" styleClass="supersedes"  headerClass="supersedes">
+                        <apex:inputField value="{!personalGoal.Supersedes__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Template" styleClass="templateCol">
+                        
+                        <!--  Show normal anchor tag instead of Output field so we can open Relationship Type in new tab -->
+                        <div class="newLabel">
+                            <a href="/{!personalGoal.Standard_Goal__c}" target="_blank">{!personalGoal.Standard_Goal__r.Name}</a>
+                        </div>
+                        
+                    </apex:column>
+                    <apex:column value="{!personalGoal.Status__c}" headerValue="Status"/>
+                    <apex:column value="{!personalGoal.Period_Start__c}" headerValue="Start"/>
+                    <apex:column value="{!personalGoal.Period_End__c}" headerValue="End"/>
+                </apex:pageBlockTable>
+                <apex:outputPanel layout="block" rendered="{!OR(filteredPgs == null, filteredPgs.size == 0)}" styleClass="infoText1">No record(s) to display</apex:outputPanel>
+                <!--Personal Goal Grid Ends here -->
+                
+            </div>
+            <!--  Page result Section Ends here-->
+        </apex:pageBlock>
+        <!-- Main Page Block Ends here -->
+    </apex:form>
+    
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+    <!--  Main Form Ends Here -->
+    <script>
+        function renderOptionDetails(elem){
+            var option2Detail = document.getElementById('option2Details');
+            var option3Detail = document.getElementById('option3Details');
+            jQuery('.supersedes').hide();
+            option2Detail.style.display = 'none';
+            option3Detail.style.display = 'none';   
+            if(elem.value == 'Create')
+                option2Detail.style.display = 'block';
+            else if(elem.value == 'Modify'){
+                option3Detail.style.display = 'block';
+                jQuery('.supersedes').show();
+            }
+        }
+        $(function() {
+            
+            $(document).tooltip({
+                    items:"[data-geo]",
+                    position: {
+                        my: "center bottom-20",
+                        at: "center top",
+                        
+                        using: function( position, feedback ) {
+                          $( this ).css( position );
+                          $( "<div>" )
+                            .addClass( "arrow" )
+                            .addClass( feedback.vertical )
+                            .addClass( feedback.horizontal )
+                            .appendTo( this );
+                        }
+                    },
+                    content: function() {
+                        
+                        var element = $( this );
+                        if ( element.is( "[data-geo]" ) ) {
+                          var text = element.find('.tooltipData').html();
+                          return text;
+                        }
+                    },
+                    close: function(event, ui){
+                        ui.tooltip.hover(
+                            function () {
+                                $(this).stop(true).fadeTo(400, 1); 
+                            },
+                            function () {
+                                $(this).fadeOut("400", function(){
+                                    $(this).remove(); 
+                                })
+                            }
+                        );
+                    }  
+                });
+        });
+    </script>
+</apex:page>

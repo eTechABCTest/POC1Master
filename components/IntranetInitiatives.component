@@ -1,0 +1,47 @@
+<apex:component layout="none">
+    <apex:attribute name="ItemContent" type="IntranetContainer" description="Container record" ></apex:attribute>
+    <div class="block initiatives {!if(ItemContent.isPreview, 'preview-mode', '')}">
+        <h2 class="header">{!ItemContent.DisplayName}</h2>
+        
+        <apex:repeat value="{!ItemContent.RelatedContent}" var="item" rows="1">          
+
+            <div class="row center_row">
+                <div class="col-xs-9 center">
+                    <h3 class="truncate truncate-2-26"><apex:outputText value="{!item.ItemTitle}"></apex:outputText></h3>
+                </div>
+                <div class="col-xs-3 center">
+                    <!-- <div class="thumb"><img src="http://placehold.it/75x75" /></div> -->
+                </div>
+            </div>
+            
+            <div class="paragraph dotdotdot"><apex:outputText value="{!item.ItemFullText}" escape="false"/></div>
+            <div class="block_footer content_padding">
+                <div class="divider"></div>
+            </div>
+            <div class="view_more left action_link">
+                <span class="action_link_style">Rate this Story</span>
+                
+                <apex:outputLink styleClass="star-rating {!IF( NOT( item.IsRated ), 'edit', '')}" 
+                                 html-data-click-type="Rate"
+                                 html-data-is-rated="{!item.IsRated}"
+                                 html-data-star-rating="{!item.AverageRating}"
+                                 html-data-display-name="{!ItemContent.DisplayName}"
+                                 html-data-container-id="{!ItemContent.ContainerId}"
+                                 html-data-item-id="{!item.IntranetItemId}"
+                                 html-data-schedule-id="{!item.IntranetScheduleId}"
+                                 html-data-star="5"
+                                 onclick="return false;">
+                </apex:outputLink>
+                
+            </div>
+            
+            <div class="view-more right action-link">
+                <a data-type="content" href="/apex/IntranetContentViewer?view=initiative&ScheduleId={!item.IntranetScheduleId}">View More <i class="glyphicon glyphicon-calendar"></i></a>
+            </div>
+        </apex:repeat>
+    </div>
+    
+    
+   
+    
+</apex:component>
