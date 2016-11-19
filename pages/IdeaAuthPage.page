@@ -1,3 +1,0 @@
-<apex:page controller="IdeaAuthController" action="{!Load}" cache="false" showheader="false" sidebar="false" standardstylesheets="false" doctype="HTML">
-   <p style="margin:100px">Please wait ...</p>
-</apex:page>

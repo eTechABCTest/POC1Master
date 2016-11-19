@@ -1,6 +1,0 @@
-<apex:page standardController="Outcome__c" extensions="OutcomeExtension" action="{!redirect}" >
-    <apex:form >
-        <!-- hidden fields used by standard controller -->
-        <apex:inputHidden value="{!Outcome__c.Relationship_Interaction__c}" />
-    </apex:form>
-</apex:page>

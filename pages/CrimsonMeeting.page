@@ -1,3 +1,0 @@
-<apex:page controller="CrimsonMeetingController" contenttype="text/javascript" showHeader="false" action="{!Initialize}" >
-{!JSONResponse}
-</apex:page>

@@ -1,6 +1,0 @@
-<apex:page contenttype="text/javascript" showHeader="false">
-	<!--
-	{!JSONResponse}
-	<site:previewAsAdmin />
-	-->
-</apex:page>

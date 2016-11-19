@@ -1,4 +1,0 @@
-<apex:page standardController="Expense_Authorization__c" extensions="SubmitExpenseAuthController" action="{!submit}" >
-    <apex:pageMessages escape="false"/>
-	<apex:outputLink value="/{!Expense_Authorization__c.Id}">Click here</apex:outputLink>&nbsp;to go to previous page.
-</apex:page>

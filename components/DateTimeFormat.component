@@ -1,7 +1,0 @@
-<apex:component controller="DateTimeFormatController" layout="none">
-    <apex:attribute name="value" description="DateTime in GTM" type="DateTime" required="required" assignTo="{!ThisValue}" />
-    <apex:attribute name="formatString" description="DateTime format string" type="String" required="true" assignTo="{!ThisFormatString}" />
-    <apex:attribute name="timezone" description="Target timezone, default to current user timezone." type="String" required="false" assignTo="{!ThisTimezone}" />
-    
-    <apex:outputText value="{!formatedValue}" />
-</apex:component>

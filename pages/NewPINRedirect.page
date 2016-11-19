@@ -1,3 +1,0 @@
-<apex:page standardController="c2g__codaPurchaseInvoice__c" extensions="NewPINRedirectController" action="{!redirect}">
-	
-</apex:page>

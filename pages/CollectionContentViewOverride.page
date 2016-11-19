@@ -1,9 +1,0 @@
-<apex:page standardController="CollectionContents__c">
-    
-    <script>
-        if('{!CollectionContents__c.Related_child__c}' != null && '{!CollectionContents__c.Related_child__c}' != '')
-            window.parent.location = '/{!CollectionContents__c.Related_child__c}';
-        else
-            window.parent.location = '/{!CollectionContents__c.Collection_Perspective_Child__c}';
-    </script>
-</apex:page>

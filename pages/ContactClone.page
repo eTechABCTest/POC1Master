@@ -1,5 +1,0 @@
-<apex:page standardController="Contact"
-     extensions="CloneWithItemsController"
-     action="{!cloneWithItems}">
-     <apex:pageMessages />
-</apex:page>

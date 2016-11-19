@@ -1,1 +1,0 @@
-<apex:page standardController="Opportunity" extensions="OppNewOverrideExt" tabStyle="Opportunity" showheader="true" action="{!redirect}" />

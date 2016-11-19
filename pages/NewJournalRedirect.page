@@ -1,3 +1,0 @@
-<apex:page standardController="c2g__codaJournal__c" extensions="NewJournalRedirectController" action="{!redirect}">
-	
-</apex:page>

@@ -1,4 +1,0 @@
-<apex:page standardController="Site_Issue__c" extensions="CaseCommentController" >
-    <apex:iframe src="{!$Setup.Site_URLs__c.Crimson_Community_URL__c}/CaseComment_MemberSupport?parent_id={!memberSupport.Id}&userName={!userName}&hideCommentType=true" 
-                 height="355px" scrolling="true" width="100%" />
-</apex:page>

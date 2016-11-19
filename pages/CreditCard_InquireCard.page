@@ -1,4 +1,0 @@
-<apex:page standardController="Credit_Card__c" extensions="CreditCardController" action="{!inquireCreditCard}" >
-    <apex:pageMessages escape="false"/>
-    <apex:outputLink value="/{!Credit_Card__c.Id}">Click here</apex:outputLink>&nbsp;to go to previous page.
-</apex:page>
