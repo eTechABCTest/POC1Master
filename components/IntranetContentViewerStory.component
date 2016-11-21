@@ -1,0 +1,350 @@
+<!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+<!-- Description : 1- Modified width for the tablet Resolution on the colum - 8*4
+-->
+<!--V_1.2 - Modified By - Abhinav Sharma - CR-20140930-7520 - 07/16/2015-->
+<!--V_1.3 - Modified By - Abhinav Sharma - 02/11/2016 - CR-20160114-9515-->
+<!--V_1.4 - Modified By - Mahendra Swarnakar - 03/24/2016 - CR-20160307-9676-->
+<!--V_1.5 - Modified by - Mahendra Swarnakar - CR-20160307-9677 - 30/3/2016 -->
+<!-- Description : 1- Commented Iframe code , 2- Added image tag in video related list of more news section-->
+<apex:component layout="none" controller="IntranetContentViewerController">
+    <apex:attribute name="View" type="string" description="What page view should we display?" ></apex:attribute>
+    
+    <div class="popup news contentViewerStory">
+        <a class="x close" href="{!$Label.Intranet_Home}">x</a>
+        <div class="popup_content row">
+            <h2 class="header"><apex:outputText value="{!OfficeName} " rendered="{!OfficeName != null}" />{!Container.DisplayName}</h2>    
+            
+            <div class="col-sm-8">
+                <apex:repeat value="{!Container.RelatedContent}" var="item" rows="1">
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'video'}" >
+                        
+                        <!--Modified By - Mahendra Swarnakar - 03/24/2016 - CR-20160307-9676-->
+                        <iframe src="{!item.LinkLocation}{!IF(CONTAINS(item.LinkLocation, 'youtube'), '?wmode=transparent&showinfo=0&rel=0&fs=1', '')}" width="160" height="90" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+                        
+                        <h2 class="post-title">{!item.ItemTitle}</h2>
+                        
+                        <ul class="video-meta">
+                            <apex:variable rendered="true" value="" var="wrapper">
+                                <apex:outputPanel layout="none" rendered="{!item.ContentLength != null}"><li class="videoDetails">Video Length: <b>{!item.ContentLength}</b></li></apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!item.ContentAuthorSpeaker != null}"><li class="videoDetails">Speaker: <b>{!item.ContentAuthorSpeaker}</b></li></apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!item.ContentPublishDate != null}">
+                                    <!--Modified by - Mahendra Swarnakar - CR-20160307-9677 - 30/3/2016 - removed the [timezone="America/New_York"] attribute from the DateTimeFormat componnent tag -->
+                                    <li>Publish Date: <b><c:DateTimeFormat value="{!item.ContentPublishDate}" formatString="MMM. d, YYYY" /></b></li>
+                                </apex:outputPanel>
+                            </apex:variable>
+                        </ul>
+                        
+                        <div class="post-content">
+                            <apex:outputText value="{!item.ItemAbstract}" escape="false" />                        
+                        </div>
+                        
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        <!-- Passing New Atrribute in IntranetChatterLinks - referencedLocationName -->
+                        <!-- Added Style on Chatter-Post Div to clear float property -->
+                        <div id="chatter-{!item.IntranetScheduleId}" style="overflow:auto;">
+                            <c:IntranetChatterLinks size="large" itemId="{!item.IntranetItemId}"
+                                                    containerId="{!Container.ContainerId}"
+                                                    scheduleId="{!item.IntranetScheduleId}"
+                                                    itemData="{!item}"
+                                                    referencedLocationName="contentViewerStory"/>
+                        </div>
+                        <div class="chatter-post chatterBoxData" style="clear:both;">
+                            <iframe class="chatter-iframe" src="/apex/IntranetChatterItemFeed?entityid={!item.IntranetItemId}" frameBorder="0" />
+                        </div>
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!view == 'job' || view == 'initiative' || view == 'feature talent'}" >
+                        <div class="post-header">
+                            <div class="post-title-wrapper" style="background-color:#{!item.BackgroundColor};"><h1>{!item.ItemTitle}</h1></div>
+                        </div>
+                        
+                        <apex:outputPanel layout="none" rendered="{!view == 'initiative'}" >
+                            <div class="rate-this-story">
+                                <apex:outputLink styleClass="star-rating {!IF( NOT( item.IsRated ), 'edit', '')}" 
+                                                 html-data-click-type="Rate"
+                                                 html-data-is-rated="{!item.IsRated}"
+                                                 html-data-star-rating="{!item.AverageRating}"
+                                                 html-data-display-name="{!Container.DisplayName}"
+                                                 html-data-container-id="{!Container.ContainerId}"
+                                                 html-data-item-id="{!item.IntranetItemId}"
+                                                 html-data-schedule-id="{!item.IntranetScheduleId}"
+                                                 html-data-star="5"
+                                                 onclick="return false;"
+                                                 style="color: #428bca !important; padding-left:25px;">
+                                </apex:outputLink>
+                            </div>
+                            
+                        </apex:outputPanel>
+                        
+                        <div class="post-content">
+                            <apex:outputText value="{!item.ItemFullText}" escape="false" />                        
+                        </div>
+                        
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        <!-- Passing New Atrribute in IntranetChatterLinks - referencedLocationName -->
+                        <!-- Added Style on Chatter-Post Div to clear float property -->
+                        <div id="chatter-{!item.IntranetScheduleId}" style="overflow:auto;">
+                            <c:IntranetChatterLinks size="large" itemId="{!item.IntranetItemId}" containerId="{!Container.ContainerId}"
+                                                    scheduleId="{!item.IntranetScheduleId}" itemData="{!item}"
+                                                    referencedLocationName="contentViewerStory"/>
+                        </div>
+                        <div class="chatter-post" style="clear:both;">
+                            <iframe class="chatter-iframe" src="/apex/IntranetChatterItemFeed?entityid={!item.IntranetItemId}" frameBorder="0" />
+                        </div>
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'news' || view == 'office news'}" >
+                        
+                        <div class="post-header {!IF(item.ContentMainImageId != null && item.ShowMainImageInContentViewer == true, 'image-mode','')}">
+                            <apex:outputPanel layout="none" rendered="{!item.ContentMainImageId != null && item.ShowMainImageInContentViewer == true}">
+                                <div class="post-image">
+                                    <img src="/servlet/servlet.FileDownload?file={!item.ContentMainImageId}" />
+                                </div>
+                            </apex:outputPanel>
+                            
+                            <div class="post-title-wrapper" style="background-color:#{!item.BackgroundColor};">
+                                <h1>{!item.ItemTitle}</h1>
+                                <h3>{!item.ItemSubtitle}</h3>
+                            </div>
+                            
+                        </div>
+                        
+                        <ul class="post-meta shade">
+                            <li><i class="glyphicon glyphicon-align-left"></i>{!item.CategoryReferenceName}</li>
+                            <li><i class="glyphicon glyphicon-calendar"></i><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></li>
+                        </ul>
+                        
+                        <div class="post-content">
+                            <apex:outputText value="{!item.ItemFullText}" escape="false" />                        
+                        </div>
+                        
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        <!-- Passing New Atrribute in IntranetChatterLinks - referencedLocationName -->
+                        <!-- Added Style on Chatter-Post Div to clear float property -->
+                        <div id="chatter-{!item.IntranetScheduleId}" style="overflow:auto;">
+                            <c:IntranetChatterLinks size="large" itemId="{!item.IntranetItemId}" containerId="{!Container.ContainerId}"
+                                                    scheduleId="{!item.IntranetScheduleId}" itemData="{!item}"
+                                                    referencedLocationName="contentViewerStory"/>
+                        </div>
+                        
+                        <div class="chatter-post" style="clear:both;">
+                            <iframe class="chatter-iframe" src="/apex/IntranetChatterItemFeed?entityid={!item.IntranetItemId}" frameBorder="0" />
+                        </div>
+                        <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                        
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="{!view == 'Trending'}" >
+                        <h2 class="section-title">Trending</h2>
+
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h5 class="trending-type">{!item.Trend_Type}<span> <i class="glyphicon glyphicon-{!IF(Container.DisplayName == 'Advisory.com', 'star', IF(Container.DisplayName == 'EAB.com', 'flag', ''))}"></i></span></h5>
+                                <a href="{!item.Link_Location}" target="_blank"><h4>{!item.Article_Title}</h4></a>
+                                <div class="trending-meta">
+                                    <p class="description">
+                                        <apex:outputPanel rendered="{!NOT(ISBLANK(item.ArticlePublishDate))}">
+                                            {!MONTH(item.ArticlePublishDate)}/{!DAY(item.ArticlePublishDate)}/{!YEAR(item.ArticlePublishDate)} - 
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!NOT(ISBLANK(item.Trending_View_Count))}">
+                                            {!ROUND(item.Trending_View_Count, 0)} {!IF(item.Trend_Type == 'Most Downloaded Last 7 Days', 'Downloads', 'Views')}
+                                        </apex:outputPanel>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 trending-logo">
+                                <apex:outputPanel rendered="{!Container.DisplayName = 'Advisory.com'}" layout="none">
+                                    <img src="//www.advisory.com/~/media/Advisory-com/abcLogo.png" />
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!Container.DisplayName = 'EAB.com'}" layout="none">
+                                    
+                                    <!--Commented By - Abhinav Sharma - 02/11/2016 - CR-20160114-9515-->
+                                    <!--<img src="//i.imgur.com/ZYtOsU4.png" />-->
+                                    
+                                    <!--Added By - Abhinav Sharma - 02/11/2016 - CR-20160114-9515-->
+                            		<img src="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/images/EAB-Logo.png')}"/>
+                                    
+                                </apex:outputPanel>
+                            </div>                   
+                        </div>   
+
+                        <apex:outputPanel id="load-more-trending">    
+                                
+                                <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                                <!-- Passing New Atrribute in IntranetChatterLinks - referencedLocationName -->
+                                <!-- Added Style on Chatter-Post Div to clear float property -->
+                            
+                                <div id="chatter-{!item.IntranetScheduleId}" style="overflow:auto;">
+                                    <c:IntranetChatterLinks size="large" itemId="{!item.IntranetItemId}" containerId="{!Container.ContainerId}"
+                                                            scheduleId="{!item.IntranetScheduleId}" itemData="{!item}"
+                                                            referencedLocationName="contentViewerStory"/>
+                                </div>
+                                <div class="chatter-post" style="clear:both;">
+                                    <iframe class="chatter-iframe" src="/apex/IntranetChatterItemFeed?entityid={!item.IntranetItemId}" frameBorder="0" />
+                                </div>
+                                <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                            
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'Poll'}" >
+                        <h2 class="section-title">Poll</h2>
+                        <apex:outputPanel id="load-more-poll">    
+                                
+                                <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                                <!-- Passing New Atrribute in IntranetChatterLinks - referencedLocationName -->
+                                <!-- Added Style on Chatter-Post Div to clear float property -->
+                            
+                                <div id="chatter-{!item.IntranetScheduleId}" style="overflow:auto;">
+                                    <c:IntranetChatterLinks size="large" itemId="{!item.IntranetItemId}" containerId="{!Container.ContainerId}"
+                                                            scheduleId="{!item.IntranetScheduleId}" itemData="{!item}"
+                                                            referencedLocationName="contentViewerStory"/>
+                                </div>
+                                <div class="chatter-post" style="clear:both;">
+                                    <iframe class="chatter-iframe" src="/apex/IntranetChatterItemFeed?entityid={!item.IntranetItemId}" frameBorder="0" />
+                                </div>
+                                <!--V_1.1 - Modified By - Rajeev Jain - 07/03/2015 - CR-20150618-9016 - Board Room Mobile -->
+                            
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:repeat>
+            </div>
+            <div class="col-sm-4">
+                <div class="related-content">
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'video'}" >
+                        
+                        <h2 class="section-title">More Videos</h2>
+                        <apex:outputPanel id="load-more-videos">    
+                            
+                            <apex:repeat value="{!OtherContent}" var="item" rows="5">
+                                <div class="related">
+                                    <!--V_1.2 - Modified By - Abhinav Sharma - CR-20140930-7520 - 07/16/2015-->
+                                    <!-- Description : 1- Commented Iframe code , 2- Added image tag-->
+                                    <!--<iframe src="{!item.LinkLocation}{!IF(CONTAINS(item.LinkLocation, 'youtube'), '?wmode=transparent&showinfo=0&rel=0&fs=1', '')}" width="160" height="90" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>-->
+                                    <img src="{!If(item.VideoImageLinkUrl != '',item.VideoImageLinkUrl,URLFOR($Resource.IntranetAssets,'IntranetAssets/images/no-preview-big1.jpg'))}" style="height:auto;"/>
+                                    
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                        
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'initiative'}" >
+                        <h2 class="section-title">More Member Stories</h2>
+                        <apex:outputPanel id="load-more-initiative">    
+                            <apex:repeat value="{!OtherContent}" var="item" rows="5">
+                                <div class="related">
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'feature talent'}" >
+                        <h2 class="section-title">More Talent</h2>
+                        <apex:outputPanel id="load-more-talent">    
+                            <apex:repeat value="{!OtherContent}" var="item" rows="5">
+                                <div class="related">
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'job'}" >
+                        <h2 class="section-title">More Jobs</h2>
+                        <apex:outputPanel id="load-more-jobs">    
+                            <apex:repeat value="{!OtherContent}" var="item" rows="5">
+                                <div class="related">
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date">posted on <c:DateTimeFormat value="{!item.PublishDate}" formatString=" MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!view == 'news' || view == 'office news'}" >
+                        <apex:variable var="count" value="{!1}" />
+                        <apex:repeat value="{!TopRelatedContent}" var="item" rows="2">
+                            <apex:outputPanel layout="none" rendered="{!count == 1}"><h2 class="section-title relatedNews">Related News</h2></apex:outputPanel>
+                            <apex:variable var="count" value="{!2}" />
+                            
+                            <div class="related relatedNews">
+                                <ul class="post-meta shade">
+                                    <li><i class="glyphicon glyphicon-align-left"></i>{!item.CategoryReferenceName}</li>
+                                </ul>
+                                <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <h2 class="section-title">More News</h2>      
+                        
+                        <apex:outputPanel id="load-more-news">    
+                            <apex:repeat value="{!OtherContent}" var="item">
+                                <div class="related">
+                                    <ul class="post-meta shade">
+                                        <li><i class="glyphicon glyphicon-align-left"></i>{!item.CategoryReferenceName}</li>
+                                    </ul>
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!view == 'Trending'}" >
+                        <apex:variable var="count" value="{!1}" />
+                        <apex:repeat value="{!TopRelatedContent}" var="item" rows="2">
+                            <apex:outputPanel layout="none" rendered="{!count == 1}"><h2 class="section-title">Related Trending</h2></apex:outputPanel>
+                            <apex:variable var="count" value="{!2}" />
+                            
+                            <div class="related">
+                                <ul class="post-meta shade">
+                                    <li><i class="glyphicon glyphicon-align-left"></i>{!item.CategoryReferenceName}</li>
+                                </ul>
+                                <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <h2 class="section-title">More Trending</h2>      
+                        
+                        <apex:outputPanel id="load-more-trending">    
+                            <apex:repeat value="{!OtherContent}" var="item">
+                                <div class="related">
+                                    <ul class="post-meta shade">
+                                        <li><i class="glyphicon glyphicon-align-left"></i>{!item.CategoryReferenceName}</li>
+                                    </ul>
+                                    <h3><a href="{!item.Permalink}">{!item.ItemTitle}</a></h3>
+                                    <div class="date"><c:DateTimeFormat value="{!item.PublishDate}" formatString="MMM. d, YYYY" timezone="America/New_York" /></div>
+                                </div>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+                    <apex:form id="loadmore">
+                        <apex:inputHidden value="{!Offset}" />
+                        <apex:outputPanel layout="none" rendered="{!HasMore}"> 
+                            <div class="related-load-more button-action">
+                                <apex:commandLink action="{!LoadData}" value="Load More" status="load-more-spinner"
+                                                  rerender="load-more-news,load-more-talent,load-more-jobs,load-more-videos,load-more-initiative,load-more-trending,loadmore">
+                                    <apex:actionStatus id="load-more-spinner"><apex:facet name="start"><i class="fa fa-refresh fa-spin"></i></apex:facet></apex:actionStatus>
+                                </apex:commandLink>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:form>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:component>

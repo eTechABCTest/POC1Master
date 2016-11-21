@@ -1,0 +1,3439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Academies_Contract_Value_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>Academies_Contract_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>TD Contract Value 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Academies_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>If(ISPICKVAL( Program__r.Business_line__c  , &quot;TD&quot; ),  Annual_Contract_Value__c , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>TD Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Accounting_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <label>Accounting Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Active_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>if((ispickval( Status__c , &quot;ATL&quot;)  || ispickval( Status__c , &quot;Dropped&quot;)|| ispickval( Status__c , &quot;Honorary&quot;))  &amp;&amp;   ( Start__c  &lt;= Today())  &amp;&amp;  (End__c &gt;= Today()) , &quot;Active&quot;, &quot;Inactive&quot;)</formula>
+        <label>Active Date Range</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Adj_At_Risk_Accounting_Contract_Value__c</fullName>
+        <description>Created for CR-20140918-7404. Formula: if([At Risk Accounting Contract Value] is null, [Risk Negotiated Amount], [At Risk Accounting Contract Value])</description>
+        <externalId>false</externalId>
+        <formula>IF(
+AND(
+NOT(ISBLANK(At_Risk_Accounting_Contract_Value__c)),
+NOT(ISNULL(At_Risk_Accounting_Contract_Value__c))
+),
+At_Risk_Accounting_Contract_Value__c,
+Risk_Negotiated_Amount__c
+)</formula>
+        <label>Adj. At Risk Accounting Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Adjusted_Accounting_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+   AND(
+       NOT(ISBLANK(Accounting_Contract_Value__c)),
+       NOT(ISNULL(Accounting_Contract_Value__c))
+   ),
+   Accounting_Contract_Value__c,
+   Negotiated_Amount__c  
+)</formula>
+        <label>Adjusted Accounting Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Adjusted_At_Risk_Internal_ABC_Allocation__c</fullName>
+        <description>Created for CR-20140918-7404. Formula:  if([At Risk Internal ABC Allocation] is null, [Risk Negotiated Amount], [At Risk Internal ABC Allocation])</description>
+        <externalId>false</externalId>
+        <formula>IF(
+AND(
+NOT(ISBLANK(At_Risk_Internal_ABC_Allocation__c)),
+NOT(ISNULL(At_Risk_Internal_ABC_Allocation__c))
+),
+At_Risk_Internal_ABC_Allocation__c,
+Risk_Negotiated_Amount__c
+)</formula>
+        <label>Adjusted At Risk Internal ABC Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Adjusted_Internal_ABC_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+   AND(
+       NOT(ISBLANK(Internal_ABC_Allocation__c)),
+       NOT(ISNULL(Internal_ABC_Allocation__c))
+   ), 
+   Internal_ABC_Allocation__c, 
+   Negotiated_Amount__c 
+)</formula>
+        <label>Adjusted Internal ABC Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Credited_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Amount Credited Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Annual_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>Negotiated_Amount__c /(( End__c  -  Start__c +1)/365)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Annual Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Approval_Date__c</fullName>
+        <description>Created for CR-20141218-8372.</description>
+        <externalId>false</externalId>
+        <label>Approval Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Approval_Status__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Approval Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Approved_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Approved By</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Contracts ABC (Approved By)</relationshipLabel>
+        <relationshipName>Contracts_ABC</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Accounting_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <label>At Risk Accounting Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Internal_ABC_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <label>At Risk Internal ABC Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Type__c</fullName>
+        <description>Created for CR-20141218-8372.</description>
+        <externalId>false</externalId>
+        <label>At Risk Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Opt Out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>POC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Utilization</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Performance-Based Risk (end-of-contract)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Risk Throughout Contract</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Travel Fees</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reallocation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rewards</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Average_Credited_PI__c</fullName>
+        <externalId>false</externalId>
+        <label>Average Credited PI %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Average_PI__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Y2_PI__c + Y3_PI__c + Y4_PI__c + Y5_PI__c) / if((Y2_Annual_Fee__c + Y3_Annual_Fee__c+ Y4_Annual_Fee__c + Y5_Annual_Fee__c) &gt; 0, Total_Counter__c, 1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Average PI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>BI_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>If(ISPICKVAL( Program__r.Business_line__c  , &quot;PT&quot; ),  0 , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>PT Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Bill_with_ID__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Bill with ID</label>
+        <referenceTo>Contract__c</referenceTo>
+        <relationshipLabel>Contracts ABC (Bill with ID)</relationshipLabel>
+        <relationshipName>Contracts_ABC2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Business_Line_From_Trigger__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Line (From Trigger)</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Line__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Program__r.Business_line__c)</formula>
+        <label>Business Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CPI_Escalation_Cap__c</fullName>
+        <externalId>false</externalId>
+        <label>CPI Escalation Cap</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>CPI_Escalation_Clause__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>CPI Escalation Clause</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Calculator_Annual__c</fullName>
+        <externalId>false</externalId>
+        <label>Calculator Annual</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Calculator_Set_Up__c</fullName>
+        <externalId>false</externalId>
+        <label>Calculator Set-Up</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Calculator_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Calculator Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Comments_for_Approval_Offer__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Comments for Approval Offer</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Comments_for_Revenue_at_Risk__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Comments for Revenue at Risk</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Committed_Contract_Length__c</fullName>
+        <externalId>false</externalId>
+        <label>Committed Contract Length</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Concessions_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Concessions Comments</label>
+        <length>32000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Concessions__c</fullName>
+        <externalId>false</externalId>
+        <label>Concessions</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sample 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sample 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sample 3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contract_1_Yr_Term__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Years_in_Term__c = 1, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract 1 Yr Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_2_Yr_Term__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Years_in_Term__c = 2, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract 2 Yr Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_3_Yr_Term__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Years_in_Term__c = 3, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract 3 Yr Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_4_Yr_Term__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Years_in_Term__c = 4, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract 4 Yr Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_5_Yr_Term__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Years_in_Term__c = 5, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract 5 Yr Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Active__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(!ISBLANK(Start__c) &amp;&amp; !ISBLANK(End__c),
+IF(Start__c &lt;= TODAY() &amp;&amp; End__c  &gt;= TODAY(), 1, 0),
+0)</formula>
+        <label>Contract Active</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Currency__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Currency</label>
+        <picklist>
+            <picklistValues>
+                <fullName>ARS - Argentine Peso</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AUD - Australian Dollar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BRL - Brazilian Real</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CAD - Canadian Dollar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CHF - Swiss Franc</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CLP - Chilean Peso</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>COP - Colombian Peso</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DKK - Danish krone</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EUR - Euro</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GBP - British Pound</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>MXN - Mexican Peso</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>MYR - Malaysian Ringgit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NOK - Norwegian Krone</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NZD - New Zealand Dollars</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PHP - Philippine Peso</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>QAR - Qatar Rial</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SEK - Swedish Krona</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SGD - Singapore Dollar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>THB - Thai Baht</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TWD - New Taiwan Dollar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>USD - US Dollar</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Opt_Out__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(Term_Type__c, &quot;Opt Out&quot;), 1, 0)</formula>
+        <label>Contract Opt Out</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Renewal_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contract Renewal Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Contract Renewal Opportunity</relationshipLabel>
+        <relationshipName>Contracts_ABC</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Term_Category__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Years_in_Term__c) + &quot; Year &quot; + TEXT(Term_Type__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Term Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Core_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>If(ISPICKVAL( Program__r.Business_line__c  , &quot;RI&quot; ), Annual_Contract_Value__c , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>RI Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>T{00000000}</displayFormat>
+        <externalId>true</externalId>
+        <label>Counter ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Note_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Note Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Credited_Contract_Length__c</fullName>
+        <externalId>false</externalId>
+        <label>Credited Contract Length</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DAS_Fees__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>DAS Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Date_Added_to_Rev_Rec__c</fullName>
+        <description>Created for CR-20141218-8372.</description>
+        <externalId>false</externalId>
+        <label>Date Added to Rev Rec</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>End__c</fullName>
+        <externalId>false</externalId>
+        <label>End</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Exchange_Rate__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Exchange Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Finance_Manager__c</fullName>
+        <description>Displaying the value of the &quot;Credit Manager&quot; field on the related Payer Institution.</description>
+        <externalId>false</externalId>
+        <formula>Hyperlink(Payer_Account__r.c2g__CODACreditManager__c, Payer_Account__r.c2g__CODACreditManager__r.FirstName + &quot; &quot; + Payer_Account__r.c2g__CODACreditManager__r.LastName)</formula>
+        <label>Finance Manager</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_Invoice_Created__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>First Invoice Created</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Forecasted_in_Rev_Rec__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Forecasted in Rev Rec</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Forecasting_End_Date_Change__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Forecasting End Date Change</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Forecasting_Expected_Closure_Date__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Forecasting Expected Closure Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Forecasting_Potential_Revenue_Change_Num__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Forecasting Potential Revenue Change Num</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecasting_Revenue_at_Risk_Type__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>Forecasting Revenue at Risk Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GUID__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;A0010000-0000-0000-0000-0000&quot; &amp; RIGHT(Counter_ID__c,8)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>GUID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HWorks_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>If(ISPICKVAL( Program__r.Business_line__c  , &quot;CM&quot; ),  Annual_Contract_Value__c , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CM Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Historical_Linker__c</fullName>
+        <externalId>false</externalId>
+        <label>Historical Linker</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Initial_Invoice_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Initial Invoice Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Internal_ABC_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <label>Internal ABC Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Billing_Schedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Invoice Billing Schedule</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>You can only select Billing Schedules associated with the Payer Account on this Contract.</errorMessage>
+            <filterItems>
+                <field>$Source.Payer_Account__c</field>
+                <operation>equals</operation>
+                <valueField>Invoice_Billing_Schedule__c.Institution__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Invoice_Billing_Schedule__c</referenceTo>
+        <relationshipLabel>Contracts ABC</relationshipLabel>
+        <relationshipName>Contracts_ABC</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Invoice Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Invoicing_Arrangement__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Invoicing Arrangement</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Arrears</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Delayed Year 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Milestone</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Risk Metric</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Semi-Annual</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Special</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Invoicing_Instructions__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Invoicing Instructions</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Join_Date__c</fullName>
+        <description>If this is the first contract, then the date is set manually.  Otherwise it is the Previous Contract&apos;s join Date</description>
+        <externalId>false</externalId>
+        <label>Join Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_Modified_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>LastModifiedDate</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Last Modified Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Likely_to_Close_in_Quarter__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>% Likely to Close in Quarter</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Likely_to_Close_in_Year__c</fullName>
+        <description>CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <label>% Likely to Close in Year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Line_Item_Schedule_Total__c</fullName>
+        <description>Total of all line items associated with this contract</description>
+        <externalId>false</externalId>
+        <label>Line Item Schedule Total</label>
+        <summarizedField>Line_Item_Schedule__c.Amount__c</summarizedField>
+        <summaryForeignKey>Line_Item_Schedule__c.Contract__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Main_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Main Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Contracts1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Maint_End__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. End</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Maint_Month__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. Month</label>
+        <picklist>
+            <picklistValues>
+                <fullName>0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>6</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>7</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>9</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>10</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>11</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>12</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>21</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>25</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Maint_Negotiated__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. Negotiated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Maint_Prev_Negotiated__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. Prev Negotiated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Maint_Start__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. Start</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Maint_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Maint. Year</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Negotiated_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Negotiated Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Negotiated_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Negotiated By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Net_Invoiced__c</fullName>
+        <description>Created for CR-20141218-8372.</description>
+        <externalId>false</externalId>
+        <formula>Invoice_Total__c  -  Credit_Note_Total__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Net Invoiced</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>New_Business_Business__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Program__r.New_Business_Business__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>New Business Business</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_Business_Vertical__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Program__r.New_Business_Vertical__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>New Business Vertical</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Stage__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Source_Opportunity__r.StageName)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Source Opportunity Stage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opt_Out_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Opt Out Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Opt_Out_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Opt Out Type</label>
+        <picklist>
+            <controllingField>Term_Type__c</controllingField>
+            <picklistValues>
+                <fullName>Service Quality Guarantee</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ROI Opt Out</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Opt Out</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Point In Time</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rolling 30 Day</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rolling 60 Day</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rolling 90 + Days</fullName>
+                <default>false</default>
+                <controllingFieldValues>Opt Out</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Payer_Account__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Payer Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Contracts ABC</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date_1__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period End Date 1</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date_2__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period End Date 2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date_3__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period End Date 3</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date_4__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period End Date 4</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_Fees_1__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Fees 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Period_Fees_2__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Fees 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Period_Fees_3__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Fees 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Period_Fees_4__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Fees 4</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Period_Start_Date_1__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Start Date 1</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_Start_Date_2__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Start Date 2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_Start_Date_3__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Start Date 3</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_Start_Date_4__c</fullName>
+        <description>Created for CR-20160106-9495.</description>
+        <externalId>false</externalId>
+        <label>Period Start Date 4</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Previous Contract</label>
+        <referenceTo>Contract__c</referenceTo>
+        <relationshipLabel>Contracts ABC (Previous Contract)</relationshipLabel>
+        <relationshipName>Contracts_ABC3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pricing_Metric_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Pricing Metric Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Annual Inpatient Admissions</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Covered Lives</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Count of Providers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Count of Employees</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Surgical Procedures</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual PO Spend</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Pricing_Metrics__c</fullName>
+        <externalId>false</externalId>
+        <label>Pricing Metrics</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Abbreviation__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program__r.Program_Abbreviation__c</formula>
+        <label>Program Abbreviation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Acronym__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program__r.Program_Acronym__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Program Acronym</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Line__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Program__r.Program_Line__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Program Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Program</label>
+        <referenceTo>Program__c</referenceTo>
+        <relationshipLabel>Contracts ABC</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project_Description__c</fullName>
+        <description>Short description of the project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Short description of the project</inlineHelpText>
+        <label>Project Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Receipt_of_LOA__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Receipt of LOA</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Renewable__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(
+		NOT(ISNULL(Y1_Annual_Fee__c)),
+		((Setup_in_Negotiated__c + Y1_Annual_Fee__c) != 0)
+	),
+	Y1_Annual_Fee__c  /  (  Setup_in_Negotiated__c  +  Y1_Annual_Fee__c  ),
+	null
+)</formula>
+        <label>Renewable %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Renewal_Opp_Owner_2__c</fullName>
+        <description>Updated formula in CR-20130912-3630 
+From:  Contract_Renewal_Opportunity__r.Owner_Name__c
+
+To: Contract_Renewal_Opportunity__r.Owner.FirstName + &apos; &apos; + Contract_Renewal_Opportunity__r.Owner.LastName</description>
+        <externalId>false</externalId>
+        <formula>Contract_Renewal_Opportunity__r.Owner.FirstName + &apos; &apos; + Contract_Renewal_Opportunity__r.Owner.LastName</formula>
+        <label>Renewal Opp Owner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Renewal_Opp_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Contract_Renewal_Opportunity__r.StageName)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Renewal Opp Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Division__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text( Negotiated_By__r.Report_Division__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report Division</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Team__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Negotiated_By__r.Report_Team__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report Team</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Risk_Comments__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk Comments</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Risk_Completed__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk Completed</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Risk_Due_Date__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk Due Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Risk_End__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk End</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Risk_Negotiated_Amount__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk Negotiated Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Risk_Start__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Risk Start</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Setup_in_Negotiated__c</fullName>
+        <externalId>false</externalId>
+        <label>Setup in Negotiated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Solutions_Contract__c</fullName>
+        <description>Created for CR-20160609-9911.</description>
+        <externalId>false</externalId>
+        <formula>AND (
+(Receipt_of_LOA__c &gt;= Payer_Account__r.Solution_Adopted__c),
+OR (
+ISBLANK(Payer_Account__r.Solution_Ended__c),
+Payer_Account__r.Solution_Ended__c &gt;= Receipt_of_LOA__c)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Contract closed during Payer Account’s Solutions membership.</inlineHelpText>
+        <label>Solutions Contract</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Source_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Source Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Stage__c</fullName>
+        <description>this field is deleted and not used for anything</description>
+        <externalId>false</externalId>
+        <formula>&quot;Not Used&quot;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Deleted_Stage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Start__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Start</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ATL</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dropped</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Void</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Honorary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Term_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Term Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Opt Out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixed Term</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Termination_Payment__c</fullName>
+        <externalId>false</externalId>
+        <label>Termination Payment</label>
+        <picklist>
+            <picklistValues>
+                <fullName>No Termination Clause</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No Termination Payment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>25% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>35% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>45% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>50% of bal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other - See Comments</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total_Counter__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISNULL(Y2_PI__c), 0,1) + IF( ISNULL(Y3_PI__c), 0,1) + IF( ISNULL(Y4_PI__c), 0,1) + IF( ISNULL(Y5_PI__c), 0,1)</formula>
+        <label>Total Counter</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Outstanding__c</fullName>
+        <description>Created for CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <formula>Net_Invoiced__c  - Total_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Outstanding</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Paid__c</fullName>
+        <description>Created for CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <formula>Amount_Credited_Total__c  - Credit_Note_Total__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Paid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Travel__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Travel</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Unpaid_Contract_Amount__c</fullName>
+        <description>Created for CR-20141218-8372</description>
+        <externalId>false</externalId>
+        <formula>Negotiated_Amount__c  - Total_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Unpaid Contract Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>NBB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Unit_Status__c</fullName>
+        <description>Created for CR-20141218-8372.</description>
+        <externalId>false</externalId>
+        <label>Unit Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Y1_Annual_Fee__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Y1 Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Y2_Annual_Fee__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Y2 Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Y2_PI__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(Y1_Annual_Fee__c != 0,
+        Y2_Annual_Fee__c != 0),
+	((Y2_Annual_Fee__c /Y1_Annual_Fee__c)  - 1), 
+	null
+)</formula>
+        <label>Y2 PI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Y3_Annual_Fee__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Y3 Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Y3_PI__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(Y2_Annual_Fee__c != 0,
+       Y3_Annual_Fee__c != 0), 
+	((Y3_Annual_Fee__c /Y2_Annual_Fee__c)  - 1), 
+	null
+)</formula>
+        <label>Y3 PI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Y4_Annual_Fee__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Y4 Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Y4_PI__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(Y3_Annual_Fee__c != 0,
+       Y4_Annual_Fee__c != 0), 
+	((Y4_Annual_Fee__c /Y3_Annual_Fee__c)  - 1), 
+	null
+)</formula>
+        <label>Y4 PI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Y5_Annual_Fee__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Y5 Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Y5_PI__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(Y4_Annual_Fee__c != 0,
+       Y5_Annual_Fee__c != 0), 
+	((Y5_Annual_Fee__c /Y4_Annual_Fee__c)  - 1), 
+	null
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Y5 PI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Year_2_PI__c</fullName>
+        <externalId>false</externalId>
+        <label>Year 2 PI %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Year_3_PI__c</fullName>
+        <externalId>false</externalId>
+        <label>Year 3 PI %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Year_4_PI__c</fullName>
+        <externalId>false</externalId>
+        <label>Year 4 PI %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Year_5_PI__c</fullName>
+        <externalId>false</externalId>
+        <label>Year 5 PI %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Year_One_Fees__c</fullName>
+        <externalId>false</externalId>
+        <label>Year One Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year__c</fullName>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Year</label>
+        <length>6</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Years_in_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Years in Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Contract ABC</label>
+    <listViews>
+        <fullName>Change_Invoice_Contact4</fullName>
+        <columns>NAME</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Invoice_Billing_Schedule__c</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>Baptist</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>10/11/2016</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <label>Change Invoice Contact</label>
+    </listViews>
+    <listViews>
+        <fullName>Change_Invoice_Contact_CHICK_VIEW</fullName>
+        <columns>NAME</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Y1_Annual_Fee__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>East Kent Hospitals University NHS Foundation Trust - C - CIHI - 2014</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>6/30/2016</value>
+        </filters>
+        <label>Change Invoice Contact - CHICK VIEW</label>
+        <sharedTo>
+            <group>Financial_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Change_Invoice_Contact_Duff_VIEW1</fullName>
+        <columns>NAME</columns>
+        <columns>Program__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Y1_Annual_Fee__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Houston Methodist</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>6/30/2016</value>
+        </filters>
+        <label>Change Invoice Contact - Duff VIEW</label>
+        <sharedTo>
+            <group>Financial_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Change_Invoice_Contact_FLO_VIEW</fullName>
+        <columns>NAME</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Y1_Annual_Fee__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>Cardiovascular Care Group</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>12/31/2015</value>
+        </filters>
+        <label>Change Invoice Contact - FLO VIEW</label>
+        <sharedTo>
+            <group>Financial_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Change_Invoice_Contact_LAMBERT_VIEW</fullName>
+        <columns>NAME</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Y1_Annual_Fee__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>mayo clinic</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>8/30/2016</value>
+        </filters>
+        <label>Change Invoice Contact - LAMBERT VIEW</label>
+        <sharedTo>
+            <group>Financial_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Change_Invoice_Contact_Lanaya_1</fullName>
+        <columns>NAME</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <columns>Total_Unpaid_Contract_Amount__c</columns>
+        <columns>Program__c</columns>
+        <columns>New_Business_Vertical__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Total_Outstanding__c</columns>
+        <columns>Invoice_Total__c</columns>
+        <columns>Invoice_Billing_Schedule__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Tarleton State University</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>12/30/2015</value>
+        </filters>
+        <label>Change Invoice Contact - Lanaya 1</label>
+    </listViews>
+    <listViews>
+        <fullName>Current_Membership_View</fullName>
+        <columns>NAME</columns>
+        <columns>Payer_Account__c</columns>
+        <columns>Program_Acronym__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <columns>Annual_Contract_Value__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Payer_Account__c</field>
+            <operation>startsWith</operation>
+            <value>Mountain States</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1/1/2016</value>
+        </filters>
+        <label>Current Membership View</label>
+    </listViews>
+    <listViews>
+        <fullName>Current_Membership_View1</fullName>
+        <columns>NAME</columns>
+        <columns>Payer_Account__c</columns>
+        <columns>Program_Acronym__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <columns>Annual_Contract_Value__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Payer_Account__c</field>
+            <operation>startsWith</operation>
+            <value>Presbyterian Healthcare Services - Albuquerque - NM</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL,Honorary</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Start__c</field>
+            <operation>lessOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Current Membership View</label>
+    </listViews>
+    <listViews>
+        <fullName>KS_Currency_Check</fullName>
+        <columns>NAME</columns>
+        <columns>Invoice_Contact__c</columns>
+        <columns>Main_Contact__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Contract_Currency__c</field>
+            <operation>equals</operation>
+            <value>QAR - Qatar Rial</value>
+        </filters>
+        <label>KS Currency Check</label>
+    </listViews>
+    <listViews>
+        <fullName>Membership_History_View</fullName>
+        <columns>Counter_ID__c</columns>
+        <columns>Payer_Account__c</columns>
+        <columns>Program_Acronym__c</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Negotiated_Amount__c</columns>
+        <columns>Annual_Contract_Value__c</columns>
+        <columns>NAME</columns>
+        <columns>Contract_Renewal_Opportunity__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>1/1/2016</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>baptist health louisville</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL</value>
+        </filters>
+        <label>Griffin</label>
+        <sharedTo>
+            <role>FinOpsAnalyst</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Pricing_Metric</fullName>
+        <columns>NAME</columns>
+        <columns>Start__c</columns>
+        <columns>End__c</columns>
+        <columns>Source_Opportunity__c</columns>
+        <columns>Renewal_Opp_Owner_2__c</columns>
+        <columns>Pricing_Metrics__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contract__c.Standard</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>ATL</value>
+        </filters>
+        <filters>
+            <field>Program_Acronym__c</field>
+            <operation>equals</operation>
+            <value>BIPAE,BIPAI,BICQ,BICR</value>
+        </filters>
+        <filters>
+            <field>End__c</field>
+            <operation>greaterThan</operation>
+            <value>12/31/2015</value>
+        </filters>
+        <label>Pricing Metric</label>
+    </listViews>
+    <listViews>
+        <fullName>Test1</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Pending</value>
+        </filters>
+        <label>#Audit - Pending Contracts</label>
+        <sharedTo>
+            <role>FinOpsAnalyst</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>year_one_fees</fullName>
+        <columns>NAME</columns>
+        <columns>Year_One_Fees__c</columns>
+        <columns>Receipt_of_LOA__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Receipt_of_LOA__c</field>
+            <operation>greaterThan</operation>
+            <value>1/6/2012</value>
+        </filters>
+        <filters>
+            <field>Year_One_Fees__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>year one fees</label>
+    </listViews>
+    <nameField>
+        <label>Contract Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Contracts ABC</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Standard</fullName>
+        <active>true</active>
+        <label>Standard</label>
+        <picklistValues>
+            <picklist>At_Risk_Type__c</picklist>
+            <values>
+                <fullName>Opt Out</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>POC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Performance-Based Risk %28end-of-contract%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reallocation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rewards</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Risk Throughout Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Travel Fees</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utilization</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Concessions__c</picklist>
+            <values>
+                <fullName>Sample 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sample 2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sample 3</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Contract_Currency__c</picklist>
+            <values>
+                <fullName>ARS - Argentine Peso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AUD - Australian Dollar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BRL - Brazilian Real</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CAD - Canadian Dollar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CHF - Swiss Franc</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CLP - Chilean Peso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>COP - Colombian Peso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DKK - Danish krone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EUR - Euro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GBP - British Pound</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MXN - Mexican Peso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MYR - Malaysian Ringgit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NOK - Norwegian Krone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NZD - New Zealand Dollars</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PHP - Philippine Peso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>QAR - Qatar Rial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEK - Swedish Krona</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SGD - Singapore Dollar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>THB - Thai Baht</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TWD - New Taiwan Dollar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>USD - US Dollar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Invoicing_Arrangement__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Arrears</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Delayed Year 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Milestone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Risk Metric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Semi-Annual</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Special</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Maint_Month__c</picklist>
+            <values>
+                <fullName>0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>20</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>21</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>40</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Opt_Out_Type__c</picklist>
+            <values>
+                <fullName>Annual Opt Out</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other Point In Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ROI Opt Out</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rolling 30 Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rolling 60 Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rolling 90 %2B Days</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Quality Guarantee</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Pricing_Metric_Type__c</picklist>
+            <values>
+                <fullName>Annual Count of Employees</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Count of Providers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Covered Lives</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Inpatient Admissions</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Annual PO Spend</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Surgical Procedures</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>ATL</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dropped</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Honorary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Void</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Term_Type__c</picklist>
+            <values>
+                <fullName>Fixed Term</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opt Out</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Termination_Payment__c</picklist>
+            <values>
+                <fullName>25%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>35%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>40%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>45%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>50%25 of bal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Termination Clause</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Termination Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other - See Comments</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>NBB</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Status__c</searchFilterFields>
+        <searchFilterFields>Business_Line__c</searchFilterFields>
+        <searchResultsAdditionalFields>Active__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Program__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Business_Line__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Start__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>End__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Counter_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Main_Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Negotiated_Amount__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Before_Contract_ABC_can_be_created</fullName>
+        <active>true</active>
+        <description>The parent record of program is Contract LOA and stage is Closed Won.</description>
+        <errorConditionFormula>And(BEGINS( Source_Opportunity__r.RecordType.Name, &quot;Program&quot;),
+
+ Source_Opportunity__r.Parent_Opportunity__r.RecordType.Name = &quot;Contract LOA&quot;,
+
+Source_Opportunity__r.Parent_Opportunity__r.SBQQ__Contracted__c = True,
+
+NOT (ISPICKVAL(Source_Opportunity__r.StageName, &quot;Closed Won&quot;)))</errorConditionFormula>
+        <errorMessage>Before a Contract ABC can be created, the parent record of program needs to equal Contract  LOA and the Stage needs to equal Closed Won.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Currency_Not_USD_Require_Exchange_Rate</fullName>
+        <active>true</active>
+        <description>If contract currency is not USD, then require exchange rate.</description>
+        <errorConditionFormula>NOT(ISPICKVAL(Contract_Currency__c, &quot;USD&quot;))
+&amp;&amp;
+ISBLANK(Exchange_Rate__c)</errorConditionFormula>
+        <errorDisplayField>Exchange_Rate__c</errorDisplayField>
+        <errorMessage>Exchange Rate required when Contract Currency not USD.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Opt_Out_Date</fullName>
+        <active>false</active>
+        <description>Inactive. If Opt-Out Type is Service Quality Guarantee, ROI Opt Out, Annual Opt Out then the Opt-Out Date must be populated.</description>
+        <errorConditionFormula>OR( ISPICKVAL( Opt_Out_Type__c , &quot;Service Quality Guarantee&quot;)   ,  ISPICKVAL( Opt_Out_Type__c , &quot;ROI Opt Out&quot;),  ISPICKVAL( Opt_Out_Type__c , &quot;Annual Opt Out&quot;))  &amp;&amp; ISBLANK( Opt_Out_Date__c)</errorConditionFormula>
+        <errorMessage>Please populate Opt Out Date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Opt_Out_Date</fullName>
+        <active>true</active>
+        <description>If Opt-Out Type is Service Quality Guarantee, ROI Opt Out, Annual Opt Out then the Opt-Out Date must be populated.</description>
+        <errorConditionFormula>OR(ISPICKVAL( Opt_Out_Type__c , &quot;Service Quality Guaranteed&quot;), ISPICKVAL( Opt_Out_Type__c , &quot;ROI Opt Out&quot;) , ISPICKVAL( Opt_Out_Type__c , &quot;Annual Opt Out&quot;))  &amp;&amp; ISBLANK( Opt_Out_Date__c )</errorConditionFormula>
+        <errorMessage>A date is required in Opt Out Date when Opt Out Type is SQG, ROI Opt Out, or Annual Opt Out.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Status_ATL_or_Honorary_Require_Fields</fullName>
+        <active>true</active>
+        <description>If status is ATL or Honorary then Negotiated amount, type, start, end, year, program, join date, payer account, main contact, invoice contact are all required fields</description>
+        <errorConditionFormula>(
+Start__c &gt;= DATE(2011,3,24)
+)&amp;&amp;
+( 
+ISPICKVAL(Status__c, &quot;ATL&quot;) || ISPICKVAL(Status__c, &quot;Honorary&quot;) 
+) &amp;&amp; $Profile.Name != &apos;System Administrator&apos; 
+&amp;&amp; 
+( 
+ISBLANK(Negotiated_Amount__c) || 
+ISBLANK(TEXT(Type__c)) || 
+ISBLANK(Start__c) || 
+ISBLANK(End__c) || 
+ISBLANK(Year__c) || 
+ISBLANK(Program__c) || 
+ISBLANK(Join_Date__c) || 
+ISBLANK(Payer_Account__c) || 
+ISBLANK(Main_Contact__c) || 
+ISBLANK(Invoice_Contact__c) 
+)</errorConditionFormula>
+        <errorMessage>When status is ATL or Honorary the following fields are required: Negotiated Amount, Type, Start, End, Year, Program, Join Date, Payer Account, Main Contact, and Invoice Contact.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>ValidateStartDateAndEndDate</fullName>
+        <active>true</active>
+        <description>End date should be always greater than or equals to start date.</description>
+        <errorConditionFormula>End__c  &lt; Start__c</errorConditionFormula>
+        <errorMessage>The End Date cannot be before the Start Date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Validate_Opt_Out_Date</fullName>
+        <active>true</active>
+        <description>Added in CR-20151202-9434.</description>
+        <errorConditionFormula>AND(ISPICKVAL(Term_Type__c, &apos;Opt Out&apos;),  ISBLANK( Opt_Out_Date__c))</errorConditionFormula>
+        <errorDisplayField>Opt_Out_Date__c</errorDisplayField>
+        <errorMessage>You must enter a value.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Add_Contract</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Add Contract</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/22.0/connection.js&quot;)} 
+ 
+function PopupCenter(pageURL, title,w,h) { 
+    var left = (screen.width/2)-(w/2); 
+    var top = (screen.height/2)-(h/2); 
+    var targetWin = window.open (pageURL, title, &quot;width=&quot;+w+&quot;,height=&quot;+h+&quot;,toolbar=no,directories=no,location=no,menubar=no,status=no,left=&quot;+left+&quot;,top=&quot;+top); 
+}
+var result = sforce.connection.query(&quot;Select Id From Contract__c where Status__c = &apos;ATL&apos; and Invoice_Billing_Schedule__c = &apos;&apos; and Payer_Account__c = &apos;{!Invoice_Billing_Schedule__c.InstitutionId__c}&apos; &quot;);
+var records = result.getArray(&quot;records&quot;);
+ 
+if(records.length == 0)
+{
+alert(&apos;There are no ATL contracts for {!Invoice_Billing_Schedule__c.Institution__c} available to be linked to this Invoice Billing Schedule.&apos;);
+} else {
+ 
+PopupCenter(&quot;/apex/AddContractsToInvoiceBillingSchedule?id={!Invoice_Billing_Schedule__c.Id}&quot;, &quot;AddContracts&quot;, 800, 600);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Invoice_Billing_Sched</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Create Invoice Billing Sched</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>if(&apos;{!Contract__c.Invoice_Billing_ScheduleId__c}&apos; != null &amp;&amp; &apos;{!Contract__c.Invoice_Billing_ScheduleId__c}&apos; != &apos;&apos;)
+alert(&apos;Contract is already linked to an Invoice Billing Schedule, you cannot create a new one for this contract.&apos;);
+else
+location.href = &apos;/apex/AssociateContractABCWithInvoiceBilling?accountPayerId={!Contract__c.Payer_AccountId__c}&amp;contractABCId={!Contract__c.Id}&amp;retURL=&apos; + location.href;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Project</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Create Project</masterLabel>
+        <openType>sidebar</openType>
+        <page>ICON_ProjectCreation</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Edit_Contract_Contacts</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Edit Contract Contacts</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&apos;/soap/ajax/29.0/connection.js&apos;)} 
+{!REQUIRESCRIPT(&apos;/soap/ajax/29.0/apex.js&apos;)} 
+{!REQUIRESCRIPT(&quot;https://code.jquery.com/jquery-1.10.2.js&quot;)} 
+{!REQUIRESCRIPT(&quot;https://code.jquery.com/ui/1.10.4/jquery-ui.js&quot;)} 
+
+var j$ = jQuery.noConflict(); 
+
+//Getting Parent Account Id 
+var currentUrl = window.location.href; 
+var hostIndex = currentUrl.indexOf(window.location.host+&apos;/&apos;)+(window.location.host+&apos;/&apos;).length; 
+var invoicebillingscheduleId = currentUrl.substring(hostIndex,hostIndex+15); 
+
+//This &quot;records&quot; will have all the Ids of the selected records 
+var records = {!GETRECORDIDS($ObjectType.Contract__c)}; 
+var contractRecorIds= &quot;&quot;; 
+if (records[0] == null ) { 
+alert(&quot;Please select at least one record.&quot;) 
+} else { 
+for (i = 0; i &lt; records.length; i++) { 
+contractRecorIds += records[i] + &quot;,&quot;; 
+} 
+
+j$(function(){ 
+/*Insert the jQuery style sheets in the Head.*/ 
+/*Insert the Modal dialog along with the VF as an iframe inside the div.*/ 
+j$(&quot;head&quot;).after( 
+j$(&quot;&lt;link&gt;&quot;,{rel:&quot;stylesheet&quot;, 
+href:&quot;https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css&quot;})); 
+j$(&quot;body&quot;).after( 
+j$(&quot;&lt;div&gt;&quot;,{id:&quot;modalDiv&quot;, 
+style:&quot;display:none;z-index: 100;&quot; 
+}).append( 
+j$(&quot;&lt;iframe&gt;&quot;,{id:&quot;vfFrame&quot;, 
+src:&quot;/apex/MassEditContracts?id=&quot; + invoicebillingscheduleId + &quot;&amp;conid=&quot; + contractRecorIds, 
+height:270, 
+width:550, 
+frameBorder:0}) 
+)); 
+/*Initialize the Dialog window.*/ 
+j$(&quot;#modalDiv&quot;).dialog({ 
+autoOpen: false, 
+height: 280, 
+width: 605, 
+modal:true 
+}); 
+}); 
+j$(&quot;#modalDiv&quot;).css( &quot;overflow&quot;, &quot;hidden&quot; ); 
+j$(&quot;#modalDiv&quot;).dialog(&apos;option&apos;,&apos;title&apos;,&apos;Edit Contact&apos;).dialog(&apos;open&apos;); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Contract_from_this_Opportunity</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New Contract from this Opportunity</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/34.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/34.0/apex.js&quot;)} 
+
+try{
+
+var query = &quot;select Id, CreatedDate from OpportunityHistory where OpportunityId = &apos;{!Opportunity.Id}&apos; AND StageName = &apos;Contract Received - Send to Finance&apos; order by CreatedDate DESC LIMIT 1&quot;;
+
+var result = sforce.connection.query(query); 
+var records = result.getArray(&quot;records&quot;); 
+var oppCreatedData = &apos;&apos;;
+var finalCreatedDate = &apos;&apos;;
+
+if(records.length &gt; 0 &amp;&amp; records[0].CreatedDate != &apos;&apos;){
+    oppCreatedData = records[0].CreatedDate;
+    var tempCreatedDate = oppCreatedData.split(&apos;T&apos;)[0];
+    var splittedDate = tempCreatedDate.split(&apos;-&apos;);
+    finalCreatedDate = splittedDate[1] + &apos;/&apos; + splittedDate[2] + &apos;/&apos; + splittedDate[0];
+}
+
+window.location.href = &apos;/a0A/e?Name=&apos; + encodeURIComponent(&quot;{!Opportunity.Account}&quot;).replace(/[!&apos;()*]/g, escape)  + &apos; -{!URLENCODE(Opportunity.Program_Acronym__c)}&amp;CF00NC00000055pUi={!URLENCODE(Opportunity.Name)}&amp;CF00NC00000055pUi_lkid={!Opportunity.Id}&amp;CF00NC00000055pPR=&apos; + encodeURIComponent(&quot;{!Opportunity.Account}&quot;).replace(/[!&apos;()*]/g, escape)  + &apos;&amp;CF00NC00000055pPR_lkid={!Opportunity.AccountId}&amp;00NC00000055pUl=ATL&amp;00NC00000055pUB=Semi-Annual&amp;CF00NC00000055pUN={!IF(Opportunity.Type2__c == &quot;NBB&quot;, URLENCODE(Opportunity.Marketer_Name1__c), IF(CONTAINS(Opportunity.Type2__c, &quot;Renewal&quot;), URLENCODE(Opportunity.OwnerFullName), &quot;&quot;))}&amp;00NC00000055pUn={!IF(Opportunity.Type2__c == &quot;NBB&quot;, &quot;NBB&quot;, IF(CONTAINS(Opportunity.Type2__c, &quot;Renewal&quot;), &quot;Renewal&quot;, &quot;&quot;))}&amp;CF00NC00000055pUV={!URLENCODE(Opportunity.Program_Name__c)}&amp;CF00NC00000055pUV_lkid={!Opportunity.ProgramId__c}&amp;CF00NC00000055pUF={!IF(NOT(ISBLANK(URLENCODE(Opportunity.Main_Contact__c))), URLENCODE(Opportunity.Main_Contact_Name__c), &apos;&apos;)}&amp;CF00NC00000055pUF_lkid={!IF(NOT(ISBLANK(URLENCODE(Opportunity.Main_Contact__c))), Opportunity.Main_ContactId__c, &apos;&apos;)}&amp;CF00NC00000055pUA={!URLENCODE(Opportunity.Main_Contact__c)}&amp;CF00NC00000055pUA_lkid={!Opportunity.Main_ContactId__c}&amp;00NC00000055pUD=&apos; + finalCreatedDate +&apos;&amp;retURL=%2F{!Opportunity.Id}&apos; ;
+
+}catch(e){
+    alert(&apos;An Error has Occured. Error:&apos; +e); 
+}</url>
+    </webLinks>
+</CustomObject>

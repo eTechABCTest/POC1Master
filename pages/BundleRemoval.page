@@ -1,0 +1,15 @@
+<!--
+ *    Description   :    Page for removal of Bundle from the selected opportunity record.
+ * 
+ *    Created By    :    Abhinav Sharma
+ *
+ *    Created Date  :    09/19/2014
+ *    
+ *    Version       :    v1.0 - Created - CR-20140429-5272
+-->
+<apex:page standardController="Opportunity" extensions="BundleRemoveController" sidebar="true" showHeader="true" docType="html-5.0" id="pg" 
+    standardStylesheets="true" title="{!$Label.BundleRemoval_CL2}" action="{!removeBundleFromOpportunity}">
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+</apex:page>

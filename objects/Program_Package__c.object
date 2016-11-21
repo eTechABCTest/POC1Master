@@ -1,0 +1,1397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to track the programs that are packaged an offered to a client.  There should only be one program package offered to each client each fiscal year.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fieldSets>
+        <fullName>Program_Package_Fields_Set</fullName>
+        <description>Ultimate Page</description>
+        <displayedFields>
+            <field>Name</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Account__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Fiscal_Year__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Total_Contracted_Program_Cost__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OwnerId</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Program Package Fields Set</label>
+    </fieldSets>
+    <fields>
+        <fullName>Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account ID (project)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_SL__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>TrackS Royall renewal ownership</description>
+        <externalId>false</externalId>
+        <label>Account SL</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Program_Packages_Royall</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Account_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>(R) Account Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>New Client</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Existing Client</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the Institution this Program Package belongs to</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Program_Packages</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Invoice_Delta__c</fullName>
+        <description>This is ([Total Scheduled Invoice Amount]-[Total Actual Invoice Amount]).</description>
+        <externalId>false</externalId>
+        <formula>Total_Scheduled_Invoice_Amount__c - Total_Actual_Invoice_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is ([Total Scheduled Invoice Amount]-[Total Actual Invoice Amount]).</inlineHelpText>
+        <label>Actual Invoice Delta</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Common_App_03__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Common App 03)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>03,09,15,14</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Campaign_New__c</field>
+            <operation>equals</operation>
+            <value>Application Marketing</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted, Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Fulfillment_02__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Fulfillment 02)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>02</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Campaign_New__c</field>
+            <operation>equals</operation>
+            <value>Fulfillment, Sr. Search/SNR Fulfillment</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Graduate_App_Mkt_31__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Graduate App Mkt 31)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>31</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Royall_App_03__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Royall App 03)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>03</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Campaign_New__c</field>
+            <operation>equals</operation>
+            <value>Royall Application</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted, Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Search_NR_09__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Search NR 09)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>09</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Search__c</fullName>
+        <description>READ-ONLY: Roll-up from Programs to display aggregate of all Search programs - ACTUAL Contact Quantities from DataWarehouse</description>
+        <externalId>false</externalId>
+        <inlineHelpText>READ-ONLY: Roll-up from Programs to display aggregate of all Search programs - ACTUAL Contact Quantities from DataWarehouse</inlineHelpText>
+        <label>Actual Quantity (DW:Search 01)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>01</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Senior_Search_15__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Senior Search 15)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>15</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW_Transfer_App_18__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Quantity (DW:Transfer App 18)</label>
+        <summarizedField>Royall_Program__c.Actual_Quantity_DW__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>18</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Notes__c</fullName>
+        <description>Additional notes about why a client may be at risk.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter additional notes to describe why a school is At Risk if the the available reasons to select are insufficient.</inlineHelpText>
+        <label>At Risk Notes</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Reason_Other__c</fullName>
+        <description>If &quot;Other&quot; is selected as a reason at risk, an explanation is required.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If &quot;Other&quot; is selected as a reason a client is at risk, an explanation is required.</inlineHelpText>
+        <label>At Risk Reason Other</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Reason__c</fullName>
+        <description>Indicates the reasons a client may be at risk.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select all of the reasons that a client may be at risk this year.</inlineHelpText>
+        <label>At Risk Reasons</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Client Contact has gone silent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Competitively Vulnerable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Errors</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fragile Leadership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Must make their class</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New Contact Person</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New Institutional Leadership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reduced Budget</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Required RFP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unhappy with Relationship</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unhappy with Results</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other (please explain)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Client_Lost_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Exact date client terminated relationship.</inlineHelpText>
+        <label>Client Lost Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Client_Status_New__c</fullName>
+        <externalId>false</externalId>
+        <label>(R) Engagement Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Secured</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Committed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Play</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Client_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Accounting Client Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Secured</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Committed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Play</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Sent_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of Contract Sent across all Programs/Jobs.</inlineHelpText>
+        <label>Contract Sent Rollup</label>
+        <summarizedField>Royall_Program__c.Contract_Sent__c</summarizedField>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date contract sent to the client</inlineHelpText>
+        <label>Contract Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Signature_Date__c</fullName>
+        <description>This is the date the client signed the contract.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the date the client signed the contract.</inlineHelpText>
+        <label>Contract Signature Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Signed_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of Contract Signed across all Programs/Jobs.</inlineHelpText>
+        <label>Contract Signed  Rollup</label>
+        <summarizedField>Royall_Program__c.Contract_Signature_Date__c</summarizedField>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Common_App_Mktg_03__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Common App Mktg 03)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>03,09,15,14</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Campaign_New__c</field>
+            <operation>equals</operation>
+            <value>Application Marketing</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Fulfillment_02__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Fulfillment 02)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>02</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Grad_App_Mktg_31__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Grad App Mktg 31)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>31</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Royall_App_03__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Royall App 03)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>03</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Campaign_New__c</field>
+            <operation>equals</operation>
+            <value>Royall Application</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Search_NR_09__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Search NR 09)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>09</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Search__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Search 01)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>01</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Senior_Search_15__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Senior Search 15)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>15</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contracted_Quantity_Transfer_App18__c</fullName>
+        <externalId>false</externalId>
+        <label>Contracted Quantity (Transfer App 18)</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Name</field>
+            <operation>contains</operation>
+            <value>18</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>EAB_First_Day_Persistence_Subscriber__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>PP level indicator for any Royall CFY Clients who are subscribed to &quot;EAB First Day Persistence&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>PP level indicator for any Royall CFY Clients who are subscribed to &quot;EAB First Day Persistence&quot;</inlineHelpText>
+        <label>EAB First Day Persistence Subscriber</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>FY_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Read-Only field, used to auto-populate the appropriate calendar date from the FY field.</inlineHelpText>
+        <label>FY Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Fiscal_Year__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Royall&apos;s fiscal year for this Program Package</inlineHelpText>
+        <label>Fiscal Year</label>
+        <length>4</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Has_Contracted_Programs__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Total_Adjusted_Program_Cost__c&gt;0, true, false)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Has Contracted Programs</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lost_To__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The company the lost client is now working with</inlineHelpText>
+        <label>Lost To</label>
+        <picklist>
+            <picklistValues>
+                <fullName>In-House</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Alloy Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EducationDynamics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Enrollment Intelligence</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fire Engine Red</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hutchinson Allgood</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lawlor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LF O’Connell</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>McArdle Solutions</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mindpower</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Noel-Levitz</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parrish Group</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Performa</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RuffaloCODY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Spark 451</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Spectrum</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stamats</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TargetX</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TWG+</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Visual Zen</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Way Better Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Other_Lost_To__c</fullName>
+        <externalId>false</externalId>
+        <label>Other Lost To</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Other_Reason_for_Loss__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If not on list above, or split with another vendor, list who the client left Royall for and any details that are relevant.</inlineHelpText>
+        <label>Other Reason for Loss</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Approved__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date pricing proposal approved by the institution</inlineHelpText>
+        <label>Proposal Approved</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Sent_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of Proposal Sent across all Programs/Jobs.</inlineHelpText>
+        <label>Proposal Sent Rollup</label>
+        <summarizedField>Royall_Program__c.Proposal_Sent__c</summarizedField>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date pricing proposal sent to client.</inlineHelpText>
+        <label>Proposal Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Check if a purchase order is required.</description>
+        <externalId>false</externalId>
+        <label>Purchase Order Required?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>RFP_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date RFP response due back to the institution</inlineHelpText>
+        <label>RFP Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>RFP_Release_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date institution published this RFP</inlineHelpText>
+        <label>RFP Release Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>R_Account_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+   OR( Account__r.r_Current_Year_Status__c =&apos;Secured&apos;,
+         Account__r.r_Current_Year_Status__c =&apos;Committed&apos;)
+   , 
+   IF(
+     OR(Account__r.r_Previous_Year_Status__c = &apos;Lost&apos;,
+        ISBLANK(Account__r.r_Previous_Year_Status__c))
+     ,&apos;New Client&apos;
+     ,&apos;Existing Client&apos;
+   )
+   ,&apos;&apos;
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>(R) Account Status (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reason_for_Loss__c</fullName>
+        <description>The stated (or inferred) reason a client provided for severing the partnership with Royall.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The reason the lost client provided for ending our partnership</inlineHelpText>
+        <label>Reason for Loss</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Change in Leadership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Could accomplish goals &apos;on their own&apos;</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Creative</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Different Approach</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disappointed with Results</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disappointed with Service</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Challenges</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Price/Budget</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Royall Ended Relationship</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Scheduled_Invoice_Delta__c</fullName>
+        <description>This is ([Total Adjusted Contracted Program Cost]+[Total Adjusted Contracted Postage Cost])–([Total Scheduled Invoice Amount]).</description>
+        <externalId>false</externalId>
+        <formula>(Total_Adjusted_Contracted_Program_Cost__c + Total_Adjusted_Contracted_Postage_Cost__c )-(Total_Scheduled_Invoice_Amount__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is ([Total Adjusted Contracted Program Cost]+[Total Adjusted Contracted Postage Cost])–([Total Scheduled Invoice Amount]).</inlineHelpText>
+        <label>Scheduled Invoice Delta</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Toggle_Client_Status_Update_New__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Toggle Client Status Update</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Toggle_Client_Status_Update__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Toggle Account Client Status Update</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Actual_Invoice_Amount__c</fullName>
+        <description>Sum of the actual invoices sent.
+Field to Aggregate:	&quot;Actual Gross Invoice Amount&quot;   [Object: Program Package INVOICE (Royall)]</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of the actual invoices sent.
+Field to Aggregate:	&quot;Actual Gross Invoice Amount&quot;   [Object: Program Package INVOICE (Royall)]</inlineHelpText>
+        <label>Total Actual Invoice Amount</label>
+        <summarizedField>Invoice_Royall__c.Actual_Gross_Invoice_Amount__c</summarizedField>
+        <summaryForeignKey>Invoice_Royall__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Cost__c</fullName>
+        <description>This is the ([Total Adjusted Contracted Program Cost]+[ Total Adjusted Contracted Postage Cost]).</description>
+        <externalId>false</externalId>
+        <formula>Total_Adjusted_Contracted_Program_Cost__c + Total_Adjusted_Contracted_Postage_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is the ([Total Adjusted Contracted Program Cost]+[ Total Adjusted Contracted Postage Cost]).</inlineHelpText>
+        <label>Total Adjusted Contracted Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Postage_Cost__c</fullName>
+        <description>This is the &quot;Total Contracted Postage Cost&quot; minus the &quot;Total Adjusted Postage Cost&quot;.</description>
+        <externalId>false</externalId>
+        <formula>Total_Contracted_Postage_Cost__c -  Total_Adjusted_Postage_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is the &quot;Total Contracted Postage Cost&quot; minus the &quot;Total Adjusted Postage Cost&quot;.</inlineHelpText>
+        <label>Total Adjusted Contracted Postage Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Program_Cost__c</fullName>
+        <description>Formula ($): &apos;Total Contracted Program Cost&apos; - &apos;Total Adjusted Program Cost&apos;</description>
+        <externalId>false</externalId>
+        <formula>Total_Contracted_Program_Cost__c  -  Total_Adjusted_Program_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula ($): &apos;Total Contracted Program Cost&apos; - &apos;Total Adjusted Program Cost&apos;</inlineHelpText>
+        <label>Total Adjusted Contracted Program Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Postage_Cost__c</fullName>
+        <description>Sum of (CONTRACTED) Postage Costs for: All Accounting Adjustments 
+Field to Aggregate: Program (Royall)&gt; &apos;Postage Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot; &amp; Type = &quot;Discount Allocation, Accounting adjustment, Line of Business transfer&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of (CONTRACTED) Postage Costs for: All Accounting Adjustments 
+Field to Aggregate: Program (Royall)&gt; &apos;Postage Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot; &amp; Type = &quot;Discount Allocation, Accounting adjustment, Line of Business transfer&quot;</inlineHelpText>
+        <label>Total Adjusted Postage Cost</label>
+        <summarizedField>Royall_Program__c.Postage_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Discount Allocation, Accounting adjustment, Line of Business transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Program_Cost__c</fullName>
+        <description>Filter Criteria: Status = &quot;Contracted&quot; &amp; Type = &quot;Accounting adjustment, Discount Allocation, Line of Business transfer&quot; 
+Field to Aggregate:	Program (Royall)&gt; &apos;Program Cost&apos;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Filter Criteria: Status = &quot;Contracted&quot; &amp; Type = &quot;Accounting adjustment, Discount Allocation, Line of Business transfer&quot; 
+Field to Aggregate:	Program (Royall)&gt; &apos;Program Cost&apos;</inlineHelpText>
+        <label>Total Adjusted Program Cost</label>
+        <summarizedField>Royall_Program__c.Program_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Accounting adjustment, Discount Allocation, Line of Business transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Contact_Qty__c</fullName>
+        <description>Sum of Contact Quantity for Programs listed as Contracted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the sum of the &quot;Contact Quantity&quot; field for programs listed as &quot;contracted&quot;.</inlineHelpText>
+        <label>Total Contracted Contact Qty</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Postage_Cost__c</fullName>
+        <description>SUM
+Field to Aggregate: 	Program (Royall)&gt; &apos;Postage Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>SUM
+Field to Aggregate: 	Program (Royall)&gt; &apos;Postage Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot;</inlineHelpText>
+        <label>Total Contracted Postage Cost</label>
+        <summarizedField>Royall_Program__c.Postage_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Program_Cost__c</fullName>
+        <description>Filter Criteria: Status = &apos;Contracted&apos; 
+Field to Aggregate: Program (Royall)&gt;&quot;Program Cost&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Filter Criteria: Status = &apos;Contracted&apos; 
+Field to Aggregate: Program (Royall)&gt;&quot;Program Cost&quot;</inlineHelpText>
+        <label>Total Contracted Program Cost</label>
+        <summarizedField>Royall_Program__c.Program_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Pending_Signature_Contact_Qty__c</fullName>
+        <description>Read-only (roll-up sum) -- This is the sum of the &quot;Contact Quantity&quot; field for programs listed as &quot;Pending Signature&quot; per fiscal year.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the sum of the &quot;Contact Quantity&quot; field for programs listed as &quot;Pending Signature&quot; per fiscal year.</inlineHelpText>
+        <label>Total &apos;Pending Signature&apos; Contact Qty</label>
+        <summarizedField>Royall_Program__c.Contact_Quantity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Pending_Signature_Postage_Cost__c</fullName>
+        <description>&lt;READ ONLY&gt; This is the sum ($) of the &quot;Postage Cost&quot; field for programs listed as &quot;Pending Signature&quot; per fiscal year.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>&lt;READ ONLY&gt; This is the sum ($) of the &quot;Postage Cost&quot; field for programs listed as &quot;Pending Signature&quot; per fiscal year.</inlineHelpText>
+        <label>Total &apos;Pending Signature&apos; Postage Cost</label>
+        <summarizedField>Royall_Program__c.Postage_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Pending_Signature_Program_Cost__c</fullName>
+        <description>Filter Criteria: Status = &quot;Pending Signature&quot;
+Field to Aggregate: Program (Royall)&gt; &quot;Program Cost&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Filter Criteria: Status = &quot;Pending Signature&quot;
+Field to Aggregate: Program (Royall)&gt; &quot;Program Cost&quot;</inlineHelpText>
+        <label>Total &apos;Pending Signature&apos; Program Cost</label>
+        <summarizedField>Royall_Program__c.Program_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Royall_Program__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Royall_Program__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Scheduled_Invoice_Amount__c</fullName>
+        <description>Field to Aggregate: Program Package INVOICE (Royall)&gt; &quot;Scheduled Gross Invoice Amount&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to Aggregate: Program Package INVOICE (Royall)&gt; &quot;Scheduled Gross Invoice Amount&quot;</inlineHelpText>
+        <label>Total Scheduled Invoice Amount</label>
+        <summarizedField>Invoice_Royall__c.Scheduled_Gross_Invoice_Amount__c</summarizedField>
+        <summaryForeignKey>Invoice_Royall__c.Program_Package__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Program Package (Royall)</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>Account__c</columns>
+        <columns>NAME</columns>
+        <columns>Fiscal_Year__c</columns>
+        <columns>FY_Date__c</columns>
+        <columns>Total_Contracted_Program_Cost__c</columns>
+        <columns>Account_Status__c</columns>
+        <columns>Client_Status_New__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Program Package Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Program Packages (Royall)</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Account__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>R_Account_Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Client_Status_New__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Actual_Invoice_Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Fiscal_Year__c</customTabListAdditionalFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Client_Status_New__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Has_Contracted_Programs__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OWNER.LAST_NAME</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Client_Loss_Date_Validation</fullName>
+        <active>true</active>
+        <errorConditionFormula>if(isblank( Client_Lost_Date__c) &amp;&amp; ispickval(Lost_To__c,&quot;&quot;) &amp;&amp; not(ispickval( Reason_for_Loss__c ,&quot;&quot;)), TRUE, 
+if( ispickval(Lost_To__c,&quot;&quot;) &amp;&amp; not(isblank( Client_Lost_Date__c)) &amp;&amp; ispickval( Reason_for_Loss__c ,&quot;&quot;), TRUE, 
+if(not(ispickval(Lost_To__c,&quot;&quot;)) &amp;&amp; isblank( Client_Lost_Date__c) &amp;&amp; ispickval( Reason_for_Loss__c ,&quot;&quot;), TRUE, 
+if(not(isblank( Client_Lost_Date__c)) &amp;&amp; not(ispickval(Lost_To__c,&quot;&quot;)) &amp;&amp; ispickval( Reason_for_Loss__c ,&quot;&quot;), TRUE, 
+if(isblank( Client_Lost_Date__c) &amp;&amp; not(ispickval(Lost_To__c,&quot;&quot;))&amp;&amp; not(ispickval( Reason_for_Loss__c ,&quot;&quot;)), TRUE, 
+if(not(isblank( Client_Lost_Date__c)) &amp;&amp; not(ispickval( Reason_for_Loss__c ,&quot;&quot;)) &amp;&amp; ispickval(Lost_To__c,&quot;&quot;), TRUE, 
+if(not(ispickval(Lost_To__c,&quot;&quot;))&amp;&amp; isblank( Client_Lost_Date__c) &amp;&amp; not(ispickval( Reason_for_Loss__c ,&quot;&quot;)), TRUE, FALSE)))))))</errorConditionFormula>
+        <errorMessage>You must fill in Client Lost Date, Lost To and a Reason for Loss or leave all of them blank.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Engagement_status_validation</fullName>
+        <active>true</active>
+        <description>Only users with “Invoicing access” should be able to change to the value to “Secured”</description>
+        <errorConditionFormula>ISCHANGED(Client_Status_New__c) &amp;&amp; ISPICKVAL(Client_Status_New__c, &quot;Secured&quot;) &amp;&amp; !$Permission.Invoicing_access</errorConditionFormula>
+        <errorDisplayField>Client_Status_New__c</errorDisplayField>
+        <errorMessage>Only users with &quot;invoicing access&quot; are able to change the value to &quot;Secured&quot;. Contact Accounting to make this update.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>fiscal_year_validation</fullName>
+        <active>true</active>
+        <description>Fiscal Year must follow the YYYY format</description>
+        <errorConditionFormula>AND(NOT(AND(ISNUMBER(Fiscal_Year__c), LEN(Fiscal_Year__c) = 4)), NOT(ISBLANK(Fiscal_Year__c)))</errorConditionFormula>
+        <errorDisplayField>Fiscal_Year__c</errorDisplayField>
+        <errorMessage>Fiscal Year must follow the YYYY format. For example, 2013.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Contracted_Program_Summary</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>1200</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Contracted Program Summary</masterLabel>
+        <openType>newWindow</openType>
+        <position>topLeft</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00OA000000572ZO?pv0={!Program_Package__c.Id}</url>
+        <width>600</width>
+    </webLinks>
+</CustomObject>

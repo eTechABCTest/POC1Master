@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account_Legal_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.ffex__LegalName__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Legal Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Contract Integrated Accounts</relationshipLabel>
+        <relationshipName>Contract_Integrated_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract_End__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contract__r.End__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract End</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Negotiated_Amount__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contract__r.Negotiated_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Negotiated Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Start__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contract__r.Start__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Start</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>text(Contract__r.Status__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS.</description>
+        <externalId>false</externalId>
+        <label>Contract ABC</label>
+        <referenceTo>Contract__c</referenceTo>
+        <relationshipLabel>Contract Integrated Accounts</relationshipLabel>
+        <relationshipName>Contract_Integrated_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract_s_Annual_Contract_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contract__r.Annual_Contract_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract&apos;s Annual Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Contracting_Institution__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(RecordType.Name == &apos;Standard Contract&apos;,  LOA_Contract__r.Account.ffex__LegalName__c ,
+IF(RecordType.Name == &apos;Contract ABC&apos;,  Contract__r.Payer_Account__r.ffex__LegalName__c ,
+&apos;&apos;))</formula>
+        <inlineHelpText>The Institution that owns the contract</inlineHelpText>
+        <label>Contracting Institution</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Integrated_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Integrated Account</label>
+        <referenceTo>Integrated_Account__c</referenceTo>
+        <relationshipLabel>Contract Integrated Accounts</relationshipLabel>
+        <relationshipName>Contract_Integrated_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>LOA_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CONTROLLED SOX FIELD. CHANGES TO FIELDS REQUIRE PRIOR APPROVAL FROM FINANCE OPS</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Parent LOA Contract</inlineHelpText>
+        <label>LOA Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Contract Integrated Accounts</relationshipLabel>
+        <relationshipName>Contract_Integrated_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Contract Integrated Account</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Contract Integrated Accounts</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Contract_ABC</fullName>
+        <active>true</active>
+        <description>Used to link an Integrated Account record to a Contract ABC record</description>
+        <label>Contract ABC</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Legacy</fullName>
+        <active>true</active>
+        <description>Used for existing CIA records before the existance of the Integrated Account object</description>
+        <label>Legacy</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Standard_Contract</fullName>
+        <active>true</active>
+        <description>Used to link an Integrated Account record to a standard Contract record generated by SteelBrick</description>
+        <label>Standard Contract</label>
+    </recordTypes>
+    <searchLayouts>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Contract__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Contract_Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <webLinks>
+        <fullName>New_Contract_Integrated_Account</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Contract Integrated Account</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0O/e?Name={!left(Account.Name,55)} - Integrated&amp;CF00NC00000055pTY={!Account.Name}&amp;CF00NC00000055pTY_lkid={!Account.Id}&amp;retURL=%2F{!Account.Id}</url>
+    </webLinks>
+</CustomObject>

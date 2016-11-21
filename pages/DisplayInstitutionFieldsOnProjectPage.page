@@ -1,0 +1,22 @@
+<!-- 
+ *  Description     :   VF page to display "NASA" fields from associated "Institution" record on "Consulting Project layout".
+ *
+ *  Created By      :   Abhinav Sharma
+ *
+ *  Created Date    :   02/10/2016
+ *
+ *  Current Version :   V_1.0
+ *
+ *  Revision Logs   :   V_1.0 - Created - 02/10/2016 - Abhinav Sharma - CR-20150909-9231
+ *
+-->
+<apex:page standardController="Project__c" showHeader="false" tabStyle="Project__c">
+    <style>
+    	body {
+        	margin-left: -15px;
+        }
+    </style>
+    <c:DisplayFieldsOnStandardPageLayout objectName="Account" fieldSetName="NASA_Fields" 
+                                         parentIdValue="{!Project__c.Institution__c}"
+                                         pageBlockSectionColumnCount="2"/>
+</apex:page>

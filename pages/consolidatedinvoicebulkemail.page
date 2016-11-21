@@ -1,0 +1,22 @@
+<apex:page standardController="ConsolidatedInvoice__c"
+    recordSetVar="invoices" extensions="ffps_advisory.BulkInvEmailController"
+    action="{!preCheck}">
+    <apex:sectionHeader title="Consolidated Invoices"
+        subtitle="Email Consolidated Invoices" />
+    <apex:outputLink style="color: #015BA7; text-decoration: none"
+        value="{!URLFOR($Action.ConsolidatedInvoice__c.List, $ObjectType.ConsolidatedInvoice__c)}">
+         « Back to List: Consolidated Invoices 
+    </apex:outputLink>
+    <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock title="Email" rendered="{!canEmail}">
+            <apex:pageBlockSection columns="1">
+                 {!m_confirmMessageLabel}
+            </apex:pageBlockSection> 
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Yes"  action="{!emailInvoices}"/>
+                 <apex:commandButton value="Cancel"  action="{!cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock> 
+    </apex:form> 
+</apex:page>

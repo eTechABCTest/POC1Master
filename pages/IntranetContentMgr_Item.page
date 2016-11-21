@@ -1,0 +1,24 @@
+<apex:page standardController="Intranet_Item__c">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:repeat value="{!$ObjectType.Intranet_Item__c.FieldSets.Intranet_Item_Fields}" var="f"> 
+                    <apex:pageBlockSectionItem >
+                        {!f.Label}
+                        <apex:inputField value="{!Intranet_Item__c[f]}" />
+                    </apex:pageBlockSectionItem>
+                </apex:repeat>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" collapsible="True">
+                <apex:repeat value="{!$ObjectType.Intranet_Item__c.FieldSets.Item_Full_Text}" var="f"> 
+                    <apex:pageBlockSectionItem >
+                        {!f.Label}
+                        <apex:inputField value="{!Intranet_Item__c[f]}" />
+                    </apex:pageBlockSectionItem>
+                </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:relatedList list="OpenActivities" />  
+    <apex:relatedList list="Intranet_Utilizations__r" />
+</apex:page>

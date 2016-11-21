@@ -1,0 +1,125 @@
+<apex:page standardcontroller="Warm_Lead__c" extensions="NewWarmLead_Con" action="{!redirect}" >
+<script type="text/javascript">
+	//keep calendar popup from opening right away
+	function setFocusOnLoad() {}
+</script>
+<apex:sectionHeader title="New" subtitle="Warm Lead" />
+
+<apex:form >
+<apex:pageMessages />
+
+<apex:pageBlock mode="edit">
+   
+<apex:pageBlockButtons >
+  <apex:commandButton value="Save" action="{!DoSave}" />
+  <apex:commandButton value="Cancel" action="{!DoCancel}" immediate="true"/>
+</apex:pageBlockButtons>
+
+<apex:pageBlockSection title="Warm Lead Information" columns="2">
+
+ <apex:outputField value="{!WarmLead.Name}" />
+ <apex:outputText value="" />
+ <apex:inputField value="{!WarmLead.Grade__c}" />
+ <apex:inputField value="{!WarmLead.Qualification_Status__c}" />
+ <apex:inputField value="{!WarmLead.Lead_Date__c}" required="true" />
+ <apex:inputField value="{!WarmLead.Upsell__c}" />
+ <apex:inputField value="{!WarmLead.Lead_Channel__c}" required="true" />
+ <apex:inputField value="{!WarmLead.Joint_LOA_Activity__c}" />
+ <apex:inputField value="{!WarmLead.Sub_Type__c}" />
+ <apex:inputField value="{!WarmLead.Contact_level__c}" />
+ <apex:inputField value="{!WarmLead.Account__c}" />
+ <apex:inputField value="{!WarmLead.Contact__c}" />
+ <apex:inputField value="{!WarmLead.Source_Campaign__c}" />
+ <apex:pageblocksectionitem />
+ <apex:inputField value="{!WarmLead.Legacy_Warm_Lead_ID__c}" />
+ </apex:pageBlockSection>
+ 
+ <apex:pageBlockSection title="Assigned To Information" columns="2">
+ <apex:inputField value="{!WarmLead.Marketing_Associate_Assignment__c}" required="true" />
+  <apex:inputField value="{!WarmLead.Primary_Program__c}" required="true" />
+ <apex:inputField value="{!WarmLead.Marketer_Assignment__c}" required="true" />
+ <apex:inputField value="{!WarmLead.Secondary_Program__c}" />
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="OAB Lead Passers" columns="1">
+ 
+<apex:pageBlockTable value="{!listOAB}" var="o" >
+   
+   <apex:column >
+    <apex:facet name="header">
+     Passer
+    </apex:facet>
+    <apex:inputField value="{!o.Passer__c}" />
+   </apex:column>
+   
+   <!-- 
+   <apex:column >
+    <apex:facet name="header">
+     Credit Date 
+    </apex:facet>
+    <apex:inputField value="{!o.Credit_Date__c}" />
+   </apex:column>
+   -->
+   
+   <apex:column >
+    <apex:facet name="header">
+     Department
+    </apex:facet>
+    <apex:inputField value="{!o.Department__c}" />
+   </apex:column>
+   
+   <apex:column >
+    <apex:facet name="header">
+     Lead Count
+    </apex:facet>
+    <apex:inputField value="{!o.Count__c}" />
+   </apex:column>
+   
+   <apex:column >
+    <apex:facet name="header">
+     Marketer
+    </apex:facet>
+    <apex:inputField value="{!o.Marketer__c}" />
+   </apex:column>
+   
+   <apex:column >
+    <apex:facet name="header">
+     Qualified
+    </apex:facet>
+    <apex:inputField value="{!o.Qualified__c}" />
+   </apex:column>
+   
+   <apex:column >
+    <apex:facet name="header">
+     VIP
+    </apex:facet>
+    <apex:inputField value="{!o.VIP__c}" />
+   </apex:column>
+ </apex:pageBlockTable>
+ 
+</apex:pageBlockSection>
+
+ <apex:pageBlockSection title="Opportunity Information" columns="1">
+ <!--<apex:inputField value="{!WarmLead.Number_of_Warm_Leads__c}" />
+  -->
+  <apex:pageblocksectionitem />
+  <apex:inputField value="{!WarmLead.Status__c}" required="true" />
+ <!--<apex:inputField value="{!WarmLead.Initial_Visit_Date__c}" />
+--></apex:pageBlockSection>
+
+ <apex:pageBlockSection title="Comments" columns="1">
+ <apex:pageBlockSectionItem >
+ <apex:outputLabel value="Next Step" />
+ <apex:inputTextArea cols="60" rows="5" value="{!WarmLead.Next_Step__c}" />
+ </apex:pageBlockSectionItem>
+ 
+  <apex:inputField value="{!WarmLead.Comments__c}" />
+</apex:pageBlockSection>
+
+
+
+</apex:pageBlock>
+
+</apex:form>
+
+</apex:page>

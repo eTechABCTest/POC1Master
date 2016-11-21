@@ -1,0 +1,107 @@
+<apex:page StandardController="Contract__c" extensions="ICON_ProjectCreation_Controller" action="{!CheckForExistingProject}">
+
+	<head>
+
+		<style>
+		
+			/* PageBlock Title */ 	
+			.pbTitle {
+				white-space: nowrap;
+			}
+			
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				font-size: 75%;
+			}
+			
+			table.MasterTable {
+				border:1px solid black;
+				border-collapse:collapse;
+				margin-top:10px;
+				
+				/*background-color:#f2f2f2;*/
+				/*background-color:#cfeef8; */
+			}
+
+			th.SummaryTable {
+				border-bottom: 1px solid black; 
+				border-left:1px solid black;
+				text-align: left;
+				font-weight: bold;
+				padding:5px;
+				color: #fff;
+				background-color:#94b9d1;
+				/*background-color:#1797c0;*/ /*Salesforce*/
+			}
+
+
+			td.SummaryTable {
+				border-bottom: 1px solid #ccc; 
+				border-left:1px solid #ccc;
+				padding:5px;
+				vertical-align: middle;
+			}
+
+
+			td.ItemCell {
+				text-align:left;
+				width:65px;
+				white-space: nowrap;
+			}
+
+			td.FirstCell {
+				border-left:1px solid black;
+			}
+
+
+		</style>
+	
+	</head>
+	
+	
+    <apex:form >
+    
+        <apex:pageBlock title="Project Creation Utility">
+        
+            <p>This function will create a PSA project for Contract ABC: <b>{!m_pContract.Name}</b>.</p>
+    		
+    		<br/><br/>
+    		
+    		<apex:outputPanel rendered="{!m_bValidForProject}">
+    			<apex:commandButton value="Create New Project from Contract" action="{!CreateProjectFromContract}" style="margin-right:10px;"/>
+    		</apex:outputPanel>
+			
+			<apex:commandButton value="Cancel and Return to Contract" action="{!cancelEntry}" style="margin-right:10px;"/>
+			
+			<br/><br/>
+			<hr/>
+            
+            <apex:outputText value="{!showMessage}" escape="false" style="color:red;"/>         
+
+            <br/><br/>
+
+
+			<apex:outputPanel rendered="{!m_bHasProjects}">
+	           	<table border="0" cellspacing="0" cellpadding="0" class="MasterTable" id="ExistingProjects">
+	           		<thead>
+	           			<tr>
+	           				<th class="SummaryTable" style="width:5px;" >Existing Project(s)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<apex:repeat value="{!m_listExistingProject}" var="pProject">
+							<tr>
+		            			<td class="SummaryTable ItemCell FirstCell">
+		            				<apex:outputLink value="../{!pProject.Id}" target="_blank">{!pProject.Name}</apex:outputLink>
+		            			</td>
+							</tr>
+						</apex:repeat> 
+					</tbody>
+				</table>
+			</apex:outputPanel>
+			
+		</apex:pageBlock>
+	
+	</apex:form>
+
+</apex:page>

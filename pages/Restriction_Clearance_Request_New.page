@@ -1,0 +1,1 @@
+<apex:page standardController="Restriction_Clearance_Request__c" action="{!URLFOR($Action.Restriction_Clearance_Request__c.New, null, [retURL=$Currentpage.parameters.retURL,Name='Will Auto-Populate',CF00NC00000055pft=$Currentpage.parameters.CF00NC00000055pft,CF00NC00000055pft_lkid=$Currentpage.parameters.CF00NC00000055pft_lkid], true)}" />

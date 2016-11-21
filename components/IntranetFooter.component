@@ -1,0 +1,45 @@
+<!--V_1.1 Modified By - Abhinav Sharma - 04/28/2015 - CR-20150219-8692 - Boardroom Speed Issue-->
+<!--V_1.2 Modified By - RajeevJain - 07/16/2015 - CR-20150618-9016 - Board Room Mobile-->
+<apex:component layout="none">    
+    
+    <!--attribute to hold container id -->
+    <apex:attribute name="containerId" description="This is to hold the conatainer's id to be loaded." type="String"/>
+    
+    <div id="footer">
+        <div class="container">
+            <a class="logo" href="http://www.advisory.com"><img alt="logo" src="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/images/abc_logo_white.png')}" /></a>
+            <div class="right">
+                <ul class="social-icons">
+                    <li class="social youtube"><a href="https://www.youtube.com/user/TheAdvisoryBoard" target="_blank"><i class="fa fa-fw fa-youtube-square"></i></a></li>
+                    <li class="social facebook"><a href="https://facebook.com/TheAdvisoryBoardCompany" target="_blank"><i class="fa fa-fw fa-facebook-square"></i></a></li>
+                    <li class="social linked-in"><a href="https://www.linkedin.com/company/the-advisory-board-company" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i></a></li>
+                    <li class="social twitter"><a href="https://twitter.com/TheAdvisoryBd" target="_blank"><i class="fa fa-fw fa-twitter-square"></i></a></li>
+                </ul>
+                <div class="copyright">
+               <!--     <a href="#">Privacy Policy</a> | <a href="#">Legal Disclaimer</a> | <a href="#">Terms of Use</a> |--> <span class="easter-egg">©</span> 2014 The Advisory Board Company. All Rights Reserved.
+                </div>
+            </div> 
+            <!--V_1.2 Modified By - RajeevJain - 07/16/2015 - CR-20150618-9016 - Board Room Mobile-->
+            <div class="footerContentMobile" style="text-align:center;">
+                <ul class="social-icons" style="float:none;overflow:hidden;display:inline-block;margin-top:20px;">
+                    <li class="social youtube"><a href="https://www.youtube.com/user/TheAdvisoryBoard" target="_blank"><i class="fa fa-fw fa-youtube-square"></i></a></li>
+                    <li class="social facebook"><a href="https://facebook.com/TheAdvisoryBoardCompany" target="_blank"><i class="fa fa-fw fa-facebook-square"></i></a></li>
+                    <li class="social linked-in"><a href="https://www.linkedin.com/company/the-advisory-board-company" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i></a></li>
+                    <li class="social twitter"><a href="https://twitter.com/TheAdvisoryBd" target="_blank"><i class="fa fa-fw fa-twitter-square"></i></a></li>
+                </ul>
+                <div class="copyright" style="float:none;margin-top:0px;font-size:14px;">
+               <!--     <a href="#">Privacy Policy</a> | <a href="#">Legal Disclaimer</a> | <a href="#">Terms of Use</a> |--> <span class="easter-egg">©</span> 2014 The Advisory Board Company. All Rights Reserved.
+                </div>
+            </div>
+            <!--V_1.2 Modified By - RajeevJain - 07/16/2015 - CR-20150618-9016 - Board Room Mobile-->
+        </div>
+    </div>
+    
+    <div class="easter-overlay">
+        <div class="easter">
+            <div class="x">x</div>
+            <iframe scrolling="no" allowTransparency="true" frameborder="0" width="600" height="400" src="https://goanimate.com/player/embed/0D_LzWEp_y6c?utm_source=social&utm_medium=tumblr&utm_campaign=usercontent"></iframe>
+        </div>
+    </div>
+    <c:IntranetFooterIncludes />
+</apex:component>

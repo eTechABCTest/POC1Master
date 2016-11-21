@@ -1,0 +1,34 @@
+<apex:component controller="MultiSelectPicklistController" id="MultiSelectPicklist" allowDML="false" access="global"> 
+    <apex:attribute name="TargetData" access="global" assignTo="{!TargetData}" description="Target Data" type="string[]" />
+    <apex:attribute name="TargetObject" access="global" assignTo="{!TargetObject}" description="The object that contains the Components multipicklist field to update" type="sObject" required="true"/>
+    <apex:attribute name="TargetField" access="global" assignTo="{!TargetField}" description="The field that contains the Components multipicklist field to update" type="string" required="true"/>
+    <apex:attribute name="PickerType" access="global" assignTo="{!PickerType}" description="Sets what type of picker this is.  Options are Component and MarketSegment." type="string"/>
+    <apex:attribute name="Required" access="global" assignTo="{!IsRequired}" description="sets the field required" type="boolean" />
+    <apex:attribute name="Size" access="global" assignTo="{!Size}" description="sets the field required" type="string" />
+    <apex:actionRegion >
+        <apex:panelGrid columns="3" id="abcd"> 
+            <apex:outputLabel value="Available" style="font-style:italic;font-weight:bold"/>
+            <apex:outputLabel value=""/>
+            <apex:outputLabel value="Chosen" style="font-style:italic;font-weight:bold"/>  
+                    
+            <apex:selectList style="min-width:110px;" id="sel1" value="{!leftselected}" multiselect="true" required="{!IsRequired}"  size="{!Size}" title="Available">
+                <apex:selectOptions value="{!unselectedvalues}" />
+            </apex:selectList>
+            
+            <apex:panelGroup > 
+                <br/> 
+                <apex:image styleClass="picklistArrowRight" style="cursor:pointer" value="/s.gif" alt="Add">
+                    <apex:actionSupport event="onclick" action="{!selectclick}" reRender="abcd"/>
+                </apex:image>
+                <br/><br/>
+                <apex:image styleClass="picklistArrowLeft" style="cursor:pointer" value="/s.gif" alt="Remove">
+                    <apex:actionSupport event="onclick" action="{!unselectclick}" reRender="abcd"/>
+                </apex:image>
+            </apex:panelGroup>
+            
+            <apex:selectList style="min-width:110px;" id="sel2" value="{!rightselected}" multiselect="true" size="{!Size}" title="Chosen">
+                <apex:selectOptions value="{!SelectedValues}" />
+            </apex:selectList>
+        </apex:panelGrid> 
+    </apex:actionRegion>
+</apex:component>

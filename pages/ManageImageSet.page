@@ -1,0 +1,84 @@
+<!-- 
+ *  Purpose         :   This page is to Manage the Item Images 
+ * 
+ *  Created By      :   Bhavi Sharma    
+ * 
+ *  Created Date    :   08/12/2014
+ * 
+ *  Revision Logs   :   V_1.0 - Created
+ * 
+-->
+<apex:page standardController="Intranet_Item__c" extensions="ManageImageSetController">
+
+<script>
+    
+    //Confirm Upload
+    function confirmUpload() {
+        
+        var mainImageId = "{!Intranet_Item__c.Image_for_Main_Content__c}";
+        var thumbnailImageId = "{!Intranet_Item__c.Image_for_Thumbnail__c}";
+        var selectedType = "{!selectedType}";
+        if(selectedType == 'Main' && mainImageId != null && mainImageId != '') {
+            
+            return confirm('Main Image already exists on this record. This operation with overwrite the existing image. Are you sure?');
+        } else if(selectedType == 'Thumbnail' && thumbnailImageId != null && thumbnailImageId != '') {
+            
+            return confirm('Thumbnail already exists on this record. This operation with overwrite the existing image. Are you sure?');        
+        }
+        return true; 
+    }
+</script>
+    
+    <!-- Section Header -->
+    <apex:sectionHeader title="{!Intranet_Item__c.Name}" />
+    
+    <!-- Form -->
+    <apex:form >
+        
+        <!-- Page Block -->
+        <apex:pageBlock mode="edit">
+            
+            <!-- Error Messages -->
+            <apex:pageMessages />
+            
+            <!-- Buttons -->
+            <apex:pageBlockButtons >
+                <apex:commandButton value="<< Previous" action="{!goToStep1}" rendered="{!step2}" />
+                <apex:commandButton value="<< Previous" action="{!goToStep2}" rendered="{!step3}" />
+                <apex:commandButton value="Upload" action="{!uploadDocument}" rendered="{!step2}" onClick="return confirmUpload();"/>
+                <apex:commandButton value="Finish" action="{!URLFOR($Action.Intranet_Item__c.View, Intranet_Item__c.Id)}" rendered="{!step3}" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <!-- Choose Type -->
+            <apex:pageBlockSection columns="1" title="Choose Type" rendered="{!step1}">
+                
+                <apex:pageBlockSectionItem >
+                    Choose Type
+                    <apex:outputPanel >
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!selectedType}" size="1" multiselect="false" >
+                            <apex:selectOptions value="{!types}" />
+                            <apex:actionSupport event="onchange" action="{!goToStep2}"/>
+                        </apex:selectList>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>        
+            
+            <!-- Upload Document -->
+            <apex:pageBlockSection rendered="{!step2}">
+                
+                <apex:pageBlockSectionItem >
+                    Uplaod File
+                    <apex:inputFile value="{!document.Body}" fileName="{!document.Name}" contentType="jpg,jpeg,png" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <!-- Step 3 -->
+            <apex:pageBlockSection columns="1" rendered="{!step3}">
+                File has been uplaoded successfully. Please use the finish button to complete the processing.
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

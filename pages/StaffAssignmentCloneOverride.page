@@ -1,0 +1,15 @@
+<!--
+    Purpose         :   This page is used to overide the standard clone button of Staff Assignment.
+ 
+    Created By      :   Subhash Garhwal
+ 
+    Created Date    :   10/16/2015
+    
+    Revision Logs   :   V_1.0 - Created - CR-20150930-9284
+-->
+<apex:page standardController="Team_Membership__c">
+    <script>
+        window.parent.location.href = "/apex/RedirectWithVariables?redirect=Object--Team_Membership__c!!Name--{!Team_Membership__c.Name}!!Institution__c--{!Team_Membership__c.Institution__c}!!Staff_member__c--{!Team_Membership__c.Staff_member__c}!!Role__c--{!Team_Membership__c.Role__c}!!Start_date__c--{!IF(NOT(ISBLANK(Team_Membership__c.Start_date__c)), TEXT(MONTH(Team_Membership__c.Start_date__c))+'/'+TEXT(Day(Team_Membership__c.Start_date__c))+'/'+TEXT(YEAR(Team_Membership__c.Start_date__c)), '')}!!End_date__c--{!IF(NOT(ISBLANK(Team_Membership__c.End_date__c)), TEXT(MONTH(Team_Membership__c.End_date__c))+'/'+TEXT(DAY(Team_Membership__c.End_date__c))+'/'+TEXT(YEAR(Team_Membership__c.End_date__c)), '')}!!Program_Perspectives__c--{!Team_Membership__c.Program_Perspectives__c}!!Employee__c--{!Team_Membership__c.Employee__c}!!External_ID__c--{!Team_Membership__c.External_ID__c}!!Team_Segment__c--{Team_Membership__c.Team_Segment__c}!!returnURL--/{!$CurrentPage.parameters.retURL}";
+    </script>
+
+</apex:page>

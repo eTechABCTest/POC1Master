@@ -1,0 +1,11 @@
+<!-- 
+ *  Purpose         :   Override New button and autopopulate the name field with "Will Auto Populate" value
+ * 
+ *  Created By      :   Bhavi Sharma
+ * 
+ *  Created Date    :   08/30/2014
+ * 
+ *  Revision Logs   :   V_1.0 - Created
+ * 
+ -->
+<apex:page standardController="Intranet_Schedule__c" extensions="WillAutoPopulateExtension" action="{!redirect}" />

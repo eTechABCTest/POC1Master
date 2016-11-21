@@ -1,0 +1,32 @@
+<apex:component >
+    <apex:attribute name="WarmLeads" description="" type="Warm_Lead__c[]" required="true"/>
+<br/>
+	<span class="bold">Warm Leads on Opportunity</span><br/>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!WarmLeads}" var="item" 
+								id="WarmLeads" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:150px;">
+			<apex:facet name="header">Warm Lead</apex:facet>
+			<apex:outputText value="{!item.Name}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Lead Channel</apex:facet>
+			<apex:outputField value="{!item.Lead_Channel__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:80px; text-align:right; padding-right:10px;" >
+			<apex:facet name="header">Campaign</apex:facet>
+            <apex:outputField value="{!item.Campaign__r.Name}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:90px; text-align:center" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputField value="{!item.Contact__r.Name}" />
+		</apex:column>
+		<apex:column style="min-width:200px;" >
+			<apex:facet name="header">Qualification Status</apex:facet>
+			<apex:outputField value="{!item.Qualification_Status__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:100px;" >
+			<apex:facet name="header">Comments</apex:facet>
+			<apex:outputField value="{!item.Comments__c}" />
+		</apex:column>
+	</apex:dataTable>
+</apex:component>

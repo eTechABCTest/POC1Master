@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Determines the site(s) that a Contact has access to.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Bypass_Domain_Validation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If this is checked, domain validation will be bypassed.</inlineHelpText>
+        <label>Bypass Domain Validation</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Site Profiles</relationshipLabel>
+        <relationshipName>Site_Profiles</relationshipName>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>EAB_Historical_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>EAB Historical Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/&quot; &amp; Contact__r.AccountId,  Contact__r.Account.Name,  &quot;_self&quot;)</formula>
+        <label>Institution</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Access__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Access</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL( Type__c , &apos;EAB.com&apos;) ,  
+    Contact__r.Account.EAB_com_Organization_Status__c ,
+    IF( ISPICKVAL( Type__c , &apos;Advisory.com&apos;) ,  
+        Contact__r.Account.Advisory_com_Organization_Status__c ,
+        &apos;&apos;
+    )
+)</formula>
+        <label>Organization Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Password_Reset_Token__c</fullName>
+        <externalId>false</externalId>
+        <label>Password Reset Token</label>
+        <length>5000</length>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Password__c</fullName>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Profile_Details__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(CONTAINS($RecordType.DeveloperName, &quot;Royall&quot;), 
+   IF(CONTAINS(TEXT(r_Portal_Access__c), &quot;Yes&quot;), 
+      &quot;Features: &quot; + 
+        IF(r_Enable_portal_Download_feature__c, &quot;Download &quot;, &quot;&quot;) + 
+        IF(r_Enable_portal_Find_feature__c, &quot;Find &quot;, &quot;&quot;) + 
+        IF(r_Enable_portal_Reports_feature__c, &quot;Reports&quot;, &quot;&quot;), 
+      &quot;No access&quot;), 
+   Status_Code_Description__c + &quot; &quot; + 
+     IF(ISBLANK(TEXT(Status__c)), 
+        &quot;&quot;, 
+        &quot; (Status: &quot; + TEXT(Status__c) + &quot;)&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Profile Details</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Send_Password_Notification__c</fullName>
+        <externalId>false</externalId>
+        <label>Send Password Notification</label>
+        <picklist>
+            <picklistValues>
+                <fullName>New User</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Email Change</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Password Reset</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Site_Profile_Created_By__c</fullName>
+        <description>Created for CR-20150629-9034.</description>
+        <externalId>false</externalId>
+        <label>Site Profile Created By</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Site_User__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Site User</label>
+        <referenceTo>Site_User__c</referenceTo>
+        <relationshipLabel>Site Profiles</relationshipLabel>
+        <relationshipName>Site_Profiles</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status_Code_Description__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( RecordType.DeveloperName != &quot;MyRoyall&quot;,
+IF( ISPICKVAL( Status__c , &apos;Hard Bounce&apos;) ,  
+    IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Status is Hard Bounce&quot;, 
+  IF( ISPICKVAL( Status__c , &apos;Inactive&apos;) ,  
+    IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Status is Inactive&quot;, 
+  IF(  CONTAINS( Organization_Status__c , &quot;Inactive&quot;) ,
+    IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Organization Status is Inactive&quot;, 
+  IF(  CONTAINS( TEXT( Contact__r.Contact_Status__c ) , &quot;Inactive&quot;) ,
+    IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Contact Status is Inactive&quot;, 
+  CASE( Status_Code__c ,
+  &quot;E1&quot;, IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Status is NOT Active, Inactive, or In Progress&quot;,
+  &quot;E2&quot;, IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Status is Inactive or Invalid Domain&quot;,
+  &quot;E3&quot;, IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;red&quot;, 15, 15) &amp; &quot; Status is Active or In Progress and Organization status is Inactive&quot;,
+  &quot;R1&quot;, IMAGE(&quot;/img/samples/flag_yellow.gif&quot;, &quot;yellow&quot;, 15, 15) &amp; &quot; Verify field is either Null, 3, or 4&quot;,
+  &quot;R3&quot;, IMAGE(&quot;/img/samples/flag_yellow.gif&quot;, &quot;yellow&quot;, 15, 15) &amp; &quot; Verify field is 0 or 1&quot;,
+  &quot;L1&quot;, IMAGE(&quot;/img/samples/flag_green.gif&quot;, &quot;green&quot;, 15, 15) &amp; &quot; Uncheck domain flag is checked&quot;,
+  &quot;L2&quot;, IMAGE(&quot;/img/samples/flag_green.gif&quot;, &quot;green&quot;, 15, 15) &amp; &quot; Verify field is set to 2&quot;,
+  &quot;&quot;)
+)))),
+&quot;&quot;
+)</formula>
+        <label>Status Code Description</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status_Code__c</fullName>
+        <description>Status code calculated from the getUserStatus method.</description>
+        <externalId>false</externalId>
+        <label>Status Code</label>
+        <length>2</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Use the Activate/Deactivate buttons above to update the Status as needed.</inlineHelpText>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>EAB.com</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Advisory.com</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Royall.com</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>User_Id_Autonumber__c</fullName>
+        <displayFormat>{0000000}</displayFormat>
+        <externalId>false</externalId>
+        <label>User Id Autonumber</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>User_Id_Override__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Overrides the User Id field with a custom value instead of using the User Id Autonumber.</inlineHelpText>
+        <label>User Id Override</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK( User_Id_Override__c )), TEXT( User_Id_Override__c ) , User_Id_Autonumber__c )</formula>
+        <label>User Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Username__c</fullName>
+        <externalId>true</externalId>
+        <label>Username</label>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Verify_Date__c</fullName>
+        <description>Site verification date</description>
+        <externalId>false</externalId>
+        <label>Verify Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Verify__c</fullName>
+        <description>site access verification</description>
+        <externalId>false</externalId>
+        <label>Verify</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>r_Enable_portal_Download_feature__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Enable portal &quot;Download&quot; feature</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>r_Enable_portal_Find_feature__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Enable portal &quot;Find&quot; feature</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>r_Enable_portal_Reports_feature__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Enable portal &quot;Reports&quot; feature</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>r_Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Site Profiles</relationshipLabel>
+        <relationshipName>Site_Profiles</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>r_Portal_Access__c</fullName>
+        <externalId>false</externalId>
+        <label>Portal Access</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1 - Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2 - No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Site Profile</label>
+    <nameField>
+        <displayFormat>SP-{0000000}</displayFormat>
+        <label>Site Profile Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Site Profiles</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Active</fullName>
+        <active>true</active>
+        <description>Used for Active or In Progress Site Profiles for EAB and Advisory</description>
+        <label>EAB and Advisory</label>
+        <picklistValues>
+            <picklist>Send_Password_Notification__c</picklist>
+            <values>
+                <fullName>Email Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New User</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Password Reset</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Advisory%2Ecom</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EAB%2Ecom</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>r_Portal_Access__c</picklist>
+            <values>
+                <fullName>1 - Yes</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2 - No</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Inactive</fullName>
+        <active>true</active>
+        <description>Assigned to inactive site profiles.</description>
+        <label>Inactive</label>
+        <picklistValues>
+            <picklist>Send_Password_Notification__c</picklist>
+            <values>
+                <fullName>Email Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New User</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Password Reset</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Advisory%2Ecom</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EAB%2Ecom</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>MyRoyall</fullName>
+        <active>true</active>
+        <description>Royall.com access</description>
+        <label>MyRoyall</label>
+        <picklistValues>
+            <picklist>Send_Password_Notification__c</picklist>
+            <values>
+                <fullName>Email Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New User</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Password Reset</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Royall%2Ecom</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>r_Portal_Access__c</picklist>
+            <values>
+                <fullName>1 - Yes</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2 - No</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Cannot_Modify_Contact</fullName>
+        <active>true</active>
+        <description>Only allow system admin and ABC Dataloader users to change the Contact once the record has been created</description>
+        <errorConditionFormula>AND(
+    NOT(ISNEW()),
+    ISCHANGED(Contact__c),
+    $Profile.Name &lt;&gt; &apos;System Administrator&apos;,
+    $Profile.Name &lt;&gt; &apos;ABC Dataloader&apos;
+)</errorConditionFormula>
+        <errorDisplayField>Contact__c</errorDisplayField>
+        <errorMessage>The Contact cannot be modified.  Create a new Site Profile for the desired Contact.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Cannot_Modify_Type</fullName>
+        <active>true</active>
+        <description>Do not allow users to change the profile type once it has been created.</description>
+        <errorConditionFormula>AND (
+    NOT( ISNEW() ),
+    ISCHANGED( Type__c ) 
+)</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>The type cannot be modified.  Create a new Site Profile with the desired type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Contact_Status_must_be_Active</fullName>
+        <active>true</active>
+        <description>Contact Status must be active to create a new Site Profile.</description>
+        <errorConditionFormula>ISNEW() &amp;&amp;  NOT( ISPICKVAL( Contact__r.Contact_Status__c , &apos;Active&apos;) ) &amp;&amp; NOT (  CONTAINS( Contact__r.Email , &apos;_inactive&apos;) )</errorConditionFormula>
+        <errorMessage>Cannot create a new Site Profile related to an inactive Contact.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Royall_School_Id_Required</fullName>
+        <active>true</active>
+        <description>School ID is a required field when selecting an institution for the MyRoyall record type</description>
+        <errorConditionFormula>AND(
+   RecordType.DeveloperName == &quot;MyRoyall&quot;,
+   ISBLANK( r_Institution__r.r_School_ID__c )
+)</errorConditionFormula>
+        <errorDisplayField>r_Institution__c</errorDisplayField>
+        <errorMessage>The selected Institution must have a School ID</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Type_Is_Required</fullName>
+        <active>true</active>
+        <description>Require a value in the Type field.</description>
+        <errorConditionFormula>ISPICKVAL( Type__c , &apos;&apos;)</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>Type is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Contact_First_Name</fullName>
+        <active>true</active>
+        <description>Created for CR-20150602-8984.</description>
+        <errorConditionFormula>IF ( 
+    AND ( 
+        NOT(ISNULL(Contact__c)), 
+        ISBLANK(Contact__r.FirstName) 
+    ), 
+    true, 
+    false 
+)</errorConditionFormula>
+        <errorMessage>Please populate First Name field with a value on the related contact.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Activate_Send_Password_Reset_Notification</fullName>
+        <availability>online</availability>
+        <description>Activate the site user.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Activate &amp; Send Password Reset Notification</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>function PopupCenter(pageURL, title,w,h) { 
+var left = (screen.width/2)-(w/2); 
+var top = (screen.height/2)-(h/2); 
+var targetWin = window.open (pageURL, title, &quot;width=&quot;+w+&quot;,height=&quot;+h+&quot;,toolbar=no,directories=no,location=no,scrollbars=no,menubar=no,status=no,left=&quot;+left+&quot;,top=&quot;+top); 
+} 
+
+var windowWidth = 500;
+var windowHeight = 300;
+
+PopupCenter(&quot;/apex/SiteProfileQuickAction?id={!Site_Profile__c.Id}&amp;action=Activate&quot;, &quot;siteProfileQuickAction&quot;, windowWidth, windowHeight);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Deactivate</fullName>
+        <availability>online</availability>
+        <description>Deactivates the site user.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Deactivate</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>function PopupCenter(pageURL, title,w,h) { 
+var left = (screen.width/2)-(w/2); 
+var top = (screen.height/2)-(h/2); 
+var targetWin = window.open (pageURL, title, &quot;width=&quot;+w+&quot;,height=&quot;+h+&quot;,toolbar=no,directories=no,location=no,scrollbars=no,menubar=no,status=no,left=&quot;+left+&quot;,top=&quot;+top); 
+} 
+
+var windowWidth = 500;
+var windowHeight = 300;
+
+PopupCenter(&quot;/apex/SiteProfileQuickAction?id={!Site_Profile__c.Id}&amp;action=Deactivate&quot;, &quot;siteProfileQuickAction&quot;, windowWidth, windowHeight);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Site_Profile</fullName>
+        <availability>online</availability>
+        <description>Button directs user to the new site profile page and auto-populates Username with Contact&apos;s Email.</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New Site Profile</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var acctRtName = &quot;{!Account.RecordType}&quot;; 
+var acctURLInfo = &quot;&quot;; 
+//only auto-populate the institution name if it&apos;s a royall record type 
+//and never auto-populate the institution name when created from a Contact 
+if (acctRtName.includes(&quot;Royall&quot;) &amp;&amp; &quot;{!Contact.Id}&quot; == &quot;&quot;) 
+acctURLInfo = &quot;&amp;CF00NC0000006dZUY ={!Account.Name}&amp;CF00NC0000006dZUY _lkid={!Account.Id}&quot; 
+
+newLoc = &quot;/setup/ui/recordtypeselect.jsp?ent=01IC0000000yjE7&amp;save_new_url=/a6W/e?CF00NC0000005vkH9={!Contact.Name}&amp;CF00NC0000005vkH9_lkid={!Contact.Id}&amp;00NC0000005vkHO={!Contact.Email}&quot;+acctURLInfo+&quot;&amp;retURL=%2F{!Contact.Id}&quot;
+
+
+window.top.location=newLoc;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Password_Reset_Notification</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Password Reset Notification</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>function PopupCenter(pageURL, title,w,h) { 
+var left = (screen.width/2)-(w/2); 
+var top = (screen.height/2)-(h/2); 
+var targetWin = window.open (pageURL, title, &quot;width=&quot;+w+&quot;,height=&quot;+h+&quot;,toolbar=no,directories=no,location=no,scrollbars=no,menubar=no,status=no,left=&quot;+left+&quot;,top=&quot;+top); 
+} 
+
+var windowWidth = 500; 
+var windowHeight = 300; 
+
+PopupCenter(&quot;/apex/SiteProfileQuickAction?id={!Site_Profile__c.Id}&amp;action=Password_Reset&quot;, &quot;siteProfileQuickAction&quot;, windowWidth, windowHeight);</url>
+    </webLinks>
+</CustomObject>

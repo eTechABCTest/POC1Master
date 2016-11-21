@@ -1,0 +1,22 @@
+<apex:component access="global" layout="none" >
+    <footer id="footer" style="visibility: visible;">
+        <section class="container">
+            <div class="row">
+                <div class="col8" style="font-size: 9px;">
+                    Please do not include any Protected Health Information (“PHI”) when submitting information using this tool.  
+                    The Advisory Board Company cannot guarantee that any such PHI disclosed through this tool will be secure.  
+                    Accordingly, the disclosure of PHI in this way could be a violation of the Health Insurance Portability and 
+                    Accountability Act (“HIPAA”) and its implementing privacy and security regulations.
+                </div>
+                <nav class="col4">
+                    
+                    <ul class="fr">
+                        <li><a href="http://www.advisory.com/Privacy-policy" title="Privacy Policy" target="_blank">Privacy Policy</a></li>
+                        <li><a href="http://www.advisory.com/Legal-Disclaimer" title="Legal Disclaimer" target="_blank">Legal Disclaimer</a></li>
+                        <li><a href="http://www.advisory.com/Terms-of-Use" title="Terms of Use" target="_blank">Terms of Use</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </footer>
+</apex:component>

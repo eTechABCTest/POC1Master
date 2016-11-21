@@ -1,0 +1,24 @@
+<!--
+    Purpose         :   This page is used on the Goal Template List view clone button.
+ 
+    Created By      :   Subhash Garhwal
+ 
+    Created Date    :   10/24/2015
+    
+    Revision Logs   :   V_1.0 - Created - CR-20150729-9114
+-->
+<apex:page standardController="Standard_Goal__c" recordSetVar="unused" extensions="CloneGoalTemplateController">
+    <c:BlockUI />
+    <apex:form id="frm">
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        <apex:actionFunction name="docloneGT" action="{!cloneGoalTemplates}" reRender="frm" status="waitMsg"/>
+        <apex:pageMessages escape="false"/>
+        <apex:outputLink value="/{!retURL}">Click here</apex:outputLink>&nbsp;to go to previous page.
+    </apex:form>
+    <script>
+        window.onload = cloneGT();
+        function cloneGT() {
+            docloneGT();
+        }
+    </script>
+</apex:page>

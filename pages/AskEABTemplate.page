@@ -1,0 +1,198 @@
+<!-- 
+    Description     :   VF page will use as a template when email will be send via caseEmailcontroller class.
+    
+    Created By      :   Abhinav Sharma
+    
+    Created Date    :   11/27/2015
+    
+    Revision Logs   :   v1.0 - Created - Abhinav Sharma - 11/27/2015 - CR-20150914-9243
+                        v1.1 - Modified By - Abhinav Sharma - 2/1/2015 - CR-20160201-9573
+						v1.2 - Modified By - Abhinav Sharma - CR-20150925-9267 - 02/26/2016
+-->
+<apex:page controller="CaseEmailController" showHeader="false" sidebar="false">
+    <style type="text/css">
+        table{
+            font-family:Arial, Helvetica, sans-serif;
+            font-size:12px;
+            line-height:16px;
+            color:#333333;
+        }
+        
+        table.body{
+            border-bottom:1px solid #cccccc;
+        }
+    
+        .expertCenter a {
+            color:#bf0000;
+        }
+    
+        .acctMgr a {
+            color:#0077cc;
+        }
+    </style>
+                    
+    <apex:outputPanel rendered="{!NOT(IsExpertCenter)}" id="AcctMgrPanel" styleClass="expertCenter">
+        <table width="680" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>
+                        <apex:image url="{!$Label.ASK_EAB_LETTERHEAD_IMAGE_PUBLIC_URL}" width="400" height="65" alt="EAB" html-border="0"/>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <!-- Row 1-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <strong>Case #:</strong> {!aCase.CaseNumber} 
+                                        <br/>
+                                    </td>
+                                    <td width="50%" valign="top">
+                                        <strong>Date/Time Opened: </strong>
+                                        {!aCase.CreatedDate}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Row 2-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <strong>Contact Owner:</strong> 
+                                        {!aCase.Owner.Name} 
+                                        <br/>
+                                    </td>
+                                    <td width="50%" valign="top">
+                                        <strong>Contact Title:</strong>
+                                        {!aCase.Contact_Title__c}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Row 3-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <strong>Contact Name:</strong> 
+                                        {!aCase.Contact.Name} 
+                                        <br/>
+                                    </td>
+                                    <td width="50%" valign="top">
+                                        <strong>Contact Email:</strong>
+                                        {!aCase.Contact.Email}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Row 4-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <strong>Institution Name:</strong> 
+                                        {!aCase.Account.Name} 
+                                        <br/>
+                                        <strong>RI Contract Value:</strong> 
+                                        {!aCase.RI_Contract_Value__c} <br/>
+                                        <strong>Executive Advisor:</strong>
+                                        {!aCase.Executive_Advisor__c} <br/>
+                                        <strong>Contact Programs:</strong>
+                                        {!MembershipsCommaDelim}<br/>
+                                        <strong>Case Origin:</strong>
+                                        {!aCase.Origin} <br/>
+                                        <strong>Deadline:&nbsp;</strong> 
+                                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                            <apex:param value="{!aCase.Deadline__c}"/>
+                                        </apex:outputText><br/>
+                                        <strong>Subject:</strong>
+                                        {!aCase.Subject}
+                                    </td>
+                                    <td width="50%" valign="top">
+                                        <strong>Contact City/State:</strong>
+                                        {!aCase.Contact_City_State__c}<br/>
+                                        <strong>Total Contract Value: </strong>
+                                        {!aCase.Contract_Value__c}<br/>
+                                        <strong>Relationship Manager:</strong>
+                                        {!aCase.Relationship_Manager__r.Name}<br/>
+                                        <br/>
+                                        <br/>
+                                        <strong>Deadline Reason:</strong>
+                                        {!aCase.Deadline_Reason__c}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="100%" valign="top">
+                                        <strong>Description: </strong>
+                                        {!aCase.Description}
+                                    </td>    
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body">
+                            <tbody>
+                                <tr>
+                                    <td width="100%" valign="top">
+                                        <strong>Why is this information needed? </strong>
+                                        {!aCase.Why_is_info_needed__c} 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" valign="top">
+                                        <strong>How will this information be used? </strong>
+                                        {!aCase.How_will_info_be_used__c}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" valign="top">
+                                        <strong>Member Type </strong>
+                                        {!aCase.Member_Type__c} 
+                                    </td>
+                                </tr>
+                                <!--Commented By - Abhinav Sharma - CR-20150925-9267 - 02/26/2016-->
+                                <!--Start from here-->
+                                <!--<tr>
+                                    <td width="100%" valign="top">
+                                        <strong>New Member </strong>
+                                        {!aCase.New_Member__c}
+                                    </td>
+                                </tr>-->
+                                <!--Upto here-->
+                            </tbody>
+                        </table>
+                        <!--Added By - Abhinav Sharma - 2/1/2015 - CR-20160201-9573-->
+                        <!--Start From here-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td width="100%" valign="top" style="color:#bf0000;">
+                                        <p><strong>Notes from Research Associate:</strong></p>
+                                        <p><apex:outputText id="bodyText" value="{!EmailBody}" escape="false" /></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Upto Here-->
+                        <table width="100%" border="0" cellpadding="15" cellspacing="0" class="body" style="display:{!IF($CurrentPage.parameters.referenceString == '','none','table')}">
+                            <tr><td>{!ReferenceString}</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </apex:outputPanel>
+</apex:page>

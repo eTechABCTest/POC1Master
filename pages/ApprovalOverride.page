@@ -1,0 +1,125 @@
+<apex:page controller="ApprovalOverrideController" >
+    
+    <c:IncludeJQuery id="jqry" />
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapZip, '/bootstrap/js/bootstrap.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS_11, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+    <apex:outputPanel layout="block" styleClass="slds" rendered="{!NOT( hasErrors )}">
+        <div class="slds-page-header">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <p class="slds-text-heading--label subTitle">Approval Request</p>
+                    <div class="slds-grid">
+                        <div class="slds-grid slds-type-focus slds-no-space">
+                            <h1 class="title" title="Reference Request">{!$CurrentPage.parameters.objLabel} Approval</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Form using components -->
+        <div class="container slds-p-top--large" style="padding:10px;">
+            
+            <!-- instructions -->
+            <div rendered="{!NOT( ISBLANK( $CurrentPage.parameters.instructions ) ) }" style="margin-bottom:10px;">
+                <span>
+                    <svg aria-hidden="true" class="slds-icon slds-icon--x-small slds-icon-text-default">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS_11, 'assets/icons/utility-sprite/svg/symbols.svg#info')}" />
+                    </svg>
+                    <span class="slds-assistive-text">Info</span>
+                </span>
+                <apex:outputText value="{!$CurrentPage.parameters.instructions}" style="font-size: 13px; color: #C41414;"/>
+            </div>
+            <!-- / instructions -->
+            
+            <form class="slds-form--stacked">
+                
+                <!-- ERROR MESSAGES -->
+                <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" style="display:none;" role="alert" id="errorContainer">
+                    <h2 data-reactid=".39.0.2.2">
+                        <span id="errorMessage"></span>
+                    </h2>
+                </div>
+                <!-- / ERROR MESSAGES -->
+                
+                <h3 class="slds-section-title section-group--is-open" style="padding-bottom:5px;">
+                    Request Details
+                </h3>
+                <fieldset class="slds-form--compound">
+                    <div class="form-element__group">
+                        <apex:repeat value="{!flds}" var="fld" >
+                            <div class="slds-form-element__row">
+                                <label class="slds-form-element__control slds-size--1-of-1">
+                                    <span class="slds-form-element__label">{!fld.Label}</span>
+                                    <div><apex:outputText value="{!fld.value}" escape="false" /></div>
+                                </label>
+                            </div>
+                        </apex:repeat>
+                        <div class="slds-form-element__row slds-is-required" id="commentContainer">
+                            <div class="slds-form-element__label">Comments</div>
+                            <label class="slds-form-element__control slds-size--1-of-1">
+                                <textarea class="slds-textarea" id="inputComments" required=""></textarea>
+                                <span id="commentError" style="display:none;" class="slds-form-element__help">Comments must be populated when rejecting a record.</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-element__group">
+                        <div class="slds-form-element">
+                            <button class="slds-button slds-button--brand" 
+                                    data-isApproved="true"
+                                     onclick="doApproval(this);"
+                                    type="button">Approve</button>
+                            <button class="slds-button slds-button--neutral" 
+                                    data-isApproved="false"
+                                    onclick="doApproval(this);"
+                                    type="button">Reject</button>
+                        </div>
+                    </div>
+                    
+                </fieldset>
+            </form>
+        </div>
+        <!-- /container-->
+        
+        <script>
+        /**
+         * @description: complete the approval process
+         **/
+        function doApproval(elem) {
+            var approved = elem.getAttribute('data-isApproved');
+            var comments = j$('[id*=inputComments]').val();
+            
+            if (approved == "false" && (comments == "" || typeof comments == 'undefined')) {
+                j$('#commentContainer').addClass('slds-has-error');
+                j$('#commentError').css('display', 'inline');
+            }
+            else {
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ApprovalOverrideController.getApprovalResult}',
+                    '{!recordId}', approved, comments, '{!$CurrentPage.parameters.commentField}', 
+                    function(result, event) {
+                        if (event.status) {
+                            //SUCCESS
+                            //console.log('@@SUCCESS:' + JSON.parse(result));
+                            window.location.href="/{!recordId}";
+                        } else if (event.type === 'exception') {
+                            displayError(event.message);
+                        } else {
+                            displayError(event.message);
+                        }
+                    });
+            }
+        }
+        
+        /**
+         * @description: display an error message in the header
+         **/
+        function displayError(errMsg) {
+            j$('#errorContainer').css('display', 'block');
+            j$('#errorMessage').html(errMsg);
+        }
+        </script>
+    </apex:outputPanel>
+</apex:page>

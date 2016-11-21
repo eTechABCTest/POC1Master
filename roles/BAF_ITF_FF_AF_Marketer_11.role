@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>BAF/ITF/FF/AF Marketer 11</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>BAF_ITF_FF_AF_MA_11</parentRole>
+</Role>

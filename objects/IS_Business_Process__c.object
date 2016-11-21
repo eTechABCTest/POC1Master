@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>App_Process_Compact</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>App_Process_Compact</fullName>
+        <fields>Primary_Department__c</fields>
+        <fields>Support_Documentation__c</fields>
+        <label>App Process Compact</label>
+    </compactLayouts>
+    <compactLayouts>
+        <fullName>App_Service_Compact</fullName>
+        <fields>Primary_Department__c</fields>
+        <fields>Support_Documentation__c</fields>
+        <label>App Service Compact</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to record details of a business process.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Active_User_Assignment__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+  AND( 
+    OR(ISBLANK(BOA__c),BOA__r.IsActive), 
+    OR(ISBLANK(Business_Process_Contact__c),Business_Process_Contact__r.IsActive), 
+    OR(ISBLANK(SME__c),SME__r.IsActive)) = FALSE, 
+  IMAGE(&apos;/img/msg_icons/error16.png&apos;,&apos;Inactive&apos;) &amp; &apos; Inactive User Assigned&apos;, 
+  IMAGE(&apos;/img/msg_icons/confirm16.png&apos;,&apos;Active&apos;) &amp; &apos; All Active&apos; 
+)</formula>
+        <inlineHelpText>Indicates if at least one of the assigned users is inactive</inlineHelpText>
+        <label>Active User Assignment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Application_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>Application URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>BOA__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>BOA</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>IS_Business_Processes</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Best_Practices__c</fullName>
+        <externalId>false</externalId>
+        <label>Best Practices</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Business_Process_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicate the business contact for the specific process, if different from the main System Business Contact</inlineHelpText>
+        <label>Business Process Contact</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>IS_Functions</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Data_Quality__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(TODAY()-DATEVALUE(LastModifiedDate) &gt; 180, 
+IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;Over 180 Days old&quot;) &amp; &apos; Stale - Over 180 Days&apos;, 
+IF(TODAY()-DATEVALUE(LastModifiedDate) &gt; 90, 
+IMAGE(&quot;/img/samples/flag_yellow.gif&quot;,&quot;Over 90 Days old&quot;) &amp; &apos; Aging - Over 90 Days&apos;, 
+IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;Fresh Data!&quot;) &amp; &apos; Fresh - Within 90 Days&apos;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Indicates how recently a record has been updated</inlineHelpText>
+        <label>Data Quality</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>General_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>General Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Initial_Launch_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Initial Launch Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Items_to_Test__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Common problem areas</inlineHelpText>
+        <label>Items to Test</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Known_Issues_Limitations__c</fullName>
+        <externalId>false</externalId>
+        <label>Known Issues / Limitations</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Last_Updated__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date of most recent Versioned update of a related Use Case</inlineHelpText>
+        <label>Last Updated</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Location_in_App__c</fullName>
+        <externalId>false</externalId>
+        <label>Location in App</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Out_of_Service_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Out of Service Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Business_Process__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Parent Business Process</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>$Source.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Business Process</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>IS_Business_Process__c</referenceTo>
+        <relationshipLabel>Child IS Business Processes</relationshipLabel>
+        <relationshipName>IS_Business_Processes</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Department__c</fullName>
+        <externalId>false</externalId>
+        <label>Primary Department</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Account Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Career Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Consulting &amp; Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HC Performance Technologies</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Acquisition</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Education Advisory Board</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Support and Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HC  Technical Member Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NASA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New Product Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Research &amp; Insights</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Strategy &amp; Operations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Strategic Outcomes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eTech</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Team</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Process_Number__c</fullName>
+        <description>Combine with parent System Number for System Junction Number</description>
+        <displayFormat>BP-{000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Process Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>QA_Regression_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>QA/Regression Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>QA_SME__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>QA SME</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>IS_Business_Processes2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SME__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Business Subject Matter Expert</inlineHelpText>
+        <label>SME</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>IS_Business_Processes1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <color>#419249</color>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Development</fullName>
+                <color>#0B6FCE</color>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pilot</fullName>
+                <color>#F3D904</color>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inactive</fullName>
+                <color>#A53711</color>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Support_Documentation__c</fullName>
+        <externalId>false</externalId>
+        <label>Support Documentation</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Test_App_Location_s__c</fullName>
+        <externalId>false</externalId>
+        <label>Test App Location(s)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Test_Application_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>Test Application URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <label>IS Business Process</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Primary_Department__c</columns>
+        <columns>Business_Process_Contact__c</columns>
+        <columns>BOA__c</columns>
+        <columns>SME__c</columns>
+        <columns>Parent_Business_Process__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Active</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Primary_Department__c</columns>
+        <columns>Business_Process_Contact__c</columns>
+        <columns>BOA__c</columns>
+        <columns>SME__c</columns>
+        <columns>RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Active</value>
+        </filters>
+        <label>All Active</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Pilot</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Primary_Department__c</columns>
+        <columns>Business_Process_Contact__c</columns>
+        <columns>BOA__c</columns>
+        <columns>SME__c</columns>
+        <columns>RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Pilot</value>
+        </filters>
+        <label>All Pilot</label>
+    </listViews>
+    <nameField>
+        <label>IS Business Process</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>IS Business Processes</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>App_Service</fullName>
+        <active>false</active>
+        <compactLayoutAssignment>App_Service_Compact</compactLayoutAssignment>
+        <description>An application service, such as an API or a group of related jobs</description>
+        <label>App Service (Inactive)</label>
+        <picklistValues>
+            <picklist>Primary_Department__c</picklist>
+            <values>
+                <fullName>Account Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Career Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consulting %26 Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education Advisory Board</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HC  Technical Member Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HC Performance Technologies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Support and Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NASA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Product Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Research %26 Insights</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Strategic Outcomes</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Strategy %26 Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>eTech</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pilot</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Business_Process</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>App_Process_Compact</compactLayoutAssignment>
+        <description>A process involving people and their interaction with applications to accomplish a business goal</description>
+        <label>Business Process</label>
+        <picklistValues>
+            <picklist>Primary_Department__c</picklist>
+            <values>
+                <fullName>Account Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Career Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consulting %26 Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education Advisory Board</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HC  Technical Member Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HC Performance Technologies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Support and Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NASA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Product Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Research %26 Insights</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Strategic Outcomes</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Strategy %26 Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>eTech</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pilot</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Primary_Department__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>BOA__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Business_Process_Contact__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Primary_Department__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>BOA__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Business_Process_Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Primary_Department__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>BOA__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Business_Process_Contact__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>BOA__c</searchFilterFields>
+        <searchFilterFields>Primary_Department__c</searchFilterFields>
+        <searchFilterFields>Business_Process_Contact__c</searchFilterFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Primary_Department__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>BOA__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Business_Process_Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Read</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Initial_Launch_Date_Required</fullName>
+        <active>true</active>
+        <description>Initial Launch Date is required when Status = Active</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&apos;Active&apos;),ISBLANK(Initial_Launch_Date__c))</errorConditionFormula>
+        <errorDisplayField>Initial_Launch_Date__c</errorDisplayField>
+        <errorMessage>Initial Launch Date is required when Status = Active</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Deployment_Strategy_Wiki</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Deployment Strategy Wiki</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>{!URLFOR($Label.Deployment_Strategy_Wiki)}</url>
+    </webLinks>
+</CustomObject>

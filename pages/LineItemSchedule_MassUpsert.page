@@ -1,0 +1,500 @@
+<!--Updated By - Victor Hanson - 10/16/2014 - CR-5846-->
+<!--Modified By - Abhinav Sharma - 12-01-2015 - CR-20141120-8130-->
+<!--Modified By - Abhinav Sharma - 13-02-2015 - CR-20150129-8606-->
+<apex:page controller="LineItemScheduleUpsertController" showHeader="false" sidebar="false" docType="html-5.0" id="page">
+    
+    <style>
+        .filtertable {
+            margin:auto;
+        }
+        
+        .filtertable, th {
+            background-color: #F8F8F8;
+        }
+        
+        .filtertable, td, th {
+            border: 1px solid #F8F8F8;
+            padding : 5px;
+        }
+    </style>
+    
+    <!--include jquery-->
+    <c:IncludeJQuery />
+    
+    <apex:form id="mainForm" styleClass="hideCurrentDate">
+    
+        <apex:actionFunction name="rerenderLIS" rerender="pgBlock" onComplete="unblockLineItems();" />
+        <apex:actionFunction name="deleteRows" action="{!deleteRows}" rerender="mainForm" onComplete="unblockLineItems(); refreshParent(); closePopup();" />
+        <apex:actionFunction name="retrieveAcronymsForHLinker" reRender="filterPanel" action="{!fetchProgramAcronyms}" status="counterStatus">
+            <apex:param name="hrlink" value="" assignTo="{!hLinker}"/>
+        </apex:actionFunction>
+        <apex:actionstatus id="counterStatus">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.65;width:100%;z-index:101;">
+                    <div class="waitingHolder" style="top: 100px; width: 91px;">
+                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                    <span class="waitingDescription">{!$Label.LineItemSchedule_MassUpsert_CL3}</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+        
+        <apex:sectionHeader title="{!ContractABC.Name}" subtitle="Mass Insert/Update Line Item Schedules" rendered="{!contractABC != null}"/>
+        <apex:sectionHeader subtitle="Mass Update Line Item Schedules" rendered="{!contractABC == null}"/>
+        
+        <apex:outputPanel rendered="{!invoiceBillingSchedule != null}" id="filterPanel">
+            <table class="filtertable">
+                <tr>
+                    <th></th>
+                    <th>Historical Linker</th>
+                    <th>Program Acronyms</th>
+                    <th>Invoice Date</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <B>FILTER BY : </B>
+                    </td>
+                    <td>
+                        <apex:inputText value="{!filterInstance.historicalLinker}" onblur="retrieveAcronymsForHLinker(this.value);"/>
+                    </td>
+                    <td>
+                        <apex:outputText value="{!filterInstance.programAcronyms}"/>
+                    </td>
+                    <td>
+                        <apex:inputField value="{!lItemSchedule.Invoice_Date__c}"/>
+                    </td>
+                    <td>
+                        <apex:actionStatus id="saveStatus">
+                            <apex:facet name="stop">
+                                <apex:commandButton action="{!applyFilters}" value="Apply Filters" status="saveStatus" reRender="errorMessage,pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();"/>
+                            </apex:facet>
+                            <apex:facet name="start">
+                                <apex:commandButton value="Working... " disabled="true" status="saveStatus" />
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </td>
+                </tr>
+            </table>
+            
+            <BR></BR>
+            <apex:outputPanel style="float:right; font-style:italic; margin-right: 20px;">
+                {!$Label.LineItemSchedule_MassUpsert_CL7} 
+                <BR></BR>
+                {!$Label.LineItemSchedule_MassUpsert_CL8}
+            </apex:outputPanel>
+            <BR></BR>
+            <BR></BR>
+        </apex:outputPanel>    
+                
+        <table class="filtertable">
+            <tr>
+                <th></th>
+                <th>Type</th>
+                <th>Invoice Date</th>
+                <th>Invoice Comment</th>
+                <th>Line Item Comment</th>
+                <th>Line Item Comment 2</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    <B>UPDATE VALUES : </B> 
+                </td>
+                <td>
+                    <apex:inputField value="{!lISchedule.Type__c}"/>
+                </td>
+                <td>
+                    <apex:inputField value="{!lISchedule.Invoice_Date__c}"/>
+                </td>
+                <td>
+                    <apex:inputField value="{!lISchedule.Invoice_Comment__c}"/>
+                </td>
+                <td>
+                    <apex:inputField value="{!lISchedule.Line_Item_Comment__c}"/>
+                </td>
+                <td>
+                    <apex:inputField value="{!lISchedule.Line_Item_Comment_2__c}"/>
+                </td>
+                <td>
+                    <apex:actionStatus id="updateValues">
+                        <apex:facet name="stop">
+                            <apex:commandButton action="{!updateValuesOnLineItems}" value="Update Selected" status="updateValues" reRender="errorMessage,pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();"/>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:commandButton value="Updating... " disabled="true" status="updateValues" />
+                        </apex:facet>
+                    </apex:actionStatus>
+                </td>
+            </tr>
+        </table>
+            
+        <BR></BR>
+        <apex:outputPanel style="float:right; font-style:italic; margin-right: 20px;">
+            {!$Label.LineItemSchedule_MassUpsert_CL1} 
+        </apex:outputPanel>
+        <BR></BR>
+        
+        <apex:commandLink value="{!$Label.LineItemSchedule_MassUpsert_CL9}" id="theScrollToBottom" onclick="return scrollToBottom();" style="float:left; margin-left:20px;" rendered="{!lineItemWrappers.size > 0}"/>
+        <BR></BR>
+        
+        <apex:pageMessages escape="false" id="errorMessage"/>
+        
+        <apex:pageBlock id="pgBlock" mode="edit">
+            <apex:inputHidden value="{!hasErrors}" id="hasErrors" />
+            <apex:pageBlockButtons id="pbButtons" location="bottom" style="clear:both; margin-top:15px;">
+                <apex:actionStatus id="saveStatus">
+                    <apex:facet name="stop">
+                        <apex:commandButton value=" Save Selected " action="{!save}" reRender="pbButtons,mainForm" status="saveStatus" onClick="blockLineItems();" onComplete="unblockLineItems();" rendered="{!lineItemWrappers.size > 0}"/>
+                    </apex:facet>
+                    <apex:facet name="start">
+                        <apex:commandButton value=" Saving... " disabled="true" status="saveStatus" />
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:commandButton value=" Close " reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems(); refreshParent(); closePopup();"/>
+                <apex:commandLink value="" onClick="verifyDelete(); return false;" rendered="{!lineItemWrappers.size > 0}">Delete  Selected</apex:commandLink>
+            </apex:pageBlockButtons>
+                
+            <apex:pageBlockSection title="Line Item Schedules" columns="1" id="pgBlockSection">
+            
+                <apex:outputPanel rendered="{!NOT((lineItemWrappers.size > 0))}">
+                    No record(s) found.
+                </apex:outputPanel>
+                
+                <apex:panelGrid columns="8" rendered="{!con.ResultSize > con.pageSize}">
+                    <apex:commandLink action="{!first}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" rendered="{!hasPrevious}" style="text-decoration: none;">First</apex:commandlink>
+                    <apex:commandLink action="{!previous}" reRender="pbButtons,mainForm" rendered="{!hasPrevious}" onClick="blockLineItems();" onComplete="unblockLineItems();" style="text-decoration: none;">{!$Label.LineItemSchedule_MassUpsert_CL5}</apex:commandlink>
+                    <apex:commandLink action="{!next}" rendered="{!hasNext}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" style="text-decoration: none;">{!$Label.LineItemSchedule_MassUpsert_CL6}</apex:commandlink>
+                    <apex:commandLink action="{!last}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" rendered="{!hasNext}" style="text-decoration: none;">Last</apex:commandlink>
+                    <apex:outputText value="Page {!pageNumber} " /><span>of</span><apex:outputText value=" {!totalPages}" />
+                </apex:panelGrid>
+                
+                <apex:pageBlockTable value="{!lineItemWrappers}" var="item" rendered="{!lineItemWrappers.size > 0}" id="LISDataTable">
+                    <apex:column >
+                        <apex:inputCheckbox value="{!item.isSelected}" rendered="{!NOT( item.LineItem.Invoiced__c )}" /> <!--  onChange="blockLineItems(); rerenderLIS();" -->
+                        <apex:facet name="header">
+                            <apex:inputCheckbox styleClass="selectAll" value="{!selectValue}" /> <!--  onChange="blockLineItems(); toggleSelected(this.checked);" -->
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Name.Label}">
+                        <apex:outputLink value="/{!item.LineItem.Id}" rendered="{!item.LineItem.Id != null}" target="_blank">{!item.LineItem.Name}</apex:outputLink>
+                        <apex:outputText value="[new]" rendered="{!item.LineItem.Id == null}" />
+                    </apex:column>
+                    <!-- only render Historical Linker & Program Acronym columns when contractABC == null (ie: user came from the line item schedule multi-select list view -->
+                    <apex:column value="{!item.LineItem.Contract__r.Historical_Linker__c}" rendered="{!contractABC == null}" />
+                    <apex:column value="{!item.LineItem.Contract__r.Program_Acronym__c}" rendered="{!contractABC == null}" />
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Type__c.Label}">
+                        <apex:inputField value="{!item.LineItem.Type__c}" rendered="{!NOT( item.LineItem.Invoiced__c ) && item.isSelected}" />
+                        <apex:outputField value="{!item.LineItem.Type__c}" rendered="{!item.LineItem.Invoiced__c || NOT( item.isSelected )}" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Invoice_Date__c.Label}">
+                        <apex:outputPanel layout="block" styleClass="requiredInput">
+                            <apex:outputPanel layout="block" styleClass="requiredBlock" />
+                            <apex:inputField value="{!item.LineItem.Invoice_Date__c}" styleClass="{!IF(hasErrors && ISBLANK(item.LineItem.Invoice_Date__c), 'fieldError', '')}"
+                                             rendered="{!NOT( item.LineItem.Invoiced__c ) && item.isSelected}" html-onPaste="handlepaste(this, event);" onblur="handleBlur(this);" id="invoiceDate" />
+                        </apex:outputPanel>
+                        <apex:outputField value="{!item.LineItem.Invoice_Date__c}" rendered="{!item.LineItem.Invoiced__c || NOT( item.isSelected )}" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Invoice_Amount__c.Label}">
+                        <apex:outputPanel layout="block" styleClass="requiredInput">
+                            <apex:outputPanel layout="block" styleClass="requiredBlock" />
+                            <apex:inputField value="{!item.LineItem.Invoice_Amount__c}" styleClass="{!IF(hasErrors && ISBLANK(item.LineItem.Invoice_Amount__c), 'fieldError', '')}"
+                                             id="amountInput" rendered="{!item.isSelected}"  style="width: 100px;" html-onPaste="handlepaste(this, event);" onblur="handleBlur(this);"/>
+                        </apex:outputPanel>
+                        <apex:outputField value="{!item.LineItem.Invoice_Amount__c}" rendered="{!NOT(item.isSelected)}" id="disabledAmtInput"/>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Amount__c.Label}">
+                        <apex:inputField value="{!item.LineItem.Amount__c}"  id="USDAmountInput" rendered="{!item.isSelected}"  style="width: 100px;" html-onPaste="handlepaste(this, event);" onblur="handleBlur(this);"/>
+                        <apex:outputField value="{!item.LineItem.Amount__c}" rendered="{!NOT(item.isSelected)}" id="disabledUSDAmtInput"/>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Invoice_Comment__c.Label}">
+                        <apex:outputPanel layout="block" styleClass="requiredInput" style="position:relative;">
+                            <apex:outputPanel layout="block" styleClass="requiredBlock" style="top:0px; height: 95%;" />
+                            <span class="ui-icon ui-icon-arrowthickstop-1-e" style="position:absolute; left:-18px; display:none;" title="Multi-line paste enabled"></span>
+                            <apex:inputField value="{!item.LineItem.Invoice_Comment__c}"  styleClass="invoiceComment {!IF(hasErrors && ISBLANK(item.LineItem.Invoice_Comment__c), 'fieldError', '')}"
+                                             id="invoiceComment" rendered="{!NOT( item.LineItem.Invoiced__c ) && item.isSelected}" 
+                                             ondblclick="bypassPasteHandler(this, true);" html-onPaste="handlepaste(this, event);" onblur="if(bypassPaste == false) { handleBlur(this); } bypassPasteHandler(this, false);" />
+                        </apex:outputPanel>
+                        <apex:outputText value="{!item.LineItem.Invoice_Comment__c}" rendered="{!item.LineItem.Invoiced__c || NOT( item.isSelected )}" styleClass="breakAll" style="display:block; min-height:47px;" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Line_Item_Comment__c.Label}">
+                        <apex:inputField value="{!item.LineItem.Line_Item_Comment__c}" id="itemComment" rendered="{!NOT( item.LineItem.Invoiced__c ) && item.isSelected}" html-onPaste="handlepaste(this, event);" onblur="handleBlur(this);" />
+                        <apex:outputField value="{!item.LineItem.Line_Item_Comment__c}" rendered="{!item.LineItem.Invoiced__c || NOT( item.isSelected )}" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Line_Item_Schedule__c.fields.Line_Item_Comment_2__c.Label}">
+                        <apex:inputField value="{!item.LineItem.Line_Item_Comment_2__c}" id="itemComment2" rendered="{!NOT( item.LineItem.Invoiced__c ) && item.isSelected}" html-onPaste="handlepaste(this, event);" onblur="handleBlur(this);" />
+                        <apex:outputField value="{!item.LineItem.Line_Item_Comment_2__c}" rendered="{!item.LineItem.Invoiced__c || NOT( item.isSelected )}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:panelGrid columns="8" rendered="{!con.ResultSize > con.pageSize}">
+                    <apex:commandLink action="{!first}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" rendered="{!hasPrevious}" style="text-decoration: none;">First</apex:commandlink>
+                    <apex:commandLink action="{!previous}" reRender="pbButtons,mainForm" rendered="{!hasPrevious}" onClick="blockLineItems();" onComplete="unblockLineItems();" style="text-decoration: none;">{!$Label.LineItemSchedule_MassUpsert_CL5}</apex:commandlink>
+                    <apex:commandLink action="{!next}" rendered="{!hasNext}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" style="text-decoration: none;">{!$Label.LineItemSchedule_MassUpsert_CL6}</apex:commandlink>
+                    <apex:commandLink action="{!last}" reRender="pbButtons,mainForm" onClick="blockLineItems();" onComplete="unblockLineItems();" rendered="{!hasNext}" style="text-decoration: none;">Last</apex:commandlink>
+                    <apex:outputText value="Page {!pageNumber} " /><span>of</span><apex:outputText value=" {!totalPages}" />
+                </apex:panelGrid>
+                
+                <apex:outputPanel rendered="{!AND(contractABC == null, lineItemWrappers.size > 0)}" style="float:right; font-style:italic;">
+                    {!$Label.LineItemSchedule_MassUpsert_CL4}
+                </apex:outputPanel>
+                <!-- +Add x rows link -->
+                <apex:outputPanel rendered="{!contractABC != null}" >
+                    <div style="float:right; font-style:italic;">
+                        * Double click the Invoice Comment field before pasting in order to paste a multi-line comment in a single field.
+                    </div>
+                    <apex:commandLink value="" onClick="blockLineItems();" oncomplete="unblockLineItems();" action="{!addRows}" reRender="mainForm" style="color:blue;" >+ Add</apex:commandLink>
+                    <apex:input value="{!numRows}" style="margin-left:2px; margin-right:2px; width:24px;" /><span>rows</span>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        
+            <BR></BR>
+            <BR></BR>
+            <apex:commandLink value="Scroll To Top" id="theScrollToTopLink" onclick="return scrollToTop();" style="float:left; margin-left:20px;" rendered="{!lineItemWrappers.size > 0}"/>
+        
+        </apex:pageBlock>
+    </apex:form>
+    
+    <style>
+        /** hide current date link **/
+        .hideCurrentDate span.dateInput span.dateFormat{
+        display:none;
+        }
+        
+        .fieldError {
+        border: 2px solid #c00;
+        }
+        
+        .invoiceComment {
+        width: 95%;
+        min-width: 190px;
+        }
+        
+        .breakAll {
+        -ms-word-break: break-all;
+        word-break: break-all;
+        // Non standard for webkit
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+        }
+    </style>
+    
+    <!--Updated By - Victor Hanson - 10/16/2014 - CR-5846-->
+    <script type="text/javascript">
+    
+        var bypassPaste = false;
+        function bypassPasteHandler(el, bypass) {
+            bypassPaste = bypass;
+            
+            //get the icon element
+            var spanIcon = j$(el).parent().find('.ui-icon-arrowthickstop-1-e').css('display', 'inline');
+            
+            if (bypass) {
+                //show icon
+                j$(spanIcon).css('display','inline');
+            }
+            else {
+                //hide icon
+                j$(spanIcon).css('display','none');
+            }
+        }
+        
+        var colNameMap = new Array();
+        colNameMap[0] = "invoiceDate";
+        colNameMap[1] = "amountInput";
+        colNameMap[2] = "USDAmountInput";
+        colNameMap[3] = "invoiceComment";
+        colNameMap[4] = "itemComment";
+        colNameMap[5] = "itemComment2";
+        colNameMap["invoiceDate"] = 0;
+        colNameMap["amountInput"] = 1;
+        colNameMap["USDAmountInput"] = 2;
+        colNameMap["invoiceComment"] = 3;
+        colNameMap["itemComment"] = 4;
+        colNameMap["itemComment2"] = 5;
+        
+        //Properties
+        var afterPasteCellValue = '';
+        //Function to hold logic related to onPaste event on input box
+        function handlepaste(el, event) {
+            if(bypassPaste) {
+                return;
+            }
+            
+            //Checking for the event type, Performing the below logic only and only if event equals "Paste"
+            if(event.type == 'paste') {
+                
+                //Variable to hold ClipboardData on the fly
+                var pastedValue;
+                //On the fly getting clipboardData value going to be pasted into input box
+                if (window.clipboardData && window.clipboardData.getData) {
+                    pastedValue = window.clipboardData.getData('Text');
+                } else if (event.clipboardData && event.clipboardData.getData) {
+                    pastedValue = event.clipboardData.getData('text/plain');
+                }
+                
+                var clipText = pastedValue;
+                
+                var clipRows = parseCSV(clipText);
+                // split rows into columns
+                for (i=0; i<clipRows.length; i++) {
+                    var s = clipRows[i].toString().split("\t");
+                    if (s != "") {
+                        clipRows[i] = s;
+                    }
+                }
+                
+                var firstRow = j$(el).attr('Id').split(':')[5];
+                var firstCol = colNameMap[j$(el).attr('id').split(':')[6]]; //ie: "amountInput" -> 1
+                
+                var rows = Math.max(firstRow+clipRows.length-2, 1);
+                if (firstRow == 0) rows++;
+                for (i=firstRow; i <= rows; i++) {
+                    
+                    var actualRow = i-firstRow;
+                    afterPasteCellValue = clipRows[0][0];
+                    
+                    try {
+                        for (j=firstCol; j < (firstCol+clipRows[actualRow].length); j++) {
+                            var actualCol = j-firstCol;
+                            var elementId = "page:mainForm:pgBlock:pgBlockSection:LISDataTable:" + i + ":" + colNameMap[j];
+                            if (clipRows[actualRow][actualCol].length == 0 && document.getElementById(elementId)) {
+                                document.getElementById(elementId).value = '';
+                            }
+                            else if (document.getElementById(elementId)) {
+                                document.getElementById(elementId).value = clipRows[actualRow][actualCol];
+                            }
+                        }
+                    } catch(err) {
+                        //console.log('@@@Exception:' + err);
+                    }
+                }             
+            }
+        }
+        
+        //Function to hold the logic will be performed on blur event
+        //Helpful in populating input box with corrected value
+        function handleBlur(el) {
+            //Checking for variable value
+            if(afterPasteCellValue != '') {
+                j$(el).val(afterPasteCellValue);
+                afterPasteCellValue = '';
+            }
+        }
+        
+        function hasErrors() {
+            return j$("[id*='hasErrors']").val();
+        }
+        
+        function refreshParent() {
+            if (hasErrors() == 'false') {
+                if ('{!contractABC.Id}' != '') {
+                    window.opener.location.href="/{!contractABC.Id}#{!LEFT(contractABC.Id, LEN(contractABC.Id)-3)}_00NC0000005U21Z_target";
+                } else if('{!invoiceBillingSchedule.Id}' != '') {
+                    window.opener.location.href="/{!invoiceBillingSchedule.Id}#{!LEFT(invoiceBillingSchedule.Id, LEN(invoiceBillingSchedule.Id)-3)}_00NC0000005U21Z_target";
+                }
+                else {
+                    window.opener.location.href="{!retURL}";
+                }
+            }
+        }
+        
+        function closePopup() {
+            if (hasErrors() == 'false') self.close();
+        }
+        
+        function verifyDelete() {
+            var confirmDelete = confirm("Are you sure you want to delete the selected Line Item Schedules?");
+            if (confirmDelete == true) {
+                blockLineItems();
+                confirmDelete = deleteRows();
+            } else {
+                return false;
+            }
+        }
+        
+        //block the line item section
+        var lineItemSectionId = '#page\\:mainForm\\:pgBlock\\:pgBlockSection';
+        function blockLineItems() {
+            blockElement(lineItemSectionId, null);
+        }
+        
+        function unblockLineItems() {
+            unblockElement(lineItemSectionId, null);
+            setupSelectAllCheckbox();
+        }
+        
+        function setupSelectAllCheckbox() {
+            j$('.selectAll').click(function(event) {  //on click 
+                if(this.checked) { // check select status
+                    j$('[type=checkbox]').each(function() { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"               
+                    });
+                }else{
+                    j$('[type=checkbox]').each(function() { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+                    });         
+                }
+            });
+        }
+        
+        /** setup select all checkbox **/
+        j$(document).ready(function() {
+            setupSelectAllCheckbox();
+        });
+        
+        function parseCSV(str) {
+            var arr = [];
+            var quote = false;  // true means we're inside a quoted field
+        
+            // iterate over each character, keep track of current row and column (of the returned array)
+            for (var row = col = c = 0; c < str.length; c++) {
+                var cc = str[c], nc = str[c+1];        // current character, next character
+                arr[row] = arr[row] || [];             // create a new row if necessary
+                arr[row][col] = arr[row][col] || '';   // create a new column (start with empty string) if necessary
+        
+                // If the current character is a quotation mark, and we're inside a
+                // quoted field, and the next character is also a quotation mark,
+                // add a quotation mark to the current column and skip the next character
+                if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }  
+        
+                // If it's just one quotation mark, begin/end quoted field
+                if (cc == '"') { quote = !quote; continue; }
+        
+                // If it's a comma and we're not in a quoted field, move on to the next column
+                if (cc == ',' && !quote) { ++col; continue; }
+        
+                // If it's a newline and we're not in a quoted field, move on to the next
+                // row and move to column 0 of that new row
+                if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+        
+                // Otherwise, append the current character to the current column
+                arr[row][col] += cc;
+            }
+            return arr;
+        }
+        
+        var timeOut;
+
+        <!--Script for scrolling of page towards it top-->
+        function scrollToTop() {
+
+            if (document.body.scrollTop!=0 || document.documentElement.scrollTop!=0){
+                window.scrollBy(0,-50);
+                timeOut=setTimeout('scrollToTop()',10);
+            }
+            else 
+                clearTimeout(timeOut);
+
+            return false;
+        }
+        
+        function scrollToBottom() {
+            window.scrollTo(0, document.body.scrollHeight);
+            //timeOut=setTimeout('scrollToBottom()',10);
+            return false;
+        }
+    </script>
+    
+</apex:page>

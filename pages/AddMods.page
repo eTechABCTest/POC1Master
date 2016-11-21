@@ -1,0 +1,1065 @@
+<apex:page controller="AddModsController" showHeader="false" standardStylesheets="false" sidebar="false"
+           applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">  
+    <c:IncludeJQuery id="jqry" />
+    <apex:includeScript value="{!URLFOR($Resource.AngularJS, '/angular.1.4.9.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapZip, '/bootstrap/js/bootstrap.min.js')}" />
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+        
+        <head>
+            <title>Add Modifications</title>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS_11, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        </head>
+        
+        <body>    
+            
+            <!-- ANGULARJS -->
+            <script>
+            
+            (function(angular) {
+                var app = angular.module("myApp", []).controller("MyCtrl", ["$scope", "$http", "filterFilter", "$filter", "$timeout", MyCtrl]);
+                
+                function MyCtrl($scope, $http, filterFilter, $filter, $timeout) {
+                    var existingComponentIds = JSON.parse('{!existingMods_JSON}');
+                    
+                    /** success or error handlers **/
+                    $scope.status = "";
+                    $scope.isSaving = undefined;
+                    $scope.displayError = false;
+                    $scope.displaySuccess = false;
+                    $scope.ctrlClickSelection = [];
+                    $scope.showExistingMods = false; //by default, show existing mods is set to false
+                    
+                    /** search and data handlers **/
+                    $scope.author = "{!$User.FirstName & ' ' & $User.LastName}";
+                    $scope.authors = []; //list of authors for the sandbox (last modified by)
+                    $scope.currentPage = 0;
+                    $scope.querySize = 2000;
+                    $scope.pageSize = 10;
+                    $scope.data = [];
+                    $scope.selection = [];
+                    $scope.selectionIds = [];
+                    $scope.filteredData = [];
+                    $scope.lastModifiedByList = [];
+                    $scope.numberOfPages = 0;
+                    $scope.lastRefreshedTime;
+                    $scope.sbx = '{!changeRequest.Release__r.Dev_Sandbox__r.Sandbox_Series__r.Common_Name__c}';//default to the sbx related to the CR
+                    
+                    /** sort & search functions **/
+                    $scope.sortType     = 'lastModifiedDateTime'; // set the default sort type
+                    $scope.sortReverse  = true;  // set the default sort order
+                    $scope.$watch('search', function(term) {
+                        // Create $scope.filtered and then calculat $scope.noOfPages
+                        $scope.currentPage = 0;
+                        //$scope.filteredData = filterFilter($scope.data, term);
+                        $scope.filteredData = $filter('customFilter')($scope.filteredData, $scope.filterType, $scope.showExistingMods);
+                        $scope.numberOfPages = Math.ceil($scope.filteredData.length/$scope.pageSize);
+                        $scope.isAllSelected = false;
+                    });
+                    
+                    $scope.refreshResults = function() {
+                        $scope.currentPage = 0;
+                        //$scope.filteredData = filterFilter($scope.data, $scope.search);
+                        $scope.filteredData = $filter('customFilter')($scope.filteredData, $scope.filterType, $scope.showExistingMods);
+                        $scope.numberOfPages = Math.ceil($scope.filteredData.length/$scope.pageSize);
+                        $scope.isAllSelected = false;
+                    }
+                    
+                    /** un-check select all when paging through records **/
+                    $scope.$watch('currentPage', function(term) {
+                        $scope.isAllSelected = false;
+                    });
+                    
+                    $scope.$watch('loading', function() {
+                        if ($scope.loading) blockElem('#searchResultsContainer');
+                        else unblockElement('#searchResultsContainer');
+                    });
+                    
+                    
+                    $scope.getSearchURL = function() {
+                        var url = "{!$Label.Add_Mod_API_Endpoint}"
+                        if (url.substr(-1) != '/') url += '/';
+                        url += "metadata/";
+                        var urlParams = "?pageNo=1&pageSize=" + $scope.querySize + "&callback=JSON_CALLBACK";
+                        if (!angular.isUndefined($scope.author) && $scope.author != null) {
+                            urlParams += "&author=" + $scope.author;
+                        }
+                        return url + $scope.sbx + urlParams;
+                    }
+                    
+                    $scope.getAuthorBaseURL = function() {
+                        var url = "{!$Label.Add_Mod_API_Endpoint}";
+                        if (url.substr(-1) != '/') url += '/';
+                        url += "author/";
+                        return url;
+                    }
+                    
+                    $scope.searchFunction = function(authorRefresh) {
+                        $scope.loading = true;//show/hide spinner
+                        $scope.data = []; //reset the data array
+                        $scope.currentPage = 0; //reset the current page to 0
+                        $scope.lastModifiedByList = []; //reset last modified by list
+                        //if sandbox is not selected, return without processing
+                        if ($scope.sbx == "" || typeof $scope.sbx == "Undefined") {
+                            $scope.loading = false; //unblock spinner
+                            return;
+                        }
+                        
+                        try {
+                            $http.jsonp($scope.getSearchURL())
+                            .success(function (data) {
+                                $scope.lastRefreshedTime = data.lastRefreshedTime; //set the last refreshed date/time
+                                for (var i in data.items) {
+                                    if (data.items[i] == null || data.items[i].itemId == null) continue;
+                                    var aItem = data.items[i];
+                                    if ($scope.selectionIds.indexOf(aItem.itemId) > -1) {
+                                        aItem.selected = true;
+                                    }
+                                    if (existingComponentIds[aItem.sfId] != undefined) {
+                                        aItem.isDupe = true;
+                                        aItem.description = existingComponentIds[aItem.sfId].Description__c;
+                                        aItem.modType = existingComponentIds[aItem.sfId].Type_of_Modification__c;
+                                        aItem.recordTypeName = existingComponentIds[aItem.sfId].RecordType.Name;
+                                        aItem.modId = existingComponentIds[aItem.sfId].Id;
+                                        aItem.modOwnerId = existingComponentIds[aItem.sfId].Owner_Id__c;
+                                    }
+                                    else {
+                                        //default type of modification to modify unless the status is new
+                                        aItem.modType = 'Modify';
+                                        if (aItem.itemStatus == 'New') aItem.modType = 'New';
+                                        aItem.recordTypeName = 'Simple';
+                                        aItem.modOwnerId = '{!$user.Id}';
+                                    }
+                                    //convert date to integer -- this allows angular to convert to local user's timezone
+                                    aItem.lastModifiedDateTime = Date.parse(aItem.lastModifiedDateTime);
+                                    //add aItem to the results
+                                    $scope.data.push(aItem);
+                                    
+                                }
+                                $scope.filteredData = $filter('customFilter')($scope.data, $scope.filterType, $scope.showExistingMods);
+                                $scope.numberOfPages = Math.ceil($scope.filteredData.length / $scope.pageSize);
+                                
+                                //only refresh authors when specified (ie: a different sandbox is chosen)
+                                if (authorRefresh) {
+                                    $timeout(function () { // need this timeout to be sure authors are refreshed after the first callout finishes
+                                        $scope.refreshAuthors();
+                                    }, 0, false);
+                                }
+                                
+                                $scope.displayError = false;
+                            })
+                            .error(function (data, status) {
+                                //('Repos error' + '-' + status + '-' + data);
+                                $scope.status = status;
+                                $scope.messages = data || 'Request Failed';
+                                $scope.displayError = true;
+                                //$scope.$apply(function() { $scope.displayError = true; });
+                            })
+                            .finally(function() {
+                                $scope.isAllSelected = false;
+                                $scope.loading = false; //unblock spinner
+                            });
+                        }
+                        catch(err) {
+                            $scope.loading = false; //unblock spinner
+                            $scope.status = err.message;
+                            $scope.displayError = true;
+                        }
+                    }
+                    
+                    
+                    $scope.reset = function() {
+                        $scope.selection = [];
+                        $scope.selectionIds = [];
+                        $scope.filteredData = [];
+                        $scope.numberOfPages = 0;
+                        $scope.isAllSelected = false;
+                        $scope.searchFunction(true);
+                    }
+                    
+                    //get authors from server
+                    $scope.refreshAuthors = function refreshAuthors() {
+                        $scope.authors = []; //reset the data array
+                        
+                        //if sandbox is not selected, return without processing
+                        if ($scope.sbx == "" || typeof $scope.sbx == "Undefined") {
+                            $scope.loading = false; //unblock spinner
+                            return;
+                        }
+                        //return;
+                        try {
+                            $http.jsonp($scope.getAuthorBaseURL() + $scope.sbx + "?callback=JSON_CALLBACK")
+                            .success(function (data) {
+                                for (var i = 0; i < data.length; i++) {
+                                    //add aItem to the results
+                                    $scope.authors.push(data[i]);
+                                }
+                            })
+                            .error(function (data, status) {
+                                $scope.status = status;
+                                $scope.messages = data || 'Request Failed (Author Refresh)';
+                                $scope.displayError = true;
+                                //$scope.$apply(function() { $scope.displayError = true; });
+                            })
+                            .finally(function() {
+                                
+                            });
+                        }
+                        catch(err) {
+                            $scope.displayError = true;
+                        }
+                    }
+                    
+                    $scope.getElement = function getElement(itemId, items) {
+                        for (var i = 0; i < items.length ; i++) {
+                            if (items[i].itemId === itemId) {
+                                return i;
+                            }
+                        }
+                        return -1;
+                    }
+                    
+                    $scope.toggleTree = function toggleTree(item) {
+                        item.expanded = !item.expanded;
+                        for (var i in $scope.selection) {
+                            if (item.itemId != $scope.selection[i].itemId)
+                                $scope.selection[i].expanded = false; 
+                        }
+                    }
+                    
+                    // toggle selection
+                    $scope.toggleSelection = function toggleSelection(item) {
+                        item.selected = !item.selected;
+                        var idx = $scope.getElement(item.itemId, $scope.selection);
+                        // is currently selected
+                        if (idx > -1) {
+                            //if the item is ctrl-selected, remove from that list as well
+                            if (item.ctrlClickSelected) {
+                                toggleCTRLSelection(item, false);
+                                item.ctrlClickSelected = false;
+                            }
+                            $scope.selection.splice(idx, 1);
+                            $scope.selectionIds.splice(item.itemId, 1);
+                        }
+                        
+                        // is newly selected
+                        else {
+                            //expand most recent record and collapse all others
+                            item.expanded = true;
+                            for (var i in $scope.selection) {
+                                $scope.selection[i].expanded = false; 
+                            }
+                            
+                            $scope.selection.push(item);
+                            $scope.selectionIds.push(item.itemId);
+                            $timeout(function () { // You might need this timeout to be sure its run after DOM render
+                                j$('#selectionContainer').scrollTop(j$('#selectionContainer')[0].scrollHeight);
+                            }, 0, false);
+                        }
+                        //console.log('@@idx:' + idx + ' --item.selected:' + item.selected + '    ---$scope.selection:' + JSON.stringify($scope.selection));
+                    };
+                    
+                    /** verify all mods have description populated **/
+                    $scope.isValid = function isValid() {
+                        //reset error/success messages
+                        $scope.displayError = false;
+                        $scope.displaySuccess = false;
+                        
+                        var valid = true;
+                        for (var i in $scope.selection) {
+                            if ($scope.selection[i].itemId != undefined && $scope.selection[i].description == null) {
+                                j$('[name=input_' + $scope.selection[i].itemId + ']').parent().parent().attr('class', 'slds-has-error');
+                                valid = false;
+                            }
+                        }
+                        
+                        if (!valid) {
+                            $scope.displayError = true;
+                            $scope.status = "Please fill out all required fields.";
+                        }
+                        return valid;
+                    }
+                    
+                    
+                    function toggleCTRLSelection(item, onlySelect) {
+                        item.ctrlClickSelected = !item.ctrlClickSelected; //flag as selected
+                        var idx = $scope.getElement(item.itemId, $scope.ctrlClickSelection);
+                        // remove from list - is currently selected
+                        if (idx > -1 && !onlySelect) {
+                            $scope.ctrlClickSelection.splice(idx, 1);
+                        }
+                        
+                        // is newly selected
+                        else {
+                            $scope.ctrlClickSelection.push(item);
+                        }
+                    }
+                    
+                    /**
+					Selects multiple modifications when the user holds CTRL + Click
+                **/
+                $scope.ctrlClick = function(event, item){
+                    if (event.ctrlKey)
+                    {
+                        toggleCTRLSelection(item, false);
+                    }
+                    else {//if the user clicks on a non-selected item without ctrl pressed, un-select all
+                        if (!item.ctrlClickSelected) {
+                            for (var i in $scope.ctrlClickSelection) {
+                                $scope.ctrlClickSelection[i].ctrlClickSelected = false;
+                            }
+                            $scope.ctrlClickSelection = [];
+                        }
+                    }
+                }
+                
+                /**
+                	@description: apply changes to all ctrl-clicked mods
+                **/
+                $scope.massUpdate = function(item) {
+                    closeDialog();
+                    
+                    for (var i in $scope.ctrlClickSelection) {
+                        if ($scope.massEditDescription && $scope.massEditDescription != '')
+                            $scope.ctrlClickSelection[i].description = $scope.massEditDescription;
+                        if ($scope.massEditType && $scope.massEditType != '')
+                            $scope.ctrlClickSelection[i].modType = $scope.massEditType;
+                        if ($scope.massEditRecordType && $scope.massEditRecordType != '')
+                            $scope.ctrlClickSelection[i].recordTypeName = $scope.massEditRecordType;
+                        
+                        //perform a quick transition animation to show that the records were updated
+                        var element = j$('#row-' + $scope.ctrlClickSelection[i].itemId);
+                        element.addClass('blink');
+                    }
+                    
+                    //remove the blink class so the effect can be triggered multiple times if necessary
+                    setTimeout(function() {
+                        j$('.blink').removeClass('blink');
+                    },1000);
+                }
+                
+                $scope.resetDialog = function() {
+                    $scope.massEditDescription = '';
+                    $scope.massEditType = '';
+                    $scope.massEditRecordType = '';
+                }
+                
+                $scope.ctrlSelectAll = function() {
+                    for (var i = 0; i < $scope.selection.length; i++) {
+                        if (!angular.isUndefined($scope.selection[i])) {
+                            if (!$scope.selection[i].ctrlClickSelected) {
+                                toggleCTRLSelection($scope.selection[i], true);
+                            }
+                        }
+                    }
+                }
+                ///CTRL-Click functionality
+                
+                
+                $scope.save = function() {
+                    var output;
+                    
+                    //validate the form first
+                    if ($scope.isValid()) {
+                        $scope.loading = true;//show/hide spinner
+                        $scope.isSaving = true;
+                        try {
+                            output = JSON.parse(angular.toJson($scope.selection)); //this process strips out the $$hashKey value that is added by angularJS
+                            Visualforce.remoting.Manager.invokeAction(
+                                '{!$RemoteAction.AddModsController.insertComponent}',
+                                output, '{!changeRequest.Id}',
+                                function(result, event) {
+                                    $scope.$apply(function() {
+                                        if (event.status) {
+                                            
+                                            //get an updated list of mods
+                                            Visualforce.remoting.Manager.invokeAction(
+                                                '{!$RemoteAction.AddModsController.getExistingMods_JSON}', 
+                                                '{!changeRequest.Id}',
+                                                function(result, event){
+                                                    if (event.status) {
+                                                        //SUCCESS - parse the mods
+                                                        $scope.status = 'Success';
+                                                        $scope.displaySuccess = true;
+                                                        existingComponentIds = JSON.parse(result);
+                                                        $scope.reset();
+                                                    } else if (event.type === 'exception') {
+                                                        $scope.status = event.message;
+                                                        $scope.displayError = true;
+                                                    } else {
+                                                        $scope.status = event.message;
+                                                        $scope.displayError = true;
+                                                    }
+                                                }, 
+                                                {escape: false}
+                                            );
+                                            
+                                        } else if (event.type === 'exception') {
+                                            $scope.displayError = true;
+                                            $scope.status = event.message;
+                                        } else {
+                                            $scope.displayError = true;
+                                            $scope.status = event.message;
+                                        }
+                                        //once the success or error message is returned, unblock the page & buttons
+                                        $scope.loading = false;//hide spinner
+                                        $scope.isSaving = false;//unblock the page
+                                    });
+                                }
+                            );
+                        }
+                        catch(err) {
+                            $scope.isSaving = false;
+                            $scope.status = err.message;
+                            $scope.displayError = true;
+                            $scope.loading = false;//hide spinner
+                        }
+                    }
+                }
+                
+                /** check/uncheck all **/
+                $scope.toggleAll = function() {
+                    var toggleStatus = !$scope.isAllSelected;
+                    
+                    angular.forEach($scope.visibleItems, function(item){ 
+                        if (toggleStatus != item.selected) {
+                            $scope.toggleSelection(item);
+                        }
+                    });
+                    
+                }
+            }
+                
+                //We already have a limitTo filter built-in to angular,
+                //let's make a startFrom filter
+                app.filter('startFrom', function () {
+                    return function (input, start) {
+                        start = +start; //parse to int
+                        return input.slice(start);
+                    }
+                });
+                
+                //custom filter to show unique items in an array
+                app.filter('unique', function() {
+                    return function(input, key) {
+                        var unique = {};
+                        var uniqueList = [];
+                        if (input) {
+                            for(var i = 0; i < input.length; i++){
+                                if(typeof unique[input[i][key]] == "undefined"){
+                                    unique[input[i][key]] = "";
+                                    uniqueList.push(input[i]);
+                                }
+                            }
+                        }
+                        return uniqueList;
+                    };
+                });
+                
+                //custom filter to show records of the specified type and whether or not they already exist on this CR
+                app.filter('customFilter', function() {
+                    return function(data, dType, dShowExisting) {
+                        var output = [];
+                        
+                        if (data) {
+                            for(var i = 0; i < data.length; i++){
+                                var aItem = data[i];
+                                //check to see if this is a dupe, or if dupes are allowed... if so, include in the output
+                                if (!aItem.isDupe || (aItem.isDupe && dShowExisting == true)) {
+                                    //verify the type matches the selected type
+                                    if (dType) {
+                                        if (dType != '' && dType == aItem.itemType) {
+                                            output.push(aItem);
+                                        }
+                                    }
+                                    else if (!dType) {
+                                        output.push(aItem);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        return output;
+                    };
+                });
+            })(angular);
+            
+            /** block element with lightning loading gif **/
+            function blockElem(ElementLocator) {
+                
+                j$(ElementLocator).block
+                ({ 
+                    message: '<div class="slds-spinner--medium" style="width:100%; height:100%;"><img src="{!URLFOR($Resource.SLDS_11,'assets/images/spinners/slds_spinner_brand.gif')}" style="width:56px; height:56px; alt="Loading..." ></div>'
+                }); 
+            }
+            </script>
+            <!-- / ANGULARJS -->
+            
+            
+            <!-- REQUIRED SLDS WRAPPER -->
+            <div class="slds">
+                
+                <!-- PAGE HEADER -->
+                <div class="slds-page-header" role="banner">
+                    
+                    <!-- LAYOUT GRID -->
+                    <div class="slds-grid">
+                        
+                        <!-- GRID COL -->
+                        <div class="slds-col">
+                            <!-- HEADING AREA -->
+                            <!-- MEDIA OBJECT = FIGURE + BODY -->
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon__container slds-icon-standard-account">
+                                        <svg aria-hidden="true" class="slds-icon">
+                                            <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                             'assets/icons/standard-sprite/svg/symbols.svg#custom')}"></use>
+                                        </svg>
+                                        <span class="slds-assistive-text">Modification Icon</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p class="slds-text-heading--label">Modifications</p>
+                                    <h1 class="slds-text-heading--small">Add Modifications</h1>
+                                </div>
+                            </div>
+                            <!-- / MEDIA OBJECT -->
+                            <!-- /HEADING AREA -->
+                        </div>
+                        
+                        <!-- ACTION BUTTONS -->
+                        <div class="slds-col slds-no-flex slds-align-middle">
+                        </div>
+                        <!-- / ACTION BUTTONS -->
+                        
+                    </div>
+                    <!-- / LAYOUT GRID -->
+                    
+                </div>
+                <!-- / PAGE HEADER -->
+                
+                <!-- PRIMARY CONTENT WRAPPER -->
+                <div class="myapp slds-m-top--large">
+                    
+                    <apex:form id="myForm" html-name="myForm">
+                        <div class="bootstrap" ng-app="myApp" ng-controller="MyCtrl" ng-init="searchFunction(true);" >
+                            
+                            <!-- error & success messages -->
+                            <div ng-class="{ 'slds-box slds-theme--error': displayError }" ng-show="displayError" style="margin-bottom:20px;">
+                                <p>
+                                    <strong>{{status}}</strong> {{messages}}
+                                </p>
+                            </div>
+                            <div ng-class="{ 'slds-box slds-theme--success': displaySuccess }" ng-show="displaySuccess" style="margin-bottom:20px;">
+                                <p>
+                                    <strong>{{status}}</strong> {{messages}}
+                                </p>
+                            </div>
+                            <!-- / error & success messages -->
+                            
+                            <div class="slds-grid">
+                                <main class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--7-of-12 slds-scrollable--x" 
+                                      style="min-height: 15px;"
+                                      id="searchContainer">
+                                    <fieldset class="slds-form--compound">
+                                        <legend class="slds-form-element__label">Refreshed: {{lastRefreshedTime | date:'MM/dd/yyyy hh:mm a'}}</legend>
+                                        <div class="form-element__group">
+                                            <div class="slds-form-element__row">
+                                                <label class="slds-form-element__control slds-size--1-of-12">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__helper" for="selectSample1">Sandbox Name</label>
+                                                        <div class="slds-form-element__control" style="width: 100%;">
+                                                            <select id="inputSandbox" class="slds-select" ng-model="sbx" ng-change="searchFunction(true);">
+                                                                <apex:repeat value="{!sandboxOptions}" var="sOption">
+                                                                    <option>{!sOption}</option>
+                                                                </apex:repeat>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                <label class="slds-form-element__control slds-size--1-of-6">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__helper" for="selectSample1">Modified By</label>
+                                                        <div class="slds-form-element__control" style="width: 100%;">
+                                                            <select id="selectAuthor" class="slds-select" ng-model="author" ng-options="value for value in authors" ng-change="searchFunction(false);">
+                                                            	<option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                
+                                                <label class="slds-form-element__control slds-size--1-of-6">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__helper" for="selectSample1">Type</label>
+                                                        <div class="slds-form-element__control" style="width: 100%;">
+                                                            <select id="selectAuthor" class="slds-select" ng-model="filterType" 
+                                                                    ng-options="item.itemType as item.itemType for item in data | orderBy:'itemType' | unique:'itemType'" 
+                                                                    ng-change="refreshResults();">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                <label class="slds-form-element__control slds-size--1-of-5">
+                                                    <span class="slds-form-element__helper">Search</span>
+                                                    <input type="text" ng-model="search" class="slds-input" placeholder="Keywords..."/>
+                                                </label>
+                                                
+                                                <label class="slds-form-element__control slds-size--1-of-6">
+                                                    <label class="slds-form-element__helper" for="selectSample1">Show Existing Mods</label>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-checkbox" >
+                                                            <span class="slds-form-element__helper"></span>
+                                                            <input name="checkbox" type="checkbox" ng-model="showExistingMods" ng-change="refreshResults();" id="showExistingMods" />
+                                                            <span class="slds-checkbox--faux"></span>
+                                                            <span class="slds-form-element__label slds-assistive-text">show existing mods</span>
+                                                        </label>
+                                                    </div>
+                                                </label>
+                                                
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </main>
+                                <aside class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--5-of-12 slds-has-flexi-truncate slds-scrollable--y" 
+                                       style="padding-left:5px; height: 88px; margin-left: 4px; display:block padding:2px;"
+                                       Id="buttonContainer" >
+                                    <div class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate" style="height:100%">
+                                        <table style="height:100%">
+                                            <tr>
+                                                <td style="vertical-align: bottom; padding-bottom: 10px; width: 122px;">
+                                                    <!-- select all button -->
+                                                    <div class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate">
+                                                        <div class="slds-form-element slds-size--4-of-4">
+                                                            <button ng-disabled="selection.length == 0" class="slds-button slds-button--neutral" 
+                                                                    ng-click="ctrlSelectAll()" onClick="return false;">
+                                                                <svg aria-hidden="true" class="slds-icon icon__svg icon-utility-standard-objects slds-icon--x-small" style="fill: #54698d;">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#filter')}"></use>
+                                                                </svg>
+                                                                Select all
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align: bottom; padding-bottom: 10px;">
+                                                    <!-- edit x records button -->
+                                                    <div class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate" 
+                                                         ng-show="ctrlClickSelection.length > 1">
+                                                        <div class="slds-form-element slds-size--4-of-4">
+                                                            <button class="slds-button slds-button--neutral" ng-click="resetDialog()" onClick="showDialog(); return false;">
+                                                                <svg aria-hidden="true" class="slds-icon icon__svg icon-utility-standard-objects slds-icon--x-small" style="fill: #54698d;">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#standard_objects')}"></use>
+                                                                </svg>
+                                                                Edit {{ctrlClickSelection.length}} records
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </aside>
+                            </div>
+                            
+                            <!-- / PAGE HEADER DETAIL ROW -->
+                            
+                            <div class="slds-grid">
+                                <main class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--7-of-12 slds-scrollable--x" 
+                                      style="min-height: 423px;"
+                                      id="searchResultsContainer">
+                                    <apex:outputPanel id="tablePanel" style="min-height: 423px;">
+                                        <!-- Use the Apex model and controller to fetch server side data -->
+                                        <table class="slds-table slds-table--bordered"> <!-- slds-max-medium-table--stacked-horizontal -->
+                                            <thead style="background-color: #CFD7E6;">
+                                                <tr>
+                                                    <th scope="col">
+                                                        <label class="slds-checkbox" for="select-all">
+                                                            <input name="checkbox" type="checkbox" ng-click="toggleAll()" ng-model="isAllSelected" id="select-all" />
+                                                            <span class="slds-checkbox--faux"></span>
+                                                            <span class="slds-form-element__label slds-assistive-text">select all</span>
+                                                        </label>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <a href="#" ng-click="sortType = 'itemType'; sortReverse = !sortReverse">
+                                                            <span class="slds-truncate">Type</span>
+                                                            <span ng-show="sortType == 'itemType' && !sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                            <span ng-show="sortType == 'itemType' && sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <a href="#" ng-click="sortType = 'label'; sortReverse = !sortReverse">
+                                                            <span class="slds-truncate">Label</span>
+                                                            <span ng-show="sortType == 'label' && !sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                            <span ng-show="sortType == 'label' && sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <a href="#" ng-click="sortType = 'apiName'; sortReverse = !sortReverse">
+                                                            <span class="slds-truncate">API Name</span>
+                                                            <span ng-show="sortType == 'apiName' && !sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                            <span ng-show="sortType == 'apiName' && sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <a href="#" ng-click="sortType = 'itemStatus'; sortReverse = !sortReverse">
+                                                            <span class="slds-truncate">Status</span>
+                                                            <span ng-show="sortType == 'itemStatus' && !sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                            <span ng-show="sortType == 'itemStatus' && sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <span class="slds-truncate" style="color:#0070d2">Last Modified By</span>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <a href="#" ng-click="sortType = 'lastModifiedDateTime'; sortReverse = !sortReverse">
+                                                            <span class="slds-truncate">Last Modified Date</span>
+                                                            <span ng-show="sortType == 'lastModifiedDateTime' && !sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                            <span ng-show="sortType == 'lastModifiedDateTime' && sortReverse" >
+                                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                     '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}">
+                                                                    </use>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in visibleItems = (data | filter:search | orderBy:sortType:sortReverse | customFilter:filterType:showExistingMods | startFrom:currentPage*pageSize | limitTo:pageSize)" ng-class="{ 'slds-is-selected': item.selected }">
+                                                    <td data-label="Action" class="slds-cell-shrink" style="text-align:center;">
+                                                        <label class="slds-checkbox">
+                                                            <input type="checkbox" ng-click="toggleSelection(item)" ng-checked="item.selected" class="" id="div{{$index}}" name="selectedItems[]" />
+                                                            <span class="slds-checkbox--faux"></span>
+                                                            <span class="slds-form-element__label slds-assistive-text">select</span>
+                                                        </label>
+                                                    </td>
+                                                    <td data-label="Type">{{item.itemType}}</td>
+                                                    <td data-label="Label">
+                                                        {{item.label}}
+                                                    </td>
+                                                    <td data-label="API Name">
+                                                        {{item.apiName}}
+                                                        <svg aria-hidden="true" class="slds-button__icon slds-button__icon--left" ng-if="item.isDupe">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                             '/assets/icons/utility-sprite/svg/symbols.svg#copy')}">
+                                                                <title>Mod exists on CR</title>
+                                                            </use>
+                                                        </svg>
+                                                    </td>
+                                                    <td data-label="Status">{{item.itemStatus}}</td>
+                                                    <td data-label="Last Modified By">{{item.lastModifiedby}}</td>
+                                                    <td data-label="Last Modified Date">{{item.lastModifiedDateTime | date:'MM/dd/yyyy hh:mm a'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+                                </main>
+                                <!-- SELECTED ITEMS -->
+                                <aside class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--5-of-12 slds-has-flexi-truncate slds-scrollable--y" 
+                                       style="padding-left:5px; max-height: 412px; border: 1px solid #D8DDE6; box-shadow: -1px -1px 2px #888888; margin-left: 4px; padding:2px;"
+                                       Id="selectionContainer" >
+                                    <ul class="slds-list--vertical slds-has-cards" id="targetId">
+                                        <li class="slds-list__item" id="row-{{item.itemId}}" 
+                                            ng-repeat="item in selection" 
+                                            ng-class="{'collapsed': !item.expanded, 'expanded': item.expanded, 'flag': (item.description == null || item.description == ''), 'ctrlClick': item.ctrlClickSelected}" 
+                                            ng-click="ctrlClick($event, item)"
+                                            title="[{{item.itemType}}] {{item.apiName}}">
+                                            <div class="slds-tile slds-tile--board">
+                                                <p class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate">
+                                                    <span class="slds-truncate">
+                                                        <button class="slds-button slds-button--icon-x-small slds-shrink-none" type="button" 
+                                                                ng-click="toggleTree(item)" ng-show="!item.expanded">
+                                                            <svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                 '/assets/icons/utility-sprite/svg/symbols.svg#right')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">expand</span>
+                                                        </button>
+                                                        <button class="slds-button slds-button--icon-x-small slds-shrink-none" style="margin: 0px;" type="button" 
+                                                                ng-click="toggleTree(item)" ng-show="item.expanded">
+                                                            <svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                                 '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">collapse</span>
+                                                        </button>
+                                                        <span class="itemName">{{item.apiName}}</span>
+                                                    </span>
+                                                    <button class="slds-button slds-button--icon-x-small slds-shrink-none" ng-click="toggleSelection(item)">
+                                                        <svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                             '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                                                        </svg>
+                                                        <span class="slds-assistive-text">Remove</span>
+                                                    </button>
+                                                </p>
+                                                <div class="slds-tile__detail">
+                                                    <div class="slds-form-element  slds-is-required">
+                                                        <label class="slds-form-element__label">Description</label>
+                                                        <div class="slds-form-element__control">
+                                                            <input ng-model="item.description" name="input_{{item.itemId}}" class="slds-input" type="text" placeholder="" required="true" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate">
+                                                        <div class="slds-form-element slds-size--2-of-4">
+                                                            <label class="slds-form-element__label">Type of Modification</label>
+                                                            <div class="slds-form-element__control">
+                                                                <select id="selectType" class="slds-select" ng-model="item.modType">
+                                                                    <option>New</option>
+                                                                    <option>Modify</option>
+                                                                    <option>Delete</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-form-element slds-size--2-of-4">
+                                                            <label class="slds-form-element__label">Record Type</label>
+                                                            <div class="slds-form-element__control">
+                                                                <select id="selectType" class="slds-select" ng-model="item.recordTypeName">
+                                                                    <option>Simple</option>
+                                                                    <option>Complex</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--{{item|json}}-->
+                                        </li>
+                                    </ul>
+                                </aside>
+                                <!-- / SELECTED ITEMS -->
+                            </div>
+                            <!-- GRID FOR PAGINATION/BUTTONS & ITEMS SELECTED TEXT -->
+                            <div class="slds-grid">
+                                <!-- PAGINATION & SAVE BUTTONS -->
+                                <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--7-of-12 slds-scrollable--x">
+                                    <div style="padding-top:5px;">
+                                        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" onClick="return false;" class="slds-button slds-button--neutral">
+                                            Previous
+                                        </button>
+                                        {{currentPage+1}}/{{numberOfPages}}
+                                        
+                                        <!--{{filteredData.length}}-->
+                                        <button ng-disabled="currentPage >= (numberOfPages - 1)" ng-click="currentPage=currentPage+1" onClick="return false;" class="slds-button slds-button--neutral">
+                                            Next
+                                        </button>
+                                    </div>
+                                    <div style="">
+                                        <!-- SAVE BUTTON -->
+                                        <button ng-disabled="selection.length == 0 || isSaving" class="slds-button slds-button--brand slds-m-top--medium" type="button" ng-click="save();">
+                                            Save to IS Mods
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- / PAGINATION BUTTONS -->
+                                <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--5-of-12 slds-has-flexi-truncate slds-scrollable--y"
+                                     style="padding-left:5px;">
+                                    <div class="slds-form-element__label">
+                                        {{selection.length}} records selected
+                                    </div>
+                                </div>
+                                <!-- ITEMS SELECTED TEXT -->
+                                <div>
+                                    
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            <!-- MODAL DIALOG -->
+                            <div id="modalDialog" style="display:none;">
+                                <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <div class="slds-modal__header">
+                                            <h2 class="slds-text-heading--medium">Bulk Edit</h2>
+                                            <button class="slds-button slds-button--icon-inverse slds-modal__close" onClick="closeDialog(); return false;">
+                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                                                    <use xlink:href="{!URLFOR($Resource.SLDS_11,
+                                                                     '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+                                                </svg>
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                        </div>
+                                        <div class="slds-modal__content">
+                                            <div>
+                                                <div class="slds-tile__detail">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label">Description</label>
+                                                        <div class="slds-form-element__control">
+                                                            <input ng-model="massEditDescription" name="input_massEditDescription" class="slds-input" type="text" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid--align-spread slds-tile__title slds-truncate">
+                                                        <div class="slds-form-element slds-size--2-of-4">
+                                                            <label class="slds-form-element__label">Type of Modification</label>
+                                                            <div class="slds-form-element__control">
+                                                                <select id="selectType" class="slds-select" ng-model="massEditType">
+                                                                    <option>New</option>
+                                                                    <option>Modify</option>
+                                                                    <option>Delete</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-form-element slds-size--2-of-4">
+                                                            <label class="slds-form-element__label">Record Type</label>
+                                                            <div class="slds-form-element__control">
+                                                                <select id="selectType" class="slds-select" ng-model="massEditRecordType">
+                                                                    <option>Simple</option>
+                                                                    <option>Complex</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-modal__footer">
+                                            <div class="slds-x-small-buttons--horizontal">
+                                                <button class="slds-button slds-button--neutral" onClick="closeDialog(); return false;">Cancel</button>
+                                                <button class="slds-button slds-button--neutral slds-button--brand" ng-click="massUpdate()" onClick="return false;">Apply changes to {{ctrlClickSelection.length}} records</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-backdrop slds-backdrop--open"></div>
+                            </div>
+                            <!-- / MODAL DIALOG -->
+                            
+                            
+                            
+                            
+                        </div>
+                    </apex:form>
+                    
+                </div>
+                <!-- / PRIMARY CONTENT WRAPPER -->
+                
+                <!-- FOOTER -->
+                <!-- / FOOTER -->
+                
+            </div>
+            <!-- / REQUIRED SLDS WRAPPER -->    
+            
+        </body>
+        
+        <script>
+        function showDialog() {
+            j$('#modalDialog').css('display', 'inline');
+        }
+        
+        function closeDialog() {
+            j$('#modalDialog').css('display', 'none');
+        }
+        </script>
+        
+        <style>
+            .collapsed {
+            height:36px;
+            overflow:hidden;
+            }
+            
+            .expanded {
+            background-color:#F0F8FC !important;
+            }
+            
+            .ctrlClick {
+            background-color:#EDEDFF !important;
+            }
+            .ctrlClick:hover {
+            background-color:#D5D5FA !important;
+            }
+            
+            
+            .itemName { position: relative; }
+            
+            /** missing data asterisk **/
+            .flag .itemName::before {
+            content: '*';
+            color: #c23934;
+            position: absolute;
+            left: -6px;
+            }
+            
+            /** highlight when ctrl-click items are massUpdated **/
+            @-webkit-keyframes greenPurple {  
+            0% { background-color: #B3FAA6; }
+            100% { background-color: #EBEBFA; }
+            }
+            
+            .blink {
+            background-color: #EBEBFA;
+            -webkit-animation-name: greenPurple;
+            -webkit-animation-iteration-count: 1;  
+            -webkit-animation-duration: 0.8s; 
+            transition: 0.8s background-color linear;
+            }
+            
+            /** modal background **/
+            .slds-modal.slds-fade-in-open {
+            background-color: rgba(128, 128, 128, 0.74);
+            }
+        </style>
+        
+    </html>
+</apex:page>

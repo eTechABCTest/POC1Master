@@ -1,0 +1,30 @@
+<apex:page standardController="Reference_Perk__c" extensions="ReferencePerkExtension" id="page" tabStyle="Reference_Perk__c" action="{!redirect}" >
+    <c:IncludeJQuery />
+    
+    <apex:form id="form" >
+        <apex:inputHidden value="{!Reference_Perk__c.Applicable_Reference_Module__c}" id="referenceModuleInput"/>
+        <apex:sectionHeader title="Reference Perk Edit" subtitle="{!IF(referencePerk.Name != null, referencePerk.Name, 'New Reference Perk')}" />
+        <apex:pageBlock id="pb" mode="edit" title="Reference Perk Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value=" Save " html-ng-click="customSave();" action="{!save}" />
+                <apex:commandButton value=" Cancel " action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information">
+                <apex:inputField value="{!Reference_Perk__c.Name}" required="true" />
+                <apex:inputField value="{!Reference_Perk__c.Description__c}" style="width:280px; height:34px;" />
+            </apex:pageBlockSection>
+            <!-- REFERENCE MODULE -->
+            <c:ReferenceModulePicklist fieldLabel="Applicable Reference Module" hiddenInputId="referenceModuleInput" appName="app" ctrlName="ctrl" />
+            <!-- / REFERENCE MODULE -->
+            <apex:pageBlockSection title="Key Dates">
+                <apex:inputField value="{!Reference_Perk__c.Available_Date__c}" required="true" />
+                <apex:inputField value="{!Reference_Perk__c.Event_Date__c}" />
+                <apex:inputField value="{!Reference_Perk__c.Expiration_Date__c}" required="true" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="System Information">
+                <apex:outputField value="{!Reference_Perk__c.OwnerId}" />
+                <apex:outputField value="{!Reference_Perk__c.RecordTypeId}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

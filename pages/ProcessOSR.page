@@ -1,0 +1,59 @@
+<!-- 
+ * 	Purpose			:	This page is to process tge OSR record based on the record type.
+ * 
+ * 	Created By		:	Bhavi Sharma
+ * 
+ *	Created Date	:	12/05/2014 
+ * 
+ * 	Revision Logs	:	V_1.0 - Created 
+ -->
+<apex:page standardController="OSR__c" extensions="ProcessOSRController">
+    
+    <!-- Background Processing -->
+	<c:BlockUI />
+    
+    <!-- form -->
+	<apex:form >
+		
+        <apex:pageMessage summary="Status" detail="{!userMessage}" severity="INFO" strength="5" id="userMsg"> </apex:pageMessage>
+        
+		<!-- Page Messages -->
+	    <apex:pageMessages escape="false" id="validationMsg"/>
+        <apex:outputLink value="/{!OSR__c.Id}">Click here</apex:outputLink>&nbsp;to go to previous page.
+	    
+	    <!--Block UI Action Status-->
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        
+	    <!-- Action function -->
+        <apex:actionFunction name="jsInIt" action="{!inIt}" reRender="validationMsg,userMsg,oPRedirect" />
+	    <apex:actionFunction name="jsProcessCardInComdata" action="{!processCardInComdata}" reRender="validationMsg,userMsg,oPRedirect"/>
+	    
+	    <!-- Output Panel -->
+	    <apex:outputPanel id="oPRedirect">
+	    	<script>
+                //Process Card in Comdata
+            	if('{!IsError}' ==  'false' && '{!makeCallout}' == 'true' && '{!IsRequestCompleted}' == 'false') {
+		    		
+                    jsProcessCardInComdata();
+                } else if('{!IsError}' ==  'false' && '{!makeCallout}' == 'false' && '{!IsRequestCompleted}' == 'true') {
+		    		
+                    //Redirect page
+                    console.log('redirecting');
+                    unBlockMe();
+                    location.href = '{!nextPageURL}';
+                } else if('{!IsError}' ==  'true') {
+                	
+                    unBlockMe();
+                }
+	    	</script>
+	    </apex:outputPanel>
+	</apex:form>
+	
+	<script>
+		jQuery(document).ready(function($) {
+            
+            blockMe();
+            jsInIt();
+        });
+	</script>
+</apex:page>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Letterhead xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <backgroundColor>#CCCCCC</backgroundColor>
+    <bodyColor>#FFFFFF</bodyColor>
+    <bottomLine>
+        <color>#CCCCCC</color>
+        <height>5</height>
+    </bottomLine>
+    <description>Used for internal PIC notifications</description>
+    <footer>
+        <backgroundColor>#FFFFFF</backgroundColor>
+        <height>100</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <logo>Payment_Integrity_Compass/PIC_CHI_footer_png1.png</logo>
+        <verticalAlignment>Top</verticalAlignment>
+    </footer>
+    <header>
+        <backgroundColor>#FFFFFF</backgroundColor>
+        <height>100</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <logo>Payment_Integrity_Compass/Advisory_Board_PIC_Logo1.png</logo>
+        <verticalAlignment>Top</verticalAlignment>
+    </header>
+    <middleLine>
+        <color>#CCCCCC</color>
+        <height>5</height>
+    </middleLine>
+    <name>PIC Internal Notifications</name>
+    <topLine>
+        <color>#CCCCCC</color>
+        <height>5</height>
+    </topLine>
+</Letterhead>

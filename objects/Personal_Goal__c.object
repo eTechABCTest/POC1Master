@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <comment>Overridden for CR-20160115-9542</comment>
+        <content>ModifyPersonalGoal</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>PersonalGoalNewOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Personal Goals represent the individual targets that each Payee must achieve. Some targets are simply a reframing of another target. For example, the “Career Committee Grade” Personal Goal may simply represent a first half/second half interpretation of the normal “Incentive” Personal Goal (which is itself quarterly).</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Active_Proposal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Active Proposed Goal</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Personal_Goal__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Proposed Goal</value>
+            </filterItems>
+            <filterItems>
+                <field>Personal_Goal__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Personal Goals (Active Proposal)</relationshipLabel>
+        <relationshipName>Personal_Goals2</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <label>Additive Adjustment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Autocreated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Autocreated</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Baseline_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Baseline Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Title_Txt__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Title</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Title__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This field is created for Create Personal Goals from standard goal VF page.</description>
+        <externalId>false</externalId>
+        <label>Business Title (Only for Internal Use)</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Value_Type__c.Category__c</field>
+                <operation>equals</operation>
+                <value>Business Title</value>
+            </filterItems>
+            <filterItems>
+                <field>Value_Type__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Value_Type__c</referenceTo>
+        <relationshipLabel>Personal Goals (Business Title (Only for Internal Use))</relationshipLabel>
+        <relationshipName>Personal_Goals1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Condition_Handling__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Give transaction credit to: 
+•	Conditions OR Ownership: Owners, plus any time conditions are met 
+•	Conditions only = Conditions are met, regardless of owner 
+•	Conditions AND Ownership: Owner, but only if conditions are met</inlineHelpText>
+        <label>Condition Handling</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Conditions OR Ownership</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Conditions only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Conditions AND Ownership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>PG{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Editable__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Editable</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>GTD_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>GTD Comments</label>
+        <length>60</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GT_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>GT Comments</label>
+        <length>60</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Goal_ID_Seed__c</fullName>
+        <displayFormat>G{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Goal ID Seed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Goal_ID_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	
+	RecordType.DeveloperName == &apos;Personal_Goal&apos;,  
+	
+	Goal_ID_Seed__c,
+	
+	IF( 
+		RecordType.DeveloperName == &apos;Proposal&apos; , 
+		Primary_Goal__r.Goal_ID_Seed__c+ &apos;-&apos; + 
+		IF(
+			Status__c == &apos;Void&apos;,
+                        &apos;I&apos;,
+                        IF(Active__c, 
+			  &apos;A&apos;, 
+			  &apos;I&apos;
+                        )
+		) 
+		+ 
+		&apos;-&apos; 
+		+ 
+		IF(
+			LEN(TEXT(Proposal_Counter__c)) == 1,
+			&apos;0&apos; + TEXT(Proposal_Counter__c),
+			TEXT(Proposal_Counter__c)
+		),
+		&apos;&apos;
+	)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Goal ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Goal_Type_Business_Title__c</fullName>
+        <externalId>false</externalId>
+        <label>Goal Type Business Title %</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Goal_Type__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Type</label>
+        <referenceTo>Goal_Type__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Personal_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Parent Goal Snapshot</label>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Child Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payee__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Payee</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.Employee_User_Record__c</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <filterItems>
+                <field>Contact.Employee_User_Record__r.IsActive</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Percent__c</fullName>
+        <externalId>false</externalId>
+        <label>Percent</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Period_End__c</fullName>
+        <externalId>false</externalId>
+        <label>Period End</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period_Start__c</fullName>
+        <externalId>false</externalId>
+        <label>Period Start</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Period</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Personal_Plan__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Personal Plan</label>
+        <referenceTo>Personal_Plan__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Snapshot</label>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Proposals</relationshipLabel>
+        <relationshipName>Personal_Goals1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Counter__c</fullName>
+        <externalId>false</externalId>
+        <label>Proposal Counter</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rate_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Rate Template</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Rate_Template__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Rate_Template__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Role_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Title %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Standard_Goal_Detail__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Template Detail</label>
+        <referenceTo>Standard_Goal_Detail__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Standard_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Goal Template</label>
+        <referenceTo>Standard_Goal__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>* Available: Never assigned to a Plan
+
+* Submitted: Assignment to a Plan requested
+
+* Pending: Assigned to a Plan, pending Payee approval
+
+* Payee Approved: Accepted by Payee
+
+* Former: Replaced by a later proposal</inlineHelpText>
+        <label>Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Submission_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Submission Status</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Supersedes__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Default Filter shows Personal Goals with the following:
+- Record Type=Proposed Goal, 
+- Contact=&lt;current goal&apos;s contact&gt;
+- Status=&quot;Pending&quot; or &quot;Payee Approved&quot;</inlineHelpText>
+        <label>Supersedes</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Personal_Goal__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Proposed Goal</value>
+            </filterItems>
+            <filterItems>
+                <field>Personal_Goal__c.Payee__c</field>
+                <operation>equals</operation>
+                <valueField>$Source.Payee__c</valueField>
+            </filterItems>
+            <filterItems>
+                <field>Personal_Goal__c.Standard_Goal_Detail__c</field>
+                <operation>notEqual</operation>
+                <valueField>$Source.Standard_Goal_Detail__c</valueField>
+            </filterItems>
+            <filterItems>
+                <field>Personal_Goal__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Pending, Payee Approved</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Personal Goals (Supersedes)</relationshipLabel>
+        <relationshipName>Personal_Goals3</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Tenure_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <label>Tenure %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Tenure__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Tenure</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Value_Type_Quantity__c</fullName>
+        <description>Created for CR-20160307-9680</description>
+        <externalId>false</externalId>
+        <label>Value Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Amount</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Count</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Percent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Value_Type__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This field is created for Create Personal Goals from standard goal VF page.</description>
+        <externalId>false</externalId>
+        <label>Value Type (Only for Internal Use)</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Value_Type__c.Category__c</field>
+                <operation>equals</operation>
+                <value>Incentive Role</value>
+            </filterItems>
+            <filterItems>
+                <field>Value_Type__c.Active__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Value_Type__c</referenceTo>
+        <relationshipLabel>Personal Goals</relationshipLabel>
+        <relationshipName>Personal_Goals</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	AND(NOT(ISNULL(Amount__c)),Amount__c &gt; 0),
+
+	    &quot;$&quot; &amp; 
+            IF(Amount__c &gt;= 1000000,
+	       TEXT(FLOOR(Amount__c / 1000000)) &amp; &quot;,&quot;,
+	       &quot;&quot;) &amp;
+	    IF(Amount__c &gt;= 1000,
+               RIGHT(TEXT(FLOOR(Amount__c / 1000)), 3) &amp; &quot;,&quot;,
+               &quot;&quot;) &amp;
+            RIGHT(TEXT(FLOOR(Amount__c)), 3),
+
+	IF(
+		AND(NOT(ISNULL(Count__c)),Count__c  &gt; 0),
+		TEXT(Count__c),
+		IF(
+			AND(NOT(ISNULL(Percent__c)),Percent__c &gt; 0),
+			TEXT(Percent__c * 100) + &quot;%&quot;,
+			&apos;&apos;
+		) 
+	) 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Value</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Weighting__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Weighting</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <label>Personal Goal</label>
+    <listViews>
+        <fullName>Active_Personal_Goals</fullName>
+        <columns>NAME</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>Active__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Active__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Active Personal Goals</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>Payee__c</columns>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Status__c</columns>
+        <columns>Active__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Current_Personal_Goals</fullName>
+        <columns>NAME</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>Goal_Type__c</columns>
+        <columns>Payee__c</columns>
+        <columns>Status__c</columns>
+        <columns>RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Period_Start__c</field>
+            <operation>lessOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Period_End__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Current Personal Goals</label>
+    </listViews>
+    <listViews>
+        <fullName>Future_Personal_Goals</fullName>
+        <columns>NAME</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Period_Start__c</field>
+            <operation>greaterThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Period_End__c</field>
+            <operation>greaterThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Future Personal Goals</label>
+    </listViews>
+    <listViews>
+        <fullName>Proposals_Available</fullName>
+        <columns>NAME</columns>
+        <columns>Primary_Goal__c</columns>
+        <columns>Standard_Goal__c</columns>
+        <columns>Active__c</columns>
+        <columns>Payee__c</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>Value__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Personal_Goal__c.Proposal</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Available</value>
+        </filters>
+        <label>Proposals - Available</label>
+    </listViews>
+    <listViews>
+        <fullName>Proposals_Pending</fullName>
+        <columns>NAME</columns>
+        <columns>Personal_Plan__c</columns>
+        <columns>Primary_Goal__c</columns>
+        <columns>Standard_Goal__c</columns>
+        <columns>Active__c</columns>
+        <columns>Payee__c</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>Value__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Pending</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Personal_Goal__c.Proposal</value>
+        </filters>
+        <label>Proposals - Pending</label>
+    </listViews>
+    <listViews>
+        <fullName>Proposals_Submitted</fullName>
+        <columns>NAME</columns>
+        <columns>Primary_Goal__c</columns>
+        <columns>Standard_Goal__c</columns>
+        <columns>Active__c</columns>
+        <columns>Payee__c</columns>
+        <columns>Period_Start__c</columns>
+        <columns>Period_End__c</columns>
+        <columns>Value__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Submitted</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Personal_Goal__c.Proposal</value>
+        </filters>
+        <label>Proposals - Submitted</label>
+    </listViews>
+    <nameField>
+        <label>Personal Goal Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Personal Goals</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Personal_Goal</fullName>
+        <active>true</active>
+        <description>Will be connected to exactly one Proposed Goal</description>
+        <label>Goal Snapshot</label>
+        <picklistValues>
+            <picklist>Condition_Handling__c</picklist>
+            <values>
+                <fullName>Conditions AND Ownership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conditions OR Ownership</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Conditions only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Proposal</fullName>
+        <active>true</active>
+        <description>Every record starts here</description>
+        <label>Proposed Goal</label>
+        <picklistValues>
+            <picklist>Condition_Handling__c</picklist>
+            <values>
+                <fullName>Conditions AND Ownership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conditions OR Ownership</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Conditions only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <listViewButtons>Create_Plans</listViewButtons>
+        <listViewButtons>Submit_List_View</listViewButtons>
+        <listViewButtons>Modify_Goals</listViewButtons>
+        <lookupDialogsAdditionalFields>Payee__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Standard_Goal__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <searchResultsCustomButtons>Modify_Goals</searchResultsCustomButtons>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>VR_Appropriate_Dates</fullName>
+        <active>true</active>
+        <description>Period End should be greater then Period Start.</description>
+        <errorConditionFormula>Period_Start__c &gt; Period_End__c</errorConditionFormula>
+        <errorDisplayField>Period_Start__c</errorDisplayField>
+        <errorMessage>The Start date cannot be later than the End date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_One_Goal_At_A_Time</fullName>
+        <active>true</active>
+        <description>Exactly one of the following may be populated: Goal Amount, Goal Count, Goal Percent</description>
+        <errorConditionFormula>IF(
+	NOT(ISBLANK(Amount__c)),
+	1, 0
+)
++
+IF(
+	NOT(ISBLANK(Count__c)),
+	1, 0
+)
++
+IF(
+	NOT(ISBLANK(Percent__c)),
+	1, 0
+) != 1</errorConditionFormula>
+        <errorDisplayField>Amount__c</errorDisplayField>
+        <errorMessage>You must enter only one of the following: Amount, Percent, or Count</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Create_Plans</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Create Plans</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/apex/AssignNewGoalsToPlans</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Modify_Goal</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Modify Goal</masterLabel>
+        <openType>sidebar</openType>
+        <page>ModifyPersonalGoal</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Modify_Goals</fullName>
+        <availability>online</availability>
+        <description>Created for CR-20160115-9542</description>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Modify Goals</masterLabel>
+        <openType>sidebar</openType>
+        <page>ModifyGoals</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>New</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var currentPathName = window.location.pathname; 
+var redirectPageURL; 
+
+if(&quot;{!Personal_Goal__c.Id}&quot; != &apos;&apos;)
+	redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Personal_Goal__c!!Name--Will Auto-Populates!!Personal_Plan__c--{!Personal_Goal__c.Personal_PlanId__c}!!Standard_Goal__c--{!Personal_Goal__c.Standard_GoalId__c}!!Standard_Goal_Detail__c--{!Personal_Goal__c.Standard_Goal_DetailId__c}!!Parent_Personal_Goal__c--{!Personal_Goal__c.Id}!!Goal_Type__c--{!Personal_Goal__c.Goal_TypeId__c}!!returnURL--{!Personal_Goal__c.Id}&quot;;
+
+else if(&quot;{!Personal_Plan__c.Id}&quot; != &apos;&apos;) 
+	redirectPageURL = &quot;/apex/RedirectWithVariables?redirect=Object--Personal_Goal__c!!Name--Will Auto-Populates!!Personal_Plan__c--{!Personal_Plan__c.Id}!!returnURL--{!Personal_Goal__c.Id}&quot; ;
+
+window.parent.location.href = redirectPageURL;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Submit_Detail</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Submit</masterLabel>
+        <openType>replace</openType>
+        <page>DetailSetSubmittedStatus</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Submit_List_View</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Submit</masterLabel>
+        <openType>sidebar</openType>
+        <page>ListViewSetSubmittedStatus</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Advisory_Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of Event Management so we can include Venue Payments as a related list on the Advisory Event.</description>
+        <externalId>false</externalId>
+        <label>Advisory Event</label>
+        <referenceTo>Advisory_Event__c</referenceTo>
+        <relationshipLabel>Venue Payments</relationshipLabel>
+        <relationshipName>Venue_Payments</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Amount</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Authorized_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Authorized By</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Venue Payments</relationshipLabel>
+        <relationshipName>Venue_Payments</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Due__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Date Due</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Paid__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Date Paid</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Venue__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Venue</label>
+        <referenceTo>Venue__c</referenceTo>
+        <relationshipLabel>Venue Payments</relationshipLabel>
+        <relationshipName>Venue_Payments</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Form_of_Payment__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Form of Payment</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Wire</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Check</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Paid_To__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Paid To</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Venue Payment</label>
+    <nameField>
+        <displayFormat>VP-{0}</displayFormat>
+        <label>Venue Payment Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Venue Payments</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Form_of_Payment</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND (
+    ISBLANK( TEXT(Form_of_Payment__c) ),
+    NOT( ISBLANK( Date_Paid__c ) )
+)</errorConditionFormula>
+        <errorDisplayField>Form_of_Payment__c</errorDisplayField>
+        <errorMessage>You must indicate the Form of Payment when Date Paid is populated.</errorMessage>
+    </validationRules>
+</CustomObject>

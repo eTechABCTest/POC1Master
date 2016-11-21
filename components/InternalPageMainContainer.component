@@ -1,0 +1,127 @@
+<apex:component layout="none" controller="IntranetInternalPageController">
+    
+    <div class="container" id="internal-page">
+        <div class="row">
+            
+            <!-- Sidebar Bookmark Menu -->
+            <div class="col-xl-2 col-md-3 hidden-sm hidden-xs">
+                <nav id="ip-sidebar" class="bs-docs-sidebar chrome-left-fix">
+                    
+                    <ul class="bookmarks nav">
+                        <li class=""><a href="#{!Container.ReferenceNumber}">{!Container.DisplayName}</a></li>
+                        
+                        <apex:repeat value="{!ContainerBookmarks.SubContainers}" var="groupLink">
+                            <li class=""><a href="#{!groupLink.ReferenceNumber}">{!groupLink.DisplayName}</a>
+                                <apex:outputPanel rendered="{!groupLink.SubContainers.size > 0}" layout="none">
+                                    <ul class="bookmarks nav">
+                                        <apex:repeat value="{!groupLink.SubContainers}" var="sectionLink">
+                                            <li class=""><a href="#{!sectionLink.ReferenceNumber}">{!sectionLink.DisplayName}</a></li>
+                                        </apex:repeat>
+                                    </ul>
+                                </apex:outputPanel>
+                            </li>
+                        </apex:repeat>
+                    </ul>
+                </nav>
+            </div>     
+            
+            <!-- Main Content -->
+            <div id="ip-content" class="col-xl-10 col-md-9 col-sm-12">
+                
+                <div class="page-content">
+                    
+                    <h1 class="ip-header" id="{!Container.ReferenceNumber}">{!Container.DisplayName}</h1>
+                    
+                    <!-- display if the CONTAINER has related content -->
+                    <apex:outputPanel rendered="{!Container.RelatedContent.size > 0}" layout="none">
+                        <div class="block {!IF(Container.RelatedContent.size > 0, 'has-action', '')}">
+                            
+                            <apex:repeat value="{!Container.RelatedContent}" var="item">
+                                <div class="group-item">
+                                    <h3 class="ip-subtitle">{!item.itemSubTitle}</h3>
+                                    <apex:outputPanel layout="none" rendered="{!item.ItemAbstract != ''}">
+                                        <div class="item-abstract"><apex:outputText value="{!item.ItemAbstract}" escape="false"/></div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!item.ItemFullText != ''}">
+                                        <div class="item-full-text"><apex:outputText value="{!item.ItemFullText}" escape="false"/></div>
+                                    </apex:outputPanel>
+                                </div>
+                            </apex:repeat>
+                            
+                            <c:InternalPageActionMenu ContainerActions="{!ContainerActions}" />
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                
+                <!-- Content Section -->
+                <apex:variable var="PageSectionCount" value="{!0}" />
+                <apex:variable var="toggleCount" value="{!0}" /> 
+                <apex:repeat value="{!Container.SubContainers}" var="group">
+                    <div id="{!group.ReferenceNumber}" class="block {!IF(Container.RelatedContent.size == 0, 'has-action', '')}">
+                        
+                        <apex:outputPanel rendered="{!PageSectionCount == 0 && Container.RelatedContent.Size < 1}" layout="none">
+                            <c:InternalPageActionMenu ContainerActions="{!ContainerActions}" />
+                        </apex:outputPanel>
+                        
+                        
+                        <h2 class="ip-group-heading">{!group.DisplayName}</h2>
+                        
+                        <apex:repeat value="{!group.RelatedContent}" var="item">
+                            <div class="group-item">
+                                <h3 class="ip-subtitle">{!item.itemSubTitle}</h3>
+                                <apex:outputPanel layout="none" rendered="{!item.ItemAbstract != ''}">
+                                    <div class="item-abstract"><apex:outputText value="{!item.ItemAbstract}" escape="false"/></div>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!item.ItemFullText != ''}">
+                                    <div class="item-full-text"><apex:outputText value="{!item.ItemFullText}" escape="false"/></div>
+                                </apex:outputPanel>
+                            </div>
+                        </apex:repeat>
+                        
+                        
+                        <!--- Section Container -->
+                        <apex:outputPanel rendered="{!group.SubContainers.size > 0}" layout="none">
+                            <div class="section-wrapper">
+                                
+                                <apex:repeat value="{!group.SubContainers}" var="section"> 
+                                    
+                                    <div class="section" id="{!section.ReferenceNumber}" >
+                                                                                
+                                        <h3 class="ip-section-title">
+                                            <apex:outputPanel layout="none" rendered="{!section.RelatedContent.size > 0}"><a href="#internal-group-{!toggleCount}" data-toggle="collapse">{!section.displayName}<span class="toggle-icon"><i class="fa fa-angle-right"></i></span></a></apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!section.RelatedContent.size < 1}">{!section.displayName}</apex:outputPanel>
+                                        </h3>
+                                         
+                                        <div id="internal-group-{!toggleCount}" class="internal-group-wrapper collapse">
+
+                                            <apex:repeat value="{!section.RelatedContent}" var="item">
+                                                <div class="group-item">
+                                                    <h3 class="ip-section-subtitle">{!item.itemSubTitle}</h3>
+                                                    <apex:outputPanel layout="none" rendered="{!item.ItemAbstract != ''}">
+                                                        <div class="item-abstract"><apex:outputText value="{!item.ItemAbstract}" escape="false"/></div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!item.ItemFullText != ''}">
+                                                        <div class="item-full-text"><apex:outputText value="{!item.ItemFullText}" escape="false"/></div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:repeat>
+                                            
+                                        </div>
+                                        
+                                        <hr />
+                                    </div>
+                                    
+                                    <apex:variable var="toggleCount" value="{!toggleCount + 1}" /> 
+                                </apex:repeat>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                    <apex:variable var="PageSectionCount" value="{!PageSectionCount + 1}" />    
+                </apex:repeat>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+</apex:component>

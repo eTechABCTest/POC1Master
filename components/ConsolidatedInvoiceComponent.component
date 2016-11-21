@@ -1,0 +1,398 @@
+<apex:component controller="ffps_advisory.CInvoiceController" access="global" >
+<apex:attribute name="invoiceId" required="required" description="The consolidated sales invoice Id." type="Id" assignTo="{!theInvoiceId}" access="global" /> 
+<apex:attribute name="htmlpreview" required="required" description="Set to true if this is for HTML preview" type="Boolean" assignTo="{!isHTMLPreview}" access="global" />     
+    <!-- Header -->    
+    <apex:outputPanel id="panelHeaderFooter"
+        styleClass="header_center"
+        layout="block">
+        <table style="width:100%;  font-family: sans-serif; padding-top:20px">
+            <tr style="height:0.625in">
+                 <td style="width:1px;padding-right:10px;"><apex:outputPanel rendered="{!if(m_companyLogoUrl!=null,true,false)}"> <apex:image url="{!m_companyLogoUrl}" style="height:0.625in;"/></apex:outputPanel></td>
+                 <td style="vertical-align:middle"><div style="float:right;font-size:14pt;text-align:center;background-color:#C4C6C8;height:35px; width:100px;margin-right:25px"><div style="position :relative; top:15%"><b>{!$Label.ffps_advisory__PrintConInvInvoice}</b></div></div></td>
+            </tr>
+        </table>
+        <div style="height:2px; border-top:1px dotted; margin-bottom :2px;"></div>
+    </apex:outputPanel>
+    
+    <!-- first page footer -->
+    <apex:outputPanel styleClass="footer_center"
+        layout="block" rendered="{!if(isHTMLPreview=false,true,false)}">
+        <table style="width:100%; font-family:sans-serif; font-size:10pt;">
+            <tr>
+                <td style="text-align:left;vertical-align:top;text-transform: uppercase; padding-left:25pt;">
+                    {!m_submittedToSalutation} 
+                    {!m_submittedToName}<br/>
+                    {!m_ibsAccAccountFormalName}<br/>
+                    {!m_ibsAccPrimaryAddressLine1}<br/>
+                    {!m_ibsAccPrimaryCity}<apex:outputText rendered="{!(!ISNULL(m_ibsAccStateProvince))}" value=","/>
+                    {!m_ibsAccStateProvince}
+                    {!m_ibsAccPostalCode}
+                    
+                </td>
+                <td style="text-align:left;vertical-align:top;width:2.75in; background-color : #C4C6C8;  font-size:11pt">
+                    <div style="padding-left:5px">
+                        <apex:outputText escape="false" value="{!$Label.ffps_advisory__PrintConInvContactForInvQuery}">
+                            <apex:param value="{!m_ibsAccCreditManagerName}"/>
+                            <apex:param value="{!m_ibsAccCreditManagerPhone}"/>
+                            <apex:param value="{!m_ibsAccCreditManagerEmail}"/>
+                        </apex:outputText>
+                    </div>
+                </td>
+            </tr>
+        </table><br/>
+        <table style="width:100%; font-family:sans-serif; ">
+            <tr>
+                <td width="70%" style="text-align:left; padding-left:35pt;font-size:11pt">
+                    <div> {!$Label.ffps_advisory__AdvisoryBoardCompanyName}  &nbsp;  • &nbsp;  {!$Label.ffps_advisory__PrintConInvTaxId} {!m_companyTaxId} </div>
+                </td>
+                <td style="text-align:center;font-size:10pt">
+                    &nbsp;  Page <span class="pageNumber"/> of <span class="pageCount"/>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>  
+    
+    <!-- all pages footer -->
+     <apex:outputPanel styleClass="footer_center"  layout="block" rendered="{!if(isHTMLPreview=false,true,false)}">
+        <table style="width:98%; font-family:sans-serif;  background-color : #C4C6C8;  font-size:10pt;" border="1">
+                <tr>
+                   <td style="text-align:left;vertical-align:top;width:65%;font-size:11pt">
+                       <div style="padding-left:5px">
+                           <apex:outputText escape="false" value="{!$Label.ffps_advisory__ContactForInvQuery}">
+                                <apex:param value="{!m_ibsAccCreditManagerName}"/>
+                                <apex:param value="{!m_ibsAccCreditManagerPhone}"/>
+                                <apex:param value="{!m_ibsAccCreditManagerEmail}"/>
+                            </apex:outputText>
+                        </div>
+                   </td>
+                   <td style="text-align:left;vertical-align:middle;font-size:10pt;">
+                        {!m_ibsAccAccountFormalName}<br/>
+                        Invoice#  {! m_invoiceName}
+                   </td>
+                </tr>
+            </table><br/>
+            <table style="width:100%; font-family:sans-serif; ">
+                <tr style="text-align:center" colspan="2">
+                    <td width="70%" style="text-align:left; padding-left:35pt;font-size:11pt">
+                        <div> {!$Label.ffps_advisory__AdvisoryBoardCompanyName}  &nbsp;  • &nbsp;  {!$Label.ffps_advisory__PrintConInvTaxId} {!m_companyTaxId} </div>
+                    </td>
+                    <td style="text-align:center;font-size:10pt">
+                        &nbsp;  Page <span class="pageNumber"/> of <span class="pageCount"/>
+                    </td>
+                </tr>
+        </table>
+     </apex:outputPanel>
+     
+     <!-- content starts here -->
+    <div class="content" style="font-family: sans-serif;">
+        <div style="height:5px;"/>
+        <table style="width:100%; font-family:sans-serif; font-size:11pt;" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="text-align:left;vertical-align:middle;width:3.50in;padding-left:25pt">
+                    {!m_submittedToSalutation}
+                    {!m_submittedToName}<br/>
+                    {!m_submittedToTitle}<br/>
+                    {!m_ibsAccAccountFormalName}<br/>
+                    {!m_ibsAccPrimaryCity} <apex:outputText rendered="{!(!ISNULL(m_ibsAccStateProvince))}" value=","/>
+                    {!m_ibsAccStateProvince}
+                    <br/>
+                </td>
+                <td style="text-align:right;vertical-align:top;padding-right:40pt">
+                    <table style="float:right;"> 
+                        <tr>
+                            <td style="color:#C0504D;width:1.50in">{!$Label.ffps_advisory__PrintConInvInvoiceDate}</td>
+                            <td class="invoiceDetailValue" style="text-align:left"><apex:outputText value="{!if(m_invoiceDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                     <apex:param value="{!m_invoiceDate}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color:#C0504D;">{!$Label.ffps_advisory__PrintConInvDueDate}</td>
+                            <td class="invoiceDetailValue" style="text-align:left"><apex:outputText value="{!if(m_dueDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                     <apex:param value="{!m_dueDate}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color:#C0504D;">{!$Label.ffps_advisory__PrintConInvInvoiceNumber}</td>
+                            <td class="invoiceDetailValue" style="text-align:left">{!m_invoiceName}</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#C0504D;">Account Number:</td>
+                            <td class="invoiceDetailValue" style="text-align:left">{!m_contractAccountCounterId}</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#C0504D;">{!$Label.ffps_advisory__PrintConInvIBSPO}</td>
+                            <td class="invoiceDetailValue" style="text-align:left">{!m_ibsPO}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <!-- detailed description of amounts -->
+        <table style="width:100%; font-family:sans-serif;">
+            <tr>
+               <td style="border-top:1px dotted;padding:0;border-spacing:0"> 
+                   <apex:repeat value="{!m_listDetailLines}" var="lstDetail"> 
+                       <apex:dataTable style="width:100%;" value="{!lstDetail}" var="conInvLi">
+                           <apex:column styleClass="detailTable" style="text-align:left;width:6.2in;padding-top:5px;padding-bottom:5px;vertical-align:top">
+                               <div style="page-break-inside:avoid ">
+                                   <table cellpadding="0" cellspacing="0" width="100%">
+                                       <tr style="padding-bottom:0">
+                                           <td style="padding-bottom:0">
+                                               <span style="font-size: 12pt; font-weight:bold;  font-family:sans-serif; vertical-align:top">{!conInvLi.m_program}</span><br/>
+                                           </td>
+                                           <td></td>
+                                       </tr>
+                                       <tr style="padding-top:0">
+                                           <td style="width:50%; vertical-align:top;padding-top:0">
+                                               <span style="font-size: 9pt;">
+                                                    {!$Label.ffps_advisory__PrintConInvMembershipTerm}&nbsp;
+                                                    <apex:outputText value="{!if(conInvLi.m_startDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                        <apex:param value="{!conInvLi.m_startDate}"/>
+                                                    </apex:outputText>
+                                                    &nbsp;to&nbsp;
+                                                    <apex:outputText value="{!if(conInvLi.m_endDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                        <apex:param value="{!conInvLi.m_endDate}"/>
+                                                    </apex:outputText>
+                                                    <br/>{!$Label.ffps_advisory__PrintConInvMainContact}&nbsp;{!conInvLi.m_mainContactName}
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align:top;padding-top:0; padding-left:0.2in">
+                                                <span style="font-size: 9pt;">
+                                                    {!conInvLi.m_shortComment}<br/>
+                                                    {!conInvLi.m_longComment}  
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>                                       
+                           </apex:column>
+                           <apex:column styleClass="detailTable" style="text-align:right;width:20%;">
+                               <b><apex:outputText style="padding:2px;" rendered="{!m_displayLineAmounts}" value="{0,number,#,###,###,###,###,###.00}">
+                                  <apex:param value="{!conInvLi.m_amount}"/>
+                               </apex:outputText></b>
+                           </apex:column>
+                       </apex:dataTable>
+                       <div style="page-break-after:always"/> 
+                   </apex:repeat> 
+                   <apex:dataTable style="width:100%;" value="{!m_lastDetailLines}" var="conInvLi">
+                       <apex:column styleClass="detailTable" style="text-align:left;width:6.2in;padding-top:5px;padding-bottom:5px;vertical-align:top">
+                           <div style="page-break-inside:avoid ">
+                               <table cellpadding="0" cellspacing="0" width="100%">
+                                   <tr style="padding-bottom:0">
+                                       <td style="padding-bottom:0">
+                                           <span style="font-size: 12pt; font-weight:bold;  font-family:sans-serif; vertical-align:top">{!conInvLi.m_program}</span><br/>
+                                       </td>
+                                   </tr>
+                                   <tr style="padding-top:0">
+                                       <td style="width:50%; vertical-align:top;padding-top:0">
+                                           <span style="font-size: 9pt;">
+                                                {!$Label.ffps_advisory__PrintConInvMembershipTerm}&nbsp;
+                                                <apex:outputText value="{!if(conInvLi.m_startDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                    <apex:param value="{!conInvLi.m_startDate}"/>
+                                                </apex:outputText>
+                                                &nbsp;to&nbsp;
+                                                <apex:outputText value="{!if(conInvLi.m_endDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                    <apex:param value="{!conInvLi.m_endDate}"/>
+                                                </apex:outputText>
+                                                <br/>{!$Label.ffps_advisory__PrintConInvMainContact}&nbsp;{!conInvLi.m_mainContactName}
+                                            </span>
+                                        </td>
+                                        <td style="vertical-align:top; padding-left:0.2in">
+                                            <span style="font-size: 9pt;">
+                                                {!conInvLi.m_shortComment}<br/>
+                                                {!conInvLi.m_longComment}  
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>                                       
+                       </apex:column>
+                       <apex:column styleClass="detailTable" style="text-align:right;width:20%;">
+                           <b><apex:outputText style="padding:2px;" rendered="{!m_displayLineAmounts}" value="{0,number,#,###,###,###,###,###.00}">
+                              <apex:param value="{!conInvLi.m_amount}"/>
+                           </apex:outputText></b>
+                       </apex:column>
+                   </apex:dataTable>
+                   
+                   <!--  Last  -->
+                   <div style="page-break-inside:avoid; width:100%;padding:0;border-spacing:0">
+                       <apex:dataTable style="width:100%;border-bottom:1px dotted;" value="{!m_lastPageLines}" var="conInvLi">
+                           <apex:column style="vertical-align:middle;text-align:left;width:6.2in;padding-top:5px;padding-bottom:5px;vertical-align:top;">
+                               <div style="page-break-inside:avoid ">
+                                   <table cellpadding="0" cellspacing="0" width="100%">
+                                       <tr style="padding-bottom:0">
+                                           <td style="padding-bottom:0;">
+                                               <span style="font-size: 12pt; font-weight:bold;  font-family:sans-serif; vertical-align:top">{!conInvLi.m_program}</span><br/>
+                                           </td>
+                                       </tr>
+                                       <tr style="padding-top:0">
+                                           <td style="width:50%; vertical-align:top;padding-top:0">
+                                               <span style="font-size: 9pt;">
+                                                    {!$Label.ffps_advisory__PrintConInvMembershipTerm}&nbsp;
+                                                    <apex:outputText value="{!if(conInvLi.m_startDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                        <apex:param value="{!conInvLi.m_startDate}"/>
+                                                    </apex:outputText>
+                                                    &nbsp;to&nbsp;
+                                                    <apex:outputText value="{!if(conInvLi.m_endDate.month!=4,'{0,date,MMM. dd, yyyy}','{0,date,MMM dd, yyyy}')}">
+                                                        <apex:param value="{!conInvLi.m_endDate}"/>
+                                                    </apex:outputText>
+                                                    <br/>{!$Label.ffps_advisory__PrintConInvMainContact}&nbsp;{!conInvLi.m_mainContactName}
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align:top; padding-left:0.2in">
+                                                <span style="font-size: 9pt;">
+                                                    {!conInvLi.m_shortComment}<br/>
+                                                    {!conInvLi.m_longComment}  
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>                                       
+                           </apex:column>
+                           <apex:column style="vertical-align:middle;text-align:right;width:20%;">
+                               <b><apex:outputText style="padding:2px;" rendered="{!m_displayLineAmounts}" value="{0,number,#,###,###,###,###,###.00}">
+                                  <apex:param value="{!conInvLi.m_amount}"/>
+                               </apex:outputText></b>
+                           </apex:column>
+                       </apex:dataTable>
+                       <!-- Tax Code and Tax Rates -->
+                       <apex:outputPanel rendered="{!if((m_TaxAmount!=null || m_TaxAmount!= 0.00),true,false)}">
+                           <table style="width:100%;border-bottom:1px dotted; height:17pt;padding-top:5px; padding-bottom:5px; font-size:11pt; font-weight:bold" columns="1">
+                           <tr>
+                               <td style="width:50%; text-align:left;">
+                                   {!$Label.ffps_advisory__ConsolidatedInvoiceTaxTotal}
+                               </td>
+                               <td style="text-align:right;">
+                                   <apex:outputText style="padding:2px;" value="{0,number,#,###,###,###,###,###.00}">
+                                      <apex:param value="{!m_TaxAmount}"/>
+                                   </apex:outputText>        
+                               </td>
+                           </tr>
+                           </table>
+                       </apex:outputPanel>
+                       
+                       <!-- Invoice Total -->
+                       <table style="width:100%;">
+                           <tr style="font-size:13pt">
+                                <td style="width: 55%;">&nbsp;</td>
+                                <td style="width: 25%;"><b>
+                                <apex:outputText value="{!$Label.ffps_advisory__PrintConInvTotalDue}">
+                                    <apex:param value="{!m_invoiceCurrencyName}"/>
+                                </apex:outputText>
+                                </b></td>
+                                <td style="width: 20%; text-align:right;">
+                                    <b><apex:outputText style="padding:2px;font-weight:bold;" value="{!invoiceCurrencySymbol}{0,number,#,###,###,###,###,###.00}">
+                                        <apex:param value="{!m_invoiceTotal}"/>
+                                    </apex:outputText>
+                                    </b>
+                                 </td>
+                            </tr>
+                        </table>
+                        <!-- detail invoice comment -->
+                        <p style="font-size:11pt;margin-top:30px;">{!m_detailInvoiceComment} </p>
+                        <!-- terms -->
+                        <table style="width:100%;margin-top:43px;">
+                            <tr>
+                                <td style="padding-top:10px;font-size:9pt">
+                                    <b>{!$Label.ffps_advisory__PrintConInvTerms}&nbsp;{!m_companyDescription} 
+                                        <apex:outputText rendered="{!if(m_companyDescription != null, true, false)}" value="."/>
+                                    </b> 
+                                    {!m_terms} 
+                                </td>
+                            </tr>
+                        </table> 
+                        <!-- make payable to section -->
+                        <table style="width:100%;border-top:1px solid;border-bottom:1px solid;margin-top:10px;vertical-align:middle;padding:7px;">
+                            <tr>
+                                <td class="remittance" style="width:25%;">
+                                    <span style="font-style:italic;">
+                                        <b>{!$Label.ffps_advisory__PrintConInvCheck}</b><br/>
+                                        {!$Label.ffps_advisory__PrintConInvMakePayableTo}<br/>
+                                    </span>
+                                    {!m_makePayableToCompany}<br/>
+                                    {!m_makePayableToAddress}<br/>
+                                    {!m_makePayableToCity}<apex:outputText rendered="{!(!ISNULL(m_makePayableToState))}" value=","/> 
+                                    {!m_makePayableToState}
+                                    {!m_makePayableToZip}<br/>
+                                    {!$Label.ffps_advisory__PrintConInvRefInvNo}
+                                </td>
+                                <!--  For overnight delivery -->
+                                <td class="remittance" style="width:30%;">
+                                    &nbsp;<br/>
+                                    <span style="font-style:italic;">{!$Label.ffps_Advisory__PrintConInvOvernightDeliveryTo}</span><br/>
+                                    {!m_companyName}<br/>
+                                    {!$Label.ffps_advisory__PrintConInvAttention}<br/> 
+                                    {!m_companyPhysicalStreet}<br/>
+                                    {!m_companyPhysicalCity}<apex:outputText rendered="{!(!ISNULL(m_companyState))}" value=","/> 
+                                    {!m_companyPhysicalState}
+                                    {!m_companyPhysicalZipCode}
+                                
+                                </td>
+                                <td class="remittance" style="width:2%;"></td> 
+                                <!-- To Pay By EFT/ACH: -->
+                                <td class="remittance" style="border-left:1px solid;width:2%;"></td>
+                                <td class="remittance" style="width:40%;">
+                                    <span style="font-style:italic;">
+                                        <b>{!$Label.ffps_advisory__PrintConInvElectronicFundsTransfer}</b><br/>
+                                    </span>
+                                    {!m_companyName}<br/>
+                                    {!m_BankAccName}<br/>
+                                    {!m_companyPhysicalCity}<apex:outputText rendered="{!(!ISNULL(m_companyState))}" value=","/> 
+                                    {!m_companyPhysicalState}<br/>
+                                    {!$Label.ffps_advisory__PrintConInvABA} {!m_aban}<br/> 
+                                    {!$Label.ffps_advisory__PrintConInvAccNo} {!m_accountNamen}<br/> 
+                                    {!$Label.ffps_advisory__PrintConInvRefInvNo}
+                                </td>
+                            </tr>
+                        </table> 
+                   </div>
+                   
+               </td>
+            </tr>
+        </table>       
+                           
+    </div> 
+    
+    <!-- first page footer -->
+    <apex:outputPanel styleClass="footer_center"
+        layout="block" rendered="{!isHTMLPreview}">
+        <hr/>
+        <table style="width:100%; font-family:sans-serif; font-size:10pt">
+            <tr>
+                <td style="text-align:left;vertical-align:top;width:60%;text-transform: uppercase; padding-left:25pt;">
+                    {!m_submittedToSalutation} 
+                    {!m_submittedToName}<br/>
+                    {!m_ibsAccAccountFormalName}<br/>
+                    {!m_ibsAccPrimaryAddressLine1}<br/>
+                    {!m_ibsAccPrimaryCity}<apex:outputText rendered="{!(!ISNULL(m_ibsAccStateProvince))}" value=","/>
+                    {!m_ibsAccStateProvince}
+                    {!m_ibsAccPostalCode}
+                    
+                </td>
+               <td style="text-align:left;vertical-align:top;width:60%; background-color : #C4C6C8;  font-size:11pt">
+                   <div style="padding-left:5px">
+                       <apex:outputText escape="false" value="{!$Label.ffps_advisory__PrintConInvContactForInvQuery}">
+                            <apex:param value="{!m_ibsAccCreditManagerName}"/>
+                            <apex:param value="{!m_ibsAccCreditManagerPhone}"/>
+                            <apex:param value="{!m_ibsAccCreditManagerEmail}"/>
+                       </apex:outputText>
+                   </div> 
+               </td>
+            </tr>
+        </table><br/>
+        <table style="width:100%; font-family:sans-serif; ">
+            <tr>
+                <td width="70%" style="text-align:left; padding-left:35pt;font-size:11pt">
+                    <div> {!$Label.ffps_advisory__AdvisoryBoardCompanyName}  &nbsp;  • &nbsp;  {!$Label.ffps_advisory__PrintConInvTaxId} {!m_companyTaxId} </div>
+                </td>
+                <td style="text-align:center;font-size:10pt">
+                    &nbsp;  Page 1 of 1
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>  
+    
+</apex:component>

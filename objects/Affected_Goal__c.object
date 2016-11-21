@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Incentive Change Log (ICL) items are used to determine the impact of specific types of changes on Individual Goals. When S&amp;O identifies such an impact and adjusts a Personal Goal as a result, the adjustment is represented as a new Personal Goal with a Proposed Goal Proposal record type (which is hereafter referred to simply as a Proposed Goal). That new Proposed Goal Proposal is associated with all of the ICLs that drove the adjustment.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Change_Batch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This field is only for developer use. Not added on any layout</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is only for developer use. Not added on any layout</inlineHelpText>
+        <label>Change Batch</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Value does not exist or does not match filter criteria.</errorMessage>
+            <filterItems>
+                <field>Incentive_Change_Batch__c.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>Processed</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Incentive_Change_Batch__c</referenceTo>
+        <relationshipLabel>Affected Goals (Change Batch)</relationshipLabel>
+        <relationshipName>Affected_Goals1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Change_Record__c</fullName>
+        <externalId>false</externalId>
+        <formula>Incentive_Change_Log__r.Change_Record__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Change Record</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Completed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Completed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>AG{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Incentive_Change_Batch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Incentive Change Batch</label>
+        <referenceTo>Incentive_Change_Batch__c</referenceTo>
+        <relationshipName>Affected_Goals</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Incentive_Change_Log__c</fullName>
+        <externalId>false</externalId>
+        <label>Incentive Change Log</label>
+        <referenceTo>Incentive_Change_Log__c</referenceTo>
+        <relationshipName>Affected_Goals</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Personal_Goal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Personal Goal</label>
+        <referenceTo>Personal_Goal__c</referenceTo>
+        <relationshipLabel>Affected Goals</relationshipLabel>
+        <relationshipName>Affected_Goals</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Affected Goal</label>
+    <listViews>
+        <fullName>Active_Original_Change</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>Active Original Change</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Affected Goals Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Affected Goals</pluralLabel>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

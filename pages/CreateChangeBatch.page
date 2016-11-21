@@ -1,0 +1,48 @@
+<!--
+    Purpose         :   Visualforce page to Create Incentive Change Batch record.
+    					This page is used on the Incentive Change log list view button
+ 
+    Created By      :   Subhash Garhwal
+ 
+    Created Date    :   09/29/2015
+    
+    Revision Logs   :   V_1.0 - Created - CR-20150729-9114
+-->
+<apex:page standardController="Incentive_Change_Log__c" recordSetVar="unused" extensions="CreateChangeBatchController" sidebar="false" id="pge" >
+
+	<!-- Section Header -->
+    <apex:sectionHeader title="Incentive Change Batch Edit" subTitle="New Incentive Change Batch"/>
+    
+    <!-- Form -->
+    <apex:form id="frm">
+    	
+    	<!-- Page block -->
+    	<apex:pageBlock id="pb" title="Incentive Change Batch Edit" mode="edit">
+    		
+    		<!-- Messages -->
+            <apex:pageMessages id="validationMsg" />
+            	
+    		<!-- Command Button -->
+            <apex:pageBlockButtons id="pbb">
+                <apex:commandButton value="Save" action="{!doSave}" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <!-- Section -->
+            <apex:pageBlockSection columns="1" title="Information">
+            	<apex:inputField value="{!incentiveCBatch.Name}" required="true"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="1" title="Selected Log Items" >
+            	
+            	<!-- Page block table -->
+	            <apex:pageBlockTable value="{!selected}" var="item" >
+	            	<apex:column value="{!item.Category__c}" />
+	            	<apex:column value="{!item.Value__c}" />
+	            	<apex:column value="{!item.Change_Type__c}" />
+	            	<apex:column value="{!item.CreatedDate}" />
+	            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,319 @@
+<!--Modified By - Abhinav Sharma - 04/28/2015 - CR-20150219-8692 - Boardroom Speed Issue-->
+<!--Modified By - Abhinav Sharma - CR-20141020-7816 - 05/03/2015-->
+<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+<!-- Description - Added new Method to capture Device and User information on vairous devices when BoardRoom Home page loads -->
+
+<apex:component layout="none" controller="RemoteActionController">
+    
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/html5/jquery.history.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/bootstrap.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/jquery-ui.tabs.min.js')}" /><!-- custom with TABS ONLY -->
+
+    <!--  <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/enquire.js/2.0.0/enquire.min.js" />-->    
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/jquery.pushmenu.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/jquery.bxslider.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/responsive_vids.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/jquery.ellipsis.min.js')}" />
+    <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/1.6.10/jquery.dotdotdot.min.js" />
+    
+
+    <!-- this should be commented out in .dev5dot1-->
+	<!-- <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/scripts.js')}" />-->    
+    <!-- this should be commented out in .staging, .boardroom, .test, .prod -->
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/modernizr.js')}" />
+	<!-- <apex:includeScript value="https://twilio-dev.advisory.com/twilio/boardroom/js/scripts.js" />
+ 	<!-- <apex:includeScript value="https://twilio-dev.advisory.com/twilio/boardroom/js/jquery.pushmenu.js" /> -->
+
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/iframe_resize.js')}" />
+	
+    <!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile - Capture User Device Information-->
+    <apex:includeScript value="{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/ua-parser.js')}" />
+    
+    <script>
+    
+        Modernizr.load([
+            //first test need for polyfill
+            {
+                test: window.matchMedia,
+                nope: "{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/mediamatch.js')}"
+            },
+        
+            //and then load enquire
+            "//cdnjs.cloudflare.com/ajax/libs/enquire.js/2.0.0/enquire.min.js",
+            "{!URLFOR($Resource.IntranetAssets, 'IntranetAssets/js/scripts.js')}"
+            //"https://twilio-dev.advisory.com/twilio/boardroom/js/scripts.js"
+        ]);
+    
+        
+        /**
+        * @description:     bind a click handler to each element with the 'data-click-type' property. 
+        *                   Handler creates a utilization record when the item is clicked.
+        **/
+        $('[data-click-type]').on('click', function(e) {
+            if ($(this).data('click-type') != 'Rate' && $(this).data('click-type') != 'Office Page Section') { 
+                 recordUtilization(this);
+            }
+        });
+        
+        function recordUtilization(elem) {
+            
+            var clickType = $(elem).data('click-type');
+            var displayName = $(elem).data('display-name');
+            var itemId = $(elem).data('item-id');
+            var scheduleId = $(elem).data('schedule-id');
+            var containerId = $(elem).data('container-id');
+            var rating = $(elem).data('star');
+            var clickTypeCategory = $(elem).data('linkcategorytype');
+            var itemHref = $(elem).attr('href');
+            var targetValue = $(elem).attr('target');
+            var iconStyleValue = $(elem).data('iconstyle');
+            
+            //empty strings cause remoting errors, so replace them with null
+            if (typeof(clickType) == 'undefined' || clickType == '') clickType = null;
+            if (typeof(displayName) == 'undefined' || displayName == '') displayName = null;
+            if (typeof(itemId) == 'undefined' || itemId == '') itemId = null;
+            if (typeof(scheduleId) == 'undefined' || scheduleId == '') scheduleId = null;
+            if (typeof(containerId) == 'undefined' || containerId == '') containerId = null;
+            if (typeof(rating) == 'undefined' || rating == '') rating = null;
+            if (typeof(itemHref) == 'undefined' || itemHref == '') itemHref = null;
+            if (typeof(targetValue) == 'undefined' || targetValue == '') targetValue = null;
+            if (typeof(iconStyleValue) == 'undefined' || iconStyleValue == '') iconStyleValue = null;
+        
+            //<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+            
+            //Instantiate UA Parser Object
+            var parser = new UAParser();
+            var result = parser.getResult();
+           
+            var screenSize = parseDeviceTracking(result);
+            
+            //<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+            
+            //Added By - Abhinav Sharma - CR-20141020-7816 - 05/03/2015
+            //Start from here - Top 5 recent clicked item links - Remote Action method
+            //Check Category of Clicked Link, if it is Hamberger link call seprate action remoting method
+        	if(clickTypeCategory != undefined && clickTypeCategory != '' && clickTypeCategory == 'hembergerLink') {
+        	
+            	Visualforce.remoting.Manager.invokeAction(
+                	'{!$RemoteAction.RemoteActionController.recentlyClickedLinkItems}',
+                    clickType,displayName,itemId,scheduleId,containerId,rating,itemHref,iconStyleValue,targetValue,
+                    handleUtilizationResult, 
+                    {escape: false}
+            	);
+        	}
+        	//Upto here
+        
+            //   recordClickUtilization(, String displayName, String itemId, String scheduleId, String containerId)
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.RemoteActionController.recordClickUtilization}',
+                clickType,displayName,itemId,scheduleId,containerId,rating,
+                parseNullData(result.device.model) + ' ' + parseNullData(result.device.type) + ' ' + parseNullData(result.device.vendor),
+				parseNullData(result.browser.name) + ' ' + parseNullData(result.browser.version),
+                screenSize,parseNullData(result.ua),
+                handleUtilizationResult, 
+                {escape: false}
+            );
+        }
+        
+        function parseDeviceTracking(uaResultRef){
+        	
+            var screenSize;
+            //Calcualte Screen Size
+            if(screen.width >= 1200)screenSize = 1200;
+            else if(screen.width >= 992 && screen.width <= 1199)screenSize = 992;
+            else if(screen.width >= 768 && screen.width <=991)screenSize = 768;
+            else if(screen.width <= 767)screenSize = 767;
+            
+            //Decide Device Type
+            if(uaResultRef.device.model == undefined || uaResultRef.device.type == undefined || uaResultRef.device.vendor == undefined){
+                
+                var osName = uaResultRef.os.name + '';
+                
+                if(screenSize == 1200)uaResultRef.device.type = 'Desktop';
+                else if(screenSize == 992)uaResultRef.device.type = 'Laptop';
+                else if(screenSize == 768)uaResultRef.device.type = 'Tablet'; 
+                else //Set Default Device Type
+                    uaResultRef.device.type = 'Mobile';  
+                
+            }
+            return screenSize;
+        }
+    	function trackDeviceData(elem){
+            
+        	var parser = new UAParser();
+            var result = parser.getResult();
+            var screenSize = parseDeviceTracking(result);
+            var deviceData = parseNullData(result.device.model) + ' ' + parseNullData(result.device.type) + ' ' + parseNullData(result.device.vendor);
+            var browserData = parseNullData(result.browser.name) + ' ' + parseNullData(result.browser.version);
+            setCookie("apex__deviceData",deviceData,30);
+            setCookie("apex__browserData",browserData,30);
+            setCookie("apex__screenSize",screenSize,30);
+        }
+    	function setCookie(cname,cvalue,exdays){  //Set Javascript Cookies
+            var d = new Date();
+            d.setTime(d.getTime()+(exdays*24*60*60*1000));
+            var expires = "expires="+d.toGMTString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        }
+        function increaseLikeCounter(elem){
+            
+            if($(elem).attr('data-isLiked') == 'false'){
+               
+                $(elem).find('.count').text(parseInt($(elem).find('.count').text())+1);
+                $(elem).attr('data-isLiked','true');
+                $(elem).parent().find('.disabledLike .count').text(parseInt($(elem).parent().find('.disabledLike .count').text())+1);
+                $(elem).parent().find('.disabledLike').show();
+                $(elem).hide();
+                if($(elem).parent().hasClass("like"))
+                    $(elem).parent().addClass("liked"); 
+            }
+        }
+        
+        
+        // Handle the result from the save.  If an error occured, display it.
+        function handleUtilizationResult( result, event )
+        {
+            console.log('Check Event Status ::: ' + event.status);
+            
+            // Check for errors.
+            if ( !event.status )
+            {
+                console.log( '@@@The utilization record failed to save.<BR/>Error: ' + event.message, 'Record Failed to Save' );
+                return;
+            }
+        }
+        //<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+		function createUtilizationOnMainPageLoad(){
+    		
+            //Check the Loading Page is Main Home Page
+            if('{!$CurrentPage.url}'.toLowerCase().indexOf('{!$Label.BR_Home}'.toLowerCase()) != -1){
+            	
+                //Instantiate UA Parser Object
+               	var parser = new UAParser();
+                var result = parser.getResult();
+                var screenSize = parseDeviceTracking(result);
+                
+                Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.RemoteActionController.recordUtilizationOnMainPageLoad}',
+                'Page Section','BoardRoom Home Page',null,null,null,null,
+                parseNullData(result.device.model) + ' ' + parseNullData(result.device.type) + ' ' + parseNullData(result.device.vendor),
+				parseNullData(result.browser.name) + ' ' + parseNullData(result.browser.version),
+                screenSize,parseNullData(result.ua),
+                handleUtilizationResult, 
+                {escape: false}
+            );
+                
+            }
+        }   
+    	//<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile -->
+    	//Utilization on Main Page Load
+    	createUtilizationOnMainPageLoad();
+    
+    	function parseNullData(data){
+            if(data == undefined || data == '' || data == null){data = '';}
+            return data;
+        }
+    	//<!--Modified By - Rajeev Jain - 08/07/2015 - CR-20150618-9016 - Board Room Mobile - upto here-->
+    
+        function getip(json){
+            //   var ip = json; // alerts the ip address
+            // console.log(ip); //('.ip').html(ip);
+        }
+        
+        /*****                              *****/
+        /***** begin star rating javascript *****/
+        /*****                              *****/
+        $(function() {
+            
+            $('.star-rating.edit').on({
+                'mouseenter' : function() {
+                    
+                    $(this).parents('.star-rating').find('[data-rate]').addClass('hover');
+                    $(this).prevAll().addBack().addClass('active');
+                    
+                }, 
+                'mouseleave' : function() {
+                    
+                    $(this).parents('.star-rating').find('[data-rate]').removeClass('hover');
+                    $(this).prevAll().addBack().removeClass('active');
+                }
+            }, '[data-rate]');
+            
+            setupStars();
+            
+        });
+        
+        function setupStars() {
+            //get the average star rating
+            var rating = $('[data-star-rating]').data('star-rating');
+            round_rating = (Math.round(rating * 2) / 2).toFixed(1);
+            
+            half = +round_rating + +0.5;
+            
+            var html = "";
+            
+            for (i = 1; i < 6; i++) {
+                
+                if(round_rating >= i) {
+                    html += '<i class="fa fa-star" data-rate="' + i + '"></i>';
+                }
+                else if(half >= i) {  
+                    html += '<i class="fa fa-star-half-o" data-rate="' + i + '"></i>';
+                } else { 
+                    html += '<i class="fa fa-star-o" data-rate="' + i +'"></i>';
+                }
+            }
+            
+            $('.star-rating').html(html);
+            
+            //setup the star rating onclick if the isLiked is false
+            if ($('.star-rating').data('is-rated') == false) {
+                setupStarRating();
+            }
+            else {
+                disableStarRating();
+            }
+        }
+        
+        /**
+        * @description:     Setup the star rating onclick function.
+        **/
+        function setupStarRating() {
+            $('[data-rate]').on('click', function() {
+                
+                if($(this).parents('a').attr('data-is-rated') == true) { return false; }
+                var rate = $(this).data('rate');
+                $(this).parents('a').data('star', rate); 
+                
+                $(this).parents('a').data('is-rated', 'true');
+                $(this).parents('a').data('star-rating', rate);
+                
+                //record utilization
+                recordUtilization($(this).parent()[0]);
+                
+                
+                setupStars();
+                disableStarRating();
+                
+                return false;
+                
+            });
+            
+        }
+        
+        /**
+        * @description:     disables the star-rating click and hover functionality after an item has been rated.
+        **/
+        function disableStarRating() {
+            $( ".star-rating" ).unbind( "mouseenter" );
+            $( ".star-rating" ).unbind( "mouseleave" );
+            $( ".star-rating" ).css('cursor', 'default');
+        }
+        /*****                              *****/
+        /***** end star rating javascript *****/
+        /*****                              *****/
+        
+    </script>
+	<!--<script type="application/javascript" src="https://twilio-dev.advisory.com/twilio/boardroom/ip.php?callback=getip"></script>-->
+</apex:component>

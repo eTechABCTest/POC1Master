@@ -1,0 +1,5 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteExtController"
+           action="{!onRecall}">
+    <apex:pageMessages />
+    <apex:outputLink value="/{!SBQQ__Quote__c.Id}">Click here</apex:outputLink> to go back.
+</apex:page>

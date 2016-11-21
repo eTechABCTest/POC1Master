@@ -1,0 +1,31 @@
+<!--V_1.0 - Created By - Mahendra Swarnkar - 10/26/2015 - CR-20150707-9062 - update the OSR status to Denied  -->
+
+<apex:page standardController="OSR__c" extensions="OSRDenyRequestController" >
+
+  <!-- Background Processing -->
+    <c:BlockUI />
+    
+    <!-- Apex form -->
+    <apex:form id="form" >
+        
+        <!-- Apex page messages -->
+        <apex:messages id="msg"/>
+        
+        <!-- Navigate to the previous page--> 
+        <apex:outputLink value="/{!oSRId}">Click here</apex:outputLink>&nbsp;to go to previous page.
+        
+        <!-- Action Statuses -->
+        <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        
+        <!-- Action function to call controller method UpdateOSRStatusToDeny -->
+        <apex:actionFunction name="updateOSRStatus" action="{! updateOSRStatusToDeny}" status="waitMsg" reRender="form"/>
+    
+    </apex:form>
+
+	<script>
+	    jQuery(document).ready(function($) {
+	            updateOSRStatus();
+	        });
+	</script>
+
+</apex:page>

@@ -1,0 +1,14 @@
+<!--
+*   Purpose:    Used to show the attribute icons that relate to a Change Request object record.
+*               
+*   Created By:  Jason Bennett
+*    
+*   Revision Log:       V1.0 - (Code Added)- Jason Bennett - 12/03/2015 - Created
+*
+*
+-->
+<apex:page standardController="SFDC_Change_Request__c" extensions="AttributesChangeRequestExtension">
+    
+    <apex:dynamicComponent componentValue="{!DynamicOutputPanel}" />
+    
+</apex:page>

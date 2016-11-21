@@ -1,0 +1,561 @@
+<apex:page controller="SiteController" showHeader="{!showHeader}" sidebar="{!sidebar}" id="page"  tabStyle="Eligible_Subscription_Option__c" >
+    
+    <c:IncludeJQuery />
+    <c:BlockUI />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery.ba-postmessage.js')}" />
+    <c:AdvisorySiteCSS rendered="{!sUser.Site_Profile.Type__c == 'Advisory.com' || NOT( isGuestUser )}" />
+    <c:EABSiteCSS rendered="{!sUser.Site_Profile.Type__c == 'EAB.com'}" />
+    
+    <apex:outputPanel rendered="{!sUser.Site_Profile.Type__c == 'EAB.com'}">
+        <style>
+            .subscriptionLink  {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 12px;
+            }
+        </style>
+    </apex:outputPanel>
+    
+    <style>
+        a.viewSample span { display: none; }
+        
+        a.viewSample:hover span {
+            display:block;
+            position:absolute;
+            top:100%;
+            left:0em;
+            /* Add Shadow */
+            border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-box-shadow: 5px 5px 8px #CCC;
+            -webkit-box-shadow: 5px 5px 8px #CCC;
+            box-shadow: 5px 5px 8px #CCC;
+        }
+        
+        div.subDetails {
+            position:relative;
+        }
+        
+        .subscriptionContainer {
+            margin-bottom:7px;
+        }
+        
+        .subscriptionLink {
+            vertical-align: top;
+        }
+        
+        .subscriptionSection h4 {
+            border: none;
+        }
+        
+        .subscriptionContainer {
+            cursor: pointer;
+        }
+    </style>
+    
+    <apex:form id="mainForm" style="width:100%">
+    
+         <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+        
+        <apex:actionFunction name="saveSubscriptions" action="{!SubmitSubscriptions}" />
+        
+        <apex:actionFunction name="toggleSubscription" action="{!ToggleTempSubscription}" onComplete="updateSubscribeLink('{!TempSubscriptionId}', '{!TempSubscriptionCreate}'); setIsExecuting(); return false;" status="waitMsg">
+            <apex:param name="subscriptionId" assignTo="{!TempSubscriptionId}" value="" />
+            <apex:param name="subscriptionCreate" assignTo="{!TempSubscriptionCreate}" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="subscribeToAll" action="{!SubscribeAll}" onComplete=" setIsExecuting(); return false;" status="waitMsg">
+            <apex:param name="section" assignTo="{!SectionName}" value="" />
+            <apex:param name="type" assignTo="{!SectionType}" value="" />
+        </apex:actionFunction>
+        
+        <apex:outputPanel rendered="{!NOT( isGuestUser ) && countAdvisorySubscriptions > 0 && countEABSubscriptions > 0}">
+            <script>
+            j$(function() { 
+                j$( "[id$='subscriptionTabContainer']" ).tabs(); 
+            });
+            </script>
+        </apex:outputPanel>
+        
+        <apex:sectionHeader title="Manage Subscriptions" subTitle="{!MainContact.Con.Name}" rendered="{!showHeader}" />
+        
+        <apex:outputPanel layout="block" id="subscriptionTabContainer" >
+        
+            <apex:outputPanel layout="block" rendered="{!NOT(isGuestUser) && countAdvisorySubscriptions == 0 && countEABSubscriptions == 0}">
+                <apex:outputText value="There are no Eligible Subscription Options for this Contact.  Check the Institution to verify they have active memberships with eligible subscription options." />
+            </apex:outputPanel>
+            
+            <apex:outputPanel layout="block" rendered="{!NOT( isGuestUser ) && countAdvisorySubscriptions > 0 && countEABSubscriptions > 0}">
+                <ul>
+                    <li><a href="#tab-advisory">Advisory.com</a></li>
+                    <li><a href="#tab-eab">EAB.com</a></li>
+                </ul>
+            </apex:outputPanel>
+            <div id="tab-advisory">
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'Advisory.com' || NOT( isGuestUser ) ) && MainContact.DailyBriefing_Advisory.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_DAILY']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Health care news delivered to your inbox daily." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_DAILY', 'Advisory.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.DailyBriefing_Advisory}" var="item" id="EMAIL_DAILY_Advisory" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_DAILY ADVISORY {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'Advisory.com' || NOT( isGuestUser ) ) && MainContact.Topic_Advisory.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_TOPICS']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Subscribe to weekly topic alerts that compile newly published content for each topic area." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_TOPICS', 'Advisory.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.Topic_Advisory}" var="item" id="EMAIL_TOPICS_Advisory" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_TOPICS ADVISORY {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'Advisory.com' || NOT( isGuestUser ) ) && MainContact.ProductOrMembership_Advisory.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_WATCH']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Receive the latest research, events, updates and insights from your memberships." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_WATCH', 'Advisory.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.ProductOrMembership_Advisory}" var="item" id="EMAIL_WATCH_Advisory" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_WATCH ADVISORY {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'Advisory.com' || NOT( isGuestUser ) ) && MainContact.BlogAndProject_Advisory.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_BLOG']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Receive blog and project alerts as content is posted to advisory.com — each email will have one content item." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_BLOG', 'Advisory.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.BlogAndProject_Advisory}" var="item" id="EMAIL_BLOG_Advisory" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_BLOG ADVISORY {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </div>
+            
+            <div id="tab-eab">
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'EAB.com' || NOT( isGuestUser ) ) && MainContact.DailyBriefing_EAB.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_DAILY']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Education news delivered to your inbox daily." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_DAILY', 'EAB.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.DailyBriefing_EAB}" var="item" id="EMAIL_DAILY" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_DAILY EAB {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'EAB.com' || NOT( isGuestUser ) ) && MainContact.Topic_EAB.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_TOPICS']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Subscribe to weekly topic alerts that compile newly published content for each topic area." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_TOPICS', 'EAB.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.Topic_EAB}" var="item" id="EMAIL_TOPICS" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_TOPICS EAB {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'EAB.com' || NOT( isGuestUser ) ) && MainContact.ProductOrMembership_EAB.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_WATCH']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Receive the latest research, events, updates and insights from your memberships." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_WATCH', 'EAB.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.ProductOrMembership_EAB}" var="item" id="EMAIL_WATCH" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_WATCH EAB {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" styleClass="subscriptionSection" rendered="{!( sUser.Site_Profile.Type__c == 'EAB.com' || NOT( isGuestUser ) ) && MainContact.BlogAndProject_EAB.size > 0}">
+                    <h4 class="toggle">
+                        <apex:outputText value="{!categoryToDisplayName['EMAIL_BLOG']}"/> »
+                    </h4>
+                    <apex:outputPanel layout="block" style="display:none; margin-left:20px;">
+                        <div style="padding-bottom:15px;">
+                            <apex:outputText value="Receive blog and project alerts as content is posted to eab.com — each email will have one content item." />
+                        </div>
+                        <apex:outputPanel layout="block" style="margin-bottom:10px; font-weight:bold;" >
+                            <a href="javascript:void(0);" onClick="subscribeToAllJS('EMAIL_BLOG', 'EAB.com');">SUBSCRIBE ALL</a>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!MainContact.BlogAndProject_EAB}" var="item" id="EMAIL_BLOG" >
+                            <apex:outputPanel layout="block" styleClass="subscriptionContainer" >
+                                <a href="javascript:void(0);" id="{!item.EligibleSubscriptionId}" class="subscriptionLink EMAIL_BLOG EAB {!IF(item.IsSubscribed, 'unsubscribe', '')}" onClick="toggleSubscriptionJS('{!item.EligibleSubscriptionId}', '{!NOT(item.IsSubscribed)}');" >
+                                    <apex:outputText value="{!IF(item.IsSubscribed, 'Unsubscribe', 'Subscribe')}" />
+                                </a>
+                                <div style="display:inline-block;" >
+                                    <h4 class="subToggle closed"><apex:outputText value="{!item.SubscriptionDisplayName} »" /></h4>
+                                    <div style="display:none; width: 354px;" class="subDetails">
+                                        <apex:outputText value="{!item.Description}&nbsp;&nbsp;" escape="false" rendered="{!item.Description != null}" />
+                                        <a class="viewSample" onClick="return false;" style="{!IF(item.AttachmentId == null, 'display:none;', '')}" href="#">
+                                            See a sample.<span style="z-index:1000"><apex:image url="{!URLFOR($Action.Attachment.Download, item.AttachmentId)}" rendered="{!item.AttachmentId != null}" /></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+            </div>
+            
+        </apex:outputPanel>
+        
+        <apex:outputPanel styleClass="subscriptionSection" rendered="{!sUser.Site_Profile.Type__c == 'Advisory.com' && isGuestUser}" >
+            
+            <h4 class="toggle" >Other Ways to Connect With The Advisory Board Company »</h4>
+                
+            <apex:outputPanel layout="block" style="display:none;margin-left:20px;" >
+                    
+                <div style="padding-bottom:15px;">
+                    <h3>Like us on Facebook</h3>
+                </div>
+                Our flagship newsletter shares the most popular and talked-about articles, as well as other news updates and charts.
+                <br/>
+                <a href="https://www.facebook.com/DailyBriefing" target="_blank">Check out the Daily Briefing on Facebook.</a>
+                <div style="padding:15px 0 15px 0;" >
+                    <h3>Follow us on Twitter</h3>
+                </div>
+                    
+                <apex:repeat value="{!TwitterFeeds}" var="item" >
+                    <strong>{!item.Name}</strong>
+                    <div style="padding-bottom:10px;">
+                        <a href="http://twitter.com/{!item.Twitter_Username__c}" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @{!item.Twitter_Username__c}</a>
+                    </div>                            
+                </apex:repeat>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        
+        <!-- Added by Mahendra Swarnkar - 8/30/2016 - CR-20160505-9830 -->
+        <!--Start from here-->
+        <apex:outputPanel styleClass="subscriptionSection" >
+        	<a href="{!$Label.SITE_HOST_URL_UNSUBCRIBE_CALL}?sub=UNSUB_ALL&CID={!MainContact.Con.Id}" target="_blank" 
+               style="font: normal 14px/40px Arial, sans-serif; cursor:pointer;float:left;width:100%;">
+                <h4 class="toggle" style="font-weight:normal; margin:0px">
+                	{!$Label.UNSUBSCRIBE_LINK_LABEL}
+                </h4>
+            </a>
+        </apex:outputPanel>
+        <!--Upto here-->
+        
+    </apex:form>
+    
+     
+    <script>
+        // Get the parent page URL as it was passed in, for browsers that don't support
+  // window.postMessage (this URL could be hard-coded).
+  var parent_url = decodeURIComponent( document.location.hash.replace( /^#/, '' ) ), link;
+  //var parent_url = "http://www.advisory.com/Members/Subscriptions";
+  
+  //Modified by Mahendra Swarnkar - 8/30/2016 - CR-20160505-9830 - To Added additional height-->  
+  // The first param is serialized using $.param (if not a string) and passed to the
+  // parent window. If window.postMessage exists, the param is passed using that,
+  // otherwise it is passed in the location hash (that's why parent_url is required).
+  // The second param is the targetOrigin.
+  function setHeight() {
+    try {
+        j$.postMessage({ if_height: j$('body').outerHeight( true )+parseInt({!$Label.SITE_PAGE_BODY_ADDITIONAL_HEIGHT}) }, parent_url, parent );
+    }
+    catch(err) {
+        console.log('error:' + err);
+    }
+  };
+        
+        //setup the twitter buttons
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+        
+        j$(function() {
+            setup();
+        });
+        
+        function disableRightClick() {
+            j$('a').each(function() {
+               j$(this)[0].oncontextmenu = function() {
+                  return false;
+               };
+            });
+        }
+        
+        function setup() {
+            disableRightClick();
+            /* return false so when the user clicks sub/unsub, they dont get moved to the top of the page */
+            j$('.subscriptionLink').bind('click', function() {
+                return false;
+            });
+        
+            j$('.toggle,.subToggle').bind('click', function() {
+                var displayed = j$(this).next('div').css('display');
+                if (displayed == 'block') {
+                    j$(this).next().hide( 'blind', null, 500, null );
+                    setHeightFunction();
+                }
+                else {
+                    j$(this).next().show( 'blind', null, 500, setHeight );
+                    setHeightFunction();
+                }
+                
+            });
+            
+        }
+        
+        // because we are using a blind effect, the height needs to adjust smoothly
+        // which is why we use all these timeouts
+        function setHeightFunction() {
+            setTimeout(function() { setHeight(); }, 25);
+            setTimeout(function() { setHeight(); }, 50);
+            setTimeout(function() { setHeight(); }, 75);
+            setTimeout(function() { setHeight(); }, 100);
+            setTimeout(function() { setHeight(); }, 125);
+            setTimeout(function() { setHeight(); }, 150);
+            setTimeout(function() { setHeight(); }, 175);
+            setTimeout(function() { setHeight(); }, 200);
+            setTimeout(function() { setHeight(); }, 225);
+            setTimeout(function() { setHeight(); }, 250);
+            setTimeout(function() { setHeight(); }, 275);
+            setTimeout(function() { setHeight(); }, 300);
+            setTimeout(function() { setHeight(); }, 325);
+            setTimeout(function() { setHeight(); }, 350);
+            setTimeout(function() { setHeight(); }, 375);
+            setTimeout(function() { setHeight(); }, 400);
+            setTimeout(function() { setHeight(); }, 425);
+            setTimeout(function() { setHeight(); }, 450);
+            setTimeout(function() { setHeight(); }, 475);
+            setTimeout(function() { setHeight(); }, 500);
+        }
+        
+        // Array to hold the list of categories where the user Subscribed All
+        // Format of list is SubId -> Subscribed(True/False)
+        var ToggleSubscribeList = new Array();
+        
+        //Boolean variables helpful in determining execution order
+        var isToggleSubscriptionExecutuing = false;
+        var isSubscriptionAllExecuting = false;
+            
+        function toggleSubscriptionJS(id, subscribe) {
+        
+            isToggleSubscriptionExecutuing = true;
+            
+            if(isToggleSubscriptionExecutuing && !isSubscriptionAllExecuting) {
+            
+                // Check to see if this is a duplicate request
+                if (ToggleSubscribeList[id] == 'true' && subscribe == 'true') {
+                    //j$('#debug').append('already subscribed:' + id + ' subscirbe:' + subscribe + '<br>');
+                    return;
+                }
+                else {
+                    //Console.log('adding id ' + id + ' - ' + subscribe);
+                    //j$('#debug').append('adding:' + id + ' subscirbe:' + subscribe + '<br>');
+                    // Add or update the value in our array
+                    ToggleSubscribeList[id] = subscribe;
+                }
+                
+                // Send the command to SF first
+                toggleSubscription(id, subscribe);
+                
+                // Modify the page javascript
+                if (subscribe == 'true') {
+                    j$('#' + id).html('Unsubscribe');
+                    j$('#' + id).addClass('unsubscribe');
+                }
+                else if (subscribe == 'false') {
+                    j$('#' + id).html('Subscribe');
+                    j$('#' + id).removeClass('unsubscribe');
+                }
+            }
+        }
+        
+        // array to hold the list of categories where the user Subscribed All
+        var SubscribedToAllList = new Array();
+        
+        function subscribeToAllJS(sectionName, sectionType) {
+        
+            isSubscriptionAllExecuting = true;
+            
+            if(!isToggleSubscriptionExecutuing && isSubscriptionAllExecuting) {
+        
+                var sectionTypeCSSClass;
+                if (sectionType == 'Advisory.com') sectionTypeCSSClass = 'ADVISORY';
+                else if (sectionType == 'EAB.com') sectionTypeCSSClass = 'EAB';
+                
+                // Check to see if we already subscribed to all of these subscriptions
+                var indexNum = SubscribedToAllList.indexOf(sectionName);
+                if (indexNum > -1) {
+                    // Console.log('value is in array:' + sectionName);
+                    setIsExecuting();
+                    return;
+                }
+                else {
+                    // Console.log('adding value to array: ' + sectionName);
+                    SubscribedToAllList.push(sectionName);
+                }
+                
+                // Send the command to SF to 
+                subscribeToAll(sectionName, sectionType);
+                
+                // Set the HTML to Unsubscribe for each link
+                j$('.' + sectionName + '.' + sectionTypeCSSClass).html('Unsubscribe');
+                j$('.' + sectionName + '.' + sectionTypeCSSClass).addClass('unsubscribe');
+                // Adjust the Javascript for each link
+                j$('.' + sectionName).each(function() {
+                    var oldOnClick = j$(this).attr('onClick');
+                    var newOnClick = oldOnClick.replace('true', 'false');
+                    j$(this).attr('onClick', newOnClick);
+                });
+            }
+        }
+        
+        // this method is called in the onComplete portion of togglesubscription cr-3846
+        function updateSubscribeLink(id, subscribe) {
+        
+            // Modify the page javascript
+            if (subscribe == 'true') {
+                var oldOnClick = j$('#' + id).attr('onClick');
+                var newOnClick = oldOnClick.replace('true', 'false');
+                j$('#' + id).attr('onClick', newOnClick);
+            }
+            else if (subscribe == 'false') {
+                var oldOnClick = j$('#' + id).attr('onClick');
+                var newOnClick = oldOnClick.replace('false', 'true');
+                j$('#' + id).attr('onClick', newOnClick);
+            }
+        }
+        
+        function setIsExecuting() {
+            isToggleSubscriptionExecutuing = false;
+            isSubscriptionAllExecuting = false;
+        }
+        
+    </script>
+    
+</apex:page>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Custom metadata type to hold eligible internal email domains related details. Created for CR-20160729-10075.</description>
+    <fields>
+        <fullName>Applicable_Record_Types__c</fullName>
+        <description>Will hold the applicable record types developer name in comma separated fashion. Created for CR-20160729-10075.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Applicable Record Types</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Eligible_Email_Domain__c</fullName>
+        <description>Will hold the eligible email domain string literal. Created for CR-20160729-10075.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Eligible Email Domain</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Object_API_Name__c</fullName>
+        <description>Will hold the object API Name. Created for CR-20160729-10075.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Object (API Name)</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Production__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Set as true for Production instance based applicable records. Created for CR-20160729-10075.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Production</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>Internal Applicable Email Suffix</label>
+    <pluralLabel>Internal Applicable Email Suffixes</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

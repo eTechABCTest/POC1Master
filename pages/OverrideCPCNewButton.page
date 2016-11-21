@@ -1,0 +1,14 @@
+<!-- 
+    Description     :   This page is for Collection Perspective Child new button. 
+    
+    Created By      :   Subhash Garhwal
+    
+    Created Date    :   07/24/2015
+    
+    Revision Logs   :   V_1.0 - Created - CR-20150618-9013 
+    
+ -->
+<apex:page standardController="Program_Relationship__c" extensions="OverrideCPCNewButtonController" action="{!redirect}">
+
+
+</apex:page>

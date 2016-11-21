@@ -1,0 +1,14 @@
+<!--
+*   Purpose:    Used to show the attribute icons that relate to an SFDC Release object record.
+*               
+*   Created By:  Victor Hanson
+*    
+*   Revision Log:       V1.0 - (Code Added)- Victor Hanson - 11/05/2015 - Created
+*
+*
+-->
+<apex:page standardController="IS_Environment__c" extensions="AttributesISSysComponentExtension">
+    
+    <apex:dynamicComponent componentValue="{!DynamicOutputPanel}" />
+    
+</apex:page>

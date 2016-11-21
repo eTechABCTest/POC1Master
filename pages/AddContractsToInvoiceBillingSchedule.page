@@ -1,0 +1,159 @@
+<apex:page standardController="Invoice_Billing_Schedule__c" extensions="AddContractsToInvoiceBillingSchedule" showHeader="false">
+
+<!-- Include the background processing component for all the AJAX call -->
+<c:Background_Processing />
+
+<!-- Javascript code for client side validation -->
+<script>
+	//This javascript method is to select/unselect all the check boxes if header level check box is selected.
+    function checkAll(selectAll) {
+        
+        //get the all check boxes on the page
+        var inputElem = document.getElementsByTagName("input");
+        
+        for(var i=0; i<inputElem.length; i++) {
+            
+            //mark the checkboxes as parent check box value
+            if(inputElem[i].id.indexOf("selectRecords")!=-1)
+                inputElem[i].checked = selectAll.checked;
+        }
+    }
+    
+    //This method is to open the contract detail in a pop up window
+    function openContract(contractId) {
+    	window.open('/' + contractId, "Window");
+    }
+    
+    //check before submit
+    function validateBeforeSubmit() {
+    	
+    	//get the all check boxes on the page
+        var inputElem = document.getElementsByTagName("input");
+        
+        //flag to set that a checkbox have seleted
+        var isChecked = false;
+        
+        for(var i=0; i<inputElem.length; i++) {
+            
+            //mark the checkboxes as parent check box value
+            if(inputElem[i].id.indexOf("selectRecords")!=-1 && inputElem[i].checked == true) {
+            	isChecked = true;
+            }
+        }
+        
+        //show the error message if no record in selected on the page
+        if(isChecked == false) {
+	        alert('Please select at least one record.')
+	        return false;
+        }
+        
+        //call the save action
+        addContracts();
+        
+        return false;
+    }
+</script>
+
+	<!-- Institute Name -->
+	<h1>{!Invoice_Billing_Schedule__c.Institution__r.Name}</h1><BR/><BR/>
+	Select one or more of the listed ATL Contracts to link to this Invoice Billing Schedule by checking the box to the left of the Contract Name and then clicking the Add Contracts button.
+	<BR/><BR/>
+	<!-- Form starts from here -->
+	<apex:form >
+		<apex:inputHidden value="{!Invoice_Billing_Schedule__c.Institution__c}" />
+        
+        <!-- Added By - Mahendra Swarnkar - CR-20160113-9513 - 4/1/2016 - Starts from here -->
+        <Apex:inputHidden value="{!Invoice_Billing_Schedule__c.Division__c}" />
+		<!-- Added By - Mahendra Swarnkar - CR-20160113-9513 - 4/1/2016 - Ends here -->
+        
+        <!-- Action functions -->
+		<apex:actionFunction name="addContracts" action="{!addContracts}" status="waitMsg" reRender="validationMsg, opCloseWindow" />
+		
+		<!-- Button (Add Contracts) -->
+		<apex:outputPanel layout="block" style="text-align:right;">
+			<apex:commandButton value="Add Contracts" onClick="return validateBeforeSubmit();" />
+		</apex:outputPanel>
+		
+		<!-- Apex page block -->
+		<apex:pageBlock id="pb">
+			
+			<!-- Show all page messages -->
+			<apex:pageMessages id="validationMsg"/>
+			
+			<!-- Action Status component to handle all the AJAX call processing sign -->
+			<apex:actionStatus onstart="showWaitScreen();" onstop="hideWaitScreen();" id="waitMsg" />
+			
+			<!-- List of contract ABC records lies in specific criteria -->
+			<apex:pageBlockTable value="{!listContractABCWrapper}" var="item" >
+				<apex:column >
+					<apex:facet name="header">
+						<input type="checkbox" onclick="checkAll(this)" id="selectAll"/>
+					</apex:facet>
+					<apex:inputCheckbox value="{!item.selected}" id="selectRecords" />
+				</apex:column>
+				<apex:column headerValue="">
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.Name.label}{!IF(sortExp == 'Name',IF(sortDirection='ASC','▲','▼'),'')}" id="name" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="Name" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					<apex:outputLink onClick="openContract('{!item.contractABC.Id}');">
+						{!item.contractABC.Name}
+					</apex:outputLink>
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.Start__c.label}{!IF(sortExp == 'Start__c',IF(sortDirection='ASC','▲','▼'),'')}" id="start" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="Start__c" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					{!MONTH(item.contractABC.Start__c)}/{!DAY(item.contractABC.Start__c)}/{!YEAR(item.contractABC.Start__c)}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.End__c.label}{!IF(sortExp == 'End__c',IF(sortDirection='ASC','▲','▼'),'')}" id="end" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="End__c" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					{!MONTH(item.contractABC.End__c)}/{!DAY(item.contractABC.End__c)}/{!YEAR(item.contractABC.End__c)}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.Invoice_Contact__c.label}{!IF(sortExp == 'Invoice_Contact__c',IF(sortDirection='ASC','▲','▼'),'')}" id="invoiceContract" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="Invoice_Contact__c" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					<apex:outputLink onClick="openContract('{!item.contractABC.Invoice_Contact__c}');">
+						{!item.contractABC.Invoice_Contact__r.Name}
+					</apex:outputLink>
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.Negotiated_Amount__c.label}{!IF(sortExp == 'Negotiated_Amount__c',IF(sortDirection='ASC','▲','▼'),'')}" id="negotiatedAmount" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="Negotiated_Amount__c" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					{!item.contractABC.Negotiated_Amount__c}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header">
+						<apex:commandLink action="{!setupSort}" value="{!$ObjectType.Contract__c.fields.CreatedDate.label}{!IF(sortExp == 'CreatedDate',IF(sortDirection='ASC','▲','▼'),'')}" id="createdDate" reRender="pb, validationMsg" status="waitMsg" >
+	                    	<apex:param value="CreatedDate" name="column" assignTo="{!sortExp}" />
+	                    </apex:commandLink>
+					</apex:facet>
+					{!MONTH(DATEVALUE(item.contractABC.CreatedDate))}/{!DAY(DATEVALUE(item.contractABC.CreatedDate))}/{!YEAR(DATEVALUE(item.contractABC.CreatedDate))}
+				</apex:column>
+			</apex:pageBlockTable>
+			
+			<!-- Output panel to handle the closing window js -->
+			<apex:outputPanel id="opCloseWindow">
+				<script>
+					if('{!isSaveCalled}' == 'true' && '{!isErrorOccured}' == 'false') {
+                        window.opener.location.href='/{!$CurrentPage.parameters.Id}';
+						window.close();
+					}
+				</script>
+			</apex:outputPanel>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

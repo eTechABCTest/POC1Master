@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Holds site URLs that need to be referenced in formulas or in apex.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Crimson_Community_SIAM_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>URL that is used on the Crimson Community Timeout page to help a SIAM user log back in to the Community.</inlineHelpText>
+        <label>Crimson Community SIAM URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Crimson_Community_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>URL for the Crimson Community site.</inlineHelpText>
+        <label>Crimson Community URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <label>Site URLs</label>
+    <visibility>Public</visibility>
+</CustomObject>

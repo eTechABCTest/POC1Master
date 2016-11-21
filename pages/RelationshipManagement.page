@@ -1,0 +1,501 @@
+<!-- 
+ *  Purpose         :   This page is to create the new relationship records
+ *
+ *  Created By      :   Bhavi Sharma
+ *
+ *  Created Date    :   09/02/2015
+ *
+ *  Revision Logs   :   V_1.0 - Created - CR-20150825-9182
+ *
+ -->
+<apex:page controller="RelationshipManagementController" id="pg">
+    
+    <!-- Background Processing -->
+    <c:BlockUI />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            
+            defaultScript();   
+            
+            $(document).keyup(function(e) {
+                 if (e.keyCode == 27) { // escape key maps to keycode `27`
+                   if($('.customDialog').is(':visible')){
+                    
+                    var $visibleDialog = $('.customDialog:visible');
+                    cancelAll();
+                    
+                    $visibleDialog.hide();
+                    $('#overlay').hide();
+                    
+                  }
+                }
+            });  
+        });
+        function defaultScript(){
+            $('input[value = "New"]').on('click',function(){
+                 $('.dialogWrapper').show();
+                 $('.loadingBox').hide();
+             });
+             $('input[value = "Save"]').on('click',function(){
+                var isValidationPassed = validateRequiredData(this);
+                    
+                    if(isValidationPassed){
+                        
+                        $('.dialogWrapper').hide();
+                       $('.loadingBox').show();
+                       $('.loadingText').text('Saving....');
+                        
+                    }
+            });
+        }
+        //This method is to select all the checkboxes on page
+        function selectAllCheckboxes(obj,receivedInputClasses){
+        
+            var inputCheckBox = document.getElementsByClassName(receivedInputClasses);                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                inputCheckBox[i].checked = obj.checked;
+            }
+        }
+        function refreshBtn() {
+            
+            document.getElementById('refreshBtnDiv').style.display = 'block'; 
+        }
+        function openStaffPopupRelationship(isPopulateDefaultDate){
+            if(isPopulateDefaultDate){
+                
+                $('.effectiveDateField').each(function(i){
+                    $('.effectiveDateFieldPopup')[i].value = $(this).val();
+                }); 
+            }
+            $("#staffrelationshipPopup").show();
+            $("#overlay").show();    
+        }
+        function closeAnyTypePopup(popupId){
+            $(popupId).hide();
+            $("#overlay").hide();   
+            defaultScript();
+        }
+        function showLoading(){
+        
+            $('.dialogWrapper').hide();
+            $('.loadingBox').show();
+            $('.loadingText').text('Loading....');
+        }
+        function editStaffRelationshipMed(rowIndex){
+            openStaffPopupRelationship(false);
+            showLoading();
+            editStaffRelationship(rowIndex);
+        }
+        function hideLoading(){
+                
+            $('.loadingBox').hide();
+            $('.dialogWrapper').show();
+        }
+        function saveStaffRelationShipMed(elem){
+            if(validateRequiredData(elem) == true){
+                
+                saveStaffRelationShip();    
+            }
+        }
+        //Function to cancel
+        function cancelbtn() {
+                
+                //Remove all the error MSGs
+            $('.dialogWrapper:visible').find('.errorMSG').text('');
+            $('.dialogWrapper:visible').find('.eitherError').text('');
+            
+            if($('.customDialog').is(':visible')){
+                          
+                var $visibleDialog = $('.customDialog:visible');
+                cancelAll();
+                $visibleDialog.hide();
+                $('#overlay').hide();
+                
+            }
+        }
+        function checkToggleFiledState(elem,toggleClass){
+            var ifAllToggleFilled = true;
+            $(toggleClass).each(function(){
+                if($(this).find('input[type = "text"]').val() == '')
+                    ifAllToggleFilled = false;      
+            });
+            if(ifAllToggleFilled){
+                populateDirectionList();    
+            }
+        }
+        function validateRequiredData(elem){
+                
+                //Handle Implicitly for visible data
+                var $visibleWrapper;
+                var $visibleDialogWrapper = $('.dialogWrapper:visible');
+                if($visibleDialogWrapper != null || $visibleDialogWrapper != undefined){
+                    $visibleWrapper = $visibleDialogWrapper;
+                    if($visibleDialogWrapper.find('.dialog1Inner').is(':visible')){
+                        $visibleWrapper = $visibleDialogWrapper.find('.dialog1Inner:visible');  
+                    }
+                }
+                var isAllRequiredFieldHasFilled = true;
+                
+                //Check all required field if they filled with Required data
+                $visibleWrapper.find('.requiredField').each(function(i){
+                    
+                    if($(this).find('input[type="text"]').val() == ''){
+                    
+                        $(this).find('.timeLineIcon-red').show();
+                        $(this).find('input').css('border', '1px solid #D0212F');
+                        isAllRequiredFieldHasFilled = false;
+                    }else if($(this).find('select').val() == ''){
+                        $(this).find('.timeLineIcon-red').show();
+                        $(this).find('select').addClass('requiredSelect');
+                        isAllRequiredFieldHasFilled = false;
+                    }else{
+                        $(this).find('input').css('border', '');
+                        $(this).find('select').removeClass('requiredSelect');
+                    }
+                });
+                
+                if(isAllRequiredFieldHasFilled == false)
+                    $visibleWrapper.find('.errorMSG').text('Please fill all the required fields.');
+                else
+                    $visibleWrapper.find('.errorMSG').text('');
+                
+                //Check for Either Required field in which either one of the field should be filled or should be both blank
+                var eitherFilledCounter = 0;
+                var eitherElem1 = $visibleWrapper.find('.eitherRequiredField').eq(0).find('input[type="text"]');
+                var eitherElem2 = $visibleWrapper.find('.eitherRequiredField').eq(1).find('input[type="text"]');
+                var eitherLabel1 = $visibleWrapper.find('.eitherRequiredLable').eq(0);
+                var eitherLabel2 = $visibleWrapper.find('.eitherRequiredLable').eq(1);
+                
+                if(eitherElem1.val() == '' && eitherElem2.val() == ''){
+                    
+                    $visibleWrapper.find('.eitherError').text('You must supply EITHER '+ eitherLabel1.text() + ' OR ' + eitherLabel2.text());
+                    isAllRequiredFieldHasFilled = false;
+                }else if(eitherElem1.val() != '' && eitherElem2.val() != '' && eitherElem1.val() != undefined && eitherElem2.val() != undefined){
+                    
+                    $visibleWrapper.find('.eitherError').text('You must supply EITHER '+ eitherLabel1.text() + ' OR ' + eitherLabel2.text());
+                    isAllRequiredFieldHasFilled = false;
+                }else{
+                    $visibleWrapper.find('.eitherError').text('');
+                    
+                }
+                if(isAllRequiredFieldHasFilled == false)
+                    return false;
+                return true;
+            }
+            function resetEffectiveDate(elem,resetElemClass){
+                if(!elem.checked)
+                    if(resetElemClass == '.effectiveDateField')
+                        $(resetElemClass).val('');
+                    else if(resetElemClass == '.relationShipLookup'){
+                        //set null value to hidden input of lookup
+                        $(resetElemClass).val('');
+                        var lkidElemId = $(resetElemClass).attr('id') + '_lkid';
+                        var lkoldElemId = $(resetElemClass).attr('id') + '_lkold';
+                        document.getElementById(lkidElemId).value = '';
+                        document.getElementById(lkoldElemId).value = '';
+                    }
+                resetFilters();
+            }
+            function populateRelationTypeName(actualLabelClass, labelClass, colClass){
+                var container = document.getElementById('pg:frm:pb:oPRels');
+                var $tableRow = $(container).find('.list tbody').find('tr');
+                $tableRow.each(function(i){
+                    var $editCol = $(this).find(colClass);
+                    $editCol.find(labelClass).find('a').text($editCol.find(actualLabelClass).find('a').text());
+                });
+            }
+    </script>
+    <style>
+        .customDialog {position: absolute;height: auto;min-width:200px;min-height:100px;width: auto;top: 30%;left: 471px;display: block;z-index: 2;background:#FFFFAA !important;}
+        .headerMy {border: 1px solid #aaaaaa;background: #cccccc url("https://code.jquery.com/ui/1.11.4/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;color: #222222;font-weight: bold;}
+        .dialogWrapper{padding:20px;background-color:#FFFFAA;}
+        .loadingBox{position:relative;width:300px;height:100px;}
+        .loadingBox .loadingInnerWrapper{position:absolute;top:50%;left:30%}
+        .requiredField{position:relative;}
+        .requiredField .timeLineIcon-red {background: #D0212F;display: inline-block;width: 2px;position: absolute;top: 0;bottom: 0;left: -4px;}
+        .errorMSG{font-size:14px; color:#D0212F;}
+        .contentFloterLeft {float:left;}
+        .contentFloterRight {float:right;}
+        .notFloat{clear:both;}
+    </style>
+    <!-- Section Header -->
+    <apex:sectionHeader title="Relationship Management"/>
+    
+    <!-- Form -->
+    <apex:form id="frm">
+        
+        <!-- Page block -->
+        <apex:pageBlock id="pb">
+        
+            <!-- Messages -->
+            <apex:pageMessages id="validationMsg" />
+            
+            <!--Block UI Action Status-->
+            <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+            
+            <!-- This action function is just to rerender the transfer section based on the latest selected picklist value -->
+            <apex:actionFunction name="resetTransferView" action="{!resetViews}" reRender="validationMsg, oPMasterDetailTransfer, oPActionButtons" status="waitMsg" oncomplete="defaultScript();"/>
+            
+            <!-- This action function is just to rerender the filters section based on the selected checkbox -->
+            <apex:actionFunction name="resetFilters" action="{!resetFilters}" reRender="validationMsg, oPFilters, oPActionButtons" oncomplete="refreshBtn();defaultScript();"/>
+            
+            <!-- This action function is used to Refresh the result -->
+            <apex:actionFunction name="refreshResultsFun" action="{!refreshResults}" reRender="validationMsg, oPFilters, oPRels, oPActionButtons" status="waitMsg" oncomplete="defaultScript();"/>
+            
+            <!--  This Action Function Load StaffrelationShip data for Edit -->
+            <apex:actionFunction name="editStaffRelationship" action="{!editRelationShip}" reRender="stafftRelationshipWrapper" oncomplete="hideLoading();">
+                <apex:param name="editIndex" value="" assignTo="{!selectedStaffRelationshipIndex}"/>
+            </apex:actionFunction>
+            
+            <!--  This Action function to cancell All popup actions -->
+            <apex:actionFunction name="cancelAll" action="{!cancelAllPopupActions}" reRender="stafftRelationshipWrapper"/>
+                                         
+            <!-- Command Button -->
+            <apex:pageBlockButtons id="pbb">
+                <apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Save and Close" action="{!saveAndClose}" />
+                <apex:commandButton value="Close" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockSection columns="1">
+                    <apex:outputPanel id="oPMasterDetail">
+                        <B>Contacts related to</B> &nbsp;&nbsp; <apex:inputField value="{!staffRelationship.From__c}" onchange="refreshBtn();"/>
+                        <BR/>
+                        <apex:selectRadio value="{!selectedView}" layout="pageDirection" onchange="resetTransferView();">
+                            <apex:selectOptions value="{!views}" />
+                        </apex:selectRadio> 
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="block"  style="margin-left: 28px;">
+                        <apex:pageBlockSection columns="1" id="oPMasterDetailTransfer">
+                            <apex:pageBlockSectionItem >
+                                Transfer to
+                                <apex:outputPanel >
+                                    <apex:inputField value="{!transferStaffRelationship.From__c}" rendered="{!selectedView = 'transfer'}" /> 
+                                    <apex:inputText rendered="{!selectedView != 'transfer'}" disabled="true" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem >
+                                Effective as of
+                                <apex:outputPanel >
+                                    <apex:inputField value="{!transferStaffRelationship.Start_Date__c}" rendered="{!selectedView = 'transfer'}"/>
+                                    <apex:inputText rendered="{!selectedView != 'transfer'}" disabled="true"/> 
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="1" collapsible="false">
+                    <apex:outputPanel layout="block" id="oPFilters" >
+                        <div style="overflow:auto;">
+                            <div style="float:left;"><B>Filters</B></div>
+                            <div style="display:none;float: right; margin-right: 50px;" id="refreshBtnDiv">
+                    
+                                <!-- Refresh -->
+                                <input type="button" classs="btn" value="Refresh" onclick="refreshResultsFun();" style="cursor: pointer;"/>
+                            </div>  
+                        </div>    
+                        <BR/>
+                        <apex:outputPanel layout="block" styleClass="notFloat">
+                            <apex:inputCheckbox value="{!isCurrentlyActive}" onchange="resetFilters();" disabled="{!isEffectiveDate}"/>
+                            &nbsp;&nbsp; Currently Active
+                        </apex:outputPanel> 
+                        <BR/>
+                        <apex:outputPanel layout="block" styleClass="notFloat">
+                            <apex:inputCheckbox value="{!isEffectiveDate}" onchange="resetEffectiveDate(this,'.effectiveDateField');" disabled="{!isCurrentlyActive}"/>
+                            &nbsp;&nbsp; Effective dates
+                            &nbsp;&nbsp;<apex:inputField value="{!filterStaffRelationship.Start_Date__c}" rendered="{!isEffectiveDate}" onchange="refreshBtn();" styleClass="effectiveDateField"/> 
+                                        <apex:inputText disabled="true" rendered="{!NOT(isEffectiveDate)}"/>
+                            &nbsp;&nbsp; to &nbsp;&nbsp;<apex:inputField value="{!filterStaffRelationship.End_Date__c}" rendered="{!isEffectiveDate}" onchange="refreshBtn();" styleClass="effectiveDateField"/>
+                                        <apex:inputText disabled="true" rendered="{!NOT(isEffectiveDate)}"/> 
+                        </apex:outputPanel>
+                        <BR/>
+                        <apex:outputPanel layout="block" styleClass="notFloat">
+                            <apex:inputCheckbox value="{!isRelationshipType}" onchange="resetEffectiveDate(this,'.relationShipLookup');" />
+                            &nbsp;&nbsp; Relationship Type&nbsp;  
+                            &nbsp;&nbsp; <apex:inputField value="{!filterStaffRelationship.Relationship__c}" rendered="{!isRelationshipType}" onchange="refreshBtn();" styleClass="relationShipLookup"/> 
+                                        <apex:inputText disabled="true" rendered="{!NOT(isRelationshipType)}"/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlockSection>
+            <BR/><BR/>
+            
+            <apex:outputPanel id="oPActionButtons" layout="block" style="margin-bottom:10px;">
+            
+                <!-- Add New Relationships Button, Enabled in case of View is Existing Relationship-->
+                <apex:outputPanel rendered="{!IF(selectedView == 'transfer', false, true)}">
+                    <input type="button" value="New" class="btn" onclick="openStaffPopupRelationship(true);"/>
+                </apex:outputPanel>
+                
+                <!--  Disabled New Button in case of View is Transfer -->
+                <apex:outputPanel rendered="{!IF(selectedView == 'transfer', true, false)}">
+                    <input type="button" value="New" class="btnDisabled"  disabled="disabled"/>
+                </apex:outputPanel>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- Delete selected ones -->
+                <apex:commandButton value="Delete" action="{!deleteRelationship}" reRender="validationMsg,oPRels,oPActionButtons" status="waitMsg" disabled="{!disableDelete}" oncomplete="defaultScript();"/>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <!--  Apply master dates to selected ones -->
+                <apex:commandButton value="Apply dates" action="{!applyDates}" reRender="validationMsg,oPRels" status="waitMsg" disabled="{!AND(OR(selectedView = 'transfer', selectedView = 'view'), NOT(isEffectiveDate))}" />
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="oPRels">
+                <apex:variable value="{!0}" var="rowIndex"/>
+                <apex:pageBlockTable value="{!listStaffRelationshipWrapper}" var="item">
+                    <apex:column >
+                       <apex:facet name="header"> 
+                           <apex:inputCheckbox onclick="selectAllCheckboxes(this,'checkAll')"/>
+                       </apex:facet>
+                       <apex:inputCheckbox value="{!item.selected}" id="inputId" styleClass="checkAll"/>
+                       <apex:outputText rendered="{!item.sR.Id == null}" value="*"/>
+                    </apex:column>
+                    
+                    <apex:column onclick="editStaffRelationshipMed({!rowIndex});" style="cursor:pointer">
+                        <apex:facet name="header">
+                            Relationship
+                        </apex:facet>
+                        <apex:outputText value="{!item.relationship}"/>
+                        <apex:variable value="{!rowIndex+1}" var="rowIndex"/>
+                    </apex:column>
+                    
+                     <apex:column >
+                        <apex:facet name="header">
+                            Related to
+                        </apex:facet>
+                        <a href="/{!item.contId}" target="_blank">{!item.contactName}</a>
+                    </apex:column>
+                    
+                    <apex:column styleClass="typeCol">
+                        <apex:facet name="header">
+                            Type
+                        </apex:facet>
+                        <!--  Show normal anchor tag instead of Output field so we can open Relationship Type in new tab -->
+                        <div class="relationTypeLabel">
+                            <a href="/{!item.sR.Relationship__c}" target="_blank"></a>
+                        </div>
+                        <!--  Hide output field -->
+                        <div class="relationTypeActualLabel" style="display:none;">
+                            <apex:outputField value="{!item.sR.Relationship__c}" style="text:decoration:none;display:none;"/>
+                        </div>
+                        
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            Start Date
+                        </apex:facet>
+                        <apex:outputField value="{!item.sR.Start_Date__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            End Date
+                        </apex:facet>
+                        <apex:outputField value="{!item.sR.End_Date__c}"/>
+                    </apex:column>
+                </apex:pageBlockTable>
+                
+                <!--  Script to change output field in anchor tag so link can be opened into new tab -->
+                <script>
+                    populateRelationTypeName('.relationTypeActualLabel','.relationTypeLabel','.typeCol');
+                </script>
+                
+            </apex:outputPanel>
+        </apex:pageBlock>
+        <!-- Staff RelationShip Popup -->
+        <div id="staffrelationshipPopup" title="New Business Title" style="display:none;" 
+                    class="customDialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable">
+                    
+            <div  class="headerMy ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">Staff Relationship</div>
+            
+             <!-- ActionRegion to avoid other sections validation -->
+            <apex:actionRegion >
+                
+                <!--  Action to populate Direction list on the fly in the popup -->
+                <apex:actionFunction action="{!populateDirectionList}" name="populateDirectionList" reRender="directionListPanel" status="waitMsg"/>
+                
+                 <!-- Loding box -->
+                <apex:outputPanel layout="block" styleClass="loadingBox">
+                    <div class="loadingInnerWrapper">
+                        <img src="/img/loading32.gif" width="25" height="25" />
+                        <apex:outputLabel value="Loading..." styleClass="loadingText"/>
+                    </div>
+                </apex:outputPanel>
+                
+                <!-- Popup Content-->
+                <div class="dialogWrapper">
+                
+                    <!-- Function to add New or Edit Staff RelationShip data -->
+                    <apex:actionFunction name="saveStaffRelationShip" action="{!saveNewStaffReltionShipData}" onComplete="closeAnyTypePopup('#staffrelationshipPopup')" reRender="oPRels, oPActionButtons, stafftRelationshipWrapper"/>
+                    
+                    <span class="errorMSG"></span>
+                    
+                    <!--  Panel to Refresh the Data on the fly -->
+                    <apex:outputPanel layout="block" id="stafftRelationshipWrapper">
+                        <table>
+                            <tr>
+                                <td class="leftCol"><apex:outputLabel value="Contact" /></td>
+                                <td class="rightCol">
+                                    <div class="requiredField toggleField">
+                                        <span class="timeLineIcon-red"></span>
+                                        <apex:inputField value="{!staffRelationWrapper.sR.From__c}" id="fromContact" onchange="checkToggleFiledState(this,'.toggleField');"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="leftCol"><apex:outputLabel value="Type" /></td>
+                                <td class="rightCol">
+                                    <div class="requiredField toggleField">
+                                        <span class="timeLineIcon-red"></span>
+                                        <apex:inputField value="{!staffRelationWrapper.sR.Relationship__c}" id="relationShipType" onchange="checkToggleFiledState(this,'.toggleField');"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="leftCol"><apex:outputLabel value="Direction" /></td>
+                                <td class="rightCol">
+                                    <apex:outputPanel id="directionListPanel">
+                                        <apex:selectRadio value="{!staffRelationWrapper.selectedDirection}" layout="pageDirection">
+                                            <apex:selectOptions value="{!staffRelationWrapper.directionList}"/>
+                                        </apex:selectRadio> 
+                                    </apex:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="leftCol"><apex:outputLabel value="Starting" /></td>
+                                <td class="rightCol">
+                                    <div class="requiredField">
+                                        <span class="timeLineIcon-red"></span>
+                                        <apex:inputField value="{!staffRelationWrapper.sR.Start_Date__c}" id="rStartDate" styleClass="effectiveDateFieldPopup" /> 
+                                    </div>   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="leftCol"><apex:outputLabel value="Ending" /></td>
+                                <td class="rightCol">
+                                    <apex:inputField value="{!staffRelationWrapper.sR.End_Date__c}" id="rEndDate" styleClass="effectiveDateFieldPopup"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+                    <div>
+                        <BR/>
+                        <input type="button" value="Save" class="btn" onClick="saveStaffRelationShipMed(this);"/>
+                        <input type="button" value="Cancel" class="btn" onClick="cancelbtn();"/>
+                    </div>
+                </div>
+                
+            </apex:actionRegion>
+        </div>
+        <div class="ui-widget-overlay ui-front" style="z-index: 1;display:none;" id="overlay" ></div>
+    </apex:form>       
+</apex:page>

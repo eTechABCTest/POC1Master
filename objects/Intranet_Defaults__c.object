@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Default values for specific item types</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Active_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Active Status</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Approval_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Approval Status</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ContentTypes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Types of Content an Item contains.  References another Custom Setting by Name</inlineHelpText>
+        <label>ContentTypes</label>
+        <length>150</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ContentViewerView__c</fullName>
+        <externalId>false</externalId>
+        <label>ContentViewerView</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Create_Source__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Source of the data (Integration System name, Manual Entry, etc)</inlineHelpText>
+        <label>Create Source</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EmailSubject__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Email subject, initially added for Chatter Poll suggestions</inlineHelpText>
+        <label>EmailSubject</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EmailToAddress__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address, intially added for Chatter Poll suggestions</inlineHelpText>
+        <label>EmailToAddress</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Type</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Intranet_Container__c</fullName>
+        <externalId>false</externalId>
+        <label>Intranet Container</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Item_RecordTypeId__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Intranet Item Record Type Id</inlineHelpText>
+        <label>Item RecordTypeId</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Item_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Default value for Item_Type__c on Intranet_Item__c</inlineHelpText>
+        <label>Item Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LinkBaseURL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Base URL for link to item detail</inlineHelpText>
+        <label>LinkBaseURL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Link_Action__c</fullName>
+        <externalId>false</externalId>
+        <label>Link Action</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Link_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Link Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Content_Items__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for Flexible items, to limit the total number of items in the list sent to the main Intranet home page.</inlineHelpText>
+        <label>Max Content Items</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Permalink__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How to generate the Permalink - &apos;ContentViewer&apos;,&apos;Link_URL__c&apos;</inlineHelpText>
+        <label>Permalink</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Schedule_RecordTypeId__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Intranet Schedule Record Type Id</inlineHelpText>
+        <label>Schedule RecordTypeId</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SearchCategory__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Search Results Category</inlineHelpText>
+        <label>SearchCategory</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SearchResultOrder__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Order in which to display the search results</inlineHelpText>
+        <label>SearchResultOrder</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SearchResultSortFieldDir__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>ASC or DESC</inlineHelpText>
+        <label>SearchResultSortFieldDir</label>
+        <length>5</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SearchResultSortField__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Field used to sort the search results</inlineHelpText>
+        <label>SearchResultSortField</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SettingType__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Type of Custom Setting - &apos;ContentTypes&apos;,&apos;ItemType&apos;,&apos;Settings&apos;</inlineHelpText>
+        <label>SettingType</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TrendType__c</fullName>
+        <externalId>false</externalId>
+        <label>TrendType</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Intranet Defaults</label>
+    <visibility>Public</visibility>
+</CustomObject>

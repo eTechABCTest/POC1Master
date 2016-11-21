@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object represents the actual cost of a single Advisory Event. Created as part of the Events Management project</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Actual__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Cost</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Advisory_Event__c</fullName>
+        <externalId>false</externalId>
+        <label>Advisory Event</label>
+        <referenceTo>Advisory_Event__c</referenceTo>
+        <relationshipName>Event_Budgets</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Day__c</fullName>
+        <externalId>false</externalId>
+        <label>Day</label>
+        <picklist>
+            <picklistValues>
+                <fullName>One</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Two</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Three</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Four</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Five</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Status_Category__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Event__r.Status_Category__c</formula>
+        <label>Event Status Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( Advisory_Event__r.Status__c )</formula>
+        <label>Event Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sub_type__c</fullName>
+        <externalId>false</externalId>
+        <label>Sub-type</label>
+        <picklist>
+            <controllingField>Type__c</controllingField>
+            <picklistValues>
+                <fullName>Meal room</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reception room</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dinner room</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>General session room</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout rooms</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Attrition fees</fullName>
+                <default>false</default>
+                <controllingFieldValues>Facility</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakfast</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Break</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Coffee</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Drinks</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dinner - Food</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dinner - Alcohol</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dinner - Labor</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reception - Food</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reception - Alcohol</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reception - Labor</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Labor</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Labor 1</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Labor 2</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout catering</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Delivery charge</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales tax</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gratuity</fullName>
+                <default>false</default>
+                <controllingFieldValues>Catering</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>General Session AV Package</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internet</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Demo Stations</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Advisory Event AV package</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AV Tech (in-house/extra)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout AV (#BO)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Flip Charts (#)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other AV (phone line, DVD)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Audio/Visuals</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rental Equipment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertainment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In-House Catering Captain</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Linens</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Flowers</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Amenities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Box Delivery</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Business Center</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EVL Total</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxis</fullName>
+                <default>false</default>
+                <controllingFieldValues>Transportation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sedan service</fullName>
+                <default>false</default>
+                <controllingFieldValues>Transportation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bus</fullName>
+                <default>false</default>
+                <controllingFieldValues>Transportation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Translator</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other/Misc</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Facility</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Catering</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Audio/Visuals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other/Misc</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Transportation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Final Cost Details</label>
+    <nameField>
+        <label>Final Cost Details Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Final Cost Details</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Advisory_Event__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Event_Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Actual__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Advisory_Event__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Event_Status__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Actual__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Advisory_Event__c</searchFilterFields>
+        <searchFilterFields>Event_Status__c</searchFilterFields>
+        <searchFilterFields>Actual__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Subtype_is_required</fullName>
+        <active>false</active>
+        <description>Sub-type is blank (De-activated as part of Revision #5.16)</description>
+        <errorConditionFormula>ISBLANK( TEXT( Sub_type__c ) )</errorConditionFormula>
+        <errorDisplayField>Sub_type__c</errorDisplayField>
+        <errorMessage>You must indicate a sub-type of expense</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Type_is_Required</fullName>
+        <active>true</active>
+        <description>Type is blank</description>
+        <errorConditionFormula>ISBLANK( TEXT( Type__c ) )</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>You must indicate a type of expense</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New_Event_Budget</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Final Cost Details</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/RedirectWithVariables?redirect=object--Event_Budget__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!returnURL--/{!Advisory_Event__c.Id}!!afterSaveURL--{!Advisory_Event__c.Id}</url>
+    </webLinks>
+</CustomObject>

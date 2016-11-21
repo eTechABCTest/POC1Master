@@ -1,0 +1,123 @@
+<!-- 
+ *  Description     :   Page to have logic of VF page that will apply the logic to process the NBB records
+ *
+ *  Created By      :   
+ *
+ *  Created Date    :   12/12/2015
+ *
+ *  Current Version :   V_1.0
+ *
+ *  Revision Logs   :   V_1.0 - Created
+ *
+-->
+<apex:page StandardController="Opportunity"
+	extensions="MassNBBUpsertController" showHeader="true" sideBar="false"
+	title="NBB Records">
+
+	<!-- Override style to get some more space -->
+	<style>
+		.dateFormat {
+			padding: 0 2px;
+			display: none;
+		}
+	</style>
+
+	<!-- form -->
+	<apex:form >
+
+		<!-- PageMessage -->
+		<apex:pageMessages id="pM" />
+
+		<!-- Page Block -->
+		<apex:pageBlock id="pB">
+
+			<!-- Panel to show buttons -->
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Add New NBB" action="{!addNewNBB}" />
+				<apex:commandButton value="Save" action="{!doSave}"/>
+				<apex:commandButton value="Cancel" action="{!doCancel}" />
+			</apex:pageBlockButtons>
+
+			<!--Create pageBlockSection for display all NBB records of related Opportunity -->
+			<apex:pageBlockSection id="pbs">
+
+				<!-- Page Block Table  -->
+				<apex:pageBlockTable id="pbt" value="{!nbbList}" var="nbbRec">
+
+					<apex:column headerValue="Name">
+
+						<!-- Output panel for required block  -->
+						<apex:outputpanel styleclass="requiredInput" layout="block">
+							<div class="requiredBlock" />
+							<apex:inputField value="{!nbbRec.Name}" />
+						</apex:outputpanel>
+					</apex:column>
+
+					<apex:column headerValue="Marketer">
+						<apex:inputField value="{!nbbRec.Marketer__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Program">
+						<apex:inputField value="{!nbbRec.Program__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Unit">
+						<apex:outputpanel styleclass="requiredInput" layout="block">
+							<div class="requiredBlock" />
+							<apex:inputField value="{!nbbRec.Unit__c}" style="width: 50px;" />
+						</apex:outputpanel>
+					</apex:column>
+
+					<apex:column headerValue="NBB">
+						<apex:outputpanel styleclass="requiredInput" layout="block">
+							<div class="requiredBlock" />
+							<apex:inputField value="{!nbbRec.NBB__c}" style="width: 50px;" />
+						</apex:outputpanel>
+					</apex:column>
+
+					<apex:column headerValue="NBB Type">
+						<apex:inputField value="{!nbbRec.NBB_Type__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Comments">
+						<apex:inputField value="{!nbbRec.Comments__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Sales Role">
+						<apex:inputField value="{!nbbRec.Sales_Role__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Upsell">
+						<apex:inputCheckbox value="{!nbbRec.Upsell__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Shadow Credit Type">
+						<apex:inputField value="{!nbbRec.Shadow_Credit_Type__c}" />
+					</apex:column>
+
+					<apex:column headerValue="Binder Date">
+						<apex:outputpanel styleclass="requiredInput" layout="block">
+							<div class="requiredBlock" />
+							<apex:inputField value="{!nbbRec.Binder_Date__c}" />
+						</apex:outputpanel>
+					</apex:column>
+
+					<apex:column headerValue="NA Date">
+						<apex:outputpanel styleclass="requiredInput" layout="block">
+							<div class="requiredBlock" />
+							<apex:inputField value="{!nbbRec.NA_Date__c}" />
+						</apex:outputpanel>
+					</apex:column>
+
+					<apex:column headerValue="ATL Date">
+						<apex:inputField value="{!nbbRec.ATL_Date__c}" />
+					</apex:column>
+
+					<apex:column headerValue="SA/EA Date">
+						<apex:inputField value="{!nbbRec.SA_EA_Date__c}" />
+					</apex:column>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

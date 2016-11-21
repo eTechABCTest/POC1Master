@@ -1,0 +1,68 @@
+<!--
+*   Description     :   Intranet Slider Component for Mobile, Basically it will not slide the items, 
+*						instead will display top 6 items by default.
+*
+*   Created By      :   Rajeev Jain
+*
+*   Created Date    :   06/29/2015
+*
+*   Revision Log    :   V_1.0 - Created - CR-20150618-9016 - BoardRoom Mobile Phase 2
+-->
+<apex:component layout="none">
+    <apex:attribute name="ItemContent" type="IntranetContainer" description="Container record" />
+    
+    <apex:outputPanel rendered="{!ItemContent.RelatedContent.size > 0}" >
+        <div class="block {!if(ItemContent.isPreview, 'preview-mode', '')}" id="sliderMobile">
+            <!--Break the Code in Row -->
+            <h2 class="header">News</h2>
+            <apex:repeat value="{!ItemContent.RelatedContent}" var="item" rows="1">
+                <div class="row">
+                    <div class="col-sm-12 imageView">
+                        <a data-type="content" href="/apex/IntranetContentViewer?view=news&ScheduleId={!item.IntranetScheduleId}">
+                        	<img src="/servlet/servlet.FileDownload?file={!item.ContentMainImageId}" />
+						</a>
+                    </div>
+                </div>
+                <apex:outputPanel styleClass="row newsDetail" rendered="{!item.TextboxVisible}" layout="block">
+                    <div class="col-sm-12 newsDetail-Content" style="background-color:#{!IF(item.TextboxBackColor != '', item.TextboxBackColor, 'A7A9AA')};">
+                        <a data-type="content" href="/apex/IntranetContentViewer?view=news&ScheduleId={!item.IntranetScheduleId}">
+                            <h3 class="newsHeading"><apex:outputText value="{!item.ItemTitle}"></apex:outputText></h3>
+                            <h4 class="newsHeading"><apex:outputText value="{!item.ItemSubTitle}"></apex:outputText></h4>   
+                        </a>
+                    </div>
+                </apex:outputPanel>
+			</apex:repeat>
+            <div class="row">
+            	<div class="col-sm-12">
+                    <ul class="quick_links list_elements action">
+                        <apex:repeat value="{!ItemContent.RelatedContent}" var="item" rows="5" first="1">
+                            <li>
+                                <a data-type="content" href="/apex/IntranetContentViewer?view=news&ScheduleId={!item.IntranetScheduleId}">
+                                    <table class="newsContent">
+                                        <tr>
+                                            <td class="newsListImage">
+                                                <apex:outputPanel layout="none" rendered="{!item.ContentThumbnailImageId != null}">
+                                                    <img src="/servlet/servlet.FileDownload?file={!item.ContentThumbnailImageId}" />
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td class="newsListContent">
+                                                <div class="topic"><apex:outputText value="{!item.CategoryReferenceName}" /></div>
+                                                <p class="description"><apex:outputText value="{!item.ItemTitle}" /></p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </li>
+                        </apex:repeat>
+                    </ul>
+                </div>    
+            </div>
+            <apex:outputPanel layout="block" rendered="{!ItemContent.ShowExpandLink && ItemContent.RelatedContent.size > 0}"
+                              styleClass="row" style="margin-top:20px;"> 
+                <div class="view-more right action-link">
+                    <a href="/apex/IntranetContentViewer?view=news&ScheduleId={!ItemContent.RelatedContent[0].IntranetScheduleId}">View More <i class="glyphicon glyphicon-plus"></i></a>
+                </div>
+            </apex:outputPanel>
+        </div>
+    </apex:outputPanel>
+</apex:component>

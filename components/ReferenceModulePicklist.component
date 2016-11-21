@@ -1,0 +1,125 @@
+<apex:component selfClosing="true" layout="none" controller="ReferenceModulePicklistCtrl"  >
+    <apex:attribute name="appName" description="unique name for the angular app" type="string" required="true"/> <!-- also used for the unique element id for the attribute value (ie: value a) -->
+    <apex:attribute name="ctrlName" description="unique name for the angular controller" type="string" required="true"/>
+    <apex:attribute name="hiddenInputId" description="Id of the hidden input field" type="string" required="true"/>
+    <apex:attribute name="loadAngular" description="whether or not to include AngularJS/Bootstrap with the component" type="boolean" default="true" required="false"/>
+    <apex:attribute name="rerenderIDs" description="comma-delimited list of the elements to rerender" type="string"/>
+    <apex:attribute name="refreshControllerIDs" description="comma-delimited list of the angularJS controllers to refresh" type="string"/>
+    <apex:attribute name="showRequired" description="displays the required field indicator" type="boolean" />
+    <apex:attribute name="autoInit" description="If false, prevents angular.bootstrap JS from instantiating" type="boolean" default="true" />
+    <apex:attribute name="fieldLabel" description="label that is displayed to the left of the input field" type="string" default="Reference Module" />
+    <apex:attribute name="required" description="if true, displays as required" type="boolean" default="false" />
+    <apex:attribute name="recordTypeName" description="" assignTo="{!rtName}" type="string" required="false" />
+    
+    <apex:outputPanel rendered="{!loadAngular}">
+        <apex:includeScript value="{!URLFOR($Resource.AngularJS, '/angular.1.0.5.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.BootstrapZip, '/bootstrap/js/bootstrap.min.js')}" />
+    </apex:outputPanel>
+    
+    <script>
+    var delimiter = ": ";
+    
+    var {!appName} = angular.module('{!appName}', []);
+    
+    function {!ctrlName}($scope, $http, filterFilter, $timeout) {
+        /**
+         * @description: variables
+         **/
+        $scope.picklistGroups = [];
+        $scope.currentGroup;
+        $scope.currentItem;
+        
+        var curGroupVal, curItemVal;
+        var applicableReferenceModule_Value = j$('[id*=\'{!hiddenInputId}\']').val();
+        if (applicableReferenceModule_Value != "") {
+            curGroupVal = applicableReferenceModule_Value.split(delimiter)[0];
+            if (applicableReferenceModule_Value.split(delimiter).length > 1)
+            	curItemVal = applicableReferenceModule_Value.split(delimiter)[1];
+        }
+        
+        
+        /**
+         * @description: setup the dependent picklist
+         **/
+        var groups = JSON.parse('{!referenceModuleMap_JSON}');
+        $scope.init = function init() {
+            for (var i in groups) {
+                //console.log('@@@PUSHING :{!appName}' + groups[i]);
+                
+                $scope.picklistGroups.push({ name:i, val:groups[i] });
+                if (curGroupVal != null && curGroupVal == i) {
+                    $scope.currentGroup = $scope.picklistGroups[$scope.picklistGroups.length-1];
+                    $scope.currentItem = curItemVal;
+                }
+            }
+        }
+        
+        /**
+         * @description: when Reference Type is changed, update the Reference Subtype list
+         **/
+        $scope.groupChanged = function() {
+            if ($scope.currentGroup) {
+                $scope.currentItem = '';
+            }
+            $scope.updateValue();
+        }
+        
+        /**
+         * @description: save function sets the applicable reference module value by combining the [Group]-[Item]
+         **/
+        $scope.updateValue = function updateValue() {
+            
+            var newValue = '';
+            
+            if ($scope.currentGroup) {
+                //console.log('@@$scope.currentItem:' + $scope.currentItem);
+                newValue = $scope.currentGroup.name;
+                if ($scope.currentItem != "" && $scope.currentItem != null && typeof $scope.currentItem != 'undefined')
+                    newValue += delimiter + $scope.currentItem;
+            }
+            
+            j$('[id*=\'{!hiddenInputId}\']').val(newValue);
+            //rerender the attribute and value components
+            if ("{!rerenderIDs}" != "")
+                rerenderComponents_{!appName}();
+            
+            if ("{!refreshControllerIDs}" != "") {
+                var code = '';
+                var controllerIDs = "{!refreshControllerIDs}".split(',');
+                for (var i in controllerIDs) {
+                    code += 'refresh_' + controllerIDs[i] + '(); ';
+                }
+                //console.log('@@:' + code);
+                eval(code);
+            }
+        }
+    }
+    </script>
+    
+    
+    <apex:actionFunction name="rerenderComponents_{!appName}" rerender="{!rerenderIDs}" />
+    <apex:pageBlockSection showHeader="false" html-class="{!ctrlName}" html-ng-controller="{!ctrlName}" html-ng-init="init();" columns="1">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!fieldLabel}"/>
+            <apex:pageBlockSectionItem >
+                <apex:outputPanel style="display: inline-block;" styleClass="{!IF(required, 'requiredInput', '')}">
+                    <apex:outputPanel layout="block" styleClass="requiredBlock" rendered="{!required}" />
+                    <apex:outputPanel layout="block" rendered="{!showRequired}" styleClass="requiredBlock"/>
+                    <select id="refType_{!appName}" data-ng-model="currentGroup" data-ng-options="group.name for group in picklistGroups | orderBy:'name'" ng-change="groupChanged()">
+                        <option></option>
+                    </select>
+                </apex:outputPanel>
+                <select id="refSubType_{!appName}" ng-model="currentItem" ng-change="updateValue();" ng-options="val for val in currentGroup.val | orderBy:'toString()'" ng-hide="!currentGroup || currentGroup.val.length == 0">
+                    <option></option>
+                </select>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+    <script>
+    j$(function() {
+        if ({!autoInit})
+        	angular.bootstrap(document.getElementsByClassName('{!ctrlName}'), ['{!appName}']);
+    });
+    </script>
+</apex:component>

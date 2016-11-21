@@ -1,0 +1,207 @@
+<!--  
+
+    Purpose         :   Salesforce Help cases phase 2 functionality VF page.(CR-20150113-8543)
+                
+    Created By      :   Abhinav Sharma
+    
+    Created Date    :   20/02/2015
+    
+    Current Version :   v1
+    
+    Revision Log    :   v1 - Abhinav Sharma - 02/13/2014 - CR-20150113-8543
+-->
+<apex:page controller="CaseRequestController" id="page" standardStylesheets="true" showHeader="true" sidebar="true" docType="html-5.0">
+    
+    <!--Block UI-->
+    <c:BlockUI />
+    
+    <!--Form-->
+    <apex:form id="frm">
+        
+        <!--Block UI Action Status -->
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+        
+        <!-- Page Messages-->
+        <apex:pageMessages ></apex:pageMessages>
+        
+        <!--Page Block--><!--Rendering only if User ID present in the current page URL-->
+        <apex:pageBlock id="pB" mode="edit" rendered="{!NOT(isCaseSuccessfullySubmitted)}">
+        
+            <!--Page Block Buttons-->
+            <apex:pageBlockButtons id="pbButton">
+                <apex:commandButton value="Submit" action="{!submit}" reRender="frm" status="waitMsg"/>
+            </apex:pageBlockButtons>
+            
+            <!--Page Block Section-->
+            <apex:pageBlockSection id="pBS" title="{!$Label.CaseRequest_CL2}" columns="1" collapsible="false">
+            
+                <!-- User Affected Select Options-->
+                <apex:pageBlockSectionItem id="useraffecteditem">                
+                    <apex:outputLabel value="Users Affected" for="usersAffected"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:selectList value="{!usersAffected}" size="1" id="usersAffected" required="true">
+                                <apex:selectOptions value="{!usersAffectedOptions}"/>
+                            </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <BR></BR>
+                <B>{!$Label.CaseRequest_CL14}</B>
+                <BR></BR>
+                <B>{!$Label.CaseRequest_CL15}</B>
+                <BR></BR>
+                <BR></BR>
+                
+                <!--Individual User Affected-->
+                <tr>
+                    <td class="labelCol">
+                        <label for="useraffectedinput">{!$Label.CaseRequest_CL4}</label>
+                    </td>
+                    <td class="data2Col" colspan="3">
+                        <span class="lookupInput">
+                            <input class="form-control" id="useraffectedinput" maxlength="255" name="useraffectedinput"
+                            onchange="document.getElementById('page:frm:pB:pBS:selectedUserAffectedId').value = document.getElementById('useraffectedinput_lkid').value;
+                            document.getElementById('page:frm:pB:pBS:selectedUserAffectedName').value = document.getElementById('useraffectedinput').value;" 
+                            size="20" tabindex="0" type="text" align="left" value="{!individualUserSelectedName}">
+                                <a href="javascript: openLookup('/_ui/common/data/LookupPage?lkfm=page:frm&lknm=useraffectedinput&lkfield={!$Label.Employee_Conatct_Field_ID}&lkent={!$Label.Employee_Contact_Field_Object_Key_Prefix}&lktp='+ document.getElementById('useraffectedinput_lktp').value,670,'1','&lksrch=' + escapeUTF(document.getElementById('useraffectedinput').value.substring(0, 80)));" id="obj_lkwgt" onclick="setLastMousePosition(event)" tabindex="3" title="Contact Name Lookup (New Window)">
+                                    <img src="/s.gif"  class="lookupIcon" title="Contact Name Lookup (New Window)"></img>
+                                </a>
+                            </input>
+                        </span>
+                        <apex:inputHidden value="{!individualUserSelectedID}" id="selectedUserAffectedId"/>
+                        <apex:inputHidden value="{!individualUserSelectedName}" id="selectedUserAffectedName"/>
+                        <input type="hidden" name="useraffectedinput_lkid" id="useraffectedinput_lkid" value="000000000000000"></input>
+                        <input type="hidden" name="useraffectedinput_lkold" id="useraffectedinput_lkold" value="null"></input>
+                        <input type="hidden" name="useraffectedinput_lktp" id="useraffectedinput_lktp" value="003"></input>
+                        <input type="hidden" name="useraffectedinput_lspf" id="useraffectedinput_lspf" value="0"></input>
+                        <input type="hidden" name="useraffectedinput_lspfsub" id="useraffectedinput_lspfsub" value="0"></input>
+                        <input type="hidden" name="useraffectedinput_mod" id="useraffectedinput_mod" value="0"></input>
+                    </td>
+                </tr>
+                
+                <!--User to Clone-->
+                <tr>
+                    <td class="labelCol">
+                        <label for="usertocloneinput">{!$Label.CaseRequest_CL5}</label>
+                    </td>
+                    <td class="data2Col" colspan="3">
+                        <span class="lookupInput">
+                            <input class="form-control" id="usertocloneinput" maxlength="255" name="usertocloneinput"
+                            onchange="document.getElementById('page:frm:pB:pBS:selectedUserToCloneId').value = document.getElementById('usertocloneinput_lkid').value;
+                            document.getElementById('page:frm:pB:pBS:selectedUserToCloneName').value = document.getElementById('usertocloneinput').value;" 
+                            size="20" tabindex="0" type="text" align="left" value="{!userToCloneName}">
+                                <a href="javascript: openLookup('/_ui/common/data/LookupPage?lkfm=page:frm&lknm=usertocloneinput&lkfield={!$Label.Employee_Conatct_Field_ID}&lkent={!$Label.Employee_Contact_Field_Object_Key_Prefix}&lktp='+ document.getElementById('usertocloneinput_lktp').value,670,'1','&lksrch=' + escapeUTF(document.getElementById('usertocloneinput').value.substring(0, 80)));" id="obj2_lkwgt" onclick="setLastMousePosition(event)" tabindex="3" title="Contact Name Lookup (New Window)">
+                                    <img src="/s.gif"  class="lookupIcon" title="Contact Name Lookup (New Window)"></img>
+                                </a>
+                            </input>
+                        </span>
+                        <apex:inputHidden value="{!userToCloneID}" id="selectedUserToCloneId"/>
+                        <apex:inputHidden value="{!userToCloneName}" id="selectedUserToCloneName"/>
+                        <input type="hidden" name="usertocloneinput_lkid" id="usertocloneinput_lkid" value="000000000000000"></input>
+                        <input type="hidden" name="usertocloneinput_lkold" id="usertocloneinput_lkold" value="null"></input>
+                        <input type="hidden" name="usertocloneinput_lktp" id="usertocloneinput_lktp" value="003"></input>
+                        <input type="hidden" name="usertocloneinput_lspf" id="usertocloneinput_lspf" value="0"></input>
+                        <input type="hidden" name="usertocloneinput_lspfsub" id="usertocloneinput_lspfsub" value="0"></input>
+                        <input type="hidden" name="usertocloneinput_mod" id="usertocloneinput_mod" value="0"></input>
+                    </td>
+                </tr>
+                
+                <!--What-->
+                <apex:pageBlockSectionItem id="whatvalueitem">
+                    <apex:outputLabel value="{!$Label.CaseRequest_CL6}" for="whatid"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputTextArea value="{!whatvalue}" id="whatid" styleClass="textareainputs" required="true" style="width:200px;"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <!--Business Case-->  
+                <apex:pageBlockSectionItem id="businesscaseitem">                
+                    <apex:outputLabel value="{!$Label.CaseRequest_CL7}" for="businsesCase"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputTextArea value="{!businsesCase}" id="businsesCase" styleClass="textareainputs" required="true" style="width:200px;"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <!--Reason-->
+                <apex:pageBlockSectionItem id="reasonitem">
+                    <apex:outputLabel value="{!$Label.CaseRequest_CL8}" for="reason"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputTextArea value="{!reason}" id="reason" styleClass="textareainputs" required="true" style="width:200px;"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <!--Requested Completion Date-->
+                <apex:pageBlockSectionItem id="completiondateitem">
+                    <apex:outputLabel for="completiondate" value="{!$Label.CaseRequest_CL9}"/>
+                    <apex:input value="{!requestedCompletionDate}" id="completiondate" type="date"/>  
+                </apex:pageBlockSectionItem>
+                
+                <!--Individual User Affected (Will be useful in populating case description)-->
+                <tr>
+                    <td class="labelCol">
+                        <label for="dummyuseraffectedinput">{!$Label.CaseRequest_CL10}</label>
+                    </td>
+                    <td class="data2Col" colspan="3">
+                        <span class="lookupInput">
+                            <input class="form-control" id="dummyuseraffectedinput" maxlength="255" name="dummyuseraffectedinput"
+                            onchange="document.getElementById('page:frm:pB:pBS:dummyselectedUserAffectedId').value = document.getElementById('dummyuseraffectedinput_lkid').value;
+                            document.getElementById('page:frm:pB:pBS:dummyselectedUserAffectedName').value = document.getElementById('dummyuseraffectedinput').value;" 
+                            size="20" tabindex="0" type="text" align="left" value="{!dummyIndividualUserSelectedName}">
+                                <a href="javascript: openLookup('/_ui/common/data/LookupPage?lkfm=page:frm&lknm=dummyuseraffectedinput&lkfield={!$Label.Employee_Conatct_Field_ID}&lkent={!$Label.Employee_Contact_Field_Object_Key_Prefix}&lktp='+ document.getElementById('dummyuseraffectedinput_lktp').value,670,'1','&lksrch=' + escapeUTF(document.getElementById('dummyuseraffectedinput').value.substring(0, 80)));" id="obj3_lkwgt" onclick="setLastMousePosition(event)" tabindex="3" title="Contact Name Lookup (New Window)">
+                                    <img src="/s.gif"  class="lookupIcon" title="Contact Name Lookup (New Window)"></img>
+                                </a>
+                            </input>
+                        </span>
+                        <apex:inputHidden value="{!dummyIndividualUserSelectedID}" id="dummyselectedUserAffectedId"/>
+                        <apex:inputHidden value="{!dummyIndividualUserSelectedName}" id="dummyselectedUserAffectedName"/>
+                        <input type="hidden" name="dummyuseraffectedinput_lkid" id="dummyuseraffectedinput_lkid" value="000000000000000"></input>
+                        <input type="hidden" name="dummyuseraffectedinput_lkold" id="dummyuseraffectedinput_lkold" value="null"></input>
+                        <input type="hidden" name="dummyuseraffectedinput_lktp" id="dummyuseraffectedinput_lktp" value="003"></input>
+                        <input type="hidden" name="dummyuseraffectedinput_lspf" id="dummyuseraffectedinput_lspf" value="0"></input>
+                        <input type="hidden" name="dummyuseraffectedinput_lspfsub" id="dummyuseraffectedinput_lspfsub" value="0"></input>
+                        <input type="hidden" name="dummyuseraffectedinput_mod" id="dummyuseraffectedinput_mod" value="0"></input>
+                    </td>
+                </tr>
+                
+                <!--User to clone (Will be useful in populating case description)-->
+                <tr>
+                    <td class="labelCol">
+                        <label for="usertocloneinput">{!$Label.CaseRequest_CL11}</label>
+                    </td>
+                    <td class="data2Col" colspan="3">
+                        <span class="lookupInput">
+                            <input class="form-control" id="dummyusertocloneinput" maxlength="255" name="dummyusertocloneinput"
+                            onchange="document.getElementById('page:frm:pB:pBS:dummyselectedUserToCloneId').value = document.getElementById('dummyusertocloneinput_lkid').value;
+                            document.getElementById('page:frm:pB:pBS:dummyselectedUserToCloneName').value = document.getElementById('dummyusertocloneinput').value;" 
+                            size="20" tabindex="0" type="text" align="left" value="{!dummyUserToCloneName}">
+                                <a href="javascript: openLookup('/_ui/common/data/LookupPage?lkfm=page:frm&lknm=dummyusertocloneinput&lkfield={!$Label.Employee_Conatct_Field_ID}&lkent={!$Label.Employee_Contact_Field_Object_Key_Prefix}&lktp='+ document.getElementById('dummyusertocloneinput_lktp').value,670,'1','&lksrch=' + escapeUTF(document.getElementById('dummyusertocloneinput').value.substring(0, 80)));" id="obj4_lkwgt" onclick="setLastMousePosition(event)" tabindex="3" title="Contact Name Lookup (New Window)">
+                                    <img src="/s.gif"  class="lookupIcon" title="Contact Name Lookup (New Window)"></img>
+                                </a>
+                            </input>
+                        </span>
+                        <apex:inputHidden value="{!dummyUserToCloneID}" id="dummyselectedUserToCloneId"/>
+                        <apex:inputHidden value="{!dummyUserToCloneName}" id="dummyselectedUserToCloneName"/>
+                        <input type="hidden" name="dummyusertocloneinput_lkid" id="dummyusertocloneinput_lkid" value="000000000000000"></input>
+                        <input type="hidden" name="dummyusertocloneinput_lkold" id="dummyusertocloneinput_lkold" value="null"></input>
+                        <input type="hidden" name="dummyusertocloneinput_lktp" id="dummyusertocloneinput_lktp" value="003"></input>
+                        <input type="hidden" name="dummyusertocloneinput_lspf" id="dummyusertocloneinput_lspf" value="0"></input>
+                        <input type="hidden" name="dummyusertocloneinput_lspfsub" id="dummyusertocloneinput_lspfsub" value="0"></input>
+                        <input type="hidden" name="dummyusertocloneinput_mod" id="dummyusertocloneinput_mod" value="0"></input>
+                    </td>
+                </tr>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

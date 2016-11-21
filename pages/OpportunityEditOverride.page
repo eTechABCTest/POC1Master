@@ -1,0 +1,12 @@
+<!-- 
+    Description     :   VF page to Override opportunity edit functionality 
+    
+    Created By      :   Subhash Garhwal
+    
+    Created Date    :   06/13/2016
+    
+    Revision Logs   :   V_1.0 - Created - CR-20160414-9762
+-->    
+<apex:page standardController="Opportunity" extensions="OpportunityEditOverrideController" tabStyle="Opportunity" showheader="true" action="{!redirect}">
+	<div style="display:none;">{!Opportunity.RecordType.DeveloperName}</div>
+</apex:page>

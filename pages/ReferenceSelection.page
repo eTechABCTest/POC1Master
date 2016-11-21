@@ -1,0 +1,153 @@
+<!--Modified By - Abhinav Sharma - 03/31/2016 - CR-20160204-9586-->
+<apex:page controller="ReferenceRequestController" id="page" docType="html-5.0" >
+    
+    <apex:form id="form">
+        
+        <apex:stylesheet value="{!URLFOR($Resource.ReferenceTrackingCSS)}" />
+        <c:IncludeJQuery />
+        
+        <!-- Action Status -->
+        <apex:actionStatus onstart="blockElement('#page\\:form\\:pb', 'Working...');" onstop="unblockElement('#page\\:form\\:pb');" id="waitMsg"/>
+        
+        <!-- / ACTION FUNCTIONS -->
+        <apex:sectionHeader title="Reference Request Edit" subtitle="{!IF(wrapper.Id != null, wrapper.Name, 'New Reference Request')}" />
+        <apex:pageBlock id="pb" mode="edit" title="Reference Options" >
+            <apex:pageBlockButtons id="buttonSection" location="bottom" rendered="{!isRecommended}" >
+                <!--Added By - Abhinav Sharma - 03/31/2016 - CR-20160204-9586-->
+                <!--Start from here-->
+                <B><apex:outputLabel value="Selection Status"></apex:outputLabel></B>
+                <div style="display: inline"/>
+                <apex:selectList value="{!wrapper.selectionStatus}" multiselect="false" size="1">
+    				<apex:selectOptions value="{!wrapper.options}"/>
+				</apex:selectList>
+                <!--Upto here-->
+                <apex:commandButton value=" Submit Selection " action="{!submitSelection}" rerender="form" status="waitMsg" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="pbSection" title="Original Request">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Requesting Institution" />
+                    <apex:outputText value="{!wrapper.requestingInstitution}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Institution Type" />
+                    <apex:outputText value="{!wrapper.institutionType}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Requesting Contact" />
+                    <apex:outputText value="{!wrapper.requestingContact}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact Title" />
+                    <apex:outputText value="{!wrapper.requestingContactTitle}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Additional Contact 1" />
+                    <apex:outputText value="{!wrapper.additionalContact1}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Additional Contact 2" />
+                    <apex:outputText value="{!wrapper.additionalContact2}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Module(s)" />
+                    <apex:outputText value="{!wrapper.referenceModules}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Number of References Needed" />
+                    <apex:outputText value="{!wrapper.numReferencesNeeded}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Date Needed By" />
+                    <apex:outputText value="{!wrapper.dateNeededBy}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Attributes" />
+                    <apex:outputText value="{!wrapper.attributes}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" showHeader="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Anticipated Questions / Background Info" />
+                    <apex:outputText value="{!wrapper.anticipatedQuestionsBackgroundInfo}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Submitted By" />
+                    <apex:outputText value="{!wrapper.submittedByName}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source" />
+                    <apex:outputText value="{!wrapper.source}" escape="false" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Marketer" />
+                    <apex:outputText value="{!wrapper.marketer}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Submitted Date" />
+                    <apex:outputText value="{!wrapper.submittedDate}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <!-- REFERENCE RECOMMENDATIONS -->
+            <apex:pageBlockSection title="Reference Recommendations" columns="1">
+                
+                <apex:outputPanel rendered="{!isRecommended}" styleClass="containerStyle">
+                    <apex:outputText value="Please select the Reference Request Contact(s) you would like to use as References.  
+                                            Once you make your selection(s) and click Submit, any un-selected items will be removed." id="instructions" />
+                </apex:outputPanel>
+                
+                <apex:pageBlockTable value="{!wrapper.recommendations}" var="recommendation" id="recommendationTable">
+                    <apex:column >
+                        <apex:inputCheckbox value="{!recommendation.isSelected}" rendered="{!isRecommended && NOT( recommendation.isSubmitted )}" />
+                        <apex:image value="/img/checkbox_checked.gif" rendered="{!NOT( isRecommended ) || recommendation.isSubmitted}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Approval Status" rendered="{!NOT( isRecommended )}">
+                        <apex:outputText value="{!recommendation.approvalStatus}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Institution" >
+                        <apex:outputText value="{!recommendation.institutionReferenceFlag}" escape="false" />
+                        <apex:outputText value="{!recommendation.institutionName}" />
+                    </apex:column>
+                    <apex:column headerValue="Contact" >
+                        <apex:outputText value="{!recommendation.contactReferenceFlag}" escape="false" />
+                        <apex:outputText value="{!recommendation.contactName}" />
+                    </apex:column>
+                    <apex:column headerValue="Title" value="{!recommendation.contactTitle}" />
+                    <apex:column headerValue="Reference Modules" >
+                        <apex:outputText value="{!recommendation.modules}" escape="false" />
+                    </apex:column>
+                    <apex:column headerValue="Reference Attributes">
+                        <apex:outputText value="{!recommendation.attributes}" escape="false" />
+                    </apex:column>
+                    <apex:column headerValue="Reference Contact Comments">
+                        <apex:outputText value="{!recommendation.referenceContactComments}" escape="false" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                
+                <!-- NEXT STEPS -->
+                <apex:outputPanel rendered="{!wrapper.showNextSteps && NOT( isRecommended )}" styleClass="containerStyle">
+                    <b>NEXT STEPS</b><br/>
+                    A new Task for scheduling the actual Reference Call has been added to the <a href="/{!wrapper.sourceId}" style="color:#384D83">Source Record</a> and assigned to the requester.  
+                    Use the <span style="color:#DA1320">Create Follow-up Event</span> button on the task to schedule the call and then complete the task.  
+                    This will ensure the Reference Leader is notified and that the Reference can be properly credited for their contribution.
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <!-- / REFERENCE RECOMMENDATIONS -->
+        </apex:pageBlock>
+    </apex:form>
+    
+    <style>
+        .containerStyle {
+        display:block;
+        padding: 10px;
+        border: 1px solid #e0e3e5;
+        color: rgb(92, 92, 92);
+        }
+    </style>
+    
+</apex:page>

@@ -1,0 +1,65 @@
+<apex:page controller="ContactExtension" id="editPage" tabstyle="Contact" >
+	<c:IncludeJQuery />
+	<apex:form id="mainForm" >
+		<apex:sectionHeader title="Contact" subtitle="{!ContactQueue.Salutation__c} {!ContactQueue.First_Name__c} {!ContactQueue.Last_Name__c}" />
+		<br/>
+		<!-- <apex:pageMessage summary="Contact will be updated to reflect the changes shown below within the next <b>hour</b>." escape="false" severity="warning" strength="2" /> -->
+		<br/>
+		<apex:pageBlock id="pageBlock" mode="mainDetail" title="Contact Detail">
+			
+			<!-- Record Type: EXTERNAL -->
+			<apex:outputPanel rendered="true" >
+				<apex:pageBlockSection id="contactPB" collapsible="true" title="Contact Information">
+					<apex:pageBlockSectionItem />
+					<apex:outputField value="{!Con.Contact_Status__c}" id="Contact_Status__c" /> 
+					<apex:pageBlockSectionItem id="NameSection" >
+						<apex:outputText value="First Name" />
+						<apex:outputPanel >
+							<apex:outputField value="{!ContactQueue.Salutation__c}" id="Salutation" /> 
+							<apex:outputField value="{!ContactQueue.First_Name__c}" id="FirstName" /> 
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:outputField value="{!ContactQueue.Phone__c}" id="Phone" />
+					<apex:outputField value="{!ContactQueue.Last_Name__c}" id="LastName" />
+					<apex:outputField value="{!ContactQueue.Mobile__c}" id="MobilePhone" />
+					<apex:outputField value="{!ContactQueue.Middle_Name__c}" id="Middle_Name__c" />
+					<apex:outputField value="{!ContactQueue.Email__c}" id="Email" />
+					<apex:outputField value="{!ContactQueue.Suffix__c}" id="Suffix__c" />
+					<apex:outputField value="{!ContactQueue.Email_Opt_Out__c}" id="HasOptedOutOfEmail" />
+					<apex:outputField value="{!ContactQueue.Nickname__c}" id="Nickname__c" />
+					<apex:outputField value="{!ContactQueue.Advisory_com_Preferred_Email_Address__c}" id="Advisory_com_Preferred_Email_Address__c" />
+					<apex:outputField value="{!ContactQueue.Institution_Name__c}" id="AccountId" />
+					<apex:outputField value="{!ContactQueue.Record_Type__c}" id="Record_Type__c" />
+					<apex:outputField value="{!ContactQueue.Title__c}" id="Title" />
+					<apex:outputField value="{!ContactQueue.Function__c}" id="Function__c" />
+					<apex:outputField value="{!ContactQueue.Reports_To__c}" id="ReportsToId" />
+					<apex:outputField value="{!ContactQueue.Assistant__c}" id="AssistantName" />
+					<apex:outputField value="{!ContactQueue.Previous_Institution_Record__c}" id="Previous_Institution_Record__c" />
+					<apex:outputField value="{!ContactQueue.Asst_Phone__c}" id="AssistantPhone" />
+					<apex:pageBlockSectionItem />
+					<apex:outputField value="{!Con.Asst_Email__c}" id="Asst_Email__c" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection id="Description" title="Description Information" collapsible="true" >
+					<apex:outputField Value="{!ContactQueue.Key_Notes__c}" style="width:430px;height:93px;" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection id="AddressInfo" title="Address Information" collapsible="true" >
+					<apex:outputField value="{!ContactQueue.Primary_Address_Line_1__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Address_Name__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_Address_Line_2__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Address_Line_1__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_Address_Line_3__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Address_Line_2__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_City__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Address_Line_3__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_State_Province__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_City__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_Postal_Code__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_State_Province__c}" />
+					<apex:outputField value="{!ContactQueue.Primary_Country__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Postal_Code__c}" />
+					<apex:outputField value="{!ContactQueue.Secondary_Country__c}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

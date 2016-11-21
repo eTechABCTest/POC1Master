@@ -1,0 +1,12 @@
+<!-- 
+ *  Purpose         :   Override New button and autopopulate Goal Type Credit Type Name.
+ * 
+ *  Created By      :   Subhash Garhwal
+ * 
+ *  Created Date    :   12/2/2015
+ * 
+ *  Revision Logs   :   V_1.0 - Created - CR-20151120-9407
+ * 
+ -->
+<apex:page standardController="Goal_Type_Credit_Type__c" extensions="WillAutoPopulateExtension" action="{!redirect}" >
+</apex:page>

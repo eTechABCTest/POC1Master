@@ -1,0 +1,2 @@
+<apex:page standardController="Venue__c" extensions="WillAutoPopulateExtension" action="{!redirect}">
+</apex:page>

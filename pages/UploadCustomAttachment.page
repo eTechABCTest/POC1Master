@@ -1,0 +1,71 @@
+<!--  
+
+    Purpose         :   VF page to attach a custom attachment on a Campaign record.
+                
+    Created By      :   Abhinav Sharma
+    
+    Created Date    :   03/23/2015
+    
+    Current Version :   v1
+    
+    Revision Log    :   v1.0 - Abhinav Sharma - 03/24/2015 - CR-20141216-8336
+-->
+<apex:page standardcontroller="Attachment__c" extensions="UploadCustomAttachmentController">
+    
+    <apex:form id="form_Upload">
+    
+        <apex:sectionHeader title="{!campaignObj.Name}" subtitle="Attach File"/>
+        <apex:pageMessages escape="false"/>
+            
+        <apex:pageBlock >
+ 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!doCancel}" value="Cancel" immediate="true"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="File" for="file_File"/>
+                    <apex:outputPanel >
+                		<div class="requiredInput">
+                    		<div class="requiredBlock"></div>
+                    		<apex:inputFile id="file_File" value="{!fileBody}" filename="{!fileName}" accept=".pdf"/>
+                		</div>
+            		</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Paper Type" for="paper_type"/>
+                    <apex:inputfield value="{!Attachment__c.Paper_Type__c}" id="paper_type" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Stapled?" for="stapled"/>
+                    <apex:inputfield value="{!Attachment__c.Stapled__c}" id="stapled" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Text Ink" for="paper_options"/>
+                    <apex:inputfield value="{!Attachment__c.Text_Ink__c}" id="text_ink" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Text Sides" for="paper_options"/>
+                    <apex:inputfield value="{!Attachment__c.Text_Sides__c}" id="text_sides" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="# of Pages" for="no_of_pages"/>
+                    <apex:inputfield value="{!Attachment__c.of_Pages__c}" id="no_of_pages" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="" for="uploadBtn"/> 
+                    <apex:commandButton id="uploadBtn" value="Attach File" action="{!processUpload}"/>
+                </apex:pageBlockSectionItem>    
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

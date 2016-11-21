@@ -1,0 +1,12 @@
+<!-- 
+	Description		:	This page is to clone all Staff Assignment related RPP. When user use custom clone button from SA detail page.
+	
+	Created By		:	Subhash Garhwal
+	
+	Created Date	:	07/01/2015
+	
+	Revision Logs	:	V_1.0 - Created - CR-20150618-9014 
+	
+ -->
+<apex:page controller="CloneWithProgramsController" action="{!inIt}">
+</apex:page>

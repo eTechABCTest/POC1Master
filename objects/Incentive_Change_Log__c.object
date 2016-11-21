@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>We will create a record in the Incentive Change Log for each Incentive-impacting change to related meta-data (such as Program Collection, Collection Perspective, etc.). These records will be grouped by S&amp;O users into Incentive Change Batches, which will be used as the basis for identifying affected Individual Goals.
+These records can only be created or modified by the system under program control (specifically, triggers on the related objects).</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Applied__c</fullName>
+        <externalId>false</externalId>
+        <label>Applied</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+	NOT(ISBLANK(Collection_Perspective_Child__c)), 
+	&apos;CPC&apos;, 
+	IF( 
+		NOT(ISBLANK(Contact__c)), 
+		&apos;Contact&apos;, 
+		IF( 
+			NOT(ISBLANK(Staff_History__c)), 
+			&apos;History&apos;, 
+			IF(
+				NOT(ISBLANK(Staff_Assignment__c)), 
+				&apos;Staff Assignment&apos;,
+				&apos;&apos;
+			)
+		) 
+	) 
+)</formula>
+        <label>Category</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_Element__c</fullName>
+        <description>&quot;Employment&quot;, &quot;Business Title&quot;, etc.</description>
+        <externalId>false</externalId>
+        <label>Change Element</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_Record__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+	Contact__c != null, 
+	HYPERLINK( &apos;/&apos; + Contact__c ,  Contact__r.FirstName + &apos; &apos; + Contact__r.LastName),
+	IF(
+		Staff_Assignment__c != null,
+		HYPERLINK( &apos;/&apos; + Staff_Assignment__c ,  Staff_Assignment__r.Name ),
+		IF(Staff_History__c != null,
+			HYPERLINK( &apos;/&apos; + Staff_History__c ,  Staff_History__r.Name ),
+			IF(Collection_Perspective_Child__c != null,
+				HYPERLINK( &apos;/&apos; + Collection_Perspective_Child__c ,  Collection_Perspective_Child__r.Name ),
+				&apos;&apos;
+			)
+		)
+	)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Change Record</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Change Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_value__c</fullName>
+        <description>Commonly &quot;New&quot;, &quot;Start date&quot;, or &quot;End date&quot;</description>
+        <externalId>false</externalId>
+        <label>Change value</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Collection_Perspective_Child__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Collection Perspective Child</description>
+        <externalId>false</externalId>
+        <label>Collection Perspective Child</label>
+        <referenceTo>Program_Relationship__c</referenceTo>
+        <relationshipLabel>Incentive Change Logs</relationshipLabel>
+        <relationshipName>Incentive_Change_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Incentive Change Logs</relationshipLabel>
+        <relationshipName>Incentive_Change_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Counter_ID__c</fullName>
+        <displayFormat>ICL{0}</displayFormat>
+        <externalId>false</externalId>
+        <label>Counter ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Disregard__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disregard</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Incentive_Change_Batch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Incentive Change Batch</label>
+        <referenceTo>Incentive_Change_Batch__c</referenceTo>
+        <relationshipLabel>Incentive Change Logs</relationshipLabel>
+        <relationshipName>Incentive_Change_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Staff_Assignment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Staff Assignment</label>
+        <referenceTo>Team_Membership__c</referenceTo>
+        <relationshipLabel>Incentive Change Logs</relationshipLabel>
+        <relationshipName>Incentive_Change_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Staff_History__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Staff Attribute</label>
+        <referenceTo>Staff_History__c</referenceTo>
+        <relationshipLabel>Incentive Change Logs</relationshipLabel>
+        <relationshipName>Incentive_Change_Logs</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+	NOT(ISBLANK(Collection_Perspective_Child__c)), 
+	Collection_Perspective_Child__r.Name, 
+	
+	IF( 
+		NOT(ISBLANK(Contact__c)), 
+		Contact__r.FirstName + &apos; &apos; + Contact__r.Middle_Name__c + &apos; &apos; + Contact__r.LastName, 
+		IF( 
+			NOT(ISBLANK(Staff_History__c)), 
+			Staff_History__r.Name, 
+			IF(
+				
+				NOT(ISBLANK(Staff_Assignment__c)), 
+				Staff_Assignment__r.Name, 
+				&apos;&apos;
+			)
+		) 
+	) 
+)</formula>
+        <label>Value</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Incentive Change Log</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Category__c</columns>
+        <columns>Value__c</columns>
+        <columns>Change_Type__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Current_Incentive_Change_Log</fullName>
+        <columns>NAME</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Start_Date__c</field>
+            <operation>lessOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>End_Date__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Current Incentive Change Log</label>
+    </listViews>
+    <listViews>
+        <fullName>Future_Incentive_Change_Log</fullName>
+        <columns>NAME</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Start_Date__c</field>
+            <operation>greaterThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>End_Date__c</field>
+            <operation>greaterThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Future Incentive Change Log</label>
+    </listViews>
+    <listViews>
+        <fullName>Not_Yet_Applied</fullName>
+        <columns>NAME</columns>
+        <columns>Category__c</columns>
+        <columns>Value__c</columns>
+        <columns>Change_Type__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Incentive_Change_Batch__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Not Yet Applied</label>
+    </listViews>
+    <listViews>
+        <fullName>Past_Incentive_Change_Log</fullName>
+        <columns>NAME</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Start_Date__c</field>
+            <operation>lessThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>End_Date__c</field>
+            <operation>lessThan</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Past Incentive Change Log</label>
+    </listViews>
+    <nameField>
+        <displayFormat>ICL{0}</displayFormat>
+        <label>Incentive Change Log Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Incentive Change Logs</pluralLabel>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+    </recordTypes>
+    <searchLayouts>
+        <listViewButtons>Create_Batch</listViewButtons>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>VR_One_Must_Be_Populated</fullName>
+        <active>true</active>
+        <description>At least one of the lookups must be populated (excluding the lookup to Incentive Change Batch)</description>
+        <errorConditionFormula>AND(
+	ISBLANK(Contact__c ),
+	ISBLANK(Collection_Perspective_Child__c),
+	ISBLANK(Staff_History__c),
+	ISBLANK(Staff_Assignment__c)
+)</errorConditionFormula>
+        <errorMessage>At least one of the lookups must be populated.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Create_Batch</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Create Batch</masterLabel>
+        <openType>replace</openType>
+        <page>CreateChangeBatch</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+</CustomObject>

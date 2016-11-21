@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Created as part of the Events Management project</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Advisory_Event__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Advisory Event</label>
+        <referenceTo>Advisory_Event__c</referenceTo>
+        <relationshipLabel>Team Members</relationshipLabel>
+        <relationshipName>Team_Members</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Check_In_Date__c</fullName>
+        <description>Created for CR-20150928-9276</description>
+        <externalId>false</externalId>
+        <label>Check In Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Check_Out_Date__c</fullName>
+        <description>Created for CR-20150928-9276</description>
+        <externalId>false</externalId>
+        <label>Check Out Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Change__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Date Change</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Event_Team_Member__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <formula>Advisory_Event__r.Id +  Team_Member__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Team Member</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hotel_Confirmation_Num__c</fullName>
+        <description>Created for CR-20150928-9276</description>
+        <externalId>false</externalId>
+        <label>Hotel Confirmation #</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location_Change__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Location Change</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Role__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Primary Role</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Series Planner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Series Coordinator</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Event Planner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Event Coordinator</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>On Site Planner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Program Contact</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Staffer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Secondary_Role__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Secondary Role</label>
+        <picklist>
+            <controllingField>Primary_Role__c</controllingField>
+            <picklistValues>
+                <fullName>Dinner Only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meeting Department</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Part Time</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Full Time</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Name Tag Only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Speaker</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Walker</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Greeter</fullName>
+                <default>false</default>
+                <controllingFieldValues>Staffer</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Staff_Rate__c</fullName>
+        <description>Created for CR-20150928-9276</description>
+        <externalId>false</externalId>
+        <label>Staff Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Status_Change__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Status Change</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Team_Member__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Team Member</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Team Members</relationshipLabel>
+        <relationshipName>Team_Members</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Team Member</label>
+    <nameField>
+        <label>Team Member Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Team Members</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Event</fullName>
+        <active>true</active>
+        <label>Event</label>
+        <picklistValues>
+            <picklist>Primary_Role__c</picklist>
+            <values>
+                <fullName>Contractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Coordinator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Planner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On Site Planner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Program Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Staffer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Secondary_Role__c</picklist>
+            <values>
+                <fullName>Dinner Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Full Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greeter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Meeting Department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Name Tag Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Part Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Speaker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Walker</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Series</fullName>
+        <active>true</active>
+        <label>Series</label>
+        <picklistValues>
+            <picklist>Primary_Role__c</picklist>
+            <values>
+                <fullName>Program Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Series Coordinator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Series Planner</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Secondary_Role__c</picklist>
+            <values>
+                <fullName>Dinner Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Full Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greeter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Meeting Department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Name Tag Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Part Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Speaker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Walker</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Session</fullName>
+        <active>true</active>
+        <label>Session</label>
+        <picklistValues>
+            <picklist>Primary_Role__c</picklist>
+            <values>
+                <fullName>Contractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Coordinator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Planner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On Site Planner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Program Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Staffer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Secondary_Role__c</picklist>
+            <values>
+                <fullName>Dinner Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Full Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greeter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Meeting Department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Name Tag Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Part Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Speaker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Walker</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Advisory_Event__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status_Change__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Location_Change__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Date_Change__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Advisory_Event__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status_Change__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Location_Change__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Date_Change__c</lookupPhoneDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Role_is_Required</fullName>
+        <active>true</active>
+        <description>Role is blank. Created as part of the Events Management project.</description>
+        <errorConditionFormula>ISBLANK(TEXT(Primary_Role__c))</errorConditionFormula>
+        <errorDisplayField>Primary_Role__c</errorDisplayField>
+        <errorMessage>You must identify an option for this Team Member.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New_Event_Member</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Event Member</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/RedirectWithVariables?redirect=object--Team_Member__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Session!!returnURL--/{!Advisory_Event__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Series_Member</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Series Member</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/RedirectWithVariables?redirect=object--Team_Member__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Series!!returnURL--/{!Advisory_Event__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Session_Member</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Session Member</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/RedirectWithVariables?redirect=object--Team_Member__c!!Name--Will Auto-Populate!!Advisory_Event__c--{!Advisory_Event__c.Id}!!RecordTypeName--Session!!returnURL--/{!Advisory_Event__c.Id}</url>
+    </webLinks>
+</CustomObject>

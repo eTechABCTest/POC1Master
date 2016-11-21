@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Current_YTD_NBB_Units__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Current_YTD_NBB_Units_New__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current YTD NBB Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_YTD_NBB__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Current_YTD_NBB_New__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current YTD NBB</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Current_YTD_Visits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Current_YTD_Visits__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Current YTD in-person, opportunity, and prospect meeting attendee visits on related opportunities</inlineHelpText>
+        <label>Current YTD Visits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ever_Initial_Activity_for_this_Opp__c</fullName>
+        <description>Created for CR-20140613-5790.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK( Opportunity_Initial_Activity__c ), 
+	&apos;No&apos;,
+	IF(Opportunity_Initial_Activity__c  &lt;  Warm_Lead_Date__c ,
+		&apos;Prior Activity&apos;,
+		&apos;Yes&apos; 
+	) 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Ever Initial Activity for this Opp</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ever_Initial_PA_for_this_Opp__c</fullName>
+        <description>Created for CR-20140613-5790.</description>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( Opportunity_Initial_PA__c ) ,
+	&quot;No&quot;, 
+	IF( Opportunity_Initial_PA__c &lt;  Warm_Lead_Date__c ,
+		&quot;Prior PA&quot;,
+		&quot;Yes&quot; 
+	)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Ever Initial PA for this Opp</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Ever_Visited_for_this_Opp__c</fullName>
+        <description>Sifter #262</description>
+        <externalId>false</externalId>
+        <formula>IF(Isblank(  Opportunity__r.Initial_Visit_Date__c  ), &quot;No&quot;, 
+IF( Opportunity__r.Initial_Visit_Date__c &lt;  Warm_Lead_Date__c  , &quot;Prior Visit&quot;, 
+&quot;Yes&quot;))</formula>
+        <label>Lead Ever Visited for this Opp</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_Business_Vertical__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.New_Business_Vertical__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>New Business Vertical</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opp_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Account.Account_Formal_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp Account</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opp_Program__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Program_Acronym__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp Program</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opp_Proposal_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Amount</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp Proposal Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Opp_Stage__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( Opportunity__r.StageName )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp Stage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Initial_Activity__c</fullName>
+        <externalId>false</externalId>
+        <label>Opportunity Initial Activity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Initial_PA__c</fullName>
+        <externalId>false</externalId>
+        <label>Opportunity Initial PA</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Initial_Visit__c</fullName>
+        <description>Sifter #262</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Initial_Visit_Date__c</formula>
+        <label>Opportunity Initial Visit</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Warm Leads on this Opp</relationshipLabel>
+        <relationshipName>Warm_Leads_MtM</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Previous_YTD_NBB__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Previous_YTD_NBB_New__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Previous YTD NBB</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_YTD_Visits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Previous_YTD_Visits__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Previous YTD Visits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Year_NBB__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Previous_Year_NBB_New__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Previous Year NBB</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Year_Visits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Previous_Year_Visits__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Previous Year Visits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Abbreviation__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Program__r.Program_Abbreviation__c</formula>
+        <label>Program Abbreviation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Outreach_WLMtM__c</fullName>
+        <description>Equals Total_Outreach_Opp__c field from Opportunity</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Total_Outreach_Opp__c</formula>
+        <label>Total Outreach</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_PAs_WLMtM__c</fullName>
+        <description>Equals &apos;# Total PAs&apos; field from Opportunity</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Num_Total_PAs__c</formula>
+        <label>Total PAs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Visits_WLMtM__c</fullName>
+        <description>Equals &apos;# Total Visits&apos; field from Opportunity</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Num_Total_Visits__c</formula>
+        <label>Total Visits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Contact__c</fullName>
+        <externalId>false</externalId>
+        <formula>Warm_Lead__r.Name</formula>
+        <label>Warm Lead Contact</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Warm_Lead__r.Lead_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warm Lead Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Grade__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Warm_Lead__r.Grade__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warm Lead Grade</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Lead_Channel__c</fullName>
+        <externalId>false</externalId>
+        <formula>Warm_Lead__r.Reporting_Lead_Channel__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warm Lead Lead Channel</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Primary_Program__c</fullName>
+        <externalId>false</externalId>
+        <formula>Warm_Lead__r.Primary_Program__r.Name</formula>
+        <label>Warm Lead Primary Program</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Qualification_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Warm_Lead__r.Qualification_Status__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warm Lead Qualification Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead_Sub_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>Warm_Lead__r.Sub_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Warm Lead Sub Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warm_Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Warm Lead</label>
+        <referenceTo>Warm_Lead__c</referenceTo>
+        <relationshipLabel>Opps with This Warm Lead</relationshipLabel>
+        <relationshipName>Warm_Leads_MtM</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Warm Lead MtM</label>
+    <nameField>
+        <displayFormat>A{0000}</displayFormat>
+        <label>Warm Lead MtM Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Warm Leads MtM</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>WarmLeadMTMReferenceRequired</fullName>
+        <active>true</active>
+        <description>A validation rule in place preventing all users, except the &quot;Analyst&quot;, &quot;FinOps&quot; &amp; &quot;Product Marketing Manager&quot; profiles, from being able to delete a reference in a Warm Lead MtM.</description>
+        <errorConditionFormula>AND( 
+NOT(OR( 
+$Profile.Name = &quot;Finance Ops&quot;, 
+$Profile.Name = &quot;Analyst&quot;, 
+$Profile.Name = &quot;Product Marketing Manager&quot;
+)), 
+OR( 
+ISBLANK(Warm_Lead__c), 
+ISBLANK(Opportunity__c))
+)</errorConditionFormula>
+        <errorMessage>There must be a reference to both a Warm Lead and an Opportunity in order to save this record. Please enter these fields.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Connect_to_Warm_Lead</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Connect to Warm Lead</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0R/e?CF00NC00000055pgm={!Opportunity.Name}&amp;CF00NC00000055pgm_lkid={!Opportunity.Id}&amp;retURL=%2F{!Opportunity.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_OAB_Warm_Lead</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New OAB Warm Lead</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/NewWarmLead?OppId={!Opportunity.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Warm_Lead</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Warm Lead</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!URLFOR( $Action.Warm_Lead__c.New, null, [ retURL=&quot;/&quot; &amp; Opportunity.Id  ] )}</url>
+    </webLinks>
+</CustomObject>

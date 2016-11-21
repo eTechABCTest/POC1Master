@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>Create_Edit_Institute_Role</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>ABC_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of CR-4267</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact would: pick up phone if ABC Owner called, respond to email in 48hrs. Owner likely influences contact, can deliver good/bad news.</inlineHelpText>
+        <label>ABC Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Institution_Roles</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Assignment_Comment__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Essential details about this contact or position.</inlineHelpText>
+        <label>Important Details</label>
+        <length>32000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contact_ABCO_Relationship__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Contact__r.ABCO_Relationship__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact: Relationship Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Institution Roles</relationshipLabel>
+        <relationshipName>Institution_Roles</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Institution_Segment__c</fullName>
+        <externalId>false</externalId>
+        <formula>Institution__r.Record_Type_Text__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Institution Segment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Account_Roles</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Last_Interaction_Date__c</fullName>
+        <description>CR-20140124-4353
+Date of the most recent activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization.</description>
+        <externalId>false</externalId>
+        <label>Last Interaction Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_Interaction_Type__c</fullName>
+        <description>CR-20140124-4353
+Type of the most recent activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization.</description>
+        <externalId>false</externalId>
+        <label>Last Interaction Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Interaction__c</fullName>
+        <description>CR-20140124-4353
+Date + Type of the most recent activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization.</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Last_Interaction_Date__c)
+&amp; 
+IF(
+	AND(
+		NOT(ISNULL(Last_Interaction_Date__c)),
+		NOT(ISBLANK(Last_Interaction_Date__c)),
+		NOT(ISNULL(Last_Interaction_Type__c)),
+		NOT(ISBLANK(Last_Interaction_Type__c))
+	),
+	&quot; - &quot;,
+	&quot;&quot;
+)
+&amp;
+Last_Interaction_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date + Type of the most recent activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization.</inlineHelpText>
+        <label>Last Interaction</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Interaction_Date__c</fullName>
+        <description>CR-20140124-4353
+Date of the next activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization</description>
+        <externalId>false</externalId>
+        <label>Next Interaction Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Next_Interaction_Type__c</fullName>
+        <description>CR-20140124-4353
+Type of the next activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization</description>
+        <externalId>false</externalId>
+        <label>Next Interaction Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Interaction__c</fullName>
+        <description>CR-20140124-4353
+Date + Type of the next activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Next_Interaction_Date__c )
+&amp;
+IF(
+	AND(
+		NOT(ISNULL(Next_Interaction_Date__c)),
+		NOT(ISBLANK(Next_Interaction_Date__c)),
+		NOT(ISNULL(Next_Interaction_Type__c)),
+		NOT(ISBLANK(Next_Interaction_Type__c))
+	),
+	&quot; - &quot;,
+	&quot;&quot;
+)
+&amp;
+Next_Interaction_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date + Type of the next activity out of the following: Events/Activities, Delivery Member Interaction, Meeting Utilization</inlineHelpText>
+        <label>Next Interaction</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Record_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Select the Institution Record Type. This value controls the Roles for the contact being added.</inlineHelpText>
+        <label>Record Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>US Provider</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>International Provider</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>US Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>International Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>US Corporate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>International Corporate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>US HCIC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>International HCIC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Physician Practice</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Role</label>
+        <picklist>
+            <controllingField>Record_Type__c</controllingField>
+            <picklistValues>
+                <fullName>Accts Receivable</fullName>
+                <default>false</default>
+                <controllingFieldValues>Vendor</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CDO</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CDO - Head of Development</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CEO</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CEO - Head of Organization</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CFO</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CFO - Head of Finance</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIO</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CIO - Head of Information Technology</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CM Coach</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CM Decision Maker</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CM Gate Keeper</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CM Influencer</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CMO</fullName>
+                <default>false</default>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CMO - Medical Director</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CM Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CNO</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CNO - Head of Nursing</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>COO</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>COO - Head of Operations</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CQO</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CQO - Head of Quality</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Assoc VP (Provost) of Acad Affairs</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Assoc VP of Finance &amp; Admin</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Chief Information Officer</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Community College President</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Dean of Students</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Dir. of Mkting &amp; Online Ed (COE #2)</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Director of Facilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Director of Procurement</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Head of Admissions/Enrollment</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: President, Four-Year Institution</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: Provost &amp; VP of Academic Affairs</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Advancement</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Enrollment</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Finance &amp; Administration/CBO</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Human Resources</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Online Education (COE #1)</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Research</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAB: VP of Student Affairs</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Education</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EHR Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT - 3rd Party</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT - Internal</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medical Staff</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>MRS Account Owner</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NDA Signator</fullName>
+                <default>false</default>
+                <controllingFieldValues>Vendor</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Office Manager</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Office Staff</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other - Legacy Role</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Physician</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PO Support</fullName>
+                <default>false</default>
+                <controllingFieldValues>Vendor</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Primary Salesperson</fullName>
+                <default>false</default>
+                <controllingFieldValues>Vendor</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Principal</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referral Staff</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Security Assessment Contact</fullName>
+                <default>false</default>
+                <controllingFieldValues>Vendor</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+                <controllingFieldValues>Physician Practice</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Business Development - Head of BD</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP HR</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Education</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP HR - Head of Human Resources</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Marketing/Planning</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Provider</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Marketing/Planning - Head of Mktg/Planning</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Provider</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Marketing - Head of Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP of HR - Head of HR</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Provider Relations - Head of Provider Relations</fullName>
+                <default>false</default>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Sales - Head of Sales</fullName>
+                <default>false</default>
+                <controllingFieldValues>International Corporate</controllingFieldValues>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VP Strategy - Head of Strategy</fullName>
+                <default>false</default>
+                <controllingFieldValues>International HCIC</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>US Corporate</controllingFieldValues>
+                <controllingFieldValues>US HCIC</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type_of_Contact__c</fullName>
+        <description>Created as part of CR-4267</description>
+        <externalId>false</externalId>
+        <label>Type of Contact</label>
+        <picklist>
+            <picklistValues>
+                <fullName>ABC Champion</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Influencer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Decision Maker</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lookyloo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Naysayer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Institution Role</label>
+    <nameField>
+        <label>Institution Role Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Institution Roles</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Master</fullName>
+        <active>true</active>
+        <label>Master</label>
+        <picklistValues>
+            <picklist>Record_Type__c</picklist>
+            <values>
+                <fullName>International Corporate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>International Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>International HCIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>International Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>US Corporate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>US Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>US HCIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>US Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Role__c</picklist>
+            <values>
+                <fullName>Accts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CDO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CDO - Head of Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CEO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CEO - Head of Organization</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CFO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CFO - Head of Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CIO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CIO - Head of Information Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CMO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CMO - Medical Director</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CNO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CNO - Head of Nursing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>COO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>COO - Head of Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CQO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CQO - Head of Quality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NDA Signator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other - Legacy Role</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PO Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Primary Salesperson</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Security Assessment Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Business Development - Head of BD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP HR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP HR - Head of Human Resources</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Marketing - Head of Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Marketing%2FPlanning</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Marketing%2FPlanning - Head of Mktg%2FPlanning</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Provider Relations - Head of Provider Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Sales - Head of Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP Strategy - Head of Strategy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VP of HR - Head of HR</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Contact__c</picklist>
+            <values>
+                <fullName>ABC Champion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Decision Maker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Influencer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lookyloo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Naysayer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <webLinks>
+        <fullName>New_InstitutionRoles</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/Create_Edit_Institute_Role?accId={!Account.Id}&amp;recordType={!Account.Record_Type_Text__c}&amp;retURL={!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Institution_Role</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Role</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0D/e?Name=Will Auto-Populate
+&amp;CF00NC00000055pPS={!Account.Name}
+&amp;CF00NC00000055pPS_lkid={!Account.Id}
+&amp;retURL=%2F{!Account.Id}</url>
+    </webLinks>
+</CustomObject>

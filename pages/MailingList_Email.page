@@ -1,0 +1,10 @@
+<apex:page standardController="Campaign" extensions="MailingCampaignController" action="{!SendEmail}">
+    <apex:form >
+        <apex:pageBlock title="Email Materials Management" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!cancel}" value="Close"/>
+            </apex:pageBlockButtons>
+            <apex:messages />            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

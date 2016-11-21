@@ -1,0 +1,39 @@
+<!--
+    Purpose:    Create new Invoice Billing Shed and Associte it with the Contract ABC record
+                Role of this page is to populate the Institute field on Invoice Billing Shed screen 
+                and populate the Invoice Billing Shed field of Contract ABC record with this invoice billing record Id.
+                This page will be get called from the "Create Invoice Billing Shed" button on the Contract ABC detail page       
+    Create By:  Simplyforce - Bhavi - 10/02/2011 - CR-20110926-112
+   
+    Revision Log:       v1.0 - (Bhavi-10/02/2011) Created code.
+   
+-->
+<apex:page standardController="Invoice_Billing_Schedule__c" extensions="AssociateContractABCWithInvoiceBilling">
+    
+    <!-- Page Section Header -->
+    <apex:sectionHeader title="Invoice Billing Schedule Edit" subtitle="New Invoice Billing Schedule"/>
+    
+    <!-- from starts from here -->
+    <apex:form >
+        <apex:pageBlock title="Invoice Billing Schedule Edit" mode="edit">
+            
+            <!-- Action Buttons -->
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <!-- Invoice Billing Information Section -->
+            <apex:pageBlockSection title="Information">
+                <apex:inputField value="{!Invoice_Billing_Schedule__c.Institution__c}"/>
+            </apex:pageBlockSection>
+            
+            <!-- Invoice Billing Schedule Description Section -->
+            <apex:pageBlockSection title="Billing Schedule Description">
+                <apex:inputField value="{!Invoice_Billing_Schedule__c.Description__c}"/>
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
+    
+</apex:page>

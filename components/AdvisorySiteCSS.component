@@ -1,0 +1,123 @@
+<apex:component >
+	
+	<style>
+	
+    .subscriptionSection a {
+        text-decoration: underline;
+		color: #bf0000;
+    }
+    
+    a.unsubscribe {
+    	color: #193A49;
+    }
+        
+    a.unsubscribe:hover {
+    	color: #bf0000;
+    }
+      
+    .subscriptionLink {
+        /*margin-right:20px;*/
+        width:80px;
+        float:left;
+    }
+        
+	.submitButton
+	{
+		font: normal 12px DIN, DINWebMedium, sans-serif;
+		background: #BF0000;
+		color: white;
+		cursor: pointer;
+		text-transform: uppercase;
+		border: 0;
+		width:100px;
+		margin-left:360px
+	}
+        
+    h3 {
+    	font: bold 14px/16px Arial, sans-serif;
+		color: #193a49;
+    }
+	
+	.submitButtonHover
+	{
+		background: #193A49 !important;
+	}
+	
+	.submitButtonLink {
+		width: 100%;
+		height: 100%;
+		display: block;
+		color: white;
+		text-decoration: none;
+		padding: 5px 6px;
+		text-align: center;
+	}
+	
+	h4.toggle {
+		color: #BF0000;
+		font: normal 14px/40px Arial, sans-serif;
+		margin: 15px 0 10px;
+		cursor: pointer;
+        /*background: url({!URLFOR($Resource.jQuery, '/css/custom-theme/images/bullet-arrow-toggle.gif')}) center right 15px no-repeat;*/
+		height: 30px;
+	}
+    
+    h4.subToggle {
+        cursor: pointer;
+        height: 30px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #193A49;
+        margin-top: 0;
+    }
+	
+	h4.opened {
+		background-position: left -20px !important;
+	}
+	
+	h4.closed {
+		background-position: left 2px !important;
+	}
+	
+	.labelCol {
+		FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif;
+		font-size: 9pt;
+		font-weight: 700;
+		color: #94863B;
+		padding-right:15px;
+		text-align:right;
+		padding-left:15px;
+		padding-bottom:8px;
+	}
+	
+	.dataCol {
+		FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif;
+		font-size: 9pt;
+		padding-right:15px;
+		padding-bottom:8px;
+	}
+	
+	.subscriptionHeader {
+		background-color:#6b696b;
+		color: white;
+		
+	}
+	
+	.tblHeader {
+		white-space:nowrap;
+		font-weight:bold;
+		color:white;
+		background-color:#6B696B;
+	}
+	
+	.odd {
+        /**background-color: #F7F7DE;**/
+	}
+	
+	.even {
+		
+	}
+	
+	</style>
+	
+</apex:component>

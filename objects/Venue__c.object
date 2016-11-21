@@ -1,0 +1,1158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>EventVenueNewOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Created as part of the Events Management Project</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Accommodations__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <formula>IF(
+RecordType.Name = &quot;Accommodations&quot; || RecordType.Name = &quot;Event Venue and Accommodations&quot;,
+true,
+false
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Accommodations</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Additional_Rooms__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rooms added to contract</inlineHelpText>
+        <label>Additional Rooms</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Advisory_Event__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Advisory Event</label>
+        <referenceTo>Advisory_Event__c</referenceTo>
+        <relationshipName>Venues</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Block_Checked_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Block Checked By</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Event_Venues</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Block_Last_Checked__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Block Last Checked</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Cutoff_Date__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Cutoff Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Begins__c</fullName>
+        <externalId>false</externalId>
+        <formula>Advisory_Event__r.Date_Begins__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Begins</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Sold_Out__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Date Sold Out</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Space_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Event Space Name</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Value does not exist or does not match filter criteria.</errorMessage>
+            <filterItems>
+                <field>Account.Type</field>
+                <operation>equals</operation>
+                <value>Meeting Room</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.ParentId</field>
+                <operation>equals</operation>
+                <valueField>$Source.Venue__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Event_Venues</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Event_Venue__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <formula>IF( 
+RecordType.Name = &quot;Event Venue&quot; || RecordType.Name = &quot;Event Venue and Accommodations&quot;, 
+true, 
+false 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Venue</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Final Pickup - Day 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Day_2__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Final Pickup - Day 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Day_3__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Final Pickup - Day 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Day_4__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Final Pickup - Day 4</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Day_5__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Final Pickup - Day 5</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Pickup_Total__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <formula>Final_Pickup_Day_1__c +
+ Final_Pickup_Day_2__c +
+ Final_Pickup_Day_3__c +
+ Final_Pickup_Day_4__c +
+ Final_Pickup_Day_5__c +
+ Final_Shoulder_Pickup__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Final Pickup – Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Final_Shoulder_Pickup__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Accumulative</inlineHelpText>
+        <label>Final Shoulder Pickup</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Breakfast_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Guarantee Breakfast - Day 1</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Breakfast_Day_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Breakfast - Day 2</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Breakfast_Day_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Breakfast - Day 3</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Breakfast_Day_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Breakfast - Day 4</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Breakfast_Day_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Breakfast - Day 5</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Dinner_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Guarantee Dinner - Day 1</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Dinner_Day_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Dinner - Day 2</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Dinner_Day_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Dinner - Day 3</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Dinner_Day_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Dinner - Day 4</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Dinner_Day_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Dinner - Day 5</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Lunch_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Guarantee Lunch - Day 1</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Lunch_Day_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Lunch - Day 2</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Lunch_Day_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Lunch - Day 3</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Lunch_Day_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Lunch - Day 4</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Lunch_Day_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Lunch - Day 5</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Reception_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Guarantee Reception - Day 1</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Reception_Day_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Reception - Day 2</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Reception_Day_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Reception - Day 3</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Reception_Day_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Reception - Day 4</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guarantee_Reception_Day_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Guarantee Reception - Day 5</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Invoice_Received__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Invoice Received</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Latest_Payment__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Latest Payment</label>
+        <summarizedField>Venue_Payment__c.Date_Paid__c</summarizedField>
+        <summaryForeignKey>Venue_Payment__c.Event_Venue__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Payments_Made__c</fullName>
+        <description>Created as part of Event Management.</description>
+        <externalId>false</externalId>
+        <label>Payments Made</label>
+        <summarizedField>Venue_Payment__c.Amount__c</summarizedField>
+        <summaryForeignKey>Venue_Payment__c.Event_Venue__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Picked_up_at_1_Month_Out__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Picked up at 1 Month Out</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Picked_up_at_1_Week_Out__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Picked up at 1 Week Out</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Picked_up_at_2_Weeks_Out__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Picked up at 2 Weeks Out</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Picked_up_at_Cutoff__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Picked up at Cutoff</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Primary__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Only a single Event Venue may be marked as Primary</inlineHelpText>
+        <label>Primary</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Released__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label># Released</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Comments__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Block Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Block Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Venues</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Tracking_1_Month_Out__c</fullName>
+        <description>Created for CR-20151209-9450</description>
+        <externalId>false</externalId>
+        <label>Room Block Tracking 1 Month Out</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Tracking_1_Week_Out__c</fullName>
+        <description>Created for CR-20151209-9450.</description>
+        <externalId>false</externalId>
+        <label>Room Block Tracking 1 Week Out</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Tracking_2_Weeks_Out__c</fullName>
+        <description>Created for CR-20151209-9450</description>
+        <externalId>false</externalId>
+        <label>Room Block Tracking 2 Weeks Out</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Block_Tracking_at_Cutoff__c</fullName>
+        <description>Created for CR-20151209-9450.</description>
+        <externalId>false</externalId>
+        <label>Room Block Tracking at Cutoff</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Day_1__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Contracted - Day 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Day_2__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Contracted - Day 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Day_3__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Contracted - Day 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Day_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Room Contracted - Day 4</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Day_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Room Contracted - Day 5</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Contracted_Total__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <formula>Room_Contracted_Day_1__c +
+Room_Contracted_Day_2__c +
+Room_Contracted_Day_3__c +
+Room_Contracted_Day_4__c +
+Room_Contracted_Day_5__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Room Contracted - Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room_Rate__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Room Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Room_Use__c</fullName>
+        <externalId>false</externalId>
+        <label>Room Use</label>
+        <picklist>
+            <picklistValues>
+                <fullName>General Session</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Registration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakfast</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dinner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout 3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout 4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Breakout 5</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Staff_Rate__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Staff Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Venue_Details__c</fullName>
+        <description>Created as part of the Events Management project</description>
+        <externalId>false</externalId>
+        <label>Venue Details</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Venue__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Venue</label>
+        <lookupFilter>
+            <active>true</active>
+            <booleanFilter>((1 AND 2 AND 3) OR (4 AND 5 AND 6) OR (7 AND 8 AND 9 AND 10))</booleanFilter>
+            <errorMessage>The Institution record you&apos;re searching for may not be populating because its “Type” is incorrect for this Record Type and/or it is not indicated as “Event Venue” and/or “Accommodations.”</errorMessage>
+            <filterItems>
+                <field>$Source.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Accommodations</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Accommodations__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Type</field>
+                <operation>equals</operation>
+                <value>Conference Center, Convention Center, Hotel</value>
+            </filterItems>
+            <filterItems>
+                <field>$Source.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Event Venue</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Event_Venue__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Type</field>
+                <operation>equals</operation>
+                <value>ABC Office, Conference Center, Convention Center, Corporation, Hotel, Member Location, Restaurant</value>
+            </filterItems>
+            <filterItems>
+                <field>$Source.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Event Venue and Accommodations</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Event_Venue__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Accommodations__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <filterItems>
+                <field>Account.Type</field>
+                <operation>equals</operation>
+                <value>Conference Center, Convention Center, Corporation, Hotel</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Venues and Vendors (Venue)</relationshipLabel>
+        <relationshipName>Venues</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Venues and Vendors</label>
+    <nameField>
+        <label>Venue Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Venues and Vendors</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Accommodations</fullName>
+        <active>true</active>
+        <description>Location of the hotel accomodations</description>
+        <label>Accommodations</label>
+        <picklistValues>
+            <picklist>Room_Use__c</picklist>
+            <values>
+                <fullName>Breakfast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dinner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General Session</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Registration</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Event_Venue</fullName>
+        <active>true</active>
+        <description>Location of the Event</description>
+        <label>Event Venue</label>
+        <picklistValues>
+            <picklist>Room_Use__c</picklist>
+            <values>
+                <fullName>Breakfast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dinner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General Session</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Registration</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Event_Venue_and_Accommodations</fullName>
+        <active>true</active>
+        <description>Location of the event and accomodations</description>
+        <label>Event Venue and Accommodations</label>
+        <picklistValues>
+            <picklist>Room_Use__c</picklist>
+            <values>
+                <fullName>Breakfast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Breakout 5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dinner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General Session</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Registration</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Primary__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Primary__c</lookupPhoneDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Venue_is_Required</fullName>
+        <active>true</active>
+        <description>If Venue is blank this will trigger</description>
+        <errorConditionFormula>ISBLANK(Venue__c)</errorConditionFormula>
+        <errorDisplayField>Venue__c</errorDisplayField>
+        <errorMessage>You must select a Venue</errorMessage>
+    </validationRules>
+</CustomObject>

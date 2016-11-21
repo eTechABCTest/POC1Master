@@ -1,0 +1,1706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>RoyallProgramNewEditOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>RoyallProgramNewEditOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>RoyallProgramDetailOverride</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to track the programs that can be offered to a client.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fieldSets>
+        <fullName>PROGRAM_CONTRACT_PROPOSAL_DETAILS</fullName>
+        <description>This field set is used on the VF page to override the page layout of  object.</description>
+        <displayedFields>
+            <field>Proposal_Sent__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Signature_Type__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Declined_Date__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>At_Risk__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Contract_Sent__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Competitor_Lost_To__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Contract_Signature_Date__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>PROGRAM - CONTRACT/PROPOSAL DETAILS</label>
+    </fieldSets>
+    <fields>
+        <fullName>Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Package__r.Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account ID (for project)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Actual_Program_Deployment_Date_R__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Program Deployment Date (R)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Program_Shutdown_Date_R__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Program Shutdown Date (R)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Quantity_DW__c</fullName>
+        <description>This number represents a roll-up of the actual contact quantities from Data Warehouse (DW) -- per Program</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This represents roll-up of the actual contact quantities from Data Warehouse (DW) -- per Program</inlineHelpText>
+        <label>Actual Quantity (DW)</label>
+        <summarizedField>Program_Project__c.Contact_Quantity__c</summarizedField>
+        <summaryForeignKey>Program_Project__c.Program_ID__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Additional_Cost_Per_Thousand__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Cost per thousand as found on your contract</inlineHelpText>
+        <label>Additional Cost Per Thousand</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This repeat program is at risk or being declined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Only check this box for repeat programs that a client is at risk of NOT repeating.</inlineHelpText>
+        <label>Program At Risk</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_New__c</fullName>
+        <externalId>false</externalId>
+        <label>Campaign (New)</label>
+        <picklist>
+            <controllingField>Target_Audience_New__c</controllingField>
+            <picklistValues>
+                <fullName>Advancement</fullName>
+                <default>false</default>
+                <controllingFieldValues>Advancement Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Discount</fullName>
+                <default>false</default>
+                <controllingFieldValues>Advancement Accounts</controllingFieldValues>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EAM</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eQual - Completion</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eQual - Waitlist</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>First Year Persistence</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fulfillment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Grad Application Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Grad eQual</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Grad Web App</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hardwick Day</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inquiry Cultivation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Interactive Offer</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Market Research</fullName>
+                <default>false</default>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Offer</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Open House/Regional Reception</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Advancement Accounts</controllingFieldValues>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Grad</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Senior</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Sophomore/Junior</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Previously Purchased Seniors</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Royall Application</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Search</fullName>
+                <default>false</default>
+                <controllingFieldValues>Grad Accounts</controllingFieldValues>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Search Jumpstart</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Senior Search</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Senior Search/PRE Fulfillment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Transfer App</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Transfer Consulting</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Urgentgram</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Application</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Inquiry</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yield Enhancement</fullName>
+                <default>false</default>
+                <controllingFieldValues>Undergrad Accounts</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_SubType__c</fullName>
+        <externalId>false</externalId>
+        <label>Campaign: Sub-Type</label>
+        <picklist>
+            <controllingField>Campaign_New__c</controllingField>
+            <picklistValues>
+                <fullName>AM: IP Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Application Marketing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AM: New Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Application Marketing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AM: PRE Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Application Marketing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SE: IP Name (Client-Provided)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Search</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SE: IP Name (Royall-Generated)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Search</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SE: New Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Search</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SE: PRE Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Search</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SS/PRE: New Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Search/PRE Fulfillment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SS/PRE: PRE Name</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Search/PRE Fulfillment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>YE: Affordability Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Yield Enhancement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>YE: Deposit IQ</fullName>
+                <default>false</default>
+                <controllingFieldValues>Yield Enhancement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>YE: Quick Pay</fullName>
+                <default>false</default>
+                <controllingFieldValues>Yield Enhancement</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Campaign__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Campaign engaged with client for this program.  &quot;Standard&quot; programs imply that both paper and email are used.</inlineHelpText>
+        <label>Campaign</label>
+        <picklist>
+            <controllingField>Target_Audience__c</controllingField>
+            <picklistValues>
+                <fullName>Admitted Student Study</fullName>
+                <default>false</default>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Driver mailing to Inquiry Pool</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - End of School Campaign</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Inquiry Pool Electronic Only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Inquiry Pool Paper &amp; Electronic</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - New Name Sr. Search Fulfillment Electronic Only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - New Name Sr. Search Fulfillment Paper &amp; Electronic</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Applications - Blank</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - SNR Sr. Search Fulfillment Electronic Only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - SNR Sr. Search Fulfillment Paper &amp; Electronic</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Transfer e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Application - Transfer Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Common Application Marketing - e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Common Application Marketing - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Discount</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>End of School Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eQual - Deposit</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eQual - Incomplete</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eQual - Waitlist</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>FAFSA Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fulfillment - e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fulfillment - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fulfillment to Fulfillment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inquiry Cultivation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Issue Analysis</fullName>
+                <default>false</default>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Junior Boost</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Junior Inquiry Cultivation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Keying</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non-Applicant Study</fullName>
+                <default>false</default>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Offer - Interactive</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Offer - PDF</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Offer - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Open House</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Adult Programs</controllingFieldValues>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Prospective Student Study</fullName>
+                <default>false</default>
+                <controllingFieldValues>Market Research</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Regional Reception</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Search - e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Search Non-Responders</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Search - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Senior Search - e-only</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Senior Search - Standard</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sophomore to Shortlist</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Urgentgram</fullName>
+                <default>false</default>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Application</fullName>
+                <default>false</default>
+                <controllingFieldValues>Adult Programs</controllingFieldValues>
+                <controllingFieldValues>Graduate Programs</controllingFieldValues>
+                <controllingFieldValues>Senior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Inquiry</fullName>
+                <default>false</default>
+                <controllingFieldValues>Adult Programs</controllingFieldValues>
+                <controllingFieldValues>Sophomore/Junior Programs</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Works</fullName>
+                <default>false</default>
+                <controllingFieldValues>Other</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Competitor_Lost_To__c</fullName>
+        <description>Indicates the competitor that will manage the program when Royall &amp; Company&apos;s service is declined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please indicate the competitor that will manage the program when Royall &amp; Company&apos;s service is declined.</inlineHelpText>
+        <label>Competitor Lost To</label>
+        <picklist>
+            <controllingField>Status__c</controllingField>
+            <picklistValues>
+                <fullName>In-House</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Alloy Education</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EducationDynamics</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fire Engine Red</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hutchinson Allgood</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LF O’Connell</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mindpower</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Noel-Levitz</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Performa</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RuffaloCODY</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Spectrum</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stamats</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TargetX</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TWG+</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Visual Zen</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Way Better Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+                <controllingFieldValues>Declined</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contact_Quantity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact quantity for this campaign at the proposed or final invoiced stage.</inlineHelpText>
+        <label>Contact Quantity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date contract for this program was sent to the client</inlineHelpText>
+        <label>Contract Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Signature_Date__c</fullName>
+        <description>Date contract is signed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date contract is signed.</inlineHelpText>
+        <label>Contract Signature Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Declined_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Declined Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>E_Only_Marketing_R__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>E-Only Marketing (R)</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Cost__c *  Probability__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Expected Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Fiscal_Year__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Package__r.Fiscal_Year__c</formula>
+        <label>Fiscal Year</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Historical_Data_Load__c</fullName>
+        <description>Identity that ties back to the row number in the spreadsheet that Kevin Ross supplied to load the fiscal years 2007-2009.  This field will be deleted once the load is complete and verified.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identity that ties back to the row number in the spreadsheet that Kevin Ross supplied to load the fiscal years 2007-2009.  This field will be deleted once the load is complete and verified.</inlineHelpText>
+        <label>Historical Data Load</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Job_Number_test__c</fullName>
+        <externalId>false</externalId>
+        <formula>Program_Package__r.Account__r.r_School_Code__c &amp;&quot;-&quot; &amp;Program_Package__r.Fiscal_Year__c &amp;&quot;-&quot;&amp; TEXT (Campaign_New__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Job Number#</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List cost for this campaign at proposed or final invoiced stage</inlineHelpText>
+        <label>List Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Lock_the_Record__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Lock the Record</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Multi_year_Contract_R__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Multi-year Contract (R)</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Important facts about the campaign</inlineHelpText>
+        <label>Notes</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Planned_Deployment_Date_R__c</fullName>
+        <externalId>false</externalId>
+        <label>Planned Deployment Date (R)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Planned_Shutdown_Date_R__c</fullName>
+        <externalId>false</externalId>
+        <label>Planned Shutdown Date (R)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Postage_Cost_SS_New__c</fullName>
+        <externalId>false</externalId>
+        <label>Postage Cost (SS-New)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Postage_Cost_SS_PRE__c</fullName>
+        <externalId>false</externalId>
+        <label>Postage Cost (SS-PRE)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Postage_Cost_Total__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*Postage_Cost_SS_New__c + */Postage_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Postage Cost (Total$)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Postage_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Cost of postage for this campaign at the proposed or final invoiced stage</inlineHelpText>
+        <label>Postage Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Probability__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Probability of the client engaging this campaign</inlineHelpText>
+        <label>Probability</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Probable_Revenue__c</fullName>
+        <description>Calculates the probable revenue based on the SL&apos;s estimated probability the program will convert. ($) Program_Cost__c * (%) Probability__c = Probable Revenue</description>
+        <externalId>false</externalId>
+        <formula>Program_Cost__c *  Probability__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Calculates the probable revenue based on the SL&apos;s estimated probability the program will convert.
+($) Program_Cost__c * (%) Probability__c = Probable Revenue</inlineHelpText>
+        <label>Probable Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Program_Cost_SS_New__c</fullName>
+        <externalId>false</externalId>
+        <label>Program Cost (SS-New)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Program_Cost_SS_PRE__c</fullName>
+        <externalId>false</externalId>
+        <label>Program Cost (SS-PRE)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Program_Cost_Total__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*Program_Cost_SS_New__c + */Program_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Program Cost (Total$)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Program_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total cost to the client for this program</inlineHelpText>
+        <label>Program Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Program_Package__c</fullName>
+        <externalId>false</externalId>
+        <label>Program Package</label>
+        <referenceTo>Program_Package__c</referenceTo>
+        <relationshipLabel>Programs (Royall)</relationshipLabel>
+        <relationshipName>Programs</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Proposal_Approved__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the proposal for this program was approved by the client</inlineHelpText>
+        <label>Proposal Approved</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the proposal was sent to the client for this program</inlineHelpText>
+        <label>Proposal Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>QTY_AM_IP_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (AM:IP Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_AM_PRE_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (AM:PRE Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_AM_new_name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (AM:New Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SE_IP_Name_Client__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SE:IP Name-Client)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SE_IP_Name_Royall__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SE:IP Name-Royall)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SE_New_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SE:New Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SE_PRE_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SE:PRE Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SS_New_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SS:New Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QTY_SS_PRE_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>QTY (SS:PRE Name)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Retargeting__c</fullName>
+        <externalId>false</externalId>
+        <label>Retargeting</label>
+        <picklist>
+            <controllingField>Campaign_New__c</controllingField>
+            <picklistValues>
+                <fullName>Retargeting (Search)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Search</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*N/A*</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Retargeting (Application)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Application Marketing</controllingFieldValues>
+                <controllingFieldValues>Royall Application</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Signature_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How did the client commit to engaging on this campaign?</inlineHelpText>
+        <label>Signature Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Verbal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contract - PO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contract - Client</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contract - Royall</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <description>•	Contracted – We have a signed contract for the core program.  For upsells, we have either email or verbal approval.
+
+•	Pending Signature – We have sent a contract to the client and are awaiting signature.
+
+•	Proposed – The program has been proposed to the client and will likely be approved; however, a contract has not yet been drafted.
+
+•	Forecasted (Probability Adjusted) – The program has been discussed and/or proposed to the client; however, we are not 100% confident that it will be approved at this level.  A probability of less than 100% has been assigned to this program.
+
+•	Declined – We discussed and/or proposed a program that the client declined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Where does the conversation stand for this program?</inlineHelpText>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Opportunity</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Proposed</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending Signature</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contracted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Target_Audience_New__c</fullName>
+        <externalId>false</externalId>
+        <label>Target Audience (New)</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Advancement Accounts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Grad Accounts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Market Research</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Undergrad Accounts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Target_Audience__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Group of individuals being contacted within the campaign.</inlineHelpText>
+        <label>Target Audience</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sophomore/Junior Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Senior Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Graduate Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Adult Programs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Market Research</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Target_Deployment__c</fullName>
+        <description>Date the program is targeted to deploy.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the program is targeted to deploy.</inlineHelpText>
+        <label>Target Deployment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How this campaign was originated (Re-engagement, Up-sell, Cross-sell, or Final Invoice Adjustment)</inlineHelpText>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Re-engagement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Up-sell</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cross-sell</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Discount Allocation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounting adjustment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Line of Business transfer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Final invoice adjustment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Program (Royall)</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Pending_Signature_only_CFY</fullName>
+        <columns>Fiscal_Year__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>NAME</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>Campaign_New__c</columns>
+        <columns>Target_Audience_New__c</columns>
+        <columns>Status__c</columns>
+        <columns>Type__c</columns>
+        <columns>Contact_Quantity__c</columns>
+        <columns>Actual_Quantity_DW__c</columns>
+        <columns>Proposal_Sent__c</columns>
+        <columns>Probable_Revenue__c</columns>
+        <columns>Expected_Value__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Fiscal_Year__c</field>
+            <operation>equals</operation>
+            <value>2016</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Signature</value>
+        </filters>
+        <label>&apos;Pending Signature&apos; stage only (CFY)</label>
+    </listViews>
+    <nameField>
+        <label>Job Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Programs (Royall)</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Program_Package__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Fiscal_Year__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Type__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CREATED_DATE</lookupDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Campaign_Equals_Web_Application_Req</fullName>
+        <active>true</active>
+        <description>IF Campaign (New) = “Web Application” Contact Quantity must be &lt; 20</description>
+        <errorConditionFormula>AND( 
+ISPICKVAL(Campaign_New__c, &quot;Web Application&quot;),  
+OR(ISBLANK(Contact_Quantity__c ), Contact_Quantity__c &gt;= 20 )
+)</errorConditionFormula>
+        <errorMessage>If Campaign (New) is equal to “Web Application”, then the Contact Quantity must be &lt; 20</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Campaign_Equals_eQual_Req</fullName>
+        <active>false</active>
+        <description>Per A.Sutton: 1.20.16 &apos;..change this to remove the ERROR message when the “campaign (new)” type is “eQual”?..&apos;</description>
+        <errorConditionFormula>AND( 
+BEGINS(TEXT(Campaign_New__c),  &quot;eQual&quot;) ,  
+OR(ISBLANK(Contact_Quantity__c ),Contact_Quantity__c &lt;= 20)
+)</errorConditionFormula>
+        <errorMessage>If the Campaign (New) starts with ‘eQual’, then Contact Quantity must be &gt; 20</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Lock_the_Record_Validation</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+	$Profile.Name != &apos;System Administrator&apos;,
+	NOT(ISCHANGED(Actual_Quantity_DW__c)),
+	AND(
+	    Lock_the_Record__c,
+	    NOT(ISCHANGED(Lock_the_Record__c))
+	)
+)</errorConditionFormula>
+        <errorMessage>This Record is locked and cannot be edited</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Program_Status_Contracted_Req</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ ISPICKVAL(Status__c ,&quot;Contracted&quot;), 
+ OR(
+  ISBLANK( Contract_Sent__c ),
+  ISBLANK( Proposal_Sent__c ),
+  ISBLANK(Contract_Signature_Date__c )
+ )
+)</errorConditionFormula>
+        <errorDisplayField>Actual_Program_Deployment_Date_R__c</errorDisplayField>
+        <errorMessage>When program status is &quot;Contracted&quot;, the contract sent date, proposal sent date, and signature date is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Program_Status_Declined_Req</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ ISPICKVAL(Status__c ,&quot;Declined&quot;), 
+ OR(
+  ISBLANK( Declined_Date__c ),
+  ISBLANK( Proposal_Sent__c )
+ )
+)</errorConditionFormula>
+        <errorMessage>When program status is &quot;Declined&quot;, the declined date and proposal sent date is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Program_Status_Opportunity_Req</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(
+ ISPICKVAL(Status__c ,&quot;Opportunity&quot;),
+ ISBLANK(Probability__c) 
+)</errorConditionFormula>
+        <errorDisplayField>Probability__c</errorDisplayField>
+        <errorMessage>When program status is &quot;Opportunity&quot;, the probability is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Program_Status_Pending_Signature_Req</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ ISPICKVAL(Status__c ,&quot;Pending Signature&quot;), 
+ OR(
+  ISBLANK( Contract_Sent__c ),
+  ISBLANK( Proposal_Sent__c )
+ )
+)</errorConditionFormula>
+        <errorMessage>When program status is &quot;Pending Signature&quot;, the contract sent date and proposal sent date is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Program_Status_Proposed_Req</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ ISPICKVAL(Status__c ,&quot;Proposed&quot;), 
+ OR(
+  ISBLANK(Probability__c),
+  ISBLANK( Proposal_Sent__c )
+ )
+)</errorConditionFormula>
+        <errorMessage>When program status is &quot;Proposed&quot;, the probability and proposal sent date is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Status_field_validation</fullName>
+        <active>true</active>
+        <description>Only those individuals with &quot;invoicing access” are able to change to the value to “Contracted” and “Pending Signature&quot;.Contact Accounting to make this update.</description>
+        <errorConditionFormula>ISCHANGED(Status__c) &amp;&amp; (ISPICKVAL(Status__c, &quot;Contracted&quot;) || ISPICKVAL(Status__c,&quot;Pending Signature&quot;)) &amp;&amp; !$Permission.Invoicing_access</errorConditionFormula>
+        <errorDisplayField>Status__c</errorDisplayField>
+        <errorMessage>Only those individuals with “invoicing access” are able to change to the value to “Contracted” and “Pending Signature”. Contact Accounting to make this update</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_CONTACT_QUANTITY_VALUE</fullName>
+        <active>true</active>
+        <description>Contact Quantity value should be equals to sum of Quantity Cost Details values.</description>
+        <errorConditionFormula>AND(
+	OR(
+		DATEVALUE(CreatedDate) &gt;=  DATE(2016,4,28),
+		ISNEW()
+	),
+	NOT(ISNULL(Campaign_SubType__c)),
+        OR(
+	INCLUDES(Campaign_SubType__c, &apos;AM: IP Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;AM: New Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;AM: PRE Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SE: PRE Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SE: IP Name (Client-Provided)&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SE: IP Name (Royall-Generated)&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SE: New Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SS/PRE: New Name&apos;),
+	INCLUDES(Campaign_SubType__c, &apos;SS/PRE: PRE Name&apos;)
+        ),
+	Contact_Quantity__c
+	!=
+	IF(ISNULL(QTY_AM_IP_Name__c), 0, QTY_AM_IP_Name__c)
+	+ 
+	IF(ISNULL(QTY_AM_new_name__c), 0, QTY_AM_new_name__c)
+	+
+	IF(ISNULL(QTY_AM_PRE_Name__c), 0, QTY_AM_PRE_Name__c)
+	+
+	IF(ISNULL(QTY_SE_IP_Name_Client__c), 0, QTY_SE_IP_Name_Client__c)
+	+ 
+	IF(ISNULL(QTY_SE_IP_Name_Royall__c), 0, QTY_SE_IP_Name_Royall__c)
+	+
+	IF(ISNULL(QTY_SE_New_Name__c), 0, QTY_SE_New_Name__c)
+	+
+	IF(ISNULL(QTY_SE_PRE_Name__c), 0, QTY_SE_PRE_Name__c)
+	+ 
+	IF(ISNULL(QTY_SS_New_Name__c), 0, QTY_SS_New_Name__c)
+	+
+	IF(ISNULL(QTY_SS_PRE_Name__c), 0, QTY_SS_PRE_Name__c)
+)</errorConditionFormula>
+        <errorDisplayField>Contact_Quantity__c</errorDisplayField>
+        <errorMessage>Contact Quantity value should be equal to sum of Quantity Cost Details values.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_VALIDATE_POSTAGE_AND_PROGRAM_COST</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ OR(
+    DATEVALUE(CreatedDate) &gt;=  DATE(2016,4,28),
+        ISNEW()
+    ),
+    NOT(ISNULL(Campaign_SubType__c)),
+    OR(
+        INCLUDES(Campaign_SubType__c, &apos;SS/PRE: New Name&apos;),
+        INCLUDES(Campaign_SubType__c, &apos;SS/PRE: PRE Name&apos;)
+    ),
+    OR(
+        (
+            IF(ISNULL(Program_Cost__c), 0, Program_Cost__c)
+                != 
+            (
+                IF(ISNULL(Program_Cost_SS_New__c), 0, Program_Cost_SS_New__c)
+                    +
+                IF(ISNULL(Program_Cost_SS_PRE__c), 0, Program_Cost_SS_PRE__c)
+                
+            )
+        ),
+        (
+            IF(ISNULL(Postage_Cost__c), 0, Postage_Cost__c)
+                != 
+            (
+                IF(ISNULL(Postage_Cost_SS_New__c), 0, Postage_Cost_SS_New__c)
+                    + 
+                IF(ISNULL(Postage_Cost_SS_PRE__c), 0, Postage_Cost_SS_PRE__c)
+            )
+        )
+)
+)</errorConditionFormula>
+        <errorMessage>Program Cost and Postage Cost should be aggregate of corresponding fields.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Valid_Probability</fullName>
+        <active>true</active>
+        <errorConditionFormula>Probability__c &gt; 1 ||  Probability__c &lt; 0</errorConditionFormula>
+        <errorDisplayField>Probability__c</errorDisplayField>
+        <errorMessage>The probability must be between 0% - 100%</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Validate_Date_Contract_Proposed</fullName>
+        <active>true</active>
+        <description>Proposed Date ≤ Contract Sent Date ≤ Contract Signed Date</description>
+        <errorConditionFormula>AND(   NOT(ISBLANK(Contract_Signature_Date__c)), 
+             NOT(ISBLANK(Contract_Sent__c )),
+             (Contract_Signature_Date__c  &lt; Contract_Sent__c)
+)
+||
+AND(  NOT(ISBLANK(Proposal_Sent__c)), 
+            NOT(ISBLANK(Contract_Sent__c )), 
+            (Contract_Sent__c &lt; Proposal_Sent__c) 
+)
+||
+AND(  NOT(ISBLANK(Proposal_Sent__c)),
+            NOT(ISBLANK(Contract_Signature_Date__c)),
+            (Contract_Signature_Date__c &lt; Proposal_Sent__c)
+)</errorConditionFormula>
+        <errorMessage>Contract Signed Date must be after Contract Sent Date which must be after Proposed Date</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Validate_Date_Declined_Proposed</fullName>
+        <active>true</active>
+        <description>Proposed Date ≤ Declined Date</description>
+        <errorConditionFormula>NOT(Declined_Date__c &gt;= Proposal_Sent__c)</errorConditionFormula>
+        <errorDisplayField>Actual_Program_Deployment_Date_R__c</errorDisplayField>
+        <errorMessage>Declined Date must be after Proposed Date</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Clone</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Clone</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/Program_New_Edit_Override?clone=1</url>
+    </webLinks>
+</CustomObject>

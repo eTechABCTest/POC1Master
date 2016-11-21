@@ -1,0 +1,4 @@
+<apex:page controller="CommonAuthController" showHeader="false" sidebar="false"
+    standardStylesheets="false" contentType="text/plain" action="{!process}">
+    {!JSONResponse}
+</apex:page>

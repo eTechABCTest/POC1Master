@@ -1,0 +1,141 @@
+<!--V.1.1 - Modified By - Rajeev Jain - CR-20150618-9016 - 07/02/2015 - Board Room Mobile -->
+<!--V.1.2 - Modified By - Rajeev Jain - CR-20150618-9016 - 08/11/2015 - Board Room Mobile -->
+<apex:component layout="none" controller="IntranetFeedCommentController" allowDml="true" id="chatterPage" >
+    <apex:attribute name="color" type="string" description="optional color class ( never used )" />
+    <apex:attribute name="size" type="string" description="optional size class ( never used )" />
+    <apex:attribute name="DisplayText" type="boolean" description="should the text be displayed next to the icon?" />
+    <apex:attribute name="itemId" type="String" description="Intranet Item Id" assignTo="{!intranetItemId}"/>
+    <apex:attribute name="containerId" type="String" description="Intranet Container Id" assignTo="{!intranetContainerId}"/>
+    <apex:attribute name="scheduleId" type="String" description="Intranet Schedule Id" assignTo="{!intranetScheduleId}"/>
+    <apex:attribute name="itemData" type="IntranetContent" description="Intranet Item Instance" assignTo="{!intranetItem}"/>  
+    <apex:attribute name="LikeCount" type="String" description="like count (for search)" />
+    <apex:attribute name="ChatterCount" type="String" description="chatter count (for search)"/>  
+    <apex:attribute name="view" type="String" description="Comment View"/>
+    <apex:attribute name="IsSearch" type="Boolean" description="Is Calling from Search?" default="false"/>
+    
+    <!--V.1.1 - Modified By - Rajeev Jain - CR-20150618-9016 - 07/02/2015 - Board Room Mobile -->
+    <!-- Provide dynamic classes to various tags of this component based on location where it is referenced -->
+    <apex:attribute name="referencedLocationName" type="String" description="identify component is used on which location of the board Room pages"/>
+    
+    <!--V.1.1 - Modified By - Rajeev Jain - CR-20150618-9016 - 07/02/2015 - Board Room Mobile -->
+    <!-- Added hideChatterOnMobile class on main div to hide chatter like and commnet icons from the mobile version-->
+    <div class="chatter-link-wrapper hideChatterOnMobile {!referencedLocationName}">
+        
+        <apex:form >
+            <apex:pageMessages id="validationMsg"/>
+            
+            <apex:outputPanel id="chatterPanel" layout="block" style="overflow:auto;" rendered="{!NOT(IsSearch)}">
+                <ul class="chatter_links {!color} {!size}">  
+                    <apex:outputPanel layout="none">
+                        <li class="like {!IF(isLiked,'liked','')}" title="{!IF(isLiked,'Liked','Like This')}" style="cursor:pointer;">
+                            
+                            <apex:outputLink value="javascript:void(0)" style="display:{!IF(isLiked,'inline-block','none')};" styleClass="disabledLike">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span class="count">
+                                    <apex:outputText >{!intChatterLikeCount}</apex:outputText>
+                                </span>
+                            </apex:outputLink>
+                            
+                   			<!--Modified By - Rajeev Jain - 08/11/2015 - CR-20150618-9016 - Board Room Mobile -->
+                            <!--<apex:commandLink action="{!likeFeed}" reRender="abc" onclick="increaseLikeCounter(this);" styleClass="enabledLike"
+                                              html-data-isLiked="{!isLiked}" style="display:{!IF(isLiked,'none','inline-block')};">
+                               	
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span class="count">
+                                    <apex:outputText >{!intChatterLikeCount}</apex:outputText>
+                                </span>
+                                <apex:param name="actionType" value="feedLike" assignTo="{!loadType}"/>
+                                
+                            </apex:commandLink>  -->
+                            <a onclick="increaseLikeCounter(this);" styleClass="enabledLike" data-isLiked="{!isLiked}"
+                               style="display:{!IF(isLiked,'none','inline-block')};"
+                               data-click-type="Like" data-schedule-id="{!scheduleId}" 
+                               data-display-name="" data-item-id="{!itemId}"
+                               data-container-id="{!containerId}">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span class="count">
+                                    <apex:outputText >{!intChatterLikeCount}</apex:outputText>
+                                </span>
+                            </a>
+                            <!--Modified By - Rajeev Jain - 08/11/2015 - CR-20150618-9016 - Board Room Mobile - Upto Here -->
+                        </li>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none">
+                        <!--<li class="comment"><a href="javascript:void(0)" onclick="openCommentBox('commentBox{!itemId}');"><i class="glyphicon glyphicon-comment"></i><span class="count">{!IF(intranetItem.ChatterComments != null,intranetItem.ChatterComments,0)}</span></a></li>-->
+                        <li class="comment">
+                            <apex:outputPanel layout="none" rendered="{!AND(NOT(ISNULL(view)),NOT(ISBLANK(view)))}">
+                                <a href="/apex/IntranetContentViewer?view={!view}&mode=comment&ScheduleId={!scheduleId}">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                    <span class="count">
+                                        
+                                        <apex:outputText rendered="{!intranetItem.ChatterComments != null}">{!intranetItem.ChatterComments}</apex:outputText>
+                                        <apex:outputText rendered="{!NOT(ChatterCount == null)}">{!IF(ChatterCount == 'null', 0, ChatterCount)}</apex:outputText>
+                                        <apex:outputText rendered="{!ChatterCount == null && intranetItem.ChatterComments == null}">0</apex:outputText>
+                                    </span>
+                                </a>
+                            </apex:outputPanel>
+                             <apex:outputPanel layout="none" rendered="{!OR(ISNULL(view),ISBLANK(view))}">
+                                <a href="javascript:void(0);" class="comment-icon-desktop">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                    <span class="count">
+                                        <!--{!IF(intranetItem.ChatterComments != null,intranetItem.ChatterComments,0)}-->
+                                        <apex:outputText rendered="{!intranetItem.ChatterComments != null}">{!intranetItem.ChatterComments}</apex:outputText>
+                                        <apex:outputText rendered="{!NOT(ChatterCount == null)}">{!IF(ChatterCount == 'null', 0, ChatterCount)}</apex:outputText>
+                                        <apex:outputText rendered="{!ChatterCount == null && intranetItem.ChatterComments == null}" styleClass="count">0</apex:outputText>
+                                    </span>
+                                </a>
+                                <a href="javascript:void(0);" class="{!referencedLocationName} comment-icon-mobile" onclick="hideAndShowCommentSection(this);">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                    <span class="count">
+                                        <!--{!IF(intranetItem.ChatterComments != null,intranetItem.ChatterComments,0)}-->
+                                        <apex:outputText rendered="{!intranetItem.ChatterComments != null}">{!intranetItem.ChatterComments}</apex:outputText>
+                                        <apex:outputText rendered="{!NOT(ChatterCount == null)}">{!IF(ChatterCount == 'null', 0, ChatterCount)}</apex:outputText>
+                                        <apex:outputText rendered="{!ChatterCount == null && intranetItem.ChatterComments == null}" styleClass="count">0</apex:outputText>
+                                    </span>
+                                </a>
+                            </apex:outputPanel>
+                        </li>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="false">
+                        <li class="share"><a href="#"><i class="glyphicon glyphicon-share-alt"></i></a></li>
+                    </apex:outputPanel>
+                </ul>
+            </apex:outputPanel>
+            
+            <!-- Panel for Search Screen -->
+            <apex:outputPanel id="chatterPanelSearch" layout="block" style="overflow:auto;" rendered="{!IsSearch}">
+                <ul class="chatter_links {!color} {!size}">  
+                    <apex:outputPanel layout="none">
+                        <li class="like liked">
+                            <apex:outputLink value="javascript:void(0)" style="display:inline-block" styleClass="disabledLike">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span class="count">
+                                    <apex:outputText >{!LikeCount}</apex:outputText>
+                                </span>
+                            </apex:outputLink>
+                        </li>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none">
+                        <li class="comment">
+                            <apex:outputPanel layout="none" rendered="{!OR(ISNULL(view),ISBLANK(view))}">
+								<a href="javascript:void(0);" style="cursor:default">
+                                <i class="glyphicon glyphicon-comment"></i>
+								<span class="count">
+								   <apex:outputText rendered="{!intranetItem.ChatterComments != null}">{!intranetItem.ChatterComments}</apex:outputText>
+									<apex:outputText rendered="{!NOT(ChatterCount == null)}">{!IF(ChatterCount == 'null', 0, ChatterCount)}</apex:outputText>
+									<apex:outputText rendered="{!ChatterCount == null && intranetItem.ChatterComments == null}" styleClass="count">0</apex:outputText>
+								</span>
+                                </a>
+                            </apex:outputPanel>
+                        </li>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="false">
+                        <li class="share"><a href="#"><i class="glyphicon glyphicon-share-alt"></i></a></li>
+                    </apex:outputPanel>
+                </ul>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+</apex:component>

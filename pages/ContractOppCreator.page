@@ -1,0 +1,137 @@
+<!-- V1.1 - Modified By - Rajeev Jain - CR-20151202-9434 - 12/07/2015 - Pre-populate Pool Year, Pool Month, Negotiated Amount, Previous Year Negotiated, and Opt Out Date fields populate from the Contract ABC's Source Opporutnity.
+	@-- Added new Renewal Negotiated Adjustment field
+-->
+<apex:page title="Contract Booking" standardcontroller="Contract__c" extensions="ContractOpp_Ext">
+<c:IncludeJQuery />
+<script>
+	j$(function() {
+		addDatePicker();
+	});
+	
+	function addDatePicker() {
+		j$( "[id*=CustDate]" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: "m/d/yy"
+		});
+	}
+	
+</script>
+<apex:outputpanel rendered="{!NOT(hasError)}" >
+    <apex:pageblock mode="maindetail">  
+        
+        <apex:detail subject="{!sourceContract.Id}" relatedlist="false" title="false"/>
+
+        <apex:pageblocksection title="Contract Info">
+            <apex:outputfield value="{!sourceContract.Name}" />
+            <apex:outputfield value="{!sourceContract.Term_Type__c}" />
+            <apex:outputfield value="{!sourceContract.Payer_Account__c}"/>
+            <apex:outputfield value="{!sourceContract.Negotiated_By__c}"/>
+            <apex:outputfield value="{!sourceContract.Program__c}"/>
+            <apex:outputfield value="{!sourceContract.Negotiated_Amount__c}" />
+            <apex:outputfield value="{!sourceContract.Stage__c}" />
+            <apex:outputfield value="{!sourceContract.Year__c}" />
+            <apex:outputfield value="{!sourceContract.Start__c}"/>
+            <apex:outputfield value="{!sourceContract.End__c}"/>
+        </apex:pageblocksection>
+        
+        <apex:pageblocksection title="Previous Contract" rendered="{!!isblank(sourceContract.Previous_Contract__c)}">
+            <apex:outputfield value="{!sourceContract.Previous_Contract__c}"/>
+            <apex:outputfield value="{!sourceContract.Previous_Contract__r.Negotiated_Amount__c}" />
+        </apex:pageblocksection>
+            
+        <apex:pageblocksection title="Opt Out" rendered="{!(sourceContract.Term_Type__c == 'Opt Out')}">
+            <apex:outputfield value="{!sourceContract.Opt_Out_Type__c}" />&nbsp;
+            <apex:outputfield value="{!sourceContract.Opt_Out_Date__c}" />
+        </apex:pageblocksection>
+        
+    </apex:pageblock>
+    
+    <apex:form >
+        
+        <apex:pageblock title="Opportunity Table">
+            <apex:pageblockbuttons > 
+                <apex:commandbutton value="Save Opportunities" action="{!saveAll}" />
+                <apex:actionRegion >
+               		<apex:commandbutton value="Add Opportunity Row" action="{!addRow}" rerender="opptable" onComplete="addDatePicker();"/>
+                </apex:actionRegion>
+                <apex:commandbutton value="Remove Selected Rows" action="{!deleteSelected}" rerender="opptable" onComplete="addDatePicker();"/>
+                <apex:commandbutton value="Cancel" action="{!cancelAll}" immediate="true"/>
+            </apex:pageblockbuttons>
+            
+            <apex:outputpanel id="opptable">
+                <apex:pageblocktable value="{!displaylist}" var="xopp">
+                    <apex:column >
+                        <apex:inputcheckbox value="{!xopp.Selected}"  
+                            rendered="{!((xopp.opprole != 'source') 
+                                && (xopp.opprole != 'rirenewal') 
+                                && (xopp.opprole != 'ptrenewal'))}"/>
+                    </apex:column>
+                    <apex:column headervalue="Record Type">
+                        <apex:outputtext value="{!xopp.RecordTypeName}" />
+                    </apex:column>
+                    <apex:column headervalue="Opportunity Name">
+                        <apex:outputfield value="{!xopp.opp.Name}" />
+                    </apex:column>
+                    <apex:column headervalue="Stage" >
+                        <apex:outputfield value="{!xopp.opp.StageName}" rendered="{!(xopp.opprole == 'source')}"/>
+                        <apex:inputfield value="{!xopp.opp.StageName}" required="true" rendered="{!(xopp.opprole != 'source')}"/>
+                    </apex:column>
+                    <apex:column headervalue="Decision Type">
+                        <apex:inputfield value="{!xopp.opp.Decision_Type__c}" rendered="{!((xopp.opprole != 'rirenewal')&&(xopp.opprole != 'ptrenewal'))}"/>
+                        <apex:outputfield value="{!xopp.opp.Decision_Type__c}" rendered="{!((xopp.opprole == 'rirenewal')||(xopp.opprole == 'ptrenewal'))}"/>
+                    </apex:column>
+                    <apex:column headervalue="Pool Year">
+                        <apex:inputfield style="width: 50px;" value="{!xopp.opp.Pool_Year__c}" 
+                            required="{!((!isblank(sourceContract.Previous_Contract__c))
+                                && (xopp.opprole == 'source'))}"/>
+                    </apex:column>
+                    <apex:column headervalue="Pool Month">
+                        <apex:inputfield value="{!xopp.opp.Pool_Month__c}" />
+                    </apex:column>
+                    <apex:column headervalue="Negotiated">
+                        <apex:inputfield style="width: 80px;" value="{!xopp.opp.Renewal_Negotiated__c}" />
+                    </apex:column>
+                    <apex:column headervalue="Prev Year Negotiated">
+                        <apex:inputfield style="width: 80px;" value="{!xopp.opp.Previous_Year_Negotiated__c}" rendered="{!(xopp.opprole != 'source')}"/>
+                        <apex:outputfield value="{!xopp.opp.Previous_Year_Negotiated__c}" rendered="{!(xopp.opprole == 'source')}"/>
+                    </apex:column>
+                    <!-- V1.1 - Modified By - Rajeev Jain - CR-20151202-9434 - 12/07/2015 - Added New Field -->
+                    <apex:column headervalue="Renewal Negotiated Adjustment">
+                        <apex:inputfield style="width: 80px;" value="{!xopp.opp.Renewal_Negotiated_Adjustment__c}"/>
+                    </apex:column>
+                    <!-- V1.1 - Modified By - Rajeev Jain - CR-20151202-9434 - 12/07/2015 - Added New Field - Upto here -->
+                    <apex:column headervalue="Start">
+                        <apex:inputtext style="width: 80px;" value="{!xopp.StartDate}" id="startCustDate" />
+                    </apex:column>
+                    <apex:column headervalue="End">
+                        <apex:inputtext style="width: 80px;" value="{!xopp.EndDate}" id="endCustDate" />
+                    </apex:column>
+                    <apex:column headervalue="Opt Out Type" 
+                        rendered="{!(sourceContract.Term_Type__c == 'Opt Out')}">
+                        <apex:outputfield value="{!sourceContract.Opt_Out_Type__c}" />
+                    </apex:column>
+                    <apex:column headervalue="Opt Out Date" rendered="{!(sourceContract.Term_Type__c == 'Opt Out')}">
+                        <!-- V1.1 - Modified By - Rajeev Jain - CR-20151202-9434 - 12/07/2015 - Changed to Input field instead of input text - So date can be populate in compatible mode -->
+                        <apex:inputField value="{!xopp.opp.Opt_Out_Date__c}" id="optOutDate" />
+                        <!-- V1.1 - Modified By - Rajeev Jain - CR-20151202-9434 - 12/07/2015 - Changed to input field instead of input text - Upto here -->
+                    </apex:column>
+                    <apex:column headervalue="Owner" >
+                        <apex:inputfield value="{!xopp.opp.OwnerID}" rendered="{!(xopp.opprole != 'source')}"/>
+                        <apex:outputfield value="{!xopp.opp.OwnerID}" rendered="{!(xopp.opprole == 'source')}"/>
+                    </apex:column>
+                    
+                </apex:pageblocktable>
+            </apex:outputpanel>
+        </apex:pageblock>
+    </apex:form>
+</apex:outputpanel>
+
+<apex:outputpanel rendered="false"> 
+    <apex:page >
+        <h1><!--<apex:outputtext value="{!displayerrorstring}" />--></h1><br/><br/>
+        Please click your Back button to correct these errors.
+    </apex:page>
+</apex:outputpanel>
+
+</apex:page>

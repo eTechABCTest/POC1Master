@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to track the programs that are packaged and offered to Hardwick Day clients. There should only be one (1) program package offered to each client each fiscal year.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fieldSets>
+        <fullName>Program_Package_HD_Field_Sets</fullName>
+        <description>on PP summary</description>
+        <displayedFields>
+            <field>OwnerId</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Name</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Client_Engagement_Status_HD__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Account__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Fiscal_Year_HD__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Id</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Program Package (HD) Field Sets</label>
+    </fieldSets>
+    <fields>
+        <fullName>Account_FA__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Tracks Royall renewal ownership</description>
+        <externalId>false</externalId>
+        <label>Account FA</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Program_Packages_Hardwick_Day</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the Institution this Hardwick Day Program Package belongs to</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>HD_Program_Packages</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Invoice_Delta_HD__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Scheduled_Invoice_Amount_HD__c - Total_Actual_Invoice_Amount_HD__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Actual Invoice Delta</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Reason_Other_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>At Risk Reason Other</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>At_Risk_Reasons_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>At Risk Reasons</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Required RFP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Client Contact has gone silent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New Contact Person</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New Institutional Leadership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fragile Leadership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Competitively Vulnerable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reduced Budget</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unhappy with Relationship</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unhappy with Results</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other (please explain)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Client_Engagement_Status_HD__c</fullName>
+        <description>Secured
+Committed
+In Play
+At Risk
+Lost</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Secured
+Committed
+In Play
+At Risk
+Lost</inlineHelpText>
+        <label>(HD) Engagement Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Secured</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Committed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Play</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Client_Lost_Date_HD__c</fullName>
+        <description>Exact date client terminated relationship.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the exact date client terminated this relationship.</inlineHelpText>
+        <label>Client Lost Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Sent_Rollup_HD__c</fullName>
+        <description>Earliest date of &apos;Contract Sent&apos; across all Programs/Jobs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of &apos;Contract Sent&apos; across all Programs/Jobs.</inlineHelpText>
+        <label>Contract Sent Rollup (HD)</label>
+        <summarizedField>Program_HD__c.Contract_Sent_HD__c</summarizedField>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Signed_Rollup_HD__c</fullName>
+        <description>Earliest date of &apos;Contract SIGNED&apos; across all Programs/jobs</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of &apos;Contract SIGNED&apos; across all Programs/jobs</inlineHelpText>
+        <label>Contract Signed Rollup (HD)</label>
+        <summarizedField>Program_HD__c.Contract_Signature_Date_HD__c</summarizedField>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>FY_Date_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>FY Date (HD)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Fiscal_Year_HD__c</fullName>
+        <description>Enter Fiscal Year as &apos;YYYY&apos; ; as in &quot;2014&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter Fiscal Year as &apos;YYYY&apos; ; as in &quot;2014&quot;</inlineHelpText>
+        <label>Fiscal Year (HD)</label>
+        <length>4</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HD_Account_Status__c</fullName>
+        <description>This will indicate whether account is &quot;New Client&quot; or &quot;Existing Client&quot; based on level of engagement - re-established every Fiscal Year (if there is a break in client relationship; client is deemed &quot;New&quot; upon return to Royall via signed Contract.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether account is &quot;New Client&quot; or &quot;Existing Client&quot; based on level of engagement - re-established every Fiscal Year (if there is a break in client relationship; client is deemed &quot;New&quot; upon return to Royall via signed Contract.</inlineHelpText>
+        <label>(HD) Account Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>New Client</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Existing Client</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>HD_Account_Status_formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+   OR( Account__r.r_HD_Current_Year_Engagement_Status__c =&apos;Secured&apos;,
+         Account__r.r_HD_Current_Year_Engagement_Status__c =&apos;Committed&apos;)
+   , 
+   IF(
+     OR(Account__r.r_HD_Previous_Year_Engagement_Status__c= &apos;Lost&apos;,
+        ISNULL(Account__r.r_HD_Previous_Year_Engagement_Status__c),
+        ISBLANK(Account__r.r_HD_Previous_Year_Engagement_Status__c))
+     ,&apos;New Client&apos;
+     ,&apos;Existing Client&apos;
+   )
+   ,&apos;&apos;
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>(HD) Account Status (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Has_Contracted_Programs_HD__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Total_Adjusted_Program_Cost_HD__c&gt;0,true, false)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Has Contracted Programs (HD)</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lost_To_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>Lost To (HD)</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Alloy Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EducationDynamics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fire Engine Red</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hutchinson Allgood</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In-House</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LF O’Connell</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mindpower</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Noel-Levitz</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Performa</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RuffaloCODY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Spectrum</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stamats</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TargetX</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TWG+</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Visual Zen</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Way Better Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Other_Reason_for_Loss_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>Other Reason for Loss (HD)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Sent_Rollup_HD__c</fullName>
+        <description>Earliest date of &apos;Proposal SENT&apos; across all Programs/jobs</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date of &apos;Proposal SENT&apos; across all Programs/jobs</inlineHelpText>
+        <label>Proposal Sent Rollup (HD)</label>
+        <summarizedField>Program_HD__c.Proposal_Sent_HD__c</summarizedField>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order_Required_HD__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Purchase Order Required? (HD)</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reason_for_Loss_HD__c</fullName>
+        <externalId>false</externalId>
+        <label>Reason for Loss (HD)</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Creative</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Different Approach</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disappointed with Results</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disappointed with Service</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Price/Budget</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Royall Ended Relationship</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Scheduled_Invoice_Delta_HD__c</fullName>
+        <description>This is(Total_Adjusted_ContractedProgramCost_HD__c + Total_Billable_Travel_HD__c) - (Total_Scheduled_Invoice_Amount_HD__c)</description>
+        <externalId>false</externalId>
+        <formula>(Total_Adjusted_ContractedProgramCost_HD__c + Total_Adjusted_Contracted_Travel_HD__c) - (Total_Scheduled_Invoice_Amount_HD__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is (Total_Adjusted_ContractedProgramCost_HD__c + Total_Billable_Travel_HD__c) - (Total_Scheduled_Invoice_Amount_HD__c)</inlineHelpText>
+        <label>Scheduled Invoice Delta (HD)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Actual_Invoice_Amount_HD__c</fullName>
+        <description>Sum of the actual invoices sent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of the actual invoices sent.</inlineHelpText>
+        <label>Total Actual Invoice Amount (HD)</label>
+        <summarizedField>Invoice_HD__c.Actual_Gross_Invoice_Amount_HD__c</summarizedField>
+        <summaryForeignKey>Invoice_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_ContractedProgramCost_HD__c</fullName>
+        <description>Total_Contracted_Program_Cost_HD__c - Total_Adjusted_Program_Cost_HD__c</description>
+        <externalId>false</externalId>
+        <formula>Total_Contracted_Program_Cost_HD__c - Total_Adjusted_Program_Cost_HD__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total_Contracted_Program_Cost_HD__c - Total_Adjusted_Program_Cost_HD__c</inlineHelpText>
+        <label>Total Adjusted ContractedProgramCost (HD</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Cost_HD__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Adjusted_ContractedProgramCost_HD__c + Total_Adjusted_Contracted_Postage_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Adjusted Contracted Cost (HD)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Postage_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Contracted_Postage_Cost_HD__c - Total_Adjusted_Postage_Cost_HD__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Adjusted Contracted Postage Cost (</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Contracted_Travel_HD__c</fullName>
+        <description>Sum of Billable Travel (HD) This is the &quot;Total CONTRACTED Travel Cost&quot; minus the &quot;Total ADJUSTED Travel Cost&quot;.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Billable Travel (HD) This is the &quot;Total CONTRACTED Travel Cost&quot; minus the &quot;Total ADJUSTED Travel Cost&quot;.</inlineHelpText>
+        <label>Total Adjusted Contracted Travel (HD)</label>
+        <summarizedField>Program_HD__c.Billable_Travel_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Program_HD__c.Type_HD__c</field>
+            <operation>equals</operation>
+            <value>Re-engagement, Up-sell, Cross-sell, Discount Allocation, Accounting adjustment, Line of Business transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Postage_Cost_HD__c</fullName>
+        <description>Sum of postage for accounting adjustments</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of postage for accounting adjustments</inlineHelpText>
+        <label>Total Adjusted Postage Cost (HD)</label>
+        <summarizedField>Program_HD__c.Postage_Cost_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Program_HD__c.Type_HD__c</field>
+            <operation>equals</operation>
+            <value>Accounting adjustment</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Program_Cost_HD__c</fullName>
+        <description>Field to Aggregate: Program (Hardwick Day)&gt; &apos;Program Cost (HD)&apos;
+Filter Criteria: Status (HD) = &quot;Contracted&quot; &amp; Type (HD) = &quot;Discount Allocation, Accounting adjustment, Line of Business transfer&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to Aggregate: Program (Hardwick Day)&gt; &apos;Program Cost (HD)&apos;
+Filter Criteria: Status (HD) = &quot;Contracted&quot; &amp; Type (HD) = &quot;Discount Allocation, Accounting adjustment, Line of Business transfer&quot;</inlineHelpText>
+        <label>Total Adjusted Program Cost (HD)</label>
+        <summarizedField>Program_HD__c.Program_Cost_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Program_HD__c.Type_HD__c</field>
+            <operation>equals</operation>
+            <value>Discount Allocation, Accounting adjustment, Line of Business transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Adjusted_Travel_Cost_HD__c</fullName>
+        <description>SUM
+Field to Aggregate: 	Program (HD)&gt; &apos;Travel Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot;
+Type =</description>
+        <externalId>false</externalId>
+        <label>Total Adjusted Travel Cost (HD)</label>
+        <summarizedField>Program_HD__c.Billable_Travel_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Program_HD__c.Type_HD__c</field>
+            <operation>contains</operation>
+            <value>Discount Allocation, Accounting adjustment, Line of Business transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Contact_Qty_HD__c</fullName>
+        <description>Sum of &apos;Contact Quantity&apos; for Programs listed as &apos;Contracted&apos;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Shows sum of &apos;Contact Quantity&apos; for Programs listed as &apos;Contracted&apos;</inlineHelpText>
+        <label>Total Contracted Contact Qty (HD)</label>
+        <summarizedField>Program_HD__c.Contact_Quantity_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Postage_Cost_HD__c</fullName>
+        <description>Sum of postage costs for Programs listed as &apos;contracted&apos;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>shows sum of postage costs for Programs listed as &apos;contracted&apos;</inlineHelpText>
+        <label>Total Contracted Postage Cost (HD)</label>
+        <summarizedField>Program_HD__c.Postage_Cost_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Program_Cost_HD__c</fullName>
+        <description>Field to Aggregate: Program (Hardwick Day)&gt; &apos;Program Cost (HD)&apos;
+Filter Criteria: Status (HD) = &quot;Contracted&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to Aggregate: Program (Hardwick Day)&gt; &apos;Program Cost (HD)&apos;
+Filter Criteria: Status (HD) = &quot;Contracted&quot;</inlineHelpText>
+        <label>Total Contracted Program Cost (HD)</label>
+        <summarizedField>Program_HD__c.Program_Cost_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Contracted_Travel_Cost_HD__c</fullName>
+        <description>SUM
+Field to Aggregate: 	Program (HD)&gt; &apos;Travel Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>SUM
+Field to Aggregate: 	Program (HD)&gt; &apos;Travel Cost&apos;
+Filter Criteria: Status = &quot;Contracted&quot;</inlineHelpText>
+        <label>Total Contracted Travel Cost (HD)</label>
+        <summarizedField>Program_HD__c.Billable_Travel_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Contracted</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Pending_Signature_Program_CostHD__c</fullName>
+        <externalId>false</externalId>
+        <label>Total &apos;Pending Signature&apos; Program CostHD</label>
+        <summarizedField>Program_HD__c.Program_Cost_HD__c</summarizedField>
+        <summaryFilterItems>
+            <field>Program_HD__c.Status_HD__c</field>
+            <operation>equals</operation>
+            <value>Pending Signature</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Program_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Scheduled_Invoice_Amount_HD__c</fullName>
+        <description>Sum of the scheduled invoices sent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of the scheduled invoices sent.</inlineHelpText>
+        <label>Total Scheduled Invoice Amount (HD)</label>
+        <summarizedField>Invoice_HD__c.Scheduled_Gross_Invoice_Amount_HD__c</summarizedField>
+        <summaryForeignKey>Invoice_HD__c.Program_Package_HD__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Program Package (Hardwick Day)</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>HD_Account_Status_formula__c</columns>
+        <columns>Client_Engagement_Status_HD__c</columns>
+        <columns>Total_Scheduled_Invoice_Amount_HD__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Program Package Name (Hardwick Day)</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Program Packages (Hardwick Day)</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>HD_Account_Status_formula__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Client_Engagement_Status_HD__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>UPDATEDBY_USER</customTabListAdditionalFields>
+        <customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>HD_Account_Status_formula__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Client_Engagement_Status_HD__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>UPDATEDBY_USER</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LAST_UPDATE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>HD_Account_Status_formula__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Client_Engagement_Status_HD__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>UPDATEDBY_USER</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LAST_UPDATE</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>HD_Account_Status_formula__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Client_Engagement_Status_HD__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LAST_UPDATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>UPDATEDBY_USER</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Engagement_status_validation</fullName>
+        <active>true</active>
+        <description>Only users with “invoicing access” should be able to change to the value to “Secured”</description>
+        <errorConditionFormula>ISCHANGED(Client_Engagement_Status_HD__c) &amp;&amp; ISPICKVAL(Client_Engagement_Status_HD__c, &quot;Secured&quot;) &amp;&amp; !$Permission.Invoicing_access</errorConditionFormula>
+        <errorDisplayField>Client_Engagement_Status_HD__c</errorDisplayField>
+        <errorMessage>Only users with &quot;invoicing access&quot; are able to change the value to &quot;Secured&quot;. Contact Accounting to make this update.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Fiscal_Year_Validation_HD</fullName>
+        <active>true</active>
+        <description>You must populate Fiscal year with 4 numerals; as in &quot;2016&quot;</description>
+        <errorConditionFormula>AND(NOT(AND(ISNUMBER(Fiscal_Year_HD__c), LEN(Fiscal_Year_HD__c) = 4)), NOT(ISBLANK(Fiscal_Year_HD__c)))</errorConditionFormula>
+        <errorMessage>You must populate Fiscal year with 4 numerals; as in &quot;2016&quot;</errorMessage>
+    </validationRules>
+</CustomObject>

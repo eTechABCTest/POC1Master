@@ -1,0 +1,53 @@
+<!-- 
+  Desription      :   	displays a link to a VF Page that allows users to see the dashboard even if they do not have access to the underlying data.
+					  	visible when viewing a dashboard and click the "Email Dashboard" quick action.
+  
+  Created By      :		Victor Hanson
+  
+  Created Date    :		8/25/2015
+  
+  Revision Logs   :		v1.0 - Created
+-->
+<apex:page controller="DashboardQuickActionController" id="page" >
+    <apex:form id="mainForm" >
+        <c:IncludeJQuery />
+        
+        <style>
+            .shareLabel {
+            font-weight: bold;
+            }
+            
+            .inputCheckbox {
+            vertical-align: middle;
+            margin-left: 10px;
+            }
+        </style>
+        
+        <apex:actionFunction name="rerenderForm" rerender="sharePanel" action="{!toggleShareDashboard}" oncomplete="unblockForm();"/>
+        <apex:outputPanel layout="block" rendered="{!dashboard != null}" id="sharePanel">
+            <apex:outputText value="Share Dashboard" styleClass="shareLabel" />
+            <apex:inputCheckbox value="{!shareDashboard}" onclick="rerenderForm(); blockForm();" styleClass="inputCheckbox" />
+            <apex:outputPanel layout="block" rendered="{!shareDashboard}" id="panel2">
+                To share a read-only copy of this dashboard with a colleague, please send the link below.<br/>
+                <a href="{!dashboardViewerURL}" target="_blank">{!dashboardViewerURL}</a>
+            </apex:outputPanel>
+            <apex:outputPanel id="infoPanel" layout="block" style="color:#7B7A7A; margin-top:10px;">
+                <i class="fa fa-info-circle" style="font-size: 14px; cursor:default; margin-right:3px;" />
+                <apex:outputText value="Shared dashboards are monitored and automatically refreshed every night." />
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!dashboard == null}">
+        	This feature is only available when viewing a dashboard.
+        </apex:outputPanel>
+    </apex:form>
+    
+    <script>
+    function blockForm() {
+        blockElement('#page\\:mainForm');
+    }
+    
+    function unblockForm() {
+        unblockElement('#page\\:mainForm');
+    }
+    </script>
+</apex:page>

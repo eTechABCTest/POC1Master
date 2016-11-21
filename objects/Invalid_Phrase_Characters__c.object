@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Created for CR-20150831-9207. Custom setting to hold the invalid phrase/character values. Will be helpful while applying validation for fields values.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Applicable_For__c</fullName>
+        <description>Will hold the fields API name comma separated string, for whom the invalid phrase check logic will execute. Created for CR-20160219-9621.</description>
+        <externalId>false</externalId>
+        <label>Applicable For</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Invalid_Phrase__c</fullName>
+        <description>Created for CR-20150831-9207. Will hold the invalid phrase value.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Created for CR-20150831-9207. Will hold the invalid phrase value.</inlineHelpText>
+        <label>Invalid Phrase</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Object_Name__c</fullName>
+        <description>Created for CR-20150831-9207. Will hold the object API Name string.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Will hold the object API Name string.</inlineHelpText>
+        <label>Object Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Invalid Phrase/Characters</label>
+    <visibility>Public</visibility>
+</CustomObject>

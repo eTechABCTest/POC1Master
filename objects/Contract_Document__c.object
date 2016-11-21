@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Accessibility_Language_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Accessibility Language - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Accessibility_Language__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Accessibility Language</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Contract Documents</relationshipLabel>
+        <relationshipName>Contract_Documents</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Agreement__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Link to the EchoSign Agreement that generated the Contract Document</description>
+        <externalId>false</externalId>
+        <label>Agreement</label>
+        <referenceTo>echosign_dev1__SIGN_Agreement__c</referenceTo>
+        <relationshipLabel>Contract Documents</relationshipLabel>
+        <relationshipName>Contract_Documents</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Covers_Multiple_Programs_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Covers Multiple Programs Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Covers_Multiple_Programs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Covers Multiple Programs</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Data_Aggregation_Prohibited_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Data Aggregation Prohibited Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Data_Aggregation_Prohibited__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Data Aggregation Prohibited</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Data_Sharing_Permitted__c</fullName>
+        <externalId>false</externalId>
+        <label>Data Sharing Permitted</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>De_identification_Permitted_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>De-Identification Permitted Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>De_identification_Permitted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>De-Identification Permitted</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>EAB_Data_Aggregation_Prohibited__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as per CR-20141229-8408.</description>
+        <externalId>false</externalId>
+        <label>EAB Data Aggregation Prohibited</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>EAB_De_Identification_Prohibited__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as per CR-20141229-8408.</description>
+        <externalId>false</externalId>
+        <label>EAB De-Identification Prohibited</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Employee_Non_Solicitation_Prov_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Employee Non-Solicitation Prov. Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Employee_Non_Solicitation_Provision__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Employee Non-Solicitation Provision</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Includes_SLA__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Contract includes service-level agreement: indicates what service levels we have promised members for various products. We could be breaching contract terms if we are not meeting negotiated terms and members may have right to terminate contracts. CR: 7830.</description>
+        <externalId>false</externalId>
+        <label>Includes SLA</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Legal_Review_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Legal Review Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Profile Pending Legal Review</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Profile Reviewed by Legal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Member_Named_as_Add_Insured_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Member Named as Add. Insured Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Member_Named_as_Additional_Insured__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Member Named as Additional Insured</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Most_Favored_Pricing_Commitments_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Most Favored Pricing Commitments Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Most_Favored_Pricing_Commitments__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Most Favored Pricing Commitments</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Name</label>
+        <length>80</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_Exceptions_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>No Exceptions - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>No_Exceptions__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>No Exceptions</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>NonComp_Provision_Sales_Restrict_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Non-Comp Provision/Sales Rest. Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Non_Comp_Provision_Sales_Restriction__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Non-Comp. Provision/Sales Restriction</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Off_Shore_Support_Restrictions2__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Off-Shore Support Restrictions</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Off_Shore_Support_Restrictions3__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>CR-2014002-7605. Used for tracking EAB contract provisions.</description>
+        <externalId>false</externalId>
+        <label>EAB Off-Shore Support Restrictions</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Off_Shore_Support_Restrictions_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Off-Shore Support Restrictions Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Off_Shore_Support_Restrictions__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Off-Shore Support Restrictions</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Opt_in_out_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Opt in/out  - Comments</label>
+        <length>10000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Opt_in_out__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Opt in/ out</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Other_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Other - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Other__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Other</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Permission_Required_SSN_Financial_Data__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-20150317-8768</description>
+        <externalId>false</externalId>
+        <label>Permission Required: SSN/Financial Data</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Piggyback_off_of_Existing_RFP_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Piggyback off of Existing RFP - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Piggyback_off_of_Existing_RFP__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Piggyback off of Existing RFP</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Profile_Reviewed_by_Legal_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Profile Reviewed by Legal Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Program_Package_Hardwick_Day__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Program Package (Hardwick Day)</label>
+        <referenceTo>Program_Package_Hardwick_Day__c</referenceTo>
+        <relationshipLabel>Contract Documents</relationshipLabel>
+        <relationshipName>Contract_Documents</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Program_Package_Royall__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Program Package (Royall)</label>
+        <referenceTo>Program_Package__c</referenceTo>
+        <relationshipLabel>Contract Documents</relationshipLabel>
+        <relationshipName>Contract_Documents</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>RFP_Allows_Piggyback_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>RFP Allows Piggyback - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>RFP_Allows_Piggyback__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>RFP Allows Piggyback</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>RFP_Award_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>RFP Award - Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>RFP_Award__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>RFP Award</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Restriction_of_Use_of_Mem_Name_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Restriction of Use of Mem. Name Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Restriction_of_Use_of_Member_Name__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Restriction of Use of Member Name</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Subcontractor3rdParty_Limitation_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Subcontractor3rdParty Limitation Comment</label>
+        <length>500</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Subcontractor_3rd_Party_Limitations__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Subcontractor 3rd Party Limitations</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Subcontractor_Limitation_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Subcontractor Limitation Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Subcontractor_Limitations__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Subcontractor Limitations</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Technology_Change_Notification_Comments__c</fullName>
+        <description>Created for CR-20150605-8995</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please identify section number of restriction, amount of advance notice needed, and any other pertinent information.</inlineHelpText>
+        <label>Technology Change Notification Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Technology_Change_Notification_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for CR-20150605-8995</description>
+        <externalId>false</externalId>
+        <label>Technology Change Notification Required</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Timeframe_for_Return_Destroy_Data_Comm__c</fullName>
+        <externalId>false</externalId>
+        <label>Timeframe for Return/Destroy Data - Comm</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Timeframe_for_Return_Destroy_Data__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Timeframe for Return/Destroy Data</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Terms of Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Engagement Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Letter of Agreement (Standard Terms)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Letter of Agreement (W/O Standard Terms)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Master Services Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Supplemental Letter of Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Business Associate Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Amendment/Addendum</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Related Third Party Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Unified_Person_Index_Permitted__c</fullName>
+        <externalId>false</externalId>
+        <label>Unified Person Index Permitted</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Vendormate_Sim_Registration_Req_Comment__c</fullName>
+        <externalId>false</externalId>
+        <label>Vendormate/Sim. Registration Req Comment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Vendormate_or_Similar_Registration_Req__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Vendormate or Similar Registration Req.</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Contract Document</label>
+    <nameField>
+        <label>Contract Document</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Contract Documents</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Royall</fullName>
+        <active>true</active>
+        <label>Royall</label>
+        <picklistValues>
+            <picklist>Data_Sharing_Permitted__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Legal_Review_Status__c</picklist>
+            <values>
+                <fullName>Profile Pending Legal Review</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Profile Reviewed by Legal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Amendment%2FAddendum</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Associate Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engagement Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Letter of Agreement %28Standard Terms%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Letter of Agreement %28W%2FO Standard Terms%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Master Services Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Related Third Party Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Supplemental Letter of Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terms of Agreement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Unified_Person_Index_Permitted__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Type__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Legal_Review_Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Profile_Reviewed_by_Legal_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Agreement__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Legal_Review_Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Comments</fullName>
+        <active>true</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other then require Comments</description>
+        <errorConditionFormula>(ISPICKVAL( Type__c , &quot;Related Third Party Agreements&quot; ) || ISPICKVAL( Type__c , &quot;Other&quot; ))
+&amp;&amp; ISBLANK(    Comments__c   )</errorConditionFormula>
+        <errorMessage>Please add text to the Comments field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Employee_Non_Solicitation_Provision</fullName>
+        <active>true</active>
+        <description>If Employee Non Solicitation Provision checkbox is checked, then require the user to provide a comment in Employee Non Solicitation Prov Comment.</description>
+        <errorConditionFormula>Employee_Non_Solicitation_Provision__c = TRUE &amp;&amp; ISBLANK(Employee_Non_Solicitation_Prov_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Employee Non Solicitation Provision Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>INACTIVE_Covers_Multiple_Programs</fullName>
+        <active>false</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other and Covers Multiple Programs checkbox is not checked then require the user to check the checkbox.</description>
+        <errorConditionFormula>(ISPICKVAL( Type__c , &quot;Related Third Party Agreements&quot; ) || ISPICKVAL( Type__c , &quot;Other&quot; )) &amp;&amp; Covers_Multiple_Programs__c = FALSE</errorConditionFormula>
+        <errorMessage>Please check the Covers Multiple Parties checkbox.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>INACTIVE_Data_Aggregation_Prohibited</fullName>
+        <active>false</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other then require the Data Aggregation Prohibited checkbox be checked.</description>
+        <errorConditionFormula>(ISPICKVAL( Type__c , &quot;Related Third Party Agreements&quot; ) || ISPICKVAL( Type__c , &quot;Other&quot; )) &amp;&amp; Data_Aggregation_Prohibited__c = FALSE</errorConditionFormula>
+        <errorMessage>Please check the Data Aggregation Prohibited checkbox.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>INACTIVE_De_Identification_Checkbox</fullName>
+        <active>false</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other then require the De-Identification Permitted checkbox be checked.</description>
+        <errorConditionFormula>(ISPICKVAL( Type__c , &quot;Related Third Party Agreements&quot; ) || ISPICKVAL( Type__c , &quot;Other&quot;)) &amp;&amp; De_identification_Permitted__c  = FALSE</errorConditionFormula>
+        <errorMessage>Please check the De-identification Permitted checkbox.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>INACTIVE_Off_Shore_Support_Restrictions2</fullName>
+        <active>false</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other, then require the Off Shore Support Restrictions2 checkbox be checked.</description>
+        <errorConditionFormula>(ISPICKVAL( Type__c , &quot;Related Third Party Agreements&quot;) || ISPICKVAL( Type__c , &quot;Other&quot;)) &amp;&amp; Off_Shore_Support_Restrictions2__c = FALSE</errorConditionFormula>
+        <errorMessage>Please check the Off-Shore Support Restrictions checkbox in the Business Associate Agreement Details section.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>INACTIVE_Subcontractor_3rd_Party_Limits</fullName>
+        <active>false</active>
+        <description>If Type = Related Third Party Agreements OR Type = Other then require Subcontractor 3rd Party Limitations checkbox be checked.</description>
+        <errorConditionFormula>(ISPICKVAL(Type__c , &quot;Related Third Party Agreements&quot;) || ISPICKVAL( Type__c , &quot;Other&quot;)) &amp;&amp; Subcontractor_3rd_Party_Limitations__c  = FALSE</errorConditionFormula>
+        <errorMessage>Please check the Subcontractor/Third-Party Limitations checkbox.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Member_Named_as_Additional_Insured</fullName>
+        <active>true</active>
+        <description>If Member Named as Additional Insured is checked then require the user to provide a comment in Member Named as Add Insured Comment.</description>
+        <errorConditionFormula>Member_Named_as_Additional_Insured__c  = TRUE &amp;&amp; ISBLANK(Member_Named_as_Add_Insured_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Member Named as Add. Insured Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Most_Favored_Pricing_Commitments</fullName>
+        <active>true</active>
+        <description>If Most Favored Pricing Commitments is checked then require user to provide a comment in Most Favored Pricing Commitments Comment.</description>
+        <errorConditionFormula>Most_Favored_Pricing_Commitments__c = TRUE &amp;&amp; ISBLANK(Most_Favored_Pricing_Commitments_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Most Favored Pricing Commitments Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Non_Comp_Provision_Sales_Restriction</fullName>
+        <active>true</active>
+        <description>If Non Comp Provision Sales Restriction is checked then require the user to provide a comment in Non Comp Provision Sales Restrict Comment.</description>
+        <errorConditionFormula>Non_Comp_Provision_Sales_Restriction__c = TRUE  &amp;&amp; ISBLANK(NonComp_Provision_Sales_Restrict_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Non Comp. Provision/Sales Restrict Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Off_Shore_Support_Restrictions</fullName>
+        <active>true</active>
+        <description>If Off Shore Support Restrictions  c is checked then require the user to provide a comment in Off Shore Support Restrictions Comment.</description>
+        <errorConditionFormula>Off_Shore_Support_Restrictions__c = TRUE &amp;&amp; ISBLANK(Off_Shore_Support_Restrictions_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Non Comp. Provision/Sales Restrict Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Restriction_of_Use_of_Member_Name</fullName>
+        <active>true</active>
+        <description>If Restriction of Use of Member Name is checked then require the user to provide a comment in Restriction of Use of Member Name Comment.</description>
+        <errorConditionFormula>Restriction_of_Use_of_Member_Name__c = TRUE &amp;&amp; ISBLANK(Restriction_of_Use_of_Mem_Name_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Restriction of Use of Member Name Comment field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VR_Validate_Technology_Change_Fields</fullName>
+        <active>true</active>
+        <description>Created for CR-20150605-8995. Please populate &quot;Technology Change Notification Comments&quot; field. IF the &quot;Technology Change Notification Required&quot; field is checked.</description>
+        <errorConditionFormula>IF(AND(Technology_Change_Notification_Required__c == true, ISBLANK(Technology_Change_Notification_Comments__c)), true, false)</errorConditionFormula>
+        <errorDisplayField>Technology_Change_Notification_Comments__c</errorDisplayField>
+        <errorMessage>Please populate &quot;Technology Change Notification Comments&quot; field. IF the &quot;Technology Change Notification Required&quot; field is checked.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Vendormate_or_Similar_Registration_Req</fullName>
+        <active>true</active>
+        <description>If Vendormate or Similar Registration Req checkbox is checked then require a comment in Vendormate Sim Registration Req Comment.</description>
+        <errorConditionFormula>Vendormate_or_Similar_Registration_Req__c = TRUE &amp;&amp; ISBLANK(Vendormate_Sim_Registration_Req_Comment__c)</errorConditionFormula>
+        <errorMessage>Please add text to Vendormate or Similar Registration Req. Comment field.</errorMessage>
+    </validationRules>
+</CustomObject>

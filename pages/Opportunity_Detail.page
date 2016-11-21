@@ -1,0 +1,15 @@
+<!-- 
+	Description		:	This page is to override the Opportunity standard detail page and 
+						to decide where user should be navigated.
+	
+	Created By		:	Mahendra Swarnkar 
+	
+	Created Date	:	04/29/2016
+	
+	Revision Logs	:	V1.0 - Created
+	
+ -->
+<apex:page standardController="Opportunity" extensions="DetailViewRedirectController" showHeader="false" sidebar="false"
+	action="{!redirectTo}">
+	<div style="display:none;">{!Opportunity.RecordType.DeveloperName}</div>
+</apex:page>

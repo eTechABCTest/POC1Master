@@ -1,0 +1,682 @@
+<!--
+    /** 
+      * Description     :   This page is designed for Ship It App    
+      *
+      * Created By      :   Rajeev Jain(Simplyforce)
+      *
+      * Created Date    :   02/24/2015
+      *
+      * Version         :   V1.0 Created
+	  *					:	V1.1 Modified By - Mahendra Swarnkar - 2/26/2016 - CR-20160104-9486
+	  *						V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Updated in order to remove the package selection page.
+      *
+      **/  
+--> 
+<apex:page showHeader="false" controller="ShipItController" id="page">
+    
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <title>Ship It</title>
+    
+    <!-- Bootstrap -->
+    <apex:stylesheet value="{!URLFOR($Resource.ShipItAssets, 'css/bootstrap.css')}"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"/>
+    <apex:stylesheet value="{!URLFOR($Resource.ShipItAssets, 'css/normalize.css')}"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />    
+        
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Overrirden CSS -->
+    <apex:stylesheet value="{!URLFOR($Resource.ShipItAssets, 'css/shipItCustom.css')}"/>
+        
+    <style>
+        .nextNavigation {
+            background:none;
+            margin-right: 15px;
+        	margin-left:15px;
+        	min-width:100px;
+            margin-bottom: 15px;
+            background-color: #CE1100;
+            color: #FFFFFF;
+        }
+        .carousel-inner .active.left { left: -33%; }
+        .carousel-inner .next        { left:  33%; }
+        .carousel-inner .prev        { left: -33%; }
+        .carousel-control.left,.carousel-control.right {background-image:none;}
+        .panel-default .panel-HeadingOverride{
+            background-image:none;
+            background-color:#FFFFFF;
+        }
+       .customLookupContact{
+            position:absolute;
+            z-index:-99999;
+        	width:1px;
+        }
+        .ui-dialog-titlebar .ui-button-icon-primary{
+        	top:0;
+        	left:0;
+        }
+        .requiredInput .errorMsg{
+        	display:none;
+        }
+        .requiredInput .error{
+        	border-color:#d74c3b;
+        }
+        .agreementSection .billingLink{
+        	font-size:11px;
+        	text-decoration:underline;
+        }
+        .authorizationPanel{
+        	margin-top:20px;
+        }
+        .authorizationPanel .innerContent{
+        	margin:auto;
+        	float:none;
+        	border:1px solid #CCCCCC;
+        	padding:10px;
+        }
+        .authorizationPanel .rejectedReasonSection textArea{
+        	width:100%;
+        	resize:vertical;
+        }
+        .authorizationStatus{
+        	margin-top:20px;
+        }
+        .authorizationMessage{
+        	font-weight: normal;
+              font-size: 14px;
+              color: #CE1100;
+              text-align: center;
+        }
+        #addressErrorMsg{
+        	text-align: left;
+        	color: #CE1100;
+        }
+        .deliveryOptionSection{
+        	margin-top:20px;
+        }
+        .reviewDetailsHeading{
+        	color:#455560;
+        }
+        .addressFieldBox{
+        	border:1px solid #CCCCCC;
+        	margin:auto;
+        }
+        .addressFieldLeftBox{
+        	border-right:1px solid #CCCCCC;
+        }
+        .form-group .addressBlueLabel{
+        	color:#0000FF;
+        }
+        .form-group .addressRedLabel{
+        	color:#CE1100;
+        }
+        .addressHeadingLabel{
+        	text-align:center;
+        	padding:10px 0;
+        	text-decoration:underline;
+        	color: #455560;
+  			font-size: 14px;
+        }
+        .addValidationMsg{
+        	text-align:center;margin:auto;float:none;padding:10px 0;
+        	color: #455560;
+  			font-size: 14px;
+        }
+        #AddressDialog .form-horizontal .control-label{
+        	padding-top:0;
+        }
+        #AddressDialog .addressFieldRightBox input{
+        	font-size:12px;
+        }
+        .printLabel:hover{
+        	text-decoration:underline;
+        }
+        .tool-tip:link, .tool-tip:visited
+        {
+            text-decoration: none;
+            position: relative;
+            color : red;
+        }
+
+        .tool-tip:before
+        {
+            content: "";
+            position: absolute;
+            border-top: 21px solid #CE1100;
+            border-left: 21px solid transparent;
+            border-right: 21px solid transparent;
+            visibility: hidden;
+            top: -20px;
+            left: -12px;
+        }
+		#declaredValueToolTip.tool-tip:after,#reviewDeclaredValeToolTip.tool-tip:after{
+        	left:-100px;
+        }
+        .tool-tip:after
+        {
+            position: absolute;
+            content: attr(data-tooltip);
+            color: #FFF;
+            font-weight:normal;
+            top: -35px;
+            left: -26px;
+            background: #CE1100;
+            padding: 5px 10px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius:6px;
+            -khtml-border-radius:6px;
+            border-radius: 6px;
+            white-space: nowrap;
+            visibility: hidden;
+        }
+
+        .tool-tip:hover:before, .tool-tip:hover:after
+        {
+            visibility: visible;
+            -moz-transition: visibility 0s linear .3s;
+        }
+        .tool-tip{
+        	left:-5px;
+        	top:8px;
+        	z-index:1;
+        	position:absolute;
+        }
+        .infoIcon{
+            height: 15px;
+        	width:15px;
+        }
+       
+        #AddressDialog .ui-dialog .ui-dialog-titlebar-close,#ConfirmDialog .ui-dialog .ui-dialog-titlebar-close{
+            display:none;
+        }
+        #footer {
+          width: 100%;
+          height: 110px;
+          background-color: #B2B3B1;
+          overflow: hidden;
+        }
+        
+        #footer .logo {
+          width: 160px;
+          margin: 18px 0px 0px;
+          display: block;
+          float: left;
+        }
+        
+        #footer .right {
+          float: right;
+          margin-top: 30px;
+        }
+        
+        
+        #footer .social-icons {
+          float: right;
+          margin-top: 00px;
+        }
+        ul, li {
+          padding: 0px;
+          margin: 0px;
+        }
+        
+        #footer .social-icons li {
+          float: left;
+          font-size: 26px;
+          list-style-type: none;
+        }
+        #footer ul, #footer li{
+        	paddding:0;
+        	margin:0;
+        }
+        #footer li i{
+        	color:#FFFFFF;
+        }
+        #footer .copyright {
+          float: right;
+          margin-top: 0px;
+          clear: both;
+          font-size: 12px;
+          color: white;
+        }
+        
+        .easter-egg {
+          cursor: pointer;
+        }
+        .authorizationBox .combo-values ul{
+        	text-align:left;
+        }
+        .authorizationBox .combo-values ul li{
+        	margin-left:0px;
+        }
+        .choosePackageLink{
+        	background-color: transparent;
+        	border:none;
+        	color: #CE1100;
+        	text-decoration: underline;
+        }
+        .choosePackageLink:hover, .choosePackageLink:focus {
+          color: #2a6496;
+          text-decoration: underline;
+        }
+        
+        .choosePackageLink:focus {
+          outline: thin dotted;
+          outline: 5px auto -webkit-focus-ring-color;
+          outline-offset: -2px;
+        }
+        .processShipmentBtnWrapper .authorizationColum{
+        	width:28%;
+        }
+        .authorizationContent{
+        	width:56.0%;
+        }
+        .shipItNavMenu{
+        	list-style:none;
+        	float:right;
+        }
+        .shipItNavMenu li{
+        	float:left;
+        	margin-left:5.5em;
+        }
+        .noclose .ui-dialog-titlebar-close{
+        	display:none;
+        }
+        @media only screen and (max-width: 768px) {
+		.reviewVDevider {display: none;}
+		}
+        @media only screen and (max-width: 992px) {
+        	.spacing{display:none;}
+        }
+    </style>
+    
+    <!-- Body Starts from Here -->
+    <body style="font-family:Arial, Helvetica, sans-serif;">
+        
+        <!-- Apex Form Start Here -->
+        <apex:form styleClass="form-horizontal" id="myForm">
+            <apex:pageMessages id="validationMsg"/>
+            
+            <!-- This Page message is used to display Validation Messages from Web Serivece -->
+            <apex:outputPanel id="customValidationMsg">
+                <apex:pageMessage severity="info" title="shipIt Address Validation Info"
+                                  rendered="{!IF(customValidationMsg != '',true,false)}"
+                                  strength="2" summary="{!customValidationMsg}">
+                </apex:pageMessage>
+				<apex:inputHidden value="{!customValidationMsg}" id="msgBlock"/>
+			</apex:outputPanel>
+            
+            <!-- Ajax Action Functions Comes here -->
+            <apex:actionRegion >
+                
+                <!-- Populate Selected Contact info in Address fields -->
+                <apex:actionFunction action="{!identifyRecepient}" name="populateRecipientInfo" reRender="addressWrapper,validationMsg"
+                                     status="waitMsg" oncomplete="triggerCustomLookup();populateHoldedInfo();">
+                 	<apex:param name="testVar" assignTo="{!recipientId}" value=""/>   
+                </apex:actionFunction> 
+                
+                 <!-- Describe Package Details based on selected package on ShipItPackage Screen -->
+                <apex:actionFunction action="{!describePackageDetails}" name="navigatesToShipItOrder"
+                                     reRender="shipItOrderWrapper,validationMsg"
+                                         status="waitMsg"
+                                     oncomplete="triggerCustomLookup();navigatesToPackageDetails('{!isPackageSelectionVerified}');">
+                    <apex:param name="selectedName" assignTo="{!selectedPackageName}" value=""/>   
+                </apex:actionFunction> 
+                
+                 <!-- Handle User Selected Step -->
+                <apex:actionFunction name="switchToStep" action="{!findAshipment.setSelectedStep}"
+                                     reRender="shipItFindWrapper, validationMsg" status="waitMsg"
+                                     oncomplete="resetFindAPackageComponentStates();">
+                    <apex:param name="userSelectedStep" value="" assignTo="{!findAshipment.userSelectedStep}"/>   
+                </apex:actionFunction>
+                
+                <!-- Go to Next Page for Find a Shipment Component -->
+                <apex:actionFunction name="nextPage" action="{!next}" reRender="shipItFindWrapper, validationMsg"
+                                     status="waitMsg" oncomplete="resetFindAPackageComponentStates();"/>
+                
+                <!-- Go to Previous Page for Find a Shipment Component -->
+                <apex:actionFunction name="previousPage" action="{!previous}" reRender="shipItFindWrapper, validationMsg"
+                                     status="waitMsg" oncomplete="resetFindAPackageComponentStates();"/>
+                
+                 <!-- Handle User Selected Step -->
+                <apex:actionFunction name="searchShipments" action="{!findAshipment.searchShipments}"
+                                     reRender="shipItFindWrapper, validationMsg" status="waitMsg"
+                                     oncomplete="resetFindAPackageComponentStates();">
+                    <apex:param name="selectedStatus" value="" assignTo="{!findAshipment.selectedStatus}"/>   
+                    <apex:param name="selectedBillingType" value="" assignTo="{!findAshipment.selectedBillingTypeStatus}"/>   
+                    <apex:param name="SearchedText" value="" assignTo="{!findAshipment.searchText}"/>
+                    <apex:param name="selectedShipmentCategory" value="" assignTo="{!findAshipment.selectedShipmentCategory}"/>
+                    <apex:param name="fromDateSelected" value="" assignTo="{!findAshipment.fromDate}"/>
+                    <apex:param name="toDateSelected" value="" assignTo="{!findAshipment.toDate}"/>
+                </apex:actionFunction>
+                 
+                <!-- Function to Clear Search Results -->
+                <apex:actionFunction name="clearSearch" action="{!findAshipment.clearSearch}"
+                                     reRender="shipItFindWrapper, validationMsg" status="waitMsg"
+                                     oncomplete="resetFindAPackageComponentStates();"/>
+            </apex:actionRegion>
+            
+            <!-- Verify Address fields Information -->  
+            <apex:actionFunction action="{!verifyAndContinueAddress}" name="verifyAddress"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep(); navigatesToPackageDetails('{!isPackageSelectionVerified}');"/>
+            
+            <!--V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Starts fom Here -->
+            <!-- Method to Keep User Entered or Selected Address for the Shipment and Reject Corrections of Fed Ex Validation -->
+            <apex:actionFunction action="{!keepExisting}" name="keepExistingAndnavigateToPackageSelectionScreen"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep();navigatesToPackageDetails('{!isPackageSelectionVerified}'); navigatesToShipItOrder('YOUR_PACKAGING');"/>
+            
+            <!-- Action to Accept Updates from Fedex without anychange -->
+            <apex:actionFunction action="{!acceptUpdatesWithChange}" name="acceptUpdateWithAddressChange"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep();navigatesToPackageDetails('{!isPackageSelectionVerified}'); navigatesToShipItOrder('YOUR_PACKAGING');">
+                <apex:param name="compareadd1" assignTo="{!compShipmentWrapper.RecipientAddressLine1}" value=""/>
+                <apex:param name="compareadd2" assignTo="{!compShipmentWrapper.RecipientAddressLine2}" value=""/>
+            </apex:actionFunction>
+           	
+            <!-- Action to Accept Updates from Fed Ex with Changes -->
+            <apex:actionFunction action="{!acceptUpdatesWithoutChange}" name="acceptUpdateWithoutAddressChange"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep();navigatesToPackageDetails('{!isPackageSelectionVerified}'); navigatesToShipItOrder('YOUR_PACKAGING');"/>
+            
+            <apex:actionFunction action="{!reValidateAddressOnFedEx}" name="reValidateAddress"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep();navigatesToPackageDetails('{!isPackageSelectionVerified}'); navigatesToShipItOrder('YOUR_PACKAGING');">
+                <apex:param name="add1" assignTo="{!compShipmentWrapper.RecipientAddressLine1}" value=""/>
+                <apex:param name="add2" assignTo="{!compShipmentWrapper.RecipientAddressLine2}" value=""/>
+                <apex:param name="compCity" assignTo="{!compShipmentWrapper.RecipientCity}" value=""/>
+                <apex:param name="compState" assignTo="{!compShipmentWrapper.RecipientStateOrProvince}" value=""/>
+                <apex:param name="compPostalCode" assignTo="{!compShipmentWrapper.RecipientPostalCode}" value=""/>
+            </apex:actionFunction>
+            
+            <!-- Action to Process Yes Answer of the User in Case of validation Stauts = 'Resolved' or 'Warnig' and Navigates to Package Selection Screen-->
+            <apex:actionFunction action="{!acceptYesAnswerFromUser}" name="acceptYesAnswer"
+                                 reRender="addressWrapper,shipItOrderWrapper,customValidationMsg,validationPopupContent"
+                                 status="waitMsg" oncomplete="goToPackageStep();navigatesToPackageDetails('{!isPackageSelectionVerified}'); navigatesToShipItOrder('YOUR_PACKAGING');"/>
+            <!--V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Ends Here -->
+            
+             <!-- Action to Process Yes Answer of the User in Case of validation Stauts = 'Resolved' or 'Warnig'-->
+            <!--<apex:actionFunction action="{!reValidateAddressOnFedEx}" name="noAnswer" reRender="addressWrapper,customValidationMsg,validationPopupContent" status="waitMsg" oncomplete="goToPackageStep();"/>-->	
+            
+            <!-- Get Delivery Options from FedEx -->
+            <apex:actionFunction action="{!getDeleveryOptions}" name="getDeliveryOption"
+                                 reRender="shipItOrderWrapper,validationMsg"
+                                 oncomplete="triggerCustomLookup();navigatesToPackageDetails('{!isPackageSelectionVerified}');"
+                                 status="waitMsg"/>
+            
+            <!-- Save Data at ShipItOrder Screen and Navigates to Review screen which is next of shiptItOrder Screen -->
+            <apex:actionFunction action="{!saveAndNavigatesToReviewScreen}" name="saveAndNavigatesToReview"
+                                 reRender="shipItOrderWrapper,shipItReviewWrapper, validationMsg"
+                                 status="waitMsg" oncomplete="navigatesToPackageDetails('{!isPackageSelectionVerified}');goToReviewScreen();">
+                <apex:param name="selectedIndexedItem" assignTo="{!deliveryOptionsWrapper.selectedOptionIndex}" value=""/>
+            </apex:actionFunction>
+            
+            <!-- Function to Send Authorization Request for Delivery options which required authorization -->
+            <apex:actionFunction action="{!sendAuthorizationRequest}" name="sendRequestAuthorization"
+                                 reRender="shipItOrderWrapper,shipItReviewWrapper, validationMsg"
+                                 oncomplete="navigatesToPackageDetails('{!isPackageSelectionVerified}');goToReviewScreen();"
+                                 status="waitMsg"/>
+            
+            <!-- Action function to Authorize Request by Authorizer -->
+            <apex:actionFunction action="{!authorizeRequest}" name="authorizeRequest"
+                                 reRender="shipItReviewWrapper, validationMsg"
+                                 status="waitMsg" oncomplete="triggerCustomLookup();">
+                <apex:param name="isAuthorized" value=""/>
+            </apex:actionFunction>
+            
+            <!-- Action function to Print Shipping Label from FedEx, if successfull then stop user to perform any action in the app-->
+            <apex:actionFunction action="{!printShippingLabel}" name="printShippingLabel"
+                                 reRender="shipItReviewWrapper, validationMsg"
+                                 status="waitMsg" oncomplete="makeFinalDecision('{!shipmentWrapper.Status}');triggerCustomLookup();"/>
+            
+            <!-- Action Status -->
+            <apex:actionStatus onstart="blockMe();" onstop="unBlockMe();" id="waitMsg"/>
+            
+            <!-- Header Container Start here-->
+            <div id="header" class="headerWrapper">
+                <div class="navbar navbar-default" id="navBar">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 navWrapper">
+                                <div class="row">
+                                
+                                    <!-- Left Side Components -->
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5 logoWrapper">
+                                                <img src="{!URLFOR($Resource.ShipItAssets, 'img/ShipIt-Logo.png')}" class="logo"/>
+                                            </div>
+                                            <!--<div class="col-md-7 col-sm-7 appLabel">
+                                                Ship It
+                                            </div>   -->   
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Side Components -->
+                                    <div class="col-md-6 col-sm-6 appLinks">
+                                        <div class="row" style="margin-top:20px;">  
+											<div class="col-md-12 col-sm-12">
+                                                <ul class="shipItNavMenu">
+                                                    <li><a href="javascript:void(0);" class="appNav selected" compType="shipAPackage" id="shipAPackageLink">Ship A New Package</a></li>
+                                                    <li><a href="javascript:void(0);" compType="findAShipment" class="appNav" id="findAShipmentLink">Find A Shipment</a></li>
+                                                    <li><a href="{!$Label.ShipIt_FaqLink}" compType="fAQ" target="_blank">FAQ</a></li>
+                                                </ul>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- Header Container Ends here-->
+        
+        <!-- Main Container -->
+        <div id="main-container" class="navbar navbar-default">
+        
+            <!-- Ship A Package Starts from here -->
+            <div class="container" id="shipAPackage">
+                <div class="row acc-wizard">
+                    <div class="col-md-12">
+                        
+                        <!-- Accordian Starts from here -->
+                        <div id="accordion-demo" class="panel-group">
+                            
+                            <!-- Panel First Starts from here -->
+                            <div class="panel panel-default" id="addressPanel">
+                                <div class="panel-heading {!IF(appView == 'Review',' panel-HeadingOverride','')}" style="position:relative;">
+                                  <h4 class="panel-title">
+                                      1. Address Information
+                                  </h4>
+                                  <apex:outputPanel rendered="{!isToDisplayEditButtonOnAddressValidation}">
+                                      <input type="button" value="Edit" 
+                                         style="position:absolute;right:25px;top:5px;display:{!IF(appView == 'New','none;','block;')}" class="Edit" 
+                                         onclick="editPanel(this,$('#addressPanel'),$('#addressPanel').find('.panel-collapse'));"/>
+                                  </apex:outputPanel>
+                                </div>
+                                <div id="prerequisites" class="panel-collapse {!IF(appView == 'New',' defaultOpen','')}">
+                                    <div class="panel-body">
+                                        <apex:outputPanel id="addressWrapper">
+                                            <!--<div class="selectContactButton">
+                                            	<apex:inputField value="{!contactForLookup.Related_Contact__c}" id="Contact" styleClass="customLookupContact" html-size="2" onchange="holdAdressInfo();populateRecipientInfo($('#page\\:myForm\\:Contact_lkid').val());"/>    
+                                            </div>-->
+                                            <div class="selectContactButton">
+	
+                                                
+                                            </div>
+                                            <c:ShipItAddress id="shipItAddressComp"
+                                                             isInvalidContactId="{!isInvalidContactId}"
+                                                             validationStatus="{!validationStatus}"
+                                                             isAddressFieldsRequired="{!isAddressFieldsRequired}"
+                                                             shipmentWrapper="{!shipmentWrapper}"/>  
+                                            <apex:inputHidden id="isAddressVerified" value="{!isAddressVerified}"/>
+                                            <apex:inputHidden id="validationStatus" value="{!validationStatus}"/>
+                                            <apex:inputHidden id="isPopupDisplay" value="{!isPopupDisplay}"/>
+                                            <apex:inputHidden value="{!isAddressUpdateAccepted}" id="isAddressAccepted"/>
+                                            <apex:inputHidden value="{!isAddressFieldHasChanged}" id="isAddressFieldHasChanged"/>
+                                            <apex:inputHidden value="{!shipmentWrapper.RecipientSelectionMethod}" id="recipientSelectionMethod"/>
+                                            <input type="hidden" value="false" id="isFieldOnValidationPopupChanged"/>
+                                            <input type="hidden" value="{!isAppDataHasSaved}" id="isAppDataHasSaved"/>
+                                        </apex:outputPanel> 
+                                         <!-- Address Validation Popup -->
+                                        <div id="AddressDialog" title="Address Validation" style="display:none;">
+                                            <apex:outputPanel id="validationPopupContent">
+                                                <c:ShipItAddressValidationPopup id="shipItAddressValidationComp"
+                                                             isInvalidContactId="{!isInvalidContactId}"
+															 shipmentWrapper="{!shipmentWrapper}"
+															 compShipmentWrapper="{!compShipmentWrapper}"
+                                                             validationStatus="{!validationStatus}"
+                                                             isAddressFieldsRequired="{!isAddressFieldsRequired}"
+															 isInvalidSuitNumber="{!isInvalidSuitNumber}"
+															 addressRevalidationCounter="{!addressRevalidationCounter}"/>
+                                            </apex:outputPanel>    
+                                        </div>
+                                    </div> <!--/.panel-body -->
+                                    
+                                    <div class="row">
+                                    	<div class="col-md-12 col-sm-12" style="margin-bottom:15px;">
+                                        	<div id="addressErrorMsg" style="display:none;text-align:center;">
+                                                * Please complete all REQUIRED fields
+                                            </div>    
+                                        </div>    
+                                    </div>
+                                    <div class="row">
+                                    	<div class="col-md-12 col-sm-12" style="text-align:center;">
+                                        	<input type="button" value="Continue" class="navBtn  nextNavigation navigation" id="verifyAddressInfo" onclick="verifyAndContinue();"/>    
+                                        </div>    
+                                    </div>
+                                </div> <!-- /#prerequisites -->
+                            </div> <!-- /.panel.panel-default -->
+                            <!-- Panel First Starts from here -->
+                            
+                            <!-- Panel First Start from Here --> 
+                            <div class="panel panel-default" id="shipmentDetailPanel">
+                                <div class="panel-heading panel-HeadingOverride" style="position:relative;">
+                                    <h4 class="panel-title">
+                                      2. Shipment Details
+                                    </h4>
+                                    <!--V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Starts fom Here -->
+                                    <apex:outputPanel rendered="{!isToDisplayEditButtonOnPackageSelection}">
+                                    	<input type="button" value="Edit" 
+                                          style="position:absolute;right:25px;top:5px;display:{!IF(appView == 'New','none;','block;')}" class="Edit" 
+                                          onclick="editPanel(this,$('#shipmentDetailPanel'),$('#shipmentDetailPanel').find('.panel-collapse')); navigatesToShipItOrder('YOUR_PACKAGING');" />
+                                    </apex:outputPanel>
+                                    <!--V1.1 Modified By - Mahendra Swarnkar - 5/19/2016 - CR-20160210-9600 - Ends Here -->
+                                    
+                                </div>
+                                <div id="addwizard" class="panel-collapse">  
+									<div class="panel-body">
+                                        <c:ShipItPackage shipmentAllPackages="{!mapPackageWrapper}"/> 
+                                        <apex:outputPanel id="shipItOrderWrapper">
+                                            <c:ShipItOrder selectedPackage="{!selectedPackage}"
+                                                           deliveryOptionsWrapper="{!deliveryOptionsWrapper}" billToListItems="{!billToListItems}"
+                                                           shipDateListItems="{!shipDateListItems}" selectedShipDate="{!selectedShipDate}"
+                                                           listOfAuthorizers="{!listOfAuthorizers}" selectedAuthorizer="{!selectedAuthorizer}"
+                                                           selectedDeliveryOption="{!selectedDeliveryOption}"
+                                                           isBillingAgreementAccepted="{!isBillingAgreementAccepted}"
+                                                           shipmentWrapper="{!shipmentWrapper}"
+                                                           signatureRequirementList="{!signatureRequirementList}"/> 
+                                            <apex:inputHidden id="isPackageSelectionVerified" value="{!isPackageSelectionVerified}"/>
+                                            <input type="hidden" value="{!IF(deliveryOptionsWrapper.mapDeliveryOptions == null,'false','true')}" id="isDeliveryOptionsPopulated"/>
+                                            <apex:inputHidden value="{!deliveryOptionsWrapper.selectedOptionIndex}" id="selectedOptionIndex"/>
+                                        </apex:outputPanel>    
+                                  	</div> <!--/.panel-body -->
+                                </div> <!-- /#addwizard -->
+                            </div> <!-- /.panel.panel-default -->
+                            <!-- Panel Second Starts from Here -->
+                            
+                            <!-- Panel third Start from Here -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading {!IF(appView == 'New',' panel-HeadingOverride','')}">
+                                  <h4 class="panel-title">
+                                      3. Review 
+                                  </h4>
+                                </div>
+                                <div id="adjusthtml" class="panel-collapse {!IF(appView == 'Review',' defaultOpen','')}">
+                                      <div class="panel-body">
+                                          <apex:outputPanel id="shipItReviewWrapper">
+                                            <c:ShipItReview shipmentWrapper="{!shipmentWrapper}"
+                                                              isShipmentSuccessfull="{!isShipmentSuccessfull}"
+                                                              printLabelErrorMsg="{!printLabelErrorMsg}"
+                                                              selectedPackageName="{!selectedPackageName}"/>  
+                                              <input type="hidden" value="{!shipmentWrapper.Status}" id="shipmentStatusAtReview"/>
+                                          </apex:outputPanel>
+                                      </div> <!--/.panel-body -->
+                                </div> <!-- /#adjusthtml -->
+                            </div> <!-- /.panel.panel-default -->
+                            <!-- Panel third End from Here -->
+                        </div>
+                        <!-- Accordian Ends Here -->
+                        
+                    </div>
+                </div>  
+            </div>  
+            <!--- Ship A Package Ends Here -->
+            
+            <!-- Ship A Package Starts from here -->
+            <div class="container otherOptions hide" id="findAShipment">
+                <apex:outputPanel id="shipItFindWrapper">
+                	<c:ShipItFind findAshipmentWrapper="{!findAshipment}" trackingURL="{!$CurrentPage.parameters.trackingURL}"/>
+                </apex:outputPanel>
+            </div>
+            <!-- Ship A Package Ends from here -->
+            
+            <!-- FAQ Starts from here -->
+            <div class="container otherOptions hide" id="FAQ">
+                <div class="row">
+                    <div class="col-md-12 panel-default">
+                        <div class="panel-heading">
+                            FAQ
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding:50px;text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold;">
+                        FAQ is coming soon
+                    </div>
+                </div>
+            </div>
+            <!-- FAQ Ends from here -->
+            
+        </div>
+		<!-- Main Container Ends Here -->
+		<div id="navDialog" title="Confirm Dialog" style="display:none;">
+             {!$Label.ShipIt_MenuNavDialogMsg}
+		</div>
+		
+		<!-- Dialog Box to Show a Prompt to User that says you should use different browser, Ship It does not support IE-->
+		<div id="alertDialog" title="Internet Explorer Not Supported" style="display:none;">
+            {!$Label.ShipIt_IEBrowserNotSupported}
+		</div>
+            
+		<!-- BoardRoom Footer -->
+		<c:ShipItFooter />
+            
+        </apex:form>
+        
+        <!-- ===================================================================== -->
+        <!-- Javascript placed at the end of the document so the pages load faster -->
+        <!-- ===================================================================== -->
+		
+        <!-- Blocking the Screen While Ajax Request -->
+        <c:BlockUI />
+        
+        <c:ShipItPageScripts />
+        <!-- ===================================================================== -->
+        <!-- Javascript placed at the end of the document so the pages load faster -->
+        <!-- ===================================================================== -->
+        
+    </body>
+    <!-- Body Ends from Here -->
+    
+</apex:page>

@@ -1,0 +1,993 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object will contain attributes of deployments for different BI products. A unique record of this object type will need to be created for each product that requires custom thresholds for milestones.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Analysis__c</fullName>
+        <externalId>false</externalId>
+        <label>Analysis</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bid_Management__c</fullName>
+        <externalId>false</externalId>
+        <label>Bid Management</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CC_Site_Build_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>CC: Site Build Complete</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Controlled_Mrkt_Build_Cmplt__c</fullName>
+        <externalId>false</externalId>
+        <label>Controlled Mrkt Build Cmplt</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Collection__c</fullName>
+        <externalId>false</externalId>
+        <label>Data Collection</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_Dep_Support_Ticket_Recordtype__c</fullName>
+        <description>this field holds the sf recordtype id for the member support recordtype to use by default when using the custom &apos;New Implementation Ticket&apos; button on deployment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>this field holds the sf recordtype id for the member support recordtype to use by default when using the custom &apos;New Implementation Ticket&apos; button on deployment</inlineHelpText>
+        <label>Default Dep Support Ticket Recordtype</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EAB_Connect_Installed_Expected__c</fullName>
+        <description>Created for CR-20151116-9384</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to populate &quot;EAB Connect Installed (Expected)&quot; on deployment object</inlineHelpText>
+        <label>EAB Connect Installed (Expected)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_CC_Access_Date__c</fullName>
+        <description>Created as part of CR-3241. Data flows through to Deployment via &quot;Update Expected Milestone Dates_4&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected CC Access Date</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_CC_Complete_Data_In__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected: CC: Complete Data In</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_CC_Initial_Data_In__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected: CC: Initial Data In</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Complete_Data_In__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Complete Data In</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Configuration_Planning__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Configuration Planning</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_DAS_Approved__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected DAS Approved</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_DAS_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected DAS Received</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Data_Acquisition_Call__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Data Acquisition Call</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Data_Audit_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Data Audit Received</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Data_Audit_Sign_Off__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Data Audit Sign Off</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Data_Diagnostics_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzExpected Data Diagnostics Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Data_Diagnostics_Sent__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Data Diagnostics Sent</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Deployment_Sign_Off__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>zzzExpected Deployment Sign-Off</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Deployment_Start__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_8&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Deployment Start</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Diagnostic_Sign_Off_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Data Diagnostics Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_F_back_on_Initial_Data_Provid__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected F/back on Initial Data Provid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Fback_on_Initial_Data_Provided__c</fullName>
+        <externalId>false</externalId>
+        <label>zzzExpected F/back on Initial Data Provi</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Feedback_on_Initial_Data__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Feedback on Initial Data</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Historical_Data_Received__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_8&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Historical Data Received</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Implementation_Plan_Complete__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Implementation Plan Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Initial_Data_In__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Initial Data In</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Initial_Site_Build_Complete__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>zzzExpected Initial Site Build Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Initial_Site_Build_Submitted__c</fullName>
+        <description>Used to update the Expected Initial</description>
+        <externalId>false</externalId>
+        <label>Expected Initial Site Build Submitted</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Initial_Site_Demo__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Initial Site Demo</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Integration_Config_Completed__c</fullName>
+        <description>CR-20140808-6918</description>
+        <externalId>false</externalId>
+        <label>Expected Integration Config Completed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Integration_Planning_Complete__c</fullName>
+        <description>CR 4062</description>
+        <externalId>false</externalId>
+        <label>Expected Integration Planning Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Integration_Testing_Complete__c</fullName>
+        <description>CR4062</description>
+        <externalId>false</externalId>
+        <label>Expected Integration Testing Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Internal_Validation_Complete__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Internal Validation Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Legal_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Legal Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Measure_Mapping_Complete__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Measure Mapping Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Member_Validation_Comp__c</fullName>
+        <description>Created as part of CR-3241. Data flows through to Deployment via &quot;Update Expected Milestone Dates_4&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Member Validation Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Member_Validation_Complete__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Deployment Sign-Off</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_OA_Presented__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected OA Presented</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Physician_Roster_Complete__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Physician Roster Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Postload_Complete__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Postload Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Practice_Survey_Complete__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Practice Survey Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Predictive_Model_Review__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Predictive Model Review</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Project_Planning__c</fullName>
+        <description>Created as part of CR-3241. Data flows through to Deployment via &quot;Update Expected Milestone Dates_4&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Project Planning</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Receive_Test_Data__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Receive Test Data</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Recurring_Update_Sign_Off__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Recurring Update Sign-Off</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Redlining_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Redlining Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Scheduled_Site_Demo__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_8&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Scheduled Site Demo</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Security_Clearance__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Security Clearance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Site_Build_Submitted__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Site Build Submitted</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Site_Live__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Initial Site Build Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Site_Live_new__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Site Live</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Success_Marketers_Submitted__c</fullName>
+        <description>Created as part of CR-3241. Data flows through to Deployment via &quot;Update Expected Milestone Dates_4&quot;</description>
+        <externalId>false</externalId>
+        <label>Expected Success Marketers Submitted</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Technical_Kick_Off__c</fullName>
+        <description>Used to populate expected dates on deployment object</description>
+        <externalId>false</externalId>
+        <label>Expected Technical Kick Off</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Technical_Planning_Call__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Technical Planning Call</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Technical_Planning_Complete__c</fullName>
+        <description>CR-595</description>
+        <externalId>false</externalId>
+        <label>Expected Technical Planning Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Template_Sent__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Template Sent</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Test_Site_Up__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Test Site Up</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Training_Intensive_Onsite__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Training Intensive Onsite</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_UAT_Onsite__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected UAT Onsite</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_VPN_Connectivity__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected VPN Connectivity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expected_Welcome_Call__c</fullName>
+        <description>Created as part of CR-3570 - used in workflow &quot;Update Expected Milestone Dates_5&quot;.</description>
+        <externalId>false</externalId>
+        <label>Expected Welcome Call</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Open_Market_Build_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>Open Market Build Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Open_Market_Cleanup_Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>Open Market Cleanup Complete</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Read_Access_Granted_Expected__c</fullName>
+        <description>Created for CR-20151116-9384</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to populate &quot;Read Access Granted (Expected)&quot; on deployment object</inlineHelpText>
+        <label>Read Access Granted (Expected)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registration_Access_Deadline_Expected__c</fullName>
+        <description>Created for CR-20151116-9384</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to populate &quot;Registration Access Deadline (Expected)&quot; field on deployment object</inlineHelpText>
+        <label>Registration Access Deadline (Expected)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Requirements_Development__c</fullName>
+        <externalId>false</externalId>
+        <label>Requirements Development</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sign_Off_to_Move_to_Prod_Lag__c</fullName>
+        <externalId>false</externalId>
+        <label>Sign-Off to Move to Prod Lag</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Supplier_Engagement__c</fullName>
+        <externalId>false</externalId>
+        <label>Supplier Engagement</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Deployment Type</label>
+    <listViews>
+        <fullName>CCA_Deployment_Types</fullName>
+        <columns>NAME</columns>
+        <columns>Expected_Technical_Kick_Off__c</columns>
+        <columns>Expected_Initial_Data_In__c</columns>
+        <columns>Expected_Complete_Data_In__c</columns>
+        <columns>Expected_Diagnostic_Sign_Off_Received__c</columns>
+        <columns>Expected_Internal_Validation_Complete__c</columns>
+        <columns>Expected_Member_Validation_Complete__c</columns>
+        <columns>Expected_Training_Intensive_Onsite__c</columns>
+        <columns>Expected_Site_Live_new__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Deployment Types</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>CCA_Deployment_Types1</fullName>
+        <columns>NAME</columns>
+        <columns>Expected_Technical_Kick_Off__c</columns>
+        <columns>Expected_Initial_Data_In__c</columns>
+        <columns>Expected_Complete_Data_In__c</columns>
+        <columns>Expected_Diagnostic_Sign_Off_Received__c</columns>
+        <columns>Expected_Internal_Validation_Complete__c</columns>
+        <columns>Expected_Member_Validation_Complete__c</columns>
+        <columns>Expected_Training_Intensive_Onsite__c</columns>
+        <columns>Expected_Site_Live_new__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>CCA,CCC,CCR,CRT,CCM</value>
+        </filters>
+        <label>CCA Deployment Types</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <label>Deployment Type Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Deployment Types</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

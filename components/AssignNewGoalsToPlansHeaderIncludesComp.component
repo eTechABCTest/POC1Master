@@ -1,0 +1,515 @@
+<!--
+    Purpose         :   Component to Include CSS and JS of AssingNewGoalsToPlans Visualforce Page
+ 
+    Created By      :   Subhash Garhwal 
+ 
+    Created Date    :   10/21/2015
+    
+    Revision Logs   :   V_1.0 - Created
+-->
+<apex:component >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <title>Assign New Goals To Plans</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+        <style>
+            .section{overflow:auto;clear:both;}
+            .floater{float:left;}
+            /*.floaterParent{overflow:auto;}*/
+            .floaterLeft{width:75%}
+            .floaterRight{width:25%}
+            .contentFloterLeft{float:left;}
+            .contentFloterRight{float:right;}
+            .list {border-collapse: collapse;}
+            #mainTable {display: table;overflow-x: auto;white-space: nowrap;margin-top:-30px;}
+            .list td div.evenData{background-color:#FFFFFF;}
+            .list td div.dataRow{border-top: 1px solid #ededed;}
+            .list td div.oddData{background-color:#F0F0F0;}
+            .list td div.dataRow {padding: 5px 10px;height: 40px;}
+            .staticCol {/*min-width: 175px !important;*/padding-left:10px;padding-right:10px;}
+            .dynamicCol{min-width: 275px;}
+            .list td {padding: 0 !important;border-bottom: 1px solid #CCCCCC !important;border-right:1px solid #CCCCCC !important;}
+            .nameText{white-space: nowrap;max-width: 125px;text-overflow: ellipsis;overflow: hidden;}
+            .amountText{white-space: nowrap;max-width: 100px;text-overflow: ellipsis;overflow: hidden;}
+            .ui-tooltip .list{border-collapse: collapse;background:#ffffff;width:100%}
+            .ui-tooltip .list tr.headerRow th, .ui-tooltip .list tr td{border: 1px solid #ededed !important;padding:5px !important;}
+            .ui-tooltip .list tr.headerRow th{background: #f2f3f3;border-width: 0 0 1px 1px;border-color: #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 2px 4px 5px;}
+            .ui-tooltip-content{padding:10px !important;}
+            .ui-tooltip, .arrow:after {background: #FFFFAA;border: 2px solid #000000;}
+            .ui-tooltip {padding: 10px;color: #000000;font: 14px "Helvetica Neue", Sans-Serif;box-shadow: 0 0 7px black;}
+            .arrow {width: 70px;height: 16px;overflow: hidden;position: absolute;left: 50%;margin-left: -35px;bottom: -16px;}
+            .arrow.top {top: -16px;bottom: auto;}
+            .arrow.left {left: 20%;}
+            .arrow:after {content: "";position: absolute;left: 20px;top: -20px;width: 25px;height: 25px;box-shadow: 6px 5px 9px -9px black;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);}
+            .arrow.top:after {bottom: -20px;top: auto;}
+            .topColSelectList{max-width:75px;}
+            .dynamicColSelectList{max-width:75px;}
+            .wrapper1{overflow-x:auto;overflow-y:hidden;}
+            .div1{height:1px;}
+            .fix {overflow-x:hidden !important;overflow-y: scroll;position:relative;z-index:10}
+            .headerWrapper{padding-left:5px;padding-right:5px;}
+            #planAssignmentTable.list tr th, #planAssignmentTable.list tr td{padding:5px !important;}
+            #planAssignmentTable.list input, #planAssignmentTable.list select{max-width: 90% !important;}
+            #planAssignmentTable.list{table-layout : fixed}
+            /*#planAssignmentTable.list tr.payeeRow td{border-top: 1px solid #CCCCCC !important;border-bottom:1px solid #ededed !important;}
+            #planAssignmentTable.list tr.nonpayeeRow td{border-bottom: 1px solid #ededed !important;}*/
+            .textElipsis{white-space:nowrap;max-width:60%;text-overflow:ellipsis;overflow:hidden;}
+            .textElipsis1{white-space:nowrap;max-width:150px;text-overflow:ellipsis;overflow:hidden;display:block;}
+            /** ------------------------------------ Dialog Style ---------------------------------------- **/
+            .customDialog {position: absolute;height: auto;min-width:200px;min-height:100px;width: auto;top: 30%;left: 471px;display: block;z-index:2;background:#FFFFAA !important;}
+            .headerMy {
+                border: 1px solid #aaaaaa;color: #222222;font-weight: bold;
+                background: #cccccc url("https://code.jquery.com/ui/1.11.4/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+            }
+            #datePicker{z-index:1003;}
+            .loadingBox{position:relative;width:300px;height:100px;}
+            .loadingBox .loadingInnerWrapper{position:absolute;top:50%;left:30%}
+            .requiredField{position:relative;}
+            .requiredField .timeLineIcon-red {background: #D0212F;display: inline-block;width: 2px;position: absolute;top: 0;bottom: 0;left: -4px;}
+            .errorMSG{font-size:14px; color:#D0212F;}
+            #sGDconds th {background: #f2f3f3;border: 1px solid #e0e3e5;color: #000;font-size: .9em;font-weight: bold;padding: 5px 2px 4px 5px;}
+            #pGMPpopup .dialogWrapper, #pGMPcustomDialog .dialogWrapper{padding:10px;}
+            #sGDconds td {border: 1px solid #e0e3e5;}
+            .customDialog table td {padding: 5px !important;}
+        </style>
+        <script>
+            
+            //This variable decide that setWidthOfStaticHeader() method should run only once
+            var scriptCounter = 0;
+            $(function() {
+                
+                $(document).tooltip({
+                    items:"[data-geo]",
+                    position: {
+                        my: "center bottom-20",
+                        at: "center top",
+                        
+                        using: function( position, feedback ) {
+                          $( this ).css( position );
+                          $( "<div>" )
+                            .addClass( "arrow" )
+                            .addClass( feedback.vertical )
+                            .addClass( feedback.horizontal )
+                            .appendTo( this );
+                        }
+                    },
+                    content: function() {
+                        
+                        var element = $( this );
+                        if ( element.is( "[data-geo]" ) ) {
+                          var text = element.find('.tooltipData').html();
+                          return text;
+                        }
+                    },
+                    close: function(event, ui){
+                        ui.tooltip.hover(
+                            function () {
+                                $(this).stop(true).fadeTo(400, 1); 
+                            },
+                            function () {
+                                $(this).fadeOut("400", function(){
+                                    $(this).remove(); 
+                                })
+                            }
+                        );
+                    }  
+                });
+            });
+            $(document).ready(function(){
+                
+                $( "#accordion").accordion({
+                    heightStyle: "content"
+                });
+                $('#preLoader').hide();
+                $('.mainForm').show();
+               setMaxWidth();   
+            });
+           function scrollTable(){
+                
+                //Onchange of anytop drawing field show refresh btn
+                 $("#resultSectionData").scroll(function(){
+                    
+                    $(".fix").scrollLeft($("#resultSectionData").scrollLeft());
+                    $(".resultSection1").scrollTop($("#resultSectionData").scrollTop());
+                });
+            }
+            
+            //Add max width
+            function setMaxWidth() {
+                var screenWidth = screen.width-80;
+                var screenHeight = screen.height -400;
+                $('#resultSectionData').css({'max-width':screenWidth, 'max-height' : screenHeight});
+                $('.fieldSection').css({'max-width':'75%'});
+                $('.fix').css({'max-width':screenWidth});
+            
+                scrollTable();
+                setWidthOfStaticHeaderOnEachRefresh();
+                detectBrowserVersions();     
+                
+            }
+            function setWidthOfStaticHeaderOnEachRefresh(){
+                
+                $('#mainTable .mainHead').find('.staticHeader').each(function(i){
+                    
+                    //Apply each colum with to its header which is in differnet div
+                    if(i<=5){
+                        
+                        var $affectedHeaderClass = '.staticHeader' + i;
+                        var $actualHeaderClass =  '.staticHeader' + i;
+                        var $affectedHeader = $('.fix').find($affectedHeaderClass);
+                        if($('#resultSectionData')[0].scrollWidth <= $('#resultSectionData').innerWidth()){
+                
+                            $affectedHeader.css({'width' : $('#mainTable .mainHead').find($actualHeaderClass).outerWidth()-8}); 
+                        }else{
+                            $affectedHeader.css({'min-width' : $('#mainTable .mainHead').find($actualHeaderClass).outerWidth()-8});
+                        }
+                        
+                    }else{
+                        return;
+                    }
+                });
+            }
+            
+            //Call this functiion in case of setWidthOfStaticHeaderOnEachRefresh() method not work, currently not in use
+            //function to set width of Static Header
+            function setWidthOfStaticHeader(){
+                
+                //Check Static Colum Width dynamically and apply to its associated headers
+                $('#mainTable .mainHead').find('.staticHeader').each(function(i){
+                    
+                    //Apply each colum with to its header which is in differnet div
+                    if(i<=5){
+                        
+                        var $affectedHeaderClass = '.staticHeader' + i;
+                        var $affectedHeader = $('.fix').find($affectedHeaderClass);
+                        
+                        //In case of Accordian not applied on the screen
+                        //$affectedHeader.css({'min-width' : $(this).outerWidth()-8});
+                        
+                        //If accordian applied on the screen
+                        if(i == 0)
+                            $affectedHeader.css({'min-width' : $(this).outerWidth()-8});
+                        else if(i == 1)
+                            $affectedHeader.css({'min-width' : $(this).outerWidth()-3});
+                        else if(i == 2)
+                            $affectedHeader.css({'min-width' : $(this).outerWidth()+1});
+                        else if(i == 3)
+                            $affectedHeader.css({'min-width' : $(this).outerWidth()+2});
+                        else if(i == 4)
+                            $affectedHeader.css({'min-width' : $(this).outerWidth()+4});
+                            
+                    }else{
+                        return;
+                    }
+                });
+            }
+            
+            //Method to Set widht of Dynamic Colum
+            function setWidthOfDynamicHeader(){
+                
+                $('#mainTable .mainHead').find('.dynamicHeader').each(function(i){
+                    
+                    var $affectedHeaderClass = '.dynamicHeaderCell' + (i + 6);
+                    var $affectedHeader = $('.fix').find($affectedHeaderClass);
+                    $affectedHeader.css({'min-width' : $(this).outerWidth()-8});    
+                }); 
+            }
+            
+            function showHideHiddenElemOnRefresh(){
+                
+                //Loop over eahc elem and pass it in another method
+                $('.condListCheck1:checked').each(function(i){
+                    showHideHiddenElemMed($(this).attr('rowCounter'),$(this).attr('dataCounter'),$(this)[0],'#resultSectionData'); 
+                });
+                setWidthOfDynamicHeader();
+            }
+            
+            //Reset Width
+            function resetDynamicColWidth(){
+                var isHeaderCheckBoxSelected  = $('.checkBoxHeader').find('input[type="checkbox"]')[0].checked;
+                if(isHeaderCheckBoxSelected){
+                    $('.dynamicCol').css('min-width','320px');    
+                }else{
+                    $('.dynamicCol').css('min-width','');
+                }
+                
+                //resetDyanmicColWidthForInnerCheck();
+            }
+            function showHideHiddenElem(rowIndex,dataCounter,elem,containerId){
+                
+                showHideHiddenElemMed(rowIndex,dataCounter,elem,containerId);  
+                var $indexedRow = $('#resultSectionData1').find('#mainTable1 tbody.mainBody').find('tr.mainRow').eq(rowIndex);
+                var $recievedChecboxes = $indexedRow.find('.condListSubChecbox:visible');
+                $recievedChecboxes.prop('checked', elem.checked);
+                $recievedChecboxes.trigger('onchange');
+                setWidthOfDynamicHeader(); 
+            }
+            function showHideHiddenElemMed(rowIndex,dataCounter,elem,containerId){
+                var $indexedRow = $(containerId).find('#mainTable tbody.mainBody').find('tr.mainRow').eq(rowIndex);
+                var $editCol = $indexedRow.find('.dynamicCol');
+                var $divAffect = $editCol.find('div[dataCounter = '+ dataCounter +']');
+                var $divAffectRow = $indexedRow.find('div.dataRow[dataCounter = '+ dataCounter +']');
+                var $visibleCheckBoxes = $divAffectRow.find('.visibleCheckbox:visible');
+                
+                if(elem.checked){
+                    $(elem).parent().find('.calBtn').show();
+                    $divAffect.find('.editBlock').show();
+                    $divAffect.find('.nonEditBlock').hide();
+                    $divAffectRow.height(40);
+                    $visibleCheckBoxes.prop('checked',true);
+                    $visibleCheckBoxes.trigger('onchange');
+                }else{
+                    $(elem).parent().find('.calBtn').hide();
+                    $divAffect.find('.editBlock').hide();
+                    $divAffect.find('.nonEditBlock').show();
+                    $divAffectRow.height('');
+                    $visibleCheckBoxes.prop('checked',false);
+                    $visibleCheckBoxes.trigger('onchange');
+                } 
+            }
+            function showHideHiddenElemOnNextCol(rowIndex,colIndex,colNext, dataCounter,elem,containerId){
+                var $indexedRow = $(containerId).find('#mainTable tbody.mainBody').find('tr.mainRow').eq(rowIndex); 
+                var $editCol = $indexedRow.find(colNext);
+                var $divAffect = $editCol.find('div[dataCounter = '+ dataCounter +']');
+                var $divAffectRow = $indexedRow.find('div.dataRow[dataCounter = '+ dataCounter +']');
+                if(elem.checked){
+                    $(elem).parent().find('.calBtn').show();
+                    $divAffect.find('.editBlock').show();
+                    $divAffect.find('.nonEditBlock').hide();
+                    $divAffectRow.height(40);
+                }else{
+                    $(elem).parent().find('.calBtn').hide();
+                    $divAffect.find('.editBlock').hide();
+                    $divAffect.find('.nonEditBlock').show();
+                    $divAffectRow.height('');
+                }   
+            }
+            
+            //Loop over each Div Affect
+            /*function colWidthSetter(isChecked, $divAffect){
+                
+                $divAffect.each(function(){
+                    if($(this).find('.editBlock').is('visible')){
+                        
+                        if(isChecked)
+                            $(this).css('min-width','366px');
+                        eles
+                            $(this).css('min-width','');
+                    }else{
+                        $(this).css('min-width','');    
+                    }
+                });     
+            }*/
+            //Select all checkbox    
+            function selectAllCheckboxes(obj,receivedInputClasses,isClickedFromMainHeader){
+                
+                if(isClickedFromMainHeader)
+                    $('.staticHeader0').find('input[type = "checkbox"]').prop('checked',obj.checked);
+                receivedInputClasses = '.' + receivedInputClasses;
+                $(receivedInputClasses).prop('checked',obj.checked);
+                $(receivedInputClasses).trigger('onchange');
+            }  
+            function showRefreshBtn() {
+                $('#refreshBtn').show();    
+            }
+            function hideRefreshBtn(){
+                $('#refreshBtn').hide();
+            }
+            function changeChildColSelectListVal(elem,colIndex){
+                
+                //Check if Elem value is not blank then set all child select list values same as given
+                var $dynamicColClass = '.dynamicCell'+colIndex;
+                var $dynamicAffectedCol = $('#resultSectionData').find('#mainTable tbody.mainBody').find($dynamicColClass);
+                var $elemId = $(elem).attr('id');
+                var elem_lkId = $elemId + '_lkid';
+                var elemValue = elem.value;
+                
+                //Loop over each colum and apply top select list value to all childs cell select list
+                $dynamicAffectedCol.each(function(i){
+                    var $editBlockLookup = $(this).find('.editBlock:visible').find('.dynamicColSelectList');
+                    if($editBlockLookup.attr('id') != undefined){
+                        var $editBlockLookupId = $editBlockLookup.attr('id');
+                        var editBlockLookup_lkId = $editBlockLookupId + '_lkid';
+                        $editBlockLookup.val(elem.value);
+                        document.getElementById(editBlockLookup_lkId).value = document.getElementById(elem_lkId).value;
+                    }
+                });
+                
+                
+            }
+            function detectBrowserVersions(){
+            
+                /*var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+                    // At least Safari 3+: "[object HTMLElementConstructor]"
+                var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+                    // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)*/
+                var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+                var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;   // At least IE6
+                var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
+                if(isChrome){
+                    $('#mainTable').css('margin-top','-34px');  
+                    
+                }
+                if(isFirefox){
+                    $('#mainTable').css('margin-top','-34px');
+                    $('.fakeCheckBox').css('margin','3px 12px 3px 4px');
+                    $('.list12').css('margin-top','-32px');
+                    var screenHeight = screen.height -400;
+                    $('#resultSectionData1').css({'max-height' : screenHeight+3});
+                    $('#mainTable1 th').css('padding','5px 4px 6px 5px');
+                    
+                }
+                if(isSafari){
+                    
+                    $('.pbBody table.list tr.headerRow th').css('padding','5px 2px 0px 5px');
+                    if($('#resultSectionData')[0].scrollWidth <= $('#resultSectionData').innerWidth()){
+                        $('#mainTable1 th').css('padding','5px 4px 3px 5px !important');                         
+                    }
+                    
+                    
+                    }
+                if(isIE){
+                    $('#mainTable').css('margin-top','-34px');  
+                    $('.fakeCheckBox').css('margin','3px 11px 3px 4px');
+                    $('body .pbBody table.list tr.headerRow th').css('padding','5px 2px 5px 5px');
+                    $('.list12').css('margin-top','-31px');
+                    var screenHeight = screen.height -400;
+                    $('#resultSectionData1').css({'max-height' : screenHeight+2});
+                    
+                    if($('#resultSectionData')[0].scrollHeight-1 <= $('#resultSectionData').innerHeight()){
+                
+                        $('.fix').hide();
+                        $('#mainTable').css('margin-top','0px');
+                        $('#scrollHider').hide();   
+                    }
+                     if($('#resultSectionData1')[0].scrollHeight-1 <= $('#resultSectionData').innerHeight()){
+                
+                        $('.fix12').hide();
+                        $('.list12').css('margin-top','0px');
+                        $('.pb').css('padding-bottom','5px');
+                         
+                    }
+                    if($('#resultSectionData')[0].scrollWidth-1 <= $('#resultSectionData').innerWidth()){
+                
+                        $('.fixbg').hide();
+                        $('#resultSectionData1').css('overflow-x','hidden');
+                        $('#mainTable1 th').css('padding','5px 4px 5px 5px');                         
+                    }
+                    
+                }else{
+                    
+                    if($('#resultSectionData')[0].scrollHeight <= $('#resultSectionData').innerHeight()){
+                        $('.fix').hide();
+                        $('#mainTable').css('margin-top','0px');
+                        $('#scrollHider').hide();   
+                    }
+                    if($('#resultSectionData1')[0].scrollHeight <= $('#resultSectionData').innerHeight()){
+                        $('.fix12').hide();
+                        $('.list12').css('margin-top','0px');
+                        $('.pb').css('padding-bottom','6px');
+                    }
+                    if($('#resultSectionData')[0].scrollWidth <= $('#resultSectionData').innerWidth()){
+                
+                        $('.fixbg').hide();
+                        $('#resultSectionData1').css('overflow-x','hidden');
+                        $('#mainTable1 th').css('padding','5px 4px 4px 5px');                         
+                    }
+
+                }
+                
+            }
+            function showPGMPPopup(rowNum, rowSubIndex){
+                 showPGMPDialogbox();
+                 showLoading();
+                 loadPGMPss(rowNum, rowSubIndex);
+             }
+              //Loading Popup
+            function showLoading(){
+                $('.dialogWrapper').hide();
+                $('.loadingBox').show();
+                $('.loadingText').text('Loading....');
+            }
+            function showPGMPDialogbox() {
+               $("#pGMPpopup").show();
+               $("#overlay").show();
+             }
+             //Hide loading function
+            function hideLoading(){
+                    
+                $('.loadingBox').hide();
+                $('.dialogWrapper').show();
+            }
+            function refreshGTDMPs(){
+                
+                //Remove all the error MSGs
+                $('#pGMPcustomDialog .dialogWrapper:visible').find('.errorMSG').text('');
+                $('#pGMPcustomDialog .dialogWrapper:visible').find('.eitherError').text(''); 
+                $('#pGMPcustomDialog').find('.requiredField input').css('border', '');
+                $('#pGMPcustomDialog').hide();
+                $('.mDInner').hide();
+                $("#pGMPpopup").show();
+                hideLoading();
+            }
+            function openPGMPDialogbox() {
+                $("#pGMPcustomDialog").show();
+                $("#dialogWrapper").show();
+                $('.mDInner').show();
+                $("#pGMPpopup").hide();
+                $("#overlay").show();
+            }
+            function addPGMPs(elem){
+                if(validateRequiredData(elem) == true){
+                     $('.dialogWrapper').hide();
+                     $('.loadingBox').show();
+                     $('.loadingText').text('Saving....');
+                    addPGMP();    
+                }
+            }
+            function validateRequiredData(elem){
+
+                 //Handle Implicitly for visible data
+                 var $visibleWrapper;
+                 var $visibleDialogWrapper = $('.dialogWrapper:visible');
+                 if($visibleDialogWrapper != null || $visibleDialogWrapper != undefined){
+                     $visibleWrapper = $visibleDialogWrapper;
+                     if($visibleDialogWrapper.find('.dialog1Inner').is(':visible')){
+                         $visibleWrapper = $visibleDialogWrapper.find('.dialog1Inner:visible');  
+                     }
+                 }
+                 var isAllRequiredFieldHasFilled = true;
+                 
+                 //Check all required field if they filled with Required data
+                 $visibleWrapper.find('.requiredField').each(function(i){
+                     
+                     if($(this).find('input[type="text"]').val() == ''){
+                     
+                         $(this).find('.timeLineIcon-red').show();
+                         $(this).find('input').css('border', '1px solid #D0212F');
+                         isAllRequiredFieldHasFilled = false;
+                     }else if($(this).find('select').val() == ''){
+                         $(this).find('.timeLineIcon-red').show();
+                         $(this).find('select').addClass('requiredSelect');
+                         isAllRequiredFieldHasFilled = false;
+                     }else{
+                         $(this).find('input').css('border', '');
+                         $(this).find('select').removeClass('requiredSelect');
+                     }
+                 });
+                 
+                 if(isAllRequiredFieldHasFilled == false)
+                     $visibleWrapper.find('.errorMSG').text('Please fill all the required fields.');
+                 else
+                     $visibleWrapper.find('.errorMSG').text('');
+                 
+                 if(isAllRequiredFieldHasFilled == false)
+                     return false;
+                 return true;
+         }
+        </script>
+    </head>
+</apex:component>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>Small Schools Marketing Associate</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Small Schools MA 2</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>HE_COS_2</parentRole>
+</Role>

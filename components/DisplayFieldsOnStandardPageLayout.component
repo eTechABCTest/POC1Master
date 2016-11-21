@@ -1,0 +1,87 @@
+<!-- 
+ *  Description     :   VF component to dynamically display the related records fields values.
+ *						With the help of an inline VF page and field set on related record fields.
+ *
+ *  Created By      :   Abhinav Sharma
+ *
+ *  Created Date    :   02/10/2016
+ *
+ *  Current Version :   V_1.0
+ *
+ *  Revision Logs   :   V_1.0 - Created - 02/10/2016 - Abhinav Sharma - CR-20150909-9231
+ *
+-->
+<apex:component controller="DisplayFieldsOnStandardPageLayoutCon" allowDML="true" layout="block">
+     
+    <apex:attribute name="objectName" description="Object Name" type="String" required="true" assignTo="{!objectNameStr}"/>
+    <apex:attribute name="fieldSetName" description="Field Set Name" type="String" required="true" assignTo="{!fieldSetNameStr}"/>
+    <apex:attribute name="parentIdValue" description="Parent Record ID Value" type="string" required="true" assignTo="{!parentIdValueStr}"/>
+    <apex:attribute name="pageBlockSectionColumnCount" description="Page Block Section Column count value" type="integer" required="true" assignTo="{!pageBlockSectionCnt}"/>
+    <apex:attribute name="orderbyField" description="Order by which field in SOQL" type="string" required="false" assignTo="{!orderByFieldStr}"/>
+    <apex:attribute name="orderByDirection" description="Order by direction value for the SOQL" type="string" required="false" assignTo="{!orderByDirectionStr}"/>
+    
+    <style>
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+            background-color: #ffffff !important;
+            border:none !important;
+        }
+    </style>
+    
+    <apex:form id="frm">
+        <apex:pageBlock mode="detail">
+        	<apex:pageBlockSection collapsible="false" columns="{!pageBlockSectionCnt}">
+            	<apex:repeat value="{!fieldSetFieldsList}" var="f">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputText value="{!f.Label}" escape="false"/>
+                        <apex:outputPanel >
+                        	
+                            <!-- Non Reference Type Field-->
+                            <apex:outputField value="{!sObjectInstance[f.fieldPath]}" rendered="{!AND(NOT(ISBLANK(sObjectInstance)), f.Type != 'reference')}"/>
+                        	
+                            <!--  Show normal anchor tag instead of Output field so we can open Relationship Type in new tab -->
+							<apex:outputPanel rendered="{!AND(NOT(ISBLANK(sObjectInstance)), f.Type == 'reference')}" styleClass="referenceBlock">
+                                <div class="relationTypeLabel">
+                                    <a href="/{!sObjectInstance[f.fieldPath]}" target="_blank"></a>
+                                </div>
+                                
+                                <!--  Hide output field -->
+                                <div class="relationTypeActualLabel" style="display:none;">
+                                    <apex:outputField value="{!sObjectInstance[f.fieldPath]}" style="text:decoration:none;display:none;"/>
+                                </div>
+                                
+							</apex:outputPanel>
+                          
+                        </apex:outputPanel>    
+                	</apex:pageBlockSectionItem>
+            	</apex:repeat>	
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <script>
+        
+        	<!--  Script to change output field in anchor tag so link can be opened into new tab -->
+            populateRelationTypeName();
+                
+     		function populateRelationTypeName(){
+               
+                var referenceBlock = document.getElementsByClassName('referenceBlock');
+        
+                for(var j=0;j<referenceBlock.length;j++){
+                    
+                    var hiddenReferences = referenceBlock[j].getElementsByClassName('relationTypeActualLabel');
+                    var visibleReferences = referenceBlock[j].getElementsByClassName('relationTypeLabel');
+                    	
+                    if(hiddenReferences != undefined && visibleReferences != undefined){
+                        
+                        var hiddenAnchorTag = hiddenReferences[0].getElementsByTagName('a')[0];
+                        var visibleAnchorTag = visibleReferences[0].getElementsByTagName('a')[0];
+                        
+                        if(hiddenAnchorTag != undefined && visibleAnchorTag != undefined) {
+                            visibleAnchorTag.innerText = hiddenAnchorTag.innerText;
+                        }
+                    }
+				}
+            }
+        </script>
+	</apex:form>
+</apex:component>

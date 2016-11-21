@@ -1,0 +1,163 @@
+<apex:page controller="PaymentReqProcessController" id="page" tabStyle="Payment_Request__c"  >
+	<apex:form id="mainForm">
+		<c:IncludeJQuery />
+		
+		<style>
+			 .innerTable { 
+			 	font-size:85%;
+			 }
+		</style>
+		
+		<!-- Section Header -->
+		<apex:sectionHeader title="Payment Request Batch" />
+		<!-- Rerender function -->
+		<apex:actionFunction name="rerenderSections"  rerender="pageBlock,paymentReqPanel,printPanel" onComplete="return false;" />
+		
+		<!-- Choose Action -->
+		<apex:pageBlock id="pageBlock" mode="edit" >
+			<apex:pageBlockSection id="pbSection" >
+				<apex:selectRadio value="{!ActionName}" onChange="rerenderSections();" label="Choose an Action" layout="pageDirection" >
+					<apex:selectOption itemValue="Create" itemLabel="Create Batch"/>
+					<apex:selectOption itemValue="Print" itemLabel="Print Existing Batch"/>
+				</apex:selectRadio>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		
+		<!-- Payment Request Table -->
+		<apex:outputPanel id="paymentReqPanel">
+			<apex:pageBlock mode="edit" title="Create or Add to Existing Batch"  rendered="{!ActionName == 'Create'}">
+				<!-- Generate Batch Button -->
+				<apex:pageBlockButtons location="bottom" >
+					<apex:commandButton value="Generate Batch" action="{!GenerateBatch}" rerender="mainForm" />
+				</apex:pageBlockButtons>
+				<apex:pageBlockSection columns="1" title="Payment Request Selection" >
+					<apex:outputText value="List below contains Payment Requests that are not associated with a batch and are in the Approved status." 
+						style="font-size:85%; color:#777; font-style:italic;" />
+					<apex:pageBlockTable value="{!PaymentReqWrappers}" var="item"  >
+						<apex:column >
+							<apex:inputCheckbox value="{!item.IsSelected}" />
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Vendor</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Vendor__r.Name}" id="vendor" />
+						</apex:column>
+						<apex:column style="text-align:right" >
+							<apex:facet name="header">Amount</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="amtRepeat" >
+									<tr><td style="border-bottom:none;">
+									<apex:outputText styleClass="innerTable" value="{0, number, $#,##0.00}" style="white-space:nowrap; padding-right:3px;" >
+										<apex:param value="{!budgetLine.Payment_Amount__c}" />
+									</apex:outputText>
+									</td></tr>
+								</apex:repeat>
+							</table>
+							<!-- Total:&nbsp;
+							<apex:outputText value="{0, number, $#,##0.00}" style="white-space:nowrap; padding-right:3px;" >
+								<apex:param value="{!item.PaymentRequest.Amount__c}" />
+							</apex:outputText> -->
+						</apex:column>
+						<apex:column style="text-align: left;" >
+							<apex:facet name="header">Dept Name</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="deptNameRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Department_Name__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Dept #</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="deptNumRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Department_Number__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Acct #</apex:facet>
+							<table >
+								<apex:repeat value="{!item.BudgetAllocations}" var="budgetLine" id="acctNumRepeat" >
+									<tr><td style="border-bottom:none;">
+										<apex:outputText styleClass="innerTable" value="{!budgetLine.Account_Number__c}" />
+									</td></tr>
+								</apex:repeat>
+							</table>
+						</apex:column>
+						<apex:column style="text-align: center;" >
+							<apex:facet name="header">Inv #</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Invoice_Num__c}" />
+						</apex:column>
+						<apex:column style="width:100px;" >
+							<apex:facet name="header">Status</apex:facet>
+							<apex:outputText value="{!item.PaymentRequest.Status__c}" />
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Inv Due Date</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Invoice_Due_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Contract Start</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Purchase_Request__r.Term_Start_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Contract End</apex:facet>
+							<apex:outputText value="{0,date,MM'/'dd'/'yyyy}" >
+								<apex:param value="{!item.PaymentRequest.Purchase_Request__r.Term_End_Date__c}" />
+							</apex:outputText>
+						</apex:column>
+					</apex:pageBlockTable>
+				</apex:pageBlockSection>
+				
+				<apex:pageBlockSection columns="1" title="Batch Options" >
+					<!-- Batch Number Options -->
+					<apex:inputCheckbox value="{!AddExistingBatch}" onChange="rerenderSections();" label="Add to Existing Batch" />
+					<!-- Existing Batch Select Options -->
+					<apex:selectList value="{!ExistingBatchNum}" size="1" multiselect="false" label="Existing Batch Number" rendered="{!AddExistingBatch == true}" >
+			            <apex:selectOptions value="{!ExistingBatches}"/>
+			        </apex:selectList>
+					
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:outputPanel>
+		
+		<!-- Print Panel -->
+		<apex:outputPanel id="printPanel">
+			<script>
+				function openPrintPage() {
+					// get the selected batch numbers
+					var printURL = '/apex/PaymentReqPDF?batches=';
+					// get the batch numbers
+					//var batchNums = j$("[id*='hiddenBatchNums']").val();
+					var batchNums = '{!SelectedBatches}';
+					if (batchNums == null || batchNums == '[]') return;
+					printURL += batchNums;
+					window.open(printURL, '_blank');
+				}
+			</script>
+			<apex:pageBlock title="Print Batch" mode="edit" rendered="{!ActionName == 'Print'}" >
+				<!-- Print Batch Button -->
+				<apex:pageBlockButtons location="bottom" >
+					<apex:commandButton value="Print Batch" action="{!PrintToPDF}" rerender="mainForm" onComplete="openPrintPage();" />
+				</apex:pageBlockButtons>
+				<apex:pageBlockSection columns="1" title="Print Options" >
+					<!-- Batch Selection Multi Picklist -->
+					<apex:pageBlockSectionItem id="batchSelectorSection" >
+	                    <apex:outputText value="Batches" />
+	                    <c:MultiSelectPicklist TargetObject="{!ChangeRequest}"
+	                        TargetField="Work_Required__c" TargetData="{!BatchIdStringList}" Size="9" />
+	                </apex:pageBlockSectionItem>
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:outputPanel>
+		
+	</apex:form>
+	
+</apex:page>

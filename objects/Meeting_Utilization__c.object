@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>ABC_Contact_Counter_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>ABC_Contact__r.Counter_ID__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ABC Contact Counter ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ABC_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>ABC Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Meeting Utilization (ABC Contact)</relationshipLabel>
+        <relationshipName>Meeting_Utilization1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Attendees__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( Membership__c =&quot;&quot;,0,1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Attendees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CEO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>CEO</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CXO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>CXO</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contact_Historical_Linker__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.Historical_Linker__c</formula>
+        <label>Contact Historical Linker</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Title__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Contact Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Meeting Utilization (Contact)</relationshipLabel>
+        <relationshipName>Meeting_Utilization</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Counter_Contact_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.Counter_ID__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Counter Contact ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_of_Confirmation__c</fullName>
+        <description>Created as a part of CR-6280. To be used to track confirmation of attendance to meetings two weeks out in a bid to monitor drop off rates.</description>
+        <externalId>false</externalId>
+        <label>Date of Confirmation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>32000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EventID__c</fullName>
+        <externalId>false</externalId>
+        <label>EventID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Name__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Event Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Financial_Impact_Value_Score__c</fullName>
+        <description>Created for CR-20160303-9666.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Evaluation question: Applying the ideas from this content will yield financial value for my organization.</inlineHelpText>
+        <label>Financial Impact Value Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Institution_Counter_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Institution__r.Counter_ID__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Institution Counter ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Meeting Utilization (Institution)</relationshipLabel>
+        <relationshipName>Meeting_Utilization1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Main_Point_of_Contact__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Main Point of Contact</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Membership__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Membership</label>
+        <referenceTo>Membership__c</referenceTo>
+        <relationshipLabel>Meeting Utilizations</relationshipLabel>
+        <relationshipName>Meeting_Utilizations</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Net_Promoter_Score__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Promoter Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Overall_Meeting_Evaluation__c</fullName>
+        <description>Created for CR-20150508-8944.</description>
+        <externalId>false</externalId>
+        <label>Overall Meeting Evaluation</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Excellent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Good</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fair</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Poor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ParticipationCount__c</fullName>
+        <externalId>false</externalId>
+        <label>ParticipationCount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payer_Institution_Counter_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Payer_Institution__r.Counter_ID__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payer Institution Counter ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payer_Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Payer Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Meeting Utilization (Payer Institution)</relationshipLabel>
+        <relationshipName>Meeting_Utilization</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payer_Utilization__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(  Institution__r.Name  = Membership__r.Active_Contract_Payer_Account_Name__c , &quot;Yes&quot;, &quot;No&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payer Utilization</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Performance_Improvement_Value_Score__c</fullName>
+        <description>Created for CR-20160303-9666.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Evaluation Question: Applying the ideas from this content will advance our performance against key organizational goals.</inlineHelpText>
+        <label>Performance Improvement Value Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Personal_Effectiveness_Value_Score__c</fullName>
+        <description>Created for CR-20160303-9666.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Evaluation Question: applying the ideas from this content will make me more effective at my job.</inlineHelpText>
+        <label>Personal Effectiveness Value Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Program</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <description>CR-3485-This field is used in an integration with Eloqua. Please research with the appropriate stakeholders/liaisons before altering it&apos;s meaning, usage, field type or other field characteristics. Do not delete or change the current API name.</description>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Strategic_Decisions_Value_Score__c</fullName>
+        <description>Created for CR-20160303-9666.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Evaluation Question: Applying the ideas from this content will improve the quality of my strategic decisions.</inlineHelpText>
+        <label>Strategic Decisions Value Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Upsert_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>Upsert ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Utilization_Metric__c</fullName>
+        <externalId>false</externalId>
+        <label>Utilization Metric</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Meeting Utilization</label>
+    <nameField>
+        <label>Meeting Utilization Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Meeting Utilization</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Meeting_Recruitment</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Meeting Recruitment</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://meeting.advisory.com/EntryPage.aspx?ContactID={!URLENCODE( Meeting_Utilization__c.Contact_Historical_Linker__c )}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Travel_Comp</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Travel Comp</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://meeting.advisory.com/Compensation/NewRequest.aspx?RegistrationId={!URLENCODE( Meeting_Utilization__c.Upsert_ID__c )}</url>
+    </webLinks>
+</CustomObject>

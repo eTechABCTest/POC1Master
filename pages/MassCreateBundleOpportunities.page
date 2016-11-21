@@ -1,0 +1,375 @@
+<!--
+ *    Description   :    Mass Created Bundled Opportunity visualforce page.
+ * 
+ *    Created By    :    Abhinav Sharma
+ *
+ *    Created Date  :    09/15/2014
+ *    
+ *    Version       :    v1.0 - Created - CR-20140429-5272
+-->
+<apex:page standardController="Bundle__c" extensions="MassCreateBundleOpportinities_Ext" sidebar="false" showHeader="true" docType="html-5.0" id="pg" 
+    label="{!$Label.MassCreateBundleOpportunities}" name="{!$Label.MassCreateBundleOpportunities}" standardStylesheets="true" 
+    title="{!$Label.MassCreateBundleOpportunities}" action="{!linkingNewOpportunityToBundle}">
+    
+    <style type="text/css">
+        .pageButton {
+            height:30px;
+            width:80px;
+            text-align:center;
+        }
+    </style>
+    
+    <!--Scripts-->
+    <script>
+    
+        <!-- Script for performing Select All functionality -->   
+        function checkAll(cb, cbId) {
+
+            //Workaround to check all the boxes for the existing bundled non-southwind opportunities
+            if(cbId != null && cbId.toString() == 'pg:frm:pb:pbsExistingBundledOpportunities:pbt:allcheck') {
+                var divObj = document.getElementById("pg:frm:pb:pbsExistingBundledOpportunities:pbt");
+                var inputElem = divObj.getElementsByTagName("input");
+                for(var i=0; i<inputElem.length; i++){
+                    if(inputElem[i].id.indexOf("selectInput")!=-1){
+                        inputElem[i].checked = cb.checked;
+                    }
+                }
+            }
+        }
+    
+        <!-- Script to disable the button on submit-->
+        function disableOnSubmit(input) {
+            setTimeout('disableAfterTimeout(\'' + input.id + '\');', 50);
+        }
+
+        function disableAfterTimeout(id) {
+            
+            var toDisable = document.getElementById( id );
+            toDisable.disabled = 'disabled';
+
+            //Use the Salesforce CSS style to make the button appear disabled
+            toDisable.className = 'btnDisabled';
+        
+            //Checking for button Id value and according setting the wait message for user convenience  
+            toDisable.value = "{!$Label.Message_Cancelling}"
+        }
+
+        var timeOut;
+
+        <!--Script for scrolling of page towards it top-->
+        function scrollToTop() {
+
+            if (document.body.scrollTop!=0 || document.documentElement.scrollTop!=0){
+                window.scrollBy(0,-50);
+                timeOut=setTimeout('scrollToTop()',10);
+            }
+            else 
+                clearTimeout(timeOut);
+
+            return false;
+        }
+        
+        //This method is to check wheather a record has been selected or not on page
+        function validateSelectionForRemoval() {
+        
+            //Initializing variable
+            var isAnySelection = false;
+            
+            //Checking if any record is seleted on page
+            var divObj = document.getElementById("pg:frm:pb:pbsExistingBundledOpportunities:pbt");
+            if(divObj != null) {
+                var inputElem = divObj.getElementsByTagName("input");
+                for(var i=0; i<inputElem.length; i++) {
+                    if(inputElem[i].id.indexOf("selectInput")!=-1 && inputElem[i].checked == true) {
+                        isAnySelection = true;
+                    }
+                }
+            
+                //Checking for the variable value
+                if(isAnySelection) {
+                    removeSelected();
+                    return false;
+                } else {
+                    
+                    //Throw an error as nothing is seleted on page
+                    alert("{!$Label.ERROR_NO_SELECTION_FOR_REMOVE}");
+                    
+                    //Return false
+                    return false;
+                }
+            } else {
+                
+                //Throw an error as nothing is seleted on page
+                alert("{!$Label.ERROR_NO_SELECTION_FOR_REMOVE}");
+                    
+                //Return false
+                return false;
+            }
+        }
+        
+        //Script to show the confirm box to the user before moving forward
+        function confirmQuickSave(buttonid) {
+            var messageText1 = "{!$label.Checking_Quick_Save_Message}";
+            var messageText2 = "{!$label.Checking_Quick_Save_Message_2}";
+            if(confirm(messageText1 + "\n" + messageText2)) {
+                if(buttonid == 'pg:frm:pb:pbsExistingBundledOpportunities:newButton') 
+                    newOpportunityAction();
+                if(buttonid == 'pg:frm:pb:pbsExistingBundledOpportunities:addButton')
+                    addOpportunityAction();
+                    
+                return false;
+            }
+            return false;
+        }
+        
+    </script>
+    
+    <!-- Block UI --> 
+    <c:BlockUI />
+    
+    <!-- form -->
+    <apex:form id="frm">
+    
+        <!--Block UI Action Status-->
+        <apex:actionStatus onStart="blockMe();" onstop="unBlockMe();" id="waitMsg" />
+        
+        <!--Action Functions-->
+        <apex:actionFunction action="{!navigateToNewOppRecordTypeSelection}" status="waitMsg" reRender="frm, validationMsg" name="newOpportunityAction"/>
+        <apex:actionFunction action="{!navigateToAddExistingOppPage}" status="waitMsg" reRender="frm, validationMsg" name="addOpportunityAction"/>
+        <apex:actionFunction action="{!removeSelectedBundledOpportunities}" status="waitMsg" reRender="frm, validationMsg" name="removeSelected"/>
+        
+        <!--Section Header-->
+        <apex:sectionHeader title="{!$Label.Bundle_Opp_Page_CL1}" subtitle="{!$Label.Bundle_Opp_Page_CL2}" rendered="{!OR(isDisplayDefaultSections, isDisplayAddExistingOppSection)}"/>
+        
+        <!-- Messages -->
+        <apex:pageMessages id="validationMsg" escape="false"/>
+        
+        <!--Page Block--> 
+        <apex:pageBlock mode="edit" id="pb" title="{!$Label.Bundle_Opp_Page_CL3}" rendered="{!isDisplayDefaultSections}">
+        
+            <!-- Buttons to perform the several actions -->
+            <apex:outputPanel layout="block" style="text-align: center;" id="buttonsPanel">
+                <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Save}" id="saveButton" styleClass="pageButton" style="background: #32CD32;" action="{!saveAll}" status="waitMsg" reRender="frm, validationMsg"/>
+                &nbsp;&nbsp;
+                <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Cancel}" action="{!cancelAll}" immediate="true" id="cancelButton" onclick="disableOnSubmit(this);" styleClass="pageButton" html-formnovalidate="formnovalidate"/>
+            </apex:outputPanel>
+            
+            <!--Void Spaces-->
+            <BR></BR>
+            
+            <!-- Bundle Fields Information Section -->
+            <apex:outputPanel id="infoWrapper">
+                <apex:outputPanel id="oppInfoPanel">
+                    
+                    <!--Basic Information-->
+                    <apex:pageBlockSection title="{!$Label.Bundle_Opp_Page_CL4}" columns="2" id="section1" collapsible="false">
+                        
+                        <!--Basic Information-->
+                        <apex:outputField value="{!bundle.Name}" id="bundleNameLabel"/>
+                        <apex:repeat value="{!$ObjectType.Bundle__c.FieldSets.Basic_Information}" var="f1">
+                            <apex:inputField value="{!bundle[f1]}" required="{!OR(f1.required, f1.dbrequired)}"/>
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                    
+                    <!--Count & Value Information-->
+                    <apex:pageBlockSection title="{!$Label.Bundle_Opp_Page_CL5}" columns="2" id="section2" collapsible="false">
+                        <apex:outputField value="{!bundle.Total_Count__c}"/>
+                        <apex:outputField value="{!bundle.Total_Value__c}"/>
+                        <apex:outputField value="{!bundle.Open_Count__c}"/>
+                        <apex:outputField value="{!bundle.Open_Value__c}"/>
+                        <apex:outputField value="{!bundle.Won_Count__c}"/>
+                        <apex:outputField value="{!bundle.Won_Value__c}"/>
+                        <apex:outputField value="{!bundle.Lost_Count__c}"/>
+                        <apex:outputField value="{!bundle.Lost_Value__c}"/>
+                        <apex:outputField value="{!bundle.Earliest_Close__c}"/>
+                        <apex:outputField value="{!bundle.Earliest_Stage__c}"/>
+                        <apex:outputField value="{!bundle.Latest_Close__c}"/>
+                        <apex:outputField value="{!bundle.Latest_Stage__c}"/>
+                        <apex:outputField value="{!bundle.Prorated_Open_Value__c}"/>
+                        
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            
+            <!--Existing Bundled Opportunities Section-->
+            <apex:outputPanel id="wrapper">
+                <apex:outputPanel id="existingOppPanel">
+                
+                    <!--Existing Bundled Opportunities Section-->
+                    <apex:pageBlockSection columns="1" title="{!$Label.Bundle_Opp_Page_CL6}" id="pbsExistingBundledOpportunities" collapsible="false">
+                        
+                        <!-- Buttons to perform the several actions -->
+                        <apex:outputPanel layout="block" style="text-align: left;" id="actionbuttonsPanel" rendered="{!IF(AND($CurrentPage.parameters.id != null, $CurrentPage.parameters.id != ''), true, false)}">
+                            <apex:commandbutton value="{!$Label.Bundle_Opp_Button_New}" id="newButton" styleClass="pageButton" style="width:150px;" onclick="return confirmQuickSave(this.id);"/>
+                            &nbsp;&nbsp;
+                            <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Add}" id="addButton" styleClass="pageButton" style="width:150px;" onclick="return confirmQuickSave(this.id);"/>
+                            &nbsp;&nbsp;
+                            <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Remove}" id="removeButton" styleClass="pageButton" style="width:150px;" onclick="return validateSelectionForRemoval();"/>
+                        </apex:outputPanel>
+                        
+                        <!-- Messages -->
+                        <BR></BR>
+                        <apex:pageMessages id="validationMsg1" escape="false" rendered="{!isHavingErrors}"/>
+                        
+                        <!-- No record(s) to display -->
+                        <apex:outputLabel rendered="{!NOT(existingBundledOpportunities.size > 0)}">
+                            <B>{!$Label.No_Records_To_Display}</B>
+                        </apex:outputLabel>
+                    
+                        <apex:pageBlockTable value="{!existingBundledOpportunities}" var="item" rendered="{!(existingBundledOpportunities.size > 0)}" id="pbt"  style="width:100%" summary="{$Label.Bundle_Opp_Page_CL7}">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox onclick="checkAll(this, this.id)" id="allcheck"/>
+                                </apex:facet>
+                                <apex:inputCheckbox id="selectInput" value="{!item.selected}"/>  
+                            </apex:column>
+                            <apex:column rendered="{!displayIconAndlink}">
+                                <apex:image value="{!$Resource.correct}" rendered="{!ISNULL(item.errorMessage)}"/>
+                                <apex:image value="{!$Resource.wrong}" rendered="{!NOT(ISNULL(item.errorMessage))}"/>
+                            </apex:column>
+                            <apex:column rendered="{!displayIconAndlink}">
+                                <B>
+                                    <apex:outputLink value="/006/e?ent=Opportunity&nooverride=1&opp3=Will+Auto-Populate&RecordType={!item.opportunity.RecordTypeId}&id={!item.opportunity.id}&opp11={!item.opportunity.StageName}&retURL=/apex/MassCreateBundleOpportunities?id={!Bundle__c.Id}" rendered="{!item.displayIconAndEditlink}">
+                                        {!$Label.Bundle_Opp_Link_Edit}
+                                    </apex:outputLink>
+                                </B>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.Bundle_Opp_Button_Clone}</apex:facet>
+                                <apex:commandButton value="{!$Label.Bundle_Opp_Button_Clone}" action="{!cloneBundledOpportunity}" status="waitMsg" reRender="frm,validationMsg">
+                                    <apex:param value="{!item.rowNo}" assignTo="{!selectedRowNo}" name="cloneRowNumber"/>
+                                </apex:commandButton>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.Bundle_Opp_Page_CL8}">
+                                <apex:outputField value="{!item.opportunity.RecordTypeId}"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.AccountId.label}">
+                                <apex:inputField value="{!item.opportunity.AccountId}" style="width:90px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.StageName.label}">
+                                <apex:actionRegion >
+                                    <apex:inputField value="{!item.opportunity.StageName}" style="width:110px">
+                                        <apex:actionSupport event="onchange" reRender="probability" status="waitMsg" action="{!changeStageNameInWrapperList}">
+                                            <apex:param value="{!item.rowNo}" assignTo="{!selectedRowNo}" name="selectedRN"/>
+                                        </apex:actionSupport>
+                                    </apex:inputField>
+                                </apex:actionRegion>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.Program__c.label}">
+                                <apex:inputField value="{!item.opportunity.Program__c}" style="width:90px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.Probablity}">
+                                <apex:inputField value="{!item.opportunity.Probability}" id="probability" style="width:50px" required="true"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.Amount.label}">
+                                <apex:inputField value="{!item.opportunity.Amount}" style="width:80px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.Marketer__c.label}">
+                                <apex:inputField value="{!item.opportunity.Marketer__c}" style="width:140px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.Marketing_Associate__c.label}">
+                                <apex:inputField value="{!item.opportunity.Marketing_Associate__c}" style="width:190px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.Main_Contact__c.label}">
+                                <apex:inputField value="{!item.opportunity.Main_Contact__c}" style="width:90px"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Opportunity.fields.CloseDate.label}">
+                                <c:noDateLink >
+                                    <apex:inputField value="{!item.opportunity.CloseDate}" style="width:75px"/>
+                                </c:noDateLink>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    <BR></BR>
+                    <div style="text-align: center;">
+                        <apex:outputText value="{!$Label.Bundle_Opp_Page_CL20}" escape="false"/>
+                    </div>
+                    <BR></BR>
+                    <apex:outputPanel layout="block" style="text-align: center;" id="buttonsPanelQuickSave">
+                        <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Quick_Save}" id="quickSaveButton" styleClass="pageButton" style="width:150px;" action="{!quickSaveAll}" status="waitMsg" reRender="frm, validationMsg"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        
+            <BR></BR>
+            <BR></BR>
+            
+            <apex:commandLink value="{!$Label.Bundle_Opp_Link_Top_Of_Page}" id="theCommandLink" onclick="return scrollToTop();" style="float:left; margin-left:20px;"/>
+            
+        </apex:pageBlock>
+            
+        <apex:outputPanel id="rdTypePanel">
+            <apex:sectionHeader title="{!$Label.Bundle_Opp_Page_CL9}" subtitle="{!$Label.Bundle_Opp_Page_CL10}" rendered="{!isDisplayNewOppRdTypeSelectionSection}"/>
+            <apex:pageblock id="pbNewOpp" mode="Edit" rendered="{!isDisplayNewOppRdTypeSelectionSection}">
+                <div class="pbHeader" id="select">                        
+                    <table border="0" cellpadding="0" cellspacing="0" id="typeTable">   
+                        <tr>
+                            <td class="pbTitle">
+                                <h2 class="mainTitle">{!$Label.Bundle_Opp_Page_CL11}</h2>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="pbBody" id="body">
+                    <div class="pbSubsection" id="pbSection">
+                        <table border="0" cellpadding="0" cellspacing="0" class="detailList" width="100%" id="recordTable"> 
+                            <tr> 
+                                <td>  
+                                    <apex:pageBlockSection columns="1" id="pbsRecordType" title="{!$Label.Bundle_Opp_Page_CL12}">
+                                        <apex:pageBlockSectionItem id="pbsRecordTypeitem">
+                                            <apex:outputlabel value="{!$Label.Bundle_Opp_Page_CL13}"/>
+                                            <apex:actionRegion >
+                                                <apex:outputPanel styleClass="requiredInput" layout="block" id="pwPanel" >
+                                                <apex:outputPanel styleClass="requiredBlock"/>
+                                                    <apex:selectList id="selectedRdTypeNonSW" value="{!selectedRdType}" size="1" required="true">
+                                                        <apex:selectOptions value="{!OppRecordTypes}"/>
+                                                    </apex:selectList>
+                                                </apex:outputPanel>
+                                            </apex:actionRegion>
+                                        </apex:pageBlockSectionItem>
+                                        <BR></BR>
+                                        <apex:outputPanel layout="block" style="text-align: center;">
+                                            <apex:commandButton value="{!$Label.Bundle_Opp_Button_Continue}" styleClass="pageButton" action="{!naviagteToOpportunityEditPage}" html-formnovalidate="formnovalidate"/>
+                                            &nbsp;&nbsp;
+                                            <apex:commandButton value="{!$Label.Bundle_Opp_Button_Cancel}" styleClass="pageButton" action="{!navigateBackToDefaultPage}" html-formnovalidate="formnovalidate"  immediate="true"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSection>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <BR></BR>
+                <BR></BR>
+                <apex:pageBlockSection title="{!$Label.Bundle_Opp_Page_CL14}" columns="1">
+                    <apex:pageBlockTable value="{!recordTypes}" var="recT" style="width:50%;">
+                        <apex:column headerValue="{!$Label.Bundle_Opp_Page_CL15}">
+                            <apex:outputText value="{!recT.RecordTypeName}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$Label.Bundle_Opp_Page_CL16}">
+                            <apex:outputText value="{!recT.RecordTypeDescription}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <!-- Add Existing Opporuntiy Page -->
+        <apex:outputPanel id="addOppPanel">
+            <apex:pageBlock id="addExistingOppPb" title="{!$Label.Bundle_Opp_Page_CL17}" rendered="{!isDisplayAddExistingOppSection}">
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionitem >
+                        <apex:outputLabel value="{!$Label.Bundle_Opp_Page_CL18}"/>
+                        <apex:inputField value="{!bSibling.From__c}" id="bSiblingsID"/>
+                    </apex:pageBlockSectionitem>
+                    <BR></BR>
+                    <apex:outputPanel >
+                        <apex:commandbutton value="{!$Label.Bundle_Opp_Button_Add}" id="addOppButton" styleClass="pageButton" style="width:150px;" action="{!addSelectedOpportunityToBundle}" reRender="frm, validationMsg" status="waitMsg"/>
+                        &nbsp;&nbsp;
+                        <apex:commandButton value="{!$Label.Bundle_Opp_Button_Cancel}" styleClass="pageButton" action="{!navigateBackToDefaultPage}" html-formnovalidate="formnovalidate"  immediate="true"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

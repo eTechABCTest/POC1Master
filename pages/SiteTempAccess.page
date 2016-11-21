@@ -1,0 +1,165 @@
+<apex:page controller="SiteTempAccessController" showHeader="true" sidebar="true" id="page" tabStyle="Temporary_Program_Access__c" >
+    
+    <c:IncludeJQuery />
+    
+    <c:AdvisorySiteCSS />
+    
+    
+    <style>
+        
+        input#page:mainForm:updateButton {
+        position: fixed;
+        bottom:10px;
+        left:10px;
+        }
+        
+        th {
+        padding:5px;
+        white-space:nowrap;
+        font-weight:bold;
+        }
+        
+        .reqBlock {
+        background-color: #C00;
+        position: absolute;
+        left: -4px;
+        width: 3px;
+        top: 1px;
+        bottom: 1px;
+        height: 17px;
+        }
+        
+        li.ui-state-active a {
+        cursor: default !important;
+        }
+        
+    </style>
+    
+    <apex:form id="mainForm" style="position:relative;">
+        
+        <input type="text" value="" id="InitialDatePickerFix" style="display:none;" />
+        <script type="text/javascript">
+        window.onload = setFocus();
+        function setFocus() { document.getElementById("InitialDatePickerFix").focus(); }
+        
+        //load the jquery tabs
+        j$(function() { 
+            j$('#tabs').tabs();
+        });
+        </script>
+        
+        <apex:sectionHeader title="Manage Temporary Access" subTitle="{!MainContact.Name}" />
+        <apex:actionFunction name="rerenderTempAccess" onComplete="unBlockTable(); addDatePicker();" rerender="tempAccessList, err" />
+        <apex:pageBlock mode="edit" >
+            <div id="tabs">
+                <ul>
+                    <apex:repeat value="{!mapTempAccess}" var="siteType" >
+                    	<li><a href="#tab-{!siteType}" onclick="{!IF(siteType == 'Advisory', 'updateButtonPosition(0)', 'updateButtonPosition(1)')}">{!siteType}</a></li>
+                    </apex:repeat>
+                </ul>
+                <apex:repeat value="{!mapTempAccess}" var="siteType" >
+                    <div id="tab-{!siteType}">
+                        <apex:pageBlockTable value="{!mapTempAccess[siteType]}" var="item" cellpadding="10" id="tempAccessList" style="width:800px;border: 1px solid #E0E3E5; top:-5px; position:relative;">
+                            <apex:column >
+                                <apex:facet name="header">Access</apex:facet>
+                                <apex:inputCheckbox value="{!item.HasAccess}" style="white-space:nowrap;" onClick="blockTable();rerenderTempAccess();" />
+                            </apex:column>
+                            <apex:column >  
+                                <apex:facet name="header">Program Description</apex:facet>
+                                <apex:outputText value="{!item.ProgramDescription}" style="white-space:nowrap;" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Program Acronym</apex:facet>
+                                <apex:outputText value="{!item.ProgramAcronym}" style="white-space:nowrap;" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Owner</apex:facet>
+                                <apex:outputText value="{!item.Created_By}" rendered="{!item.HasAccess}" style="white-space:nowrap;" />
+                            </apex:column>
+                            <apex:column id="startDateCol" >    
+                                <apex:facet name="header">Start Date</apex:facet>
+                                <apex:outputText rendered="{!!item.StartIsEditable && !item.NewItem && item.HasAccess}" value="{!item.StartDate}" />
+                                <apex:outputPanel rendered="{!(item.StartIsEditable && item.HasAccess) || (item.HasAccess && item.NewItem)}" >
+                                    <div style="position:relative;" ><div class="reqBlock"></div></div>
+                                    <apex:inputText style="width:70px; top:-2px; position:relative;" id="CustDatestart" value="{!item.StartDate}" />
+                                </apex:outputPanel>
+                            </apex:column>
+                            
+                            <apex:column id="expDateCol" >  
+                                <apex:facet name="header">Expiration Date</apex:facet>
+                                <apex:outputPanel rendered="{!item.HasAccess}" >
+                                    <div style="position:relative;" ><div class="reqBlock"></div></div>
+                                    <apex:inputText style="width:70px; top:-2px; position:relative;" id="CustDateend" value="{!item.Expiration_Date}" />
+                                </apex:outputPanel>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </div>
+                </apex:repeat>
+            </div>
+        </apex:pageBlock>
+        <table id="updateButtonTable" style="position:fixed; top:40%; left:1060px;height:30px; width:250px; background-color:white;" >
+            <tr>
+                <td><apex:commandButton id="updateButton" value=" Update " action="{!SaveTempAccess}" onClick="blockTable();" /></td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <apex:outputPanel id="err" >
+                        <apex:outputText escape="false" value="{!ErrorString}" style="color:red;" />
+                        <apex:outputText escape="false" value="<b>Save Successful</b>" style="color:green;" rendered="{!SaveSuccessful}" />
+                    </apex:outputPanel>
+                </td>
+            </tr>
+            
+        </table>
+        
+    </apex:form>
+    
+    <script>
+    
+    j$(function() {
+        addDatePicker();
+        bindPositionUpdate();
+        updateButtonPosition(0);
+    });
+    
+    function addDatePicker() {
+        j$( '[id*=CustDate]' ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "m/d/yy"
+        });
+    }
+    
+    function blockTable() {
+        j$('#page\\:mainForm\\:tempAccessList').block ({ 
+            message: '<img src="/img/loading.gif"/>&nbsp;&nbsp;<font size=\"3\">Working...</font>',
+            centerY: 0, 
+            css: { top: window.pageYOffset + 200 + 'px' } 
+        }); 
+    }
+    
+    function unBlockTable() {
+        j$('#page\\:mainForm\\:tempAccessList').unblock();
+    }
+    
+    //repositions the update button
+    function updateButtonPosition(i) {
+        var jqTable = j$("[id$='tempAccessList']").eq(i);
+        var width = jqTable.outerWidth() + jqTable.offset().left;
+        j$('#updateButtonTable').css('left', width + 'px');
+    }
+    
+    //bind event handler to update the position on click
+    function bindPositionUpdate() {
+        j$("a[href='#tab-Advisory']").click(function() {
+            updateButtonPosition(0);
+        });
+        j$("a[href='#tab-EAB']").click(function() {
+            updateButtonPosition(1);
+        });
+    }
+    
+    </script>
+    
+</apex:page>

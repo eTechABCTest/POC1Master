@@ -1,0 +1,11 @@
+<!-- 
+ *  Purpose         :   Override New button and autopopulate the name field with "Will Auto Populate" value
+ * 
+ *  Created By      :   Bhavi Sharma
+ * 
+ *  Created Date    :   03/31/2015
+ * 
+ *  Revision Logs   :   V_1.0 - Created
+ * 
+ -->
+<apex:page standardController="Team_Membership__c" extensions="WillAutoPopulateExtension" action="{!redirect}" />

@@ -1,0 +1,16 @@
+<apex:component >
+    <apex:attribute name="PgBreakStyle" description="" type="String" required="true"/>
+    <apex:attribute name="MainAccount" description="" type="Account" required="true"/>
+    <apex:attribute name="UrlEncodedAddress" description="" type="String" required="true"/>
+    <apex:attribute name="GoogleAPIKey" description="" type="String" required="true"/>
+    
+    <!-- PAGEBREAK -->
+    <div style="{!PgBreakStyle}"></div>
+    <div id="container" style="margin-top:25px; margin-left:15px;">
+        <div class="bold" style="float:left;height:45px; width:125px;">Google Map</div>
+        <div class="bold" style="height:45px;">	{!MainAccount.Primary_Address_Line_1__c}<br/>
+                            {!MainAccount.Primary_City__c} {!MainAccount.Primary_State_Province__c}, {!MainAccount.Primary_Postal_Code__c}</div><br/>
+    </div>
+    <apex:image url="http://maps.googleapis.com/maps/api/staticmap?center={!UrlEncodedAddress}&markers={!UrlEncodedAddress}&zoom=16&size=600x320&maptype=roadmap&sensor=false&key={!GoogleAPIKey}" />
+    <div style="margin-bottom:50px;" ></div>
+</apex:component>

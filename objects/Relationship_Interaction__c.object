@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>Interaction_Basic_Edit</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>Interaction_Basic_Edit</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>Interaction_Basic_View</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>A Relationship Interaction record will be used to capture the detail and link the results of a relationship-building meeting scheduled with an existing member and/or prospect.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Assigned_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The primary ABC Staff member for this interaction</inlineHelpText>
+        <label>Assigned To</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>User.IsActive</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <filterItems>
+                <field>User.UserType</field>
+                <operation>equals</operation>
+                <value>Standard</value>
+            </filterItems>
+            <infoMessage>Filtered for active Users with type = Standard</infoMessage>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipLabel>Relationship Interactions</relationshipLabel>
+        <relationshipName>Relationship_Interactions</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Cancelled__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Set to TRUE if Interaction will not occur</inlineHelpText>
+        <label>Cancelled</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Count__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Cancelled__c, 1, 0)</formula>
+        <label>Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>Primary_Contact__r.Email</formula>
+        <label>Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>End_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>End Date/Time</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Institution__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Institution</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Relationship Interactions</relationshipLabel>
+        <relationshipName>Relationship_Interactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Interaction_Chain__c</fullName>
+        <description>Updated by code when a new Relationship Interaction is created from an Outcome</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Count of Relationship Interactions in this series</inlineHelpText>
+        <label>Interaction Chain</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interaction_Level__c</fullName>
+        <externalId>false</externalId>
+        <label>Interaction Level</label>
+        <picklist>
+            <picklistValues>
+                <fullName>In-person</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Phone Conference</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web/Video Conference</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Interaction_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Interaction Type</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Key_Objectives__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Goal or anticipated outcome of the interaction</inlineHelpText>
+        <label>Key Objectives</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone__c</fullName>
+        <externalId>false</externalId>
+        <formula>Primary_Contact__r.Phone</formula>
+        <label>Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Primary_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Select primary contact from Interaction Attendee section</inlineHelpText>
+        <label>Primary Contact</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.AccountId</field>
+                <operation>equals</operation>
+                <valueField>$Source.Institution__c</valueField>
+            </filterItems>
+            <filterItems>
+                <field>Contact.Contact_Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <infoMessage>Results are initially filtered based on the current Institution.</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Relationship Interactions</relationshipLabel>
+        <relationshipName>Relationship_Interactions</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Record_Number__c</fullName>
+        <displayFormat>{00000000}</displayFormat>
+        <externalId>false</externalId>
+        <inlineHelpText>Record counter number</inlineHelpText>
+        <label>Record Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Source_Interaction__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The previous Relationship Interaction which prompted this one.</inlineHelpText>
+        <label>Source Interaction</label>
+        <referenceTo>Relationship_Interaction__c</referenceTo>
+        <relationshipLabel>Additional Relationship Interactions</relationshipLabel>
+        <relationshipName>Relationship_Interactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date/Time</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Status_Flag__c</fullName>
+        <externalId>false</externalId>
+        <formula>IMAGE( 
+    CASE( Status_Text__c, 
+        &quot;Scheduled&quot;, &quot;/img/func_icons/util/datePicker16.gif&quot;, 
+        &quot;Completed&quot;, &quot;/img/permissions_confirm16.gif&quot;, 
+        &quot;Cancelled&quot;, &quot;/img/permissions_deny16.gif&quot;, 
+    &quot;&quot;), 
+&quot;Status&quot;, 12, 12)</formula>
+        <label>Status Flag</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Cancelled__c, &apos;Cancelled&apos;,
+    IF(End_Date_Time__c &gt; NOW(), &apos;Scheduled&apos;,
+        IF(End_Date_Time__c &lt; NOW(), &apos;Completed&apos;, &apos;&apos;)
+    )
+)</formula>
+        <inlineHelpText>Based on End Date/Time and Cancelled field</inlineHelpText>
+        <label>Status Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>Status_Flag__c + &quot; &quot; + Status_Text__c</formula>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Strategic_Account_POD__c</fullName>
+        <externalId>false</externalId>
+        <formula>Institution__r.Strategic_Account_Pod__c</formula>
+        <label>Strategic Account POD</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Title__c</fullName>
+        <externalId>false</externalId>
+        <formula>Primary_Contact__r.Title</formula>
+        <label>Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Outcomes__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Outcomes</label>
+        <summaryForeignKey>Outcome__c.Relationship_Interaction__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Relationship Interaction</label>
+    <nameField>
+        <label>Relationship Interaction Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Relationship Interactions</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Basic_Interaction</fullName>
+        <active>true</active>
+        <description>A basic Relationship Interaction with commonly used fields</description>
+        <label>Basic Interaction</label>
+        <picklistValues>
+            <picklist>Interaction_Level__c</picklist>
+            <values>
+                <fullName>In-person</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Phone Conference</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web%2FVideo Conference</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Primary_Contact__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Assigned_To__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Outcomes__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Assigned_To__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Primary_Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Total_Outcomes__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Primary_Contact__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Assigned_To__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Total_Outcomes__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Assigned_To__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Primary_Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Total_Outcomes__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Basic_Interaction_Required_Fields</fullName>
+        <active>true</active>
+        <description>Verify all required fields are populated.</description>
+        <errorConditionFormula>AND(
+     RecordType.DeveloperName ==  $Label.Record_Type_Developer_Name_Basic_Interaction,
+    OR(
+        ISBLANK( Institution__c ),
+        ISBLANK( Primary_Contact__c ),
+        ISBLANK( Assigned_To__c ),
+        ISBLANK( Start_Date_Time__c ),
+        ISBLANK( End_Date_Time__c ),
+        ISBLANK( TEXT(Interaction_Level__c) ),
+        ISBLANK( Interaction_Type__c )
+    )
+)</errorConditionFormula>
+        <errorMessage>At least one of the required fields is missing a value.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Start_End_Date</fullName>
+        <active>true</active>
+        <description>Verify that the End Date is greater than the Start Date</description>
+        <errorConditionFormula>AND (
+   NOT( ISBLANK( Start_Date_Time__c ) ),
+   NOT( ISBLANK( End_Date_Time__c ) ),
+   Start_Date_Time__c &gt; End_Date_Time__c
+)</errorConditionFormula>
+        <errorMessage>End Date/Time must be greater than the Start Date/Time.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VF_StartDateGreaterThanSourceInteraction</fullName>
+        <active>true</active>
+        <description>An additional interaction should never start before the original interaction.  Created for CR-20150813-9154.</description>
+        <errorConditionFormula>IF (
+        AND (
+            NOT(ISNULL(Source_Interaction__c)),
+            Start_Date_Time__c &lt;= Source_Interaction__r.Start_Date_Time__c
+        ),
+        true,
+        false
+    )</errorConditionFormula>
+        <errorDisplayField>Start_Date_Time__c</errorDisplayField>
+        <errorMessage>An additional interaction should never start before the original interaction.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Add_Outcome</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Add Outcome</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location=&quot;{!URLFOR( $Action.Outcome__c.New , null, [previousInteraction=Relationship_Interaction__c.Id])}&amp;retURL=&quot;+document.URL;</url>
+    </webLinks>
+</CustomObject>

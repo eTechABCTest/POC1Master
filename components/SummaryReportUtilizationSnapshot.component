@@ -1,0 +1,157 @@
+<apex:component controller="SummaryReportController" >
+<br/>
+	<span class="bold">Utilization Snapshot</span><br/>
+	<span style="font-style: italic">Meeting Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!MembershipUtilizations}" var="item" 
+								id="Events" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Meeting</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Status</apex:facet>
+			<apex:outputText value="{!item.Status__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable> <br/><br/>
+	
+	<span style="font-style: italic">Teleconference Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!TeleconferenceUtilizations}" var="item" 
+								id="TeleconfUtilizations" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Teleconference</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable><br/><br/>
+	
+	<span style="font-style: italic">Pub Reorder Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!PubReorderUtilizations}" var="item" 
+								id="pubReorderUtilizations" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Pub Reorder</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable><br/><br/>
+	
+	<span style="font-style: italic">Onsite Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!OnsiteUtilizations}" var="item" 
+								id="onsiteUtilizations" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Onsite</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable><br/><br/>
+	
+	<span style="font-style: italic">Advisory.com Tools Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!DAGToolUtilizations}" var="item" 
+								id="advisoryUtilizations" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Advisory.com Tools</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable><br/><br/>
+	
+	<span style="font-style: italic">Expert Center Utilizations</span>
+	<apex:dataTable headerClass="header1" rowClasses="odd,even" value="{!ExpertCenterUtilizations}" var="item" 
+								id="expertCenterUtilizations" style="width:95%;color: #00398E; border-collapse: collapse; " >
+		<apex:column style="min-width:80px;" >
+			<apex:facet name="header">Expert Center</apex:facet>
+			<apex:outputText value="{!item.Event_Name__c}" />
+		</apex:column>
+		<apex:column style="min-width:75px;" >
+			<apex:facet name="header">Program</apex:facet>
+			<apex:outputText value="{!item.Program__c}" />
+		</apex:column>
+		<apex:column style="min-width:85px;" >
+			<apex:facet name="header">Contact</apex:facet>
+			<apex:outputText value="{!item.Contact_Name__c}" />
+		</apex:column>
+		<apex:column >
+			<apex:facet name="header">Title</apex:facet>
+			<apex:outputField value="{!item.Contact_Title__c}" />
+		</apex:column>
+		<apex:column style="white-space:nowrap; min-width:75px;" >
+			<apex:facet name="header">Date</apex:facet>
+			<apex:outputField value="{!item.Start_Date__c}" />
+		</apex:column>
+	</apex:dataTable><br/><br/>
+</apex:component>
